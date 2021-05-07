@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.doanmp3.Activity.AllSingerActivity;
 import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Adapter.SingerAdapter;
 import com.example.doanmp3.Model.CaSi;
@@ -50,6 +52,16 @@ public class SingerFragment extends Fragment {
         txt = view.findViewById(R.id.txt_singer);
         recyclerView = view.findViewById(R.id.rv_singer);
         GetData();
+
+
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AllSingerActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

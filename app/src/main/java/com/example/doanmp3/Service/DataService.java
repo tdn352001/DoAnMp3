@@ -46,6 +46,13 @@ public interface DataService {
     @GET("getallsinger.php")
     Call<List<CaSi>> GetAllSinger();
 
+
+    @GET("getalltheloai.php")
+    Call<List<ChuDeTheLoai>> GetAllTheLoai();
+
+    @GET("getallchude.php")
+    Call<List<ChuDeTheLoai>> GetAllChuDe();
+
     @FormUrlEncoded
     @POST("getdanhsachbaihat.php")
     Call<List<BaiHat>> GetBaiHatQuangCao(@Field("IdQuangCao") int IdQuangCao);

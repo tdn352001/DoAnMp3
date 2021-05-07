@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.doanmp3.Activity.AllCategoryActivity;
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.CategoryAdapter;
 import com.example.doanmp3.Model.Album;
@@ -29,6 +32,7 @@ import retrofit2.Response;
 public class CategoryFragment extends Fragment {
 
     View view;
+    TextView txt;
     RecyclerView recyclerView;
     public CategoryFragment() {
         // Required empty public constructor
@@ -45,8 +49,18 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_category, container, false);
+        txt = view.findViewById(R.id.txt_category_fragment);
         recyclerView = view.findViewById(R.id.rv_category);
         GetData();
+
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AllCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
