@@ -1,6 +1,7 @@
 package com.example.doanmp3.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.Activity.PlayActivity;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
@@ -54,6 +56,15 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             imageView = itemView.findViewById(R.id.img_song_all);
             TenBaiHat = itemView.findViewById(R.id.txt_song_all);
             TenCaSi = itemView.findViewById(R.id.txt_song_casi_all);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, PlayActivity.class);
+                    intent.putExtra("baihat", arrayList.get(getPosition()));
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
