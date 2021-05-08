@@ -58,6 +58,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             imageView = itemView.findViewById(R.id.img_categoty);
             txtCategory = itemView.findViewById(R.id.txt_categoty);
+
+
         }
     }
 }

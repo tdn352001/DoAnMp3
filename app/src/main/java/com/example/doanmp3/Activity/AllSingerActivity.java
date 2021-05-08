@@ -7,11 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.doanmp3.Adapter.AllAlbumAdapter;
 import com.example.doanmp3.Adapter.AllSingerAdapter;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;

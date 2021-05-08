@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.AllCategoryActivity"></activity>
+        <activity android:name=".Activity.DanhSachBaiHatActivity"></activity>
+        <activity android:name=".Activity.AllCategoryActivity" />
         <activity android:name=".Activity.AllSingerActivity" />
         <activity android:name=".Activity.AllSongActivity" />
         <activity android:name=".Activity.AllAlbumActivity" />

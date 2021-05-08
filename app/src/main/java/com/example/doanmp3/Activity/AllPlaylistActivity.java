@@ -9,7 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Adapter.AllPlaylistAdapter;
+import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -26,7 +26,7 @@ public class AllPlaylistActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<Playlist> playlists;
-    AllPlaylistAdapter adapter;
+    PlaylistAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class AllPlaylistActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                     playlists = (ArrayList<Playlist>) response.body();
-                    adapter = new AllPlaylistAdapter(AllPlaylistActivity.this, playlists);
+                    adapter = new PlaylistAdapter(AllPlaylistActivity.this, playlists);
                     recyclerView.setLayoutManager(new GridLayoutManager(AllPlaylistActivity.this, 2));
                     recyclerView.setAdapter(adapter);
 

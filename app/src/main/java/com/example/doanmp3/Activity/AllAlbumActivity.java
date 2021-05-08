@@ -9,7 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.example.doanmp3.Adapter.AllAlbumAdapter;
+import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -25,7 +25,7 @@ import retrofit2.Response;
 public class AllAlbumActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-    AllAlbumAdapter adapter;
+    AlbumAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class AllAlbumActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
                 ArrayList<Album> albums = (ArrayList<Album>) response.body();
-                adapter = new AllAlbumAdapter(AllAlbumActivity.this, albums);
+                adapter = new AlbumAdapter(AllAlbumActivity.this, albums);
                 recyclerView.setLayoutManager(new GridLayoutManager(AllAlbumActivity.this, 2));
                 recyclerView.setAdapter(adapter);
             }

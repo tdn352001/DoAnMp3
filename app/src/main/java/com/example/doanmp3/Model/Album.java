@@ -3,7 +3,10 @@ package com.example.doanmp3.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Album {
+import java.io.Serializable;
+
+public class Album implements Serializable {
+    @SerializedName("IdAlbum")
     @Expose
     private String idAlbum;
     @SerializedName("TenCaSi")
@@ -47,5 +50,4 @@ public class Album {
     public void setHinhAlbum(String hinhAlbum) {
         this.hinhAlbum = hinhAlbum;
     }
-
 }
