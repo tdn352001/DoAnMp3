@@ -1,6 +1,7 @@
 package com.example.doanmp3.Adapter;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doanmp3.Model.ModelAudio;
 import com.example.doanmp3.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
@@ -46,10 +48,29 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView title, artist;
+        MediaPlayer mediaPlayer;
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             artist = (TextView) itemView.findViewById(R.id.artist);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mediaPlayer = new MediaPlayer();
+                    mediaPlayer.reset();
+                    //set file path
+                    try {
+                        mediaPlayer.setDataSource(context, audios.get(getPosition()).getaudioUri());
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
         }
     }
 }

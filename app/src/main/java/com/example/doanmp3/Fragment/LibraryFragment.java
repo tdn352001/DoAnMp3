@@ -98,5 +98,8 @@ public class LibraryFragment extends Fragment {
         adapter = new AudioAdapter(getActivity(), audios);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+
+
     }
 }
