@@ -43,13 +43,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
-        holder.txtCaSi.setText("");
-        for(int i = 0; i < baiHat.getCaSi().size(); i++)
-        {
-            if( i != 0)
-                holder.txtCaSi.append(",");
-            holder.txtCaSi.append(baiHat.getCaSi().get(i).toString());
-        }
+        holder.txtCaSi.setText(baiHat.getTenAllCaSi());
         Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imageView);
     }
 

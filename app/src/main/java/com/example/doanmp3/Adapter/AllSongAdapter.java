@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Activity.PlayActivity;
+import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
+import com.example.doanmp3.Activity.PlayNhacActivity;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
@@ -39,7 +40,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
         Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
-        holder.TenCaSi.setText(baiHat.getCaSi().toString());
+        holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
     }
 
@@ -60,8 +61,9 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra("baihat", arrayList.get(getPosition()));
+                    Intent intent = new Intent(context, PlayNhacActivity.class);
+                    intent.putExtra("mangbaihat", arrayList);
+                    intent.putExtra("position", getPosition());
                     context.startActivity(intent);
                 }
             });

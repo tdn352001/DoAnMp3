@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 public class LibraryFragment extends Fragment {
     public static final int PERMISSION_READ = 0;
+    public static final int PERMISSION_WRITE = 1;
     RecyclerView recyclerView;
     AudioAdapter adapter;
     ArrayList<ModelAudio> audios;
@@ -52,8 +53,11 @@ public class LibraryFragment extends Fragment {
     }
     public boolean checkPermission() {
         int READ_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        if((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
+        int WRITE_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED) && (WRITE_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
             return false;
         }
         return true;

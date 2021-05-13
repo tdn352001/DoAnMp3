@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doanmp3.Activity.AllSingerActivity;
+import com.example.doanmp3.Activity.MainActivity;
+import com.example.doanmp3.Adapter.AllSingerAdapter;
 import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Adapter.SingerAdapter;
 import com.example.doanmp3.Model.CaSi;
@@ -72,11 +75,14 @@ public class SingerFragment extends Fragment {
             @Override
             public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
                 ArrayList<CaSi> caSis = (ArrayList<CaSi>) response.body();
-                SingerAdapter adapter = new SingerAdapter(getActivity() ,caSis);
+                AllSingerAdapter adapter = new AllSingerAdapter(getActivity() ,caSis);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                MainActivity.LoadingComplete();
+
+
             }
 
             @Override

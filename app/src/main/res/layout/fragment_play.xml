@@ -3,15 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.PlayFragment">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout_playfragment"
+        android:background="@color/noname"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:background="@color/noname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageButton
+                android:id="@+id/img_finish_play"
+                android:layout_margin="15dp"
+                android:background="@color/noname"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_under"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <TextView
+                android:id="@+id/txt_title_baihat"
+                android:layout_toRightOf="@id/img_finish_play"
+                android:layout_margin="15dp"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/txt_title_casi"
+                android:layout_toRightOf="@id/img_finish_play"
+                android:layout_below="@id/txt_title_baihat"
+                android:layout_marginHorizontal="15dp"
+                android:textSize="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dianhac"
-        android:src="@drawable/baihat"
-        android:layout_centerInParent="true"
         android:layout_width="350dp"
-        android:layout_height="350dp"/>
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/appbarlayout_playfragment"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/baihat"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"/>
 
+    <TextView
+        android:id="@+id/txt_song_casi_play_fragment"
+        android:layout_below="@id/dianhac"
+        android:layout_marginTop="40dp"
+        android:text="Tên Bài Hát -Ca Sĩ"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" />
 
 
 </RelativeLayout>

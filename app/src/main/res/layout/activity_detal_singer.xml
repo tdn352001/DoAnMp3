@@ -10,7 +10,7 @@
     tools:context=".Activity.DanhSachBaiHatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayout"
+        android:id="@+id/appbarlayout_detailsinger"
         app:elevation="40dp"
         android:backgroundTint="@color/noname"
         android:fitsSystemWindows="true"
@@ -18,32 +18,28 @@
         android:layout_height="380dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingtoolbarlayout"
+            android:id="@+id/collapsingtoolbarlayout_detailsinger"
             android:fitsSystemWindows="true"
-            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="40dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
-                android:id="@+id/img_tieudedanhsach"
+                android:id="@+id/img_detailsinger"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="35dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="80dp"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
             <ProgressBar
-                android:id="@+id/progress_load_baihat"
+                android:id="@+id/progress_load_detailsinger"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_dsbh"
+                android:id="@+id/toolbar_detailsinger"
                 app:layout_collapseMode="pin"
                 app:titleMarginBottom="5dp"
                 android:layout_marginBottom="15dp"
@@ -59,18 +55,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_action"
-        android:src="@drawable/icon_random"
-        app:elevation="30dp"
-        app:layout_anchorGravity="center|bottom"
-        app:fabSize="auto"
-        android:background="@drawable/custom_imageview"
-        android:layout_marginTop="30dp"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:layout_anchor="@id/appbarlayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -78,10 +62,49 @@
         android:layout_marginTop="15dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_dsbh"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_detailsinger_baihat"
+                android:text="Bài Hát  "
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:drawableRight="@drawable/ic_viewmore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detailsinger_baihat"
+                android:layout_below="@+id/txt_detailsinger_baihat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/btn_viewmore_baihat_detailsinger"
+                android:text="Xem thêm"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/rv_detailsinger_baihat"
+                android:backgroundTint="@color/noname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_detailsinger_album"
+                android:text="Album  "
+                android:textSize="20dp"
+                android:layout_margin="10dp"
+                android:drawableRight="@drawable/ic_viewmore"
+                android:layout_below="@id/btn_viewmore_baihat_detailsinger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detailsinger_album"
+                android:layout_below="@+id/txt_detailsinger_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 

@@ -12,6 +12,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +28,7 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -46,9 +49,11 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     FloatingActionButton button;
-    AllSongAdapter adapter;
     LinearLayoutManager linearLayoutManager;
-
+    ImageView imageView;
+    public static String category = "";
+    public static  String TenCategoty= "";
+    ProgressBar progressBar;
     // Tùy Biến
     Album album;
     Playlist playlist;
@@ -57,7 +62,6 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danh_sach_bai_hat);
         AnhXa();
-
         GetIntent();
         init();
     }
@@ -79,6 +83,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
             if(intent.hasExtra("album"))
             {
                 album = (Album) intent.getSerializableExtra("album");
+                category = "Album";
+                TenCategoty = album.getTenAlbum();
                 SetValueView(album.getTenAlbum(), album.getHinhAlbum());
                 GetDataAlbum(album.getIdAlbum());
             }
@@ -86,8 +92,9 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
             {
                 if(intent.hasExtra("playlist"))
                 {
-
                     playlist = (Playlist) intent.getSerializableExtra("playlist");
+                    category = "Playlist";
+                    TenCategoty = playlist.getTen();
                     SetValueView(playlist.getTen(), playlist.getHinhAnh());
                     GetDataPlaylist(playlist.getIdPlaylist());
                 }
@@ -99,28 +106,20 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
 
 
     private void AnhXa(){
+        imageView = findViewById(R.id.img_tieudedanhsach);
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         collapsingToolbarLayout = findViewById(R.id.collapsingtoolbarlayout);
         toolbar = findViewById(R.id.toolbar_dsbh);
         recyclerView = findViewById(R.id.rv_dsbh);
         button = findViewById(R.id.btn_action);
+        progressBar = findViewById(R.id.progress_load_baihat);
         linearLayoutManager = new LinearLayoutManager(DanhSachBaiHatActivity.this, LinearLayoutManager.VERTICAL, false);
     }
 
 
     private  void SetValueView(String Ten, String Hinh){
         collapsingToolbarLayout.setTitle(Ten);
-        try {
-            URL url = new URL(Hinh);
-            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
-            collapsingToolbarLayout.setBackground(drawable);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        Picasso.with(DanhSachBaiHatActivity.this).load(Hinh).into(imageView);
     }
 
     private void GetDataAlbum(String id){
@@ -135,6 +134,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -154,12 +154,15 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baiHats);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-
+                Toast.makeText(DanhSachBaiHatActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 }

@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,13 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.DanhSachBaiHatActivity"></activity>
+        <activity android:name=".Activity.DetalSingerActivity"></activity>
+        <activity android:name=".Activity.DanhSachBaiHatActivity" />
         <activity android:name=".Activity.AllCategoryActivity" />
         <activity android:name=".Activity.AllSingerActivity" />
         <activity android:name=".Activity.AllSongActivity" />
         <activity android:name=".Activity.AllAlbumActivity" />
         <activity android:name=".Activity.AllPlaylistActivity" />
-        <activity android:name=".Activity.PlayActivity" />
+        <activity android:name=".Activity.PlayNhacActivity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

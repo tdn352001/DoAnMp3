@@ -10,21 +10,21 @@ import com.google.gson.annotations.SerializedName;
 
 public class BaiHat implements Parcelable {
 
-@SerializedName("IdBaiHat")
-@Expose
-private String idBaiHat;
-@SerializedName("TenBaiHat")
-@Expose
-private String tenBaiHat;
-@SerializedName("HinhBaiHat")
-@Expose
-private String hinhBaiHat;
-@SerializedName("LinkBaiHat")
-@Expose
-private String linkBaiHat;
-@SerializedName("CaSi")
-@Expose
-private List<String> caSi = null;
+    @SerializedName("IdBaiHat")
+    @Expose
+    private String idBaiHat;
+    @SerializedName("TenBaiHat")
+    @Expose
+    private String tenBaiHat;
+    @SerializedName("HinhBaiHat")
+    @Expose
+    private String hinhBaiHat;
+    @SerializedName("LinkBaiHat")
+    @Expose
+    private String linkBaiHat;
+    @SerializedName("CaSi")
+    @Expose
+    private List<String> caSi = null;
 
     protected BaiHat(Parcel in) {
         idBaiHat = in.readString();
@@ -47,40 +47,54 @@ private List<String> caSi = null;
     };
 
     public String getIdBaiHat() {
-return idBaiHat;
-}
+        return idBaiHat;
+    }
 
-public void setIdBaiHat(String idBaiHat) {
-this.idBaiHat = idBaiHat;
-}
+    public void setIdBaiHat(String idBaiHat) {
+        this.idBaiHat = idBaiHat;
+    }
 
-public String getTenBaiHat() {
-return tenBaiHat;
-}
+    public String getTenBaiHat() {
+        return tenBaiHat;
+    }
 
-public void setTenBaiHat(String tenBaiHat) {
-this.tenBaiHat = tenBaiHat;
-}
+    public void setTenBaiHat(String tenBaiHat) {
+        this.tenBaiHat = tenBaiHat;
+    }
 
-public String getHinhBaiHat() {
-return hinhBaiHat;
-}
+    public String getHinhBaiHat() {
+        return hinhBaiHat;
+    }
 
-public void setHinhBaiHat(String hinhBaiHat) {
-this.hinhBaiHat = hinhBaiHat;
-}
+    public void setHinhBaiHat(String hinhBaiHat) {
+        this.hinhBaiHat = hinhBaiHat;
+    }
 
-public String getLinkBaiHat() {
-return linkBaiHat;
-}
+    public String getLinkBaiHat() {
+        return linkBaiHat;
+    }
 
-public void setLinkBaiHat(String linkBaiHat) {
-this.linkBaiHat = linkBaiHat;
-}
+    public void setLinkBaiHat(String linkBaiHat) {
+        this.linkBaiHat = linkBaiHat;
+    }
 
-public List<String> getCaSi() {
-return caSi;
-}
+    public List<String> getCaSi() {
+        return caSi;
+    }
+
+    public String getTenAllCaSi()
+    {
+        String TenCaSi = "";
+        for (int i = 0; i < caSi.size(); i++) {
+            if (i != 0)
+                TenCaSi = TenCaSi + ", ";
+
+                TenCaSi = TenCaSi + getCaSi().get(i);
+        }
+
+        return TenCaSi;
+    }
+
 
 public void setCaSi(List<String> caSi) {
 this.caSi = caSi;

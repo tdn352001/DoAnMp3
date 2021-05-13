@@ -8,7 +8,12 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment;
@@ -25,12 +30,13 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     ViewPagerAdapter adapter;
-
+    public static ProgressBar progressBar;
+    public static int progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        progress = 0;
         AnhXa();
         SetUpViewPager();
 
@@ -57,16 +63,24 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     }
 
+    public static void LoadingComplete(){
+        progress++;
+        if(progress == 6)
+            progressBar.setVisibility(View.INVISIBLE);
+
+
+    }
 
 
     private void AnhXa() {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         viewPager = findViewById(R.id.viewpager_main);
-
-
+        progressBar = findViewById(R.id.progressBar);
         bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
+
 
     }
 

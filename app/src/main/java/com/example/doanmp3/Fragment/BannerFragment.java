@@ -11,7 +11,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Adapter.BannerAdapter;
+import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -93,5 +95,18 @@ public class BannerFragment extends Fragment {
 
             }
         });
+
+
+
+        MainActivity.LoadingComplete();
+
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+
 }

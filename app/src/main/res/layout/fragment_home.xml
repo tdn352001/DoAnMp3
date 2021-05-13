@@ -9,53 +9,62 @@
     
     android:id="@+id/Home"
     tools:context=".Fragment.HomeFragment">
-   <LinearLayout
-       android:id="@+id/relative"
-       android:orientation="vertical"
+
+   <RelativeLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent">
-
-      <fragment
-          android:id="@+id/fragmentbanner"
-          android:name="com.example.doanmp3.Fragment.BannerFragment"
+      <LinearLayout
+          android:id="@+id/relative"
+          android:orientation="vertical"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+          android:layout_height="match_parent">
 
-      <fragment
-          android:id="@+id/fragment_album"
-          android:name="com.example.doanmp3.Fragment.AlbumFragment"
-          android:layout_marginVertical="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+         <fragment
+             android:id="@+id/fragmentbanner"
+             android:name="com.example.doanmp3.Fragment.BannerFragment"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
 
-      <fragment
-          android:id="@+id/fragment_playlist"
-          android:name="com.example.doanmp3.Fragment.PlaylistFragment"
-          android:layout_marginVertical="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
-      <fragment
-          android:id="@+id/fragment_song"
-          android:name="com.example.doanmp3.Fragment.SongFragment"
-          android:layout_marginVertical="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+         <fragment
+             android:id="@+id/fragment_album"
+             android:name="com.example.doanmp3.Fragment.AlbumFragment"
+             android:layout_marginVertical="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
 
-      <fragment
-          android:id="@+id/fragment_singer"
-          android:name="com.example.doanmp3.Fragment.SingerFragment"
-          android:layout_marginVertical="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+         <fragment
+             android:id="@+id/fragment_playlist"
+             android:name="com.example.doanmp3.Fragment.PlaylistFragment"
+             android:layout_marginVertical="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+         <fragment
+             android:id="@+id/fragment_song"
+             android:name="com.example.doanmp3.Fragment.SongFragment"
+             android:layout_marginVertical="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
 
-      <fragment
-          android:id="@+id/fragment_category"
-          android:name="com.example.doanmp3.Fragment.CategoryFragment"
-          android:layout_marginVertical="10dp"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
+         <fragment
+             android:id="@+id/fragment_singer"
+             android:name="com.example.doanmp3.Fragment.SingerFragment"
+             android:layout_marginVertical="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
+
+         <fragment
+             android:id="@+id/fragment_category"
+             android:name="com.example.doanmp3.Fragment.CategoryFragment"
+             android:layout_marginVertical="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"/>
 
 
-   </LinearLayout>
+
+
+      </LinearLayout>
+
+
+   </RelativeLayout>
 
 </ScrollView>

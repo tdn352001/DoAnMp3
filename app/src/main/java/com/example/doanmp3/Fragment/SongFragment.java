@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.doanmp3.Activity.AllSongActivity;
+import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Model.Album;
@@ -76,6 +78,7 @@ public class SongFragment extends Fragment {
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                MainActivity.LoadingComplete();
             }
 
             @Override

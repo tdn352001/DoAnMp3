@@ -12,7 +12,6 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_allcategory"
-            android:background="@drawable/duong_vien"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/Theme.AppCompat.Light"/>
