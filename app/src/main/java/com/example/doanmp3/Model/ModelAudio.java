@@ -2,6 +2,10 @@ package com.example.doanmp3.Model;
 
 import android.net.Uri;
 
+import com.example.doanmp3.R;
+
+import java.util.Collections;
+
 public class ModelAudio {
 
     String audioTitle;
@@ -49,6 +53,17 @@ public class ModelAudio {
 
     public void setaudioUri(Uri audioUri) {
         this.audioUri = audioUri;
+    }
+
+    public BaiHat convertBaiHat(String id){
+        BaiHat baiHat = new BaiHat();
+        baiHat.setCaSi(Collections.singletonList(audioArtist));
+        baiHat.setIdBaiHat(id);
+        baiHat.setTenBaiHat(audioTitle);
+        baiHat.setLinkBaiHat(audioUri.toString());
+        baiHat.setHinhBaiHat("R.drawable.ic_song");
+
+        return  baiHat;
     }
 
 }

@@ -24,14 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:expandedTitleGravity="center|bottom"
-            app:expandedTitleMarginBottom="20dp"
+            app:expandedTitleMarginBottom="30dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_detailsinger"
                 android:layout_marginBottom="100dp"
                 android:scaleType="fitXY"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
                 app:riv_corner_radius_bottom_left="30dp"
                 app:riv_corner_radius_bottom_right="30dp"/>
 

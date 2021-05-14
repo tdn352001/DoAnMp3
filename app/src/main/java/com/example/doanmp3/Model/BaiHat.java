@@ -26,6 +26,8 @@ public class BaiHat implements Parcelable {
     @Expose
     private List<String> caSi = null;
 
+    public BaiHat(){}
+
     protected BaiHat(Parcel in) {
         idBaiHat = in.readString();
         tenBaiHat = in.readString();
