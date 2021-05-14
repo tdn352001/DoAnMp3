@@ -22,6 +22,7 @@ import com.example.doanmp3.Adapter.AllSongAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -57,6 +58,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     // Tùy Biến
     Album album;
     Playlist playlist;
+    ChuDeTheLoai cdtl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,23 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                     TenCategoty = playlist.getTen();
                     SetValueView(playlist.getTen(), playlist.getHinhAnh());
                     GetDataPlaylist(playlist.getIdPlaylist());
+                }
+                else
+                {
+                    if(intent.hasExtra("ChuDe")){
+                        cdtl = (ChuDeTheLoai) intent.getSerializableExtra("ChuDe");
+                        category="Chủ Đề";
+                        TenCategoty = cdtl.getTen();
+                        SetValueView(cdtl.getTen(), cdtl.getHinh());
+                        GetDataChuDe(cdtl.getId());
+                    }
+                    else{
+                        cdtl = (ChuDeTheLoai) intent.getSerializableExtra("TheLoai");
+                        category="Thể Loại";
+                        TenCategoty = cdtl.getTen();
+                        SetValueView(cdtl.getTen(), cdtl.getHinh());
+                        GetDataTheLoai(cdtl.getId());
+                    }
                 }
             }
         }
@@ -163,6 +182,50 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void GetDataChuDe(String id){
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatChuDe(id);
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                ArrayList<BaiHat> baihatchude = (ArrayList<BaiHat>) response.body();
+                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baihatchude);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+                Toast.makeText(DanhSachBaiHatActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void GetDataTheLoai(String id){
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatTheLoai(id);
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                ArrayList<BaiHat> baihatchude = (ArrayList<BaiHat>) response.body();
+                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baihatchude);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+                Toast.makeText(DanhSachBaiHatActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 
 }

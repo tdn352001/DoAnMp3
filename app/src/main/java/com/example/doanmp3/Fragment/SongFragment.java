@@ -35,6 +35,7 @@ public class SongFragment extends Fragment {
     View view;
     TextView txt;
     RecyclerView recyclerView;
+    SongAdapter adapter;
 
     public SongFragment() {
         // Required empty public constructor
@@ -60,6 +61,7 @@ public class SongFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AllSongActivity.class);
+                intent.putExtra("mangbaihat", adapter.getallarraylist());
                 startActivity(intent);
             }
         });
@@ -73,7 +75,7 @@ public class SongFragment extends Fragment {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 ArrayList<BaiHat> songs = (ArrayList<BaiHat>) response.body();
-                SongAdapter adapter = new SongAdapter(getActivity(), songs);
+                adapter = new SongAdapter(getActivity(), songs);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 recyclerView.setLayoutManager(linearLayoutManager);

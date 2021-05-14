@@ -26,7 +26,7 @@
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="40dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_tieudedanhsach"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
@@ -35,7 +35,8 @@
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="80dp"
                 android:layout_width="300dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                app:riv_corner_radius="12dp"/>
             <ProgressBar
                 android:id="@+id/progress_load_baihat"
                 android:layout_gravity="center"

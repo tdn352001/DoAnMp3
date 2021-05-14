@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,7 +25,7 @@ import retrofit2.Response;
 public class AllSongActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
-
+    ArrayList<BaiHat> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,18 @@ public class AllSongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_all_song);
         AnhXa();
         init();
-        GetData();
+        Intent intent = getIntent();
+        if (intent.hasExtra("mangbaihat")) {
+            arrayList = intent.getParcelableArrayListExtra("mangbaihat");
+            if (arrayList.size() > 0) {
+                AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
+                recyclerView.setAdapter(adapter);
+            } else
+                GetData();
+
+        } else
+            GetData();
     }
 
     private void GetData() {
@@ -41,7 +53,7 @@ public class AllSongActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> arrayList = (ArrayList<BaiHat>) response.body();
+                arrayList = (ArrayList<BaiHat>) response.body();
                 AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(adapter);

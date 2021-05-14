@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.DetalSingerActivity"></activity>
+        <activity android:name=".Activity.DetailSingerActivity"></activity>
         <activity android:name=".Activity.DanhSachBaiHatActivity" />
         <activity android:name=".Activity.AllCategoryActivity" />
         <activity android:name=".Activity.AllSingerActivity" />

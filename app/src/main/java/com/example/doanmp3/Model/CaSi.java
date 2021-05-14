@@ -3,8 +3,10 @@ package com.example.doanmp3.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class CaSi {
+
+public class CaSi implements Serializable {
 
 @SerializedName("IdCaSi")
 @Expose

@@ -63,4 +63,37 @@ public interface DataService {
     @FormUrlEncoded
     @POST("getdanhsachbaihat.php")
     Call<List<BaiHat>> GetBaiHatPlaylist(@Field("IdPlaylist") String IdPlaylist);
+
+    @FormUrlEncoded
+    @POST("searchbaihat.php")
+    Call<List<BaiHat>> GetSearchBaiHat(@Field("tukhoa") String tukhoa);
+
+    @FormUrlEncoded
+    @POST("searchcasi.php")
+    Call<List<CaSi>> GetSearchCaSi(@Field("tukhoa") String tukhoa);
+
+    @FormUrlEncoded
+    @POST("searchalbum.php")
+    Call<List<Album>> GetSearchAlbum(@Field("tukhoa") String tukhoa);
+
+    @FormUrlEncoded
+    @POST("searchplaylist.php")
+    Call<List<Playlist>> GetSearchPlaylist(@Field("tukhoa") String tukhoa);
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatCaSi(@Field("IdCaSi") String IdCaSi);
+
+    @FormUrlEncoded
+    @POST("getalbumcasi.php")
+    Call<List<Album>> GetAlbumCaSi(@Field("IdCaSi") String IdCaSi);
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatChuDe(@Field("IdChuDe") String IdChuDe);
+
+
+    @FormUrlEncoded
+    @POST("getdanhsachbaihat.php")
+    Call<List<BaiHat>> GetBaiHatTheLoai(@Field("IdTheLoai") String IdPlaylist);
 }

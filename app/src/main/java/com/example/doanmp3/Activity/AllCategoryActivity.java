@@ -65,7 +65,7 @@ public class AllCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
                 ArrayList<ChuDeTheLoai> ChuDeList = (ArrayList<ChuDeTheLoai>) response.body();
-                adapterChude = new AllCategoryAdapter(AllCategoryActivity.this, ChuDeList);
+                adapterChude = new AllCategoryAdapter(AllCategoryActivity.this, ChuDeList, true);
                 rvChuDe.setLayoutManager(gridLayoutManager);
                 rvChuDe.setAdapter(adapterChude);
             }
@@ -81,7 +81,7 @@ public class AllCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
                 ArrayList<ChuDeTheLoai> TheLoaiList = (ArrayList<ChuDeTheLoai>) response.body();
-                adapterTheLoai = new AllCategoryAdapter(AllCategoryActivity.this, TheLoaiList);
+                adapterTheLoai = new AllCategoryAdapter(AllCategoryActivity.this, TheLoaiList, false);
                 rvTheLoai.setAdapter(adapterTheLoai);
                 rvTheLoai.setLayoutManager(new GridLayoutManager(AllCategoryActivity.this, 2));
             }

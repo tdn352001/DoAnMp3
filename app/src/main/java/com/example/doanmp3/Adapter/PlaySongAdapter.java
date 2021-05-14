@@ -53,7 +53,7 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
     public void onBindViewHolder(@NonNull PlaySongAdapter.ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
         Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
-        holder.TenCaSi.setText(baiHat.getCaSi().toString());
+        holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
 
 

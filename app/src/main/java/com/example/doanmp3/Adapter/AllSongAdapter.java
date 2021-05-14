@@ -69,4 +69,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             });
         }
     }
+
+    public void setArrayList(ArrayList<BaiHat> baiHats){
+        arrayList = baiHats;
+        notifyDataSetChanged();
+    }
+
 }

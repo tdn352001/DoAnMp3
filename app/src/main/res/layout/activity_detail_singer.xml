@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_gradient"
-    android:id="@+id/coordinatorlayout"
+    android:id="@+id/coordinatorlayout_detailsinger"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -23,20 +24,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:expandedTitleGravity="center|bottom"
-            app:expandedTitleMarginBottom="40dp"
+            app:expandedTitleMarginBottom="20dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_detailsinger"
-                android:elevation="15dp"
+                android:layout_marginBottom="100dp"
                 android:scaleType="fitXY"
-                android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <ProgressBar
-                android:id="@+id/progress_load_detailsinger"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"
+                app:riv_corner_radius_bottom_left="30dp"
+                app:riv_corner_radius_bottom_right="30dp"/>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_detailsinger"
@@ -58,14 +55,19 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <ProgressBar
+                android:id="@+id/progress_load_detailsinger"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/txt_detailsinger_baihat"
                 android:text="Bài Hát  "
@@ -74,11 +76,14 @@
                 android:drawableRight="@drawable/ic_viewmore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detailsinger_baihat"
-                android:layout_below="@+id/txt_detailsinger_baihat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detailsinger_baihat"
+                android:layout_marginTop="6dp" />
+
             <Button
                 android:id="@+id/btn_viewmore_baihat_detailsinger"
                 android:text="Xem thêm"
@@ -86,8 +91,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/rv_detailsinger_baihat"
                 android:backgroundTint="@color/noname"
+                android:padding="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
             <TextView
                 android:id="@+id/txt_detailsinger_album"
                 android:text="Album  "

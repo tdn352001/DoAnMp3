@@ -3,7 +3,9 @@ package com.example.doanmp3.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ChuDeTheLoai {
+import java.io.Serializable;
+
+public class ChuDeTheLoai implements Serializable {
 
 @SerializedName("Id")
 @Expose
