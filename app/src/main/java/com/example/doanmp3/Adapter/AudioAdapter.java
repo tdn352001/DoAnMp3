@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ModelAudio;
@@ -79,6 +80,8 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                     intent.putExtra("mangbaihat", arrayList);
                     intent.putExtra("position", getPosition());
                     intent.putExtra("audio", true);
+                    DanhSachBaiHatActivity.category="Playlist";
+                    DanhSachBaiHatActivity.TenCategoty="Bài hát trên thiết bị";
                     context.startActivity(intent);
                 }
             });

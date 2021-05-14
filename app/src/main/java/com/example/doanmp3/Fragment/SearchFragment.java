@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,20 +41,17 @@ public class SearchFragment extends Fragment {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    AllSongAdapter searchAdapter;
+
     public SearchFragment() {
         // Required empty public constructor
     }
-    RecyclerView recyclerView;
-    TextView textViewkhongcodulieu;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
-
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,11 +61,14 @@ public class SearchFragment extends Fragment {
 
 
 
-        toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar_search);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        toolbar.setTitle("Tìm Kiếm");
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+
 
         viewPager = view.findViewById(R.id.viewpager);
         setupViewPager(viewPager);

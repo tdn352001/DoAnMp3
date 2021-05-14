@@ -94,6 +94,7 @@ public class SearchcasiFragment extends Fragment {
                 }else{
                     recyclerview.setVisibility(View.GONE);
                     textViewkhongtimthay.setVisibility(View.VISIBLE);
+
                 }
             }
 

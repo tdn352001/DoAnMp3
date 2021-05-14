@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6E8E8">
+    android:background="@color/white">
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -16,10 +16,15 @@
     <TextView
         android:visibility="gone"
         android:textColor="@color/black"
-        android:text="Khong Co Du Lieu"
+        android:text="Không Có Kết Quả"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:drawableStart="@drawable/ic_error"
+        android:drawableLeft="@drawable/ic_error"
         android:textSize="35sp"
         android:id="@+id/textviewkhongcodulieucasi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
 </RelativeLayout>
