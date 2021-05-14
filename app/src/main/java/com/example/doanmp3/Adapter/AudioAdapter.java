@@ -35,7 +35,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         arrayList = new ArrayList<>();
         if(audios.size() > 0){
             for(int i = 0; i < audios.size(); i++)
-                arrayList.add(audios.get(i).convertBaiHat(i + ""));
+                arrayList.add(audios.get(i).convertBaiHat());
         }
     }
 
@@ -78,6 +78,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                     Intent intent = new Intent(context, PlayNhacActivity.class);
                     intent.putExtra("mangbaihat", arrayList);
                     intent.putExtra("position", getPosition());
+                    intent.putExtra("audio", true);
                     context.startActivity(intent);
                 }
             });

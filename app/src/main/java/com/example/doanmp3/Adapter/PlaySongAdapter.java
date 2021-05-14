@@ -52,7 +52,13 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull PlaySongAdapter.ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
+        if(!context.isAudio)
+            Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
+        else
+        {
+            holder.imageView.setImageResource(R.drawable.ic_song);
+            holder.imageView.setBackgroundColor(R.color.black);
+        }
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
 

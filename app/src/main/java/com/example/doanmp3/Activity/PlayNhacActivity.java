@@ -50,6 +50,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     public static MediaPlayer mediaPlayer = new MediaPlayer();
     ArrayList<BaiHat> arrayList;
     ArrayList<Integer> playedlist;
+    public boolean isAudio = false;
 
     int Pos;
     boolean repeat = true;
@@ -252,6 +253,9 @@ public class PlayNhacActivity extends AppCompatActivity {
             }
         }
 
+        if(intent.hasExtra("audio"))
+            isAudio = true;
+
 
     }
 
@@ -304,7 +308,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             public void run() {
                 if (ListSongAdapter.getItem(1) != null) {
                     if (arrayList.size() > 0) {
-                        playFragment.setHinh(arrayList.get(Pos).getHinhBaiHat());
+                        playFragment.setHinh(arrayList.get(Pos).getHinhBaiHat(), isAudio);
                         listSongFragment.setInfoBaiHat(arrayList.get(Pos).getTenBaiHat(), arrayList.get(Pos).getTenAllCaSi());
                         playFragment.setContent(arrayList.get(Pos).getTenBaiHat(), arrayList.get(Pos).getTenAllCaSi());
                         listSongFragment.ChuyenBai(Pos);

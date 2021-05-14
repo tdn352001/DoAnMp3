@@ -55,13 +55,13 @@ public class ModelAudio {
         this.audioUri = audioUri;
     }
 
-    public BaiHat convertBaiHat(String id){
+    public BaiHat convertBaiHat(){
         BaiHat baiHat = new BaiHat();
         baiHat.setCaSi(Collections.singletonList(audioArtist));
-        baiHat.setIdBaiHat(id);
+        baiHat.setIdBaiHat("-1");
         baiHat.setTenBaiHat(audioTitle);
         baiHat.setLinkBaiHat(audioUri.toString());
-        baiHat.setHinhBaiHat("R.drawable.ic_song");
+        baiHat.setHinhBaiHat("R.drawable.img_disknhac");
 
         return  baiHat;
     }

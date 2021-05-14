@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
 
@@ -70,8 +71,12 @@ public class PlayFragment extends Fragment {
     }
 
 
-   public void setHinh(String link) {
-       Picasso.with(getContext()).load(link).into(circleImageView);
+   public void setHinh(String link, boolean isAudio) {
+       if(!isAudio)
+        Picasso.with(getContext()).load(link).into(circleImageView);
+       else
+           circleImageView.setImageResource(R.drawable.img_disknhac);
+
     }
     public void setContent(String BaiHat, String CaSi){
          textView.setText(BaiHat + "  -  " + CaSi);
