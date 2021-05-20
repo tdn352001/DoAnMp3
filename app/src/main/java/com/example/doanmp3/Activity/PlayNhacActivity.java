@@ -53,8 +53,8 @@ public class PlayNhacActivity extends AppCompatActivity {
     public boolean isAudio = false;
 
     int Pos;
-    boolean repeat = true;
-    boolean random = false;
+    public static boolean repeat = true;
+    public static boolean random = false;
     Stack<Integer> stack;
 
 
@@ -64,8 +64,26 @@ public class PlayNhacActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         AnhXa();
+        CheckRepeatRandom();
         GetIntent();
         eventClick();
+
+    }
+
+    private void CheckRepeatRandom() {
+        if(random){
+            btnRandom.setImageResource(R.drawable.random_true);
+        }
+        else{
+            btnRandom.setImageResource(R.drawable.icon_random);
+        }
+
+        if(repeat){
+            btnLoop.setImageResource(R.drawable.ic_loop);
+        }
+        else{
+            btnLoop.setImageResource(R.drawable.ic_loopone);
+        }
     }
 
 
@@ -88,9 +106,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
+        
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

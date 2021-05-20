@@ -6,6 +6,7 @@ import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.QuangCao;
+import com.example.doanmp3.Model.User;
 
 import java.util.List;
 
@@ -96,4 +97,19 @@ public interface DataService {
     @FormUrlEncoded
     @POST("getdanhsachbaihat.php")
     Call<List<BaiHat>> GetBaiHatTheLoai(@Field("IdTheLoai") String IdPlaylist);
+
+
+
+
+
+
+
+    // User
+    @FormUrlEncoded
+    @POST("login.php")
+    Call<User> GetUser(@Field("Email") String email, @Field("Password") String Password);
+
+    @FormUrlEncoded
+    @POST("register.php")
+    Call<User> RegisterUser(@Field("email") String email, @Field("username") String username, @Field("password") String password);
 }

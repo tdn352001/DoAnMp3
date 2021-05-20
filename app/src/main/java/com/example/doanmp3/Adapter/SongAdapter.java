@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -80,7 +81,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                 public void onClick(View v) {
                     Intent intent = new Intent(context, PlayNhacActivity.class);
                     GetData();
-                    intent.putExtra("mangbaihat", allarraylist);
+                    intent.putExtra("mangbaihat", arrayList);
+
                     intent.putExtra("position", getPosition());
                     DanhSachBaiHatActivity.category = "Playlist";
                     DanhSachBaiHatActivity.TenCategoty="Hôm nay nghe gì?";

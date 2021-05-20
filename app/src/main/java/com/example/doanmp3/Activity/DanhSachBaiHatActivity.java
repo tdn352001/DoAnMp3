@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,6 +53,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     FloatingActionButton button;
     LinearLayoutManager linearLayoutManager;
     ImageView imageView;
+    ArrayList<BaiHat> arrayList;
     public static String category = "";
     public static  String TenCategoty= "";
     ProgressBar progressBar;
@@ -66,6 +68,24 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         AnhXa();
         GetIntent();
         init();
+        eventClick();
+    }
+
+    private void eventClick() {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(arrayList.size() > 0) {
+                    Intent intentt = new Intent(DanhSachBaiHatActivity.this, PlayNhacActivity.class);
+                    Random rd = new Random();
+                    intentt.putExtra("mangbaihat", arrayList);
+                    intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                    PlayNhacActivity.random = true;
+                    startActivity(intentt);
+                }
+
+            }
+        });
     }
 
     private void init() {
@@ -149,7 +169,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> arrayList = (ArrayList<BaiHat>) response.body();
+                arrayList = (ArrayList<BaiHat>) response.body();
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
@@ -169,8 +189,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> baiHats = (ArrayList<BaiHat>) response.body();
-                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baiHats);
+                arrayList = (ArrayList<BaiHat>) response.body();
+                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.INVISIBLE);
@@ -189,8 +209,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> baihatchude = (ArrayList<BaiHat>) response.body();
-                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baihatchude);
+                arrayList = (ArrayList<BaiHat>) response.body();
+                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.INVISIBLE);
@@ -211,8 +231,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> baihatchude = (ArrayList<BaiHat>) response.body();
-                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, baihatchude);
+                arrayList = (ArrayList<BaiHat>) response.body();
+                AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.INVISIBLE);

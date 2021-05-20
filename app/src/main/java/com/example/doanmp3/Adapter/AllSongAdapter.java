@@ -64,6 +64,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                     Intent intent = new Intent(context, PlayNhacActivity.class);
                     intent.putExtra("mangbaihat", arrayList);
                     intent.putExtra("position", getPosition());
+                    PlayNhacActivity.random = true;
                     context.startActivity(intent);
                 }
             });
