@@ -8,11 +8,7 @@
         android:id="@+id/registerFragment"
         android:name="com.example.doanmp3.Fragment.RegisterFragment"
         android:label="fragment_register2"
-        tools:layout="@layout/fragment_register" >
-        <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.doanmp3.Fragment.LoginFragment"
@@ -21,5 +17,13 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainActivity2"
+            app:destination="@id/mainActivity" />
     </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.doanmp3.Activity.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

@@ -1,20 +1,16 @@
 package com.example.doanmp3.Fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
@@ -22,8 +18,6 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import retrofit2.Call;
@@ -33,7 +27,7 @@ import retrofit2.Response;
 
 public class RegisterFragment extends Fragment {
 
-
+    ProgressDialog mProgressDialog;
     View view;
     TextInputEditText edtEmail, edtUsername, edtPassword, edtCpassword;
     AppCompatButton btnRegister;
@@ -64,17 +58,20 @@ public class RegisterFragment extends Fragment {
         btnRegister = view.findViewById(R.id.btn_register);
         txtlogin = view.findViewById(R.id.txt_register_login);
         a = view.findViewById(R.id.txt_haveac);
+
     }
 
     private void EventClick() {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnRegister.setClickable(false);
                 String email = edtEmail.getText().toString();
                 String username = edtUsername.getText().toString();
                 String password = edtPassword.getText().toString();
 
                 if (isValid()) {
+                    mProgressDialog = ProgressDialog.show(getContext(),"Đang Thực Hiện", "Vui Lòng Chờ...",false,false);
                     Register(email, username, password);
                 }
             }
@@ -83,7 +80,7 @@ public class RegisterFragment extends Fragment {
         txtlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Navigation.findNavController(view).navigateUp();
             }
         });
     }
@@ -155,11 +152,13 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = (User) response.body();
+                btnRegister.setClickable(true);
+                mProgressDialog.dismiss();
                 if (user.getIdUser().equals("-1")) {
                     edtEmail.setError("Email đã tồn tại");
                 } else {
                     Toast.makeText(getActivity(), "Đăng Ký Thành Công", Toast.LENGTH_LONG).show();
-                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+                    Navigation.findNavController(view).navigateUp();
                 }
             }
 

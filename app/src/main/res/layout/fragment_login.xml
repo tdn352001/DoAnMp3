@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tool="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/img_login"
-        android:src="@drawable/music2"
-        android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/music2" />
     <!--    <View-->
     <!--        android:background="@drawable/custom_background_color"-->
     <!--        android:layout_width="match_parent"-->
@@ -17,73 +17,83 @@
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_below="@id/img_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome"
+        android:layout_below="@id/img_login"
         android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:text="Welcome"
         android:textColor="#0d6e6a"
         android:textSize="45dp"
-        android:textStyle="bold"
-        android:layout_marginTop="30dp"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/newaccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Music Player siêu cấp Vip Pro"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/welcome"
+        android:layout_centerHorizontal="true"
+        android:text="Music Player siêu cấp Vip Pro"
         android:textColor="#0d6e6a"
         android:textSize="16dp"
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edt_input_email_login"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/newaccount"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        tool:boxCornerRadiusBottomEnd="10dp"
+        tool:boxCornerRadiusBottomStart="10dp"
+        tool:boxCornerRadiusTopEnd="10dp"
+        tool:boxCornerRadiusTopStart="10dp"
+        tool:boxStrokeColor="@color/boxInputFields"
         tool:endIconMode="clear_text"
-        tool:placeholderText="Email"
-        android:padding="5dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        tool:hintTextColor="@color/boxInputFields"
+        tool:placeholderText="Email">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_email_login"
-            android:textSize="22dp"
-            android:inputType="textEmailAddress"
-            android:hint="Email"
-            android:textColorHint="#000"
-            android:padding="12dp"
-            android:background="@drawable/custom_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textColorHint="#000"
+            android:textSize="22dp" />
 
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edt_input_password_login"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/edt_input_email_login"
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        tool:boxCornerRadiusBottomEnd="10dp"
+        tool:boxCornerRadiusBottomStart="10dp"
+        tool:boxCornerRadiusTopEnd="10dp"
+        tool:boxCornerRadiusTopStart="10dp"
+        tool:boxStrokeColor="@color/boxInputFields"
         tool:endIconMode="password_toggle"
-        tool:placeholderText="Password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        tool:hintTextColor="@color/boxInputFields"
+        tool:placeholderText="Password">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_password_login"
-            android:textSize="22dp"
-            android:inputType="textEmailAddress"
-            android:hint="Password"
-            android:textColorHint="#000"
-            android:padding="12dp"
-            android:background="@drawable/custom_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textColorHint="#000"
+            android:textSize="22dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,11 +102,11 @@
         android:id="@+id/forget_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quên mật Khẩu"
+        android:layout_below="@id/edt_input_password_login"
         android:layout_alignParentRight="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
-        android:layout_below="@id/edt_input_password_login"
+        android:text="Quên mật Khẩu"
         android:textColor="#0d6e6a"
         android:textSize="16dp"
         android:textStyle="bold" />
@@ -104,17 +114,18 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_facebook_login"
-        android:text="Đăng Nhập"
-        android:textAllCaps="false"
-        android:textSize="25dp"
-        android:backgroundTint="#099A94"
-        android:paddingVertical="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/forget_password"
         android:layout_marginHorizontal="55dp"
         android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tool:cornerRadius="45dp"/>
+        android:backgroundTint="#099A94"
+        android:paddingVertical="5dp"
+        android:text="Đăng Nhập"
+        android:textAllCaps="false"
+        android:textSize="25dp"
+        tool:cornerRadius="45dp"
+        tool:elevation="35dp" />
 
 
     <TextView
@@ -136,11 +147,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_facebook_login"
         android:layout_alignParentRight="true"
-
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="70dp"
-
         android:text="Đăng Ký Ngay"
         android:textColor="#070707"
         android:textSize="16dp"

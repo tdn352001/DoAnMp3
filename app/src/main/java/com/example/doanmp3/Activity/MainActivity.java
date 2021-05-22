@@ -1,24 +1,22 @@
 package com.example.doanmp3.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment;
 import com.example.doanmp3.Fragment.LibraryFragment;
 import com.example.doanmp3.Fragment.SearchFragment;
+import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -32,15 +30,45 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerAdapter adapter;
     public static ProgressBar progressBar;
     public static int progress;
+    private long backtime;
+    public static User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progress = 0;
         AnhXa();
+        getUser();
+        setupBottomNavigation();
         SetUpViewPager();
 
 
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+    private void AnhXa() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        viewPager = findViewById(R.id.viewpager_main);
+        progressBar = findViewById(R.id.progressBar);
+        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
+
+
+    }
+    private void getUser() {
+
+    }
+    private void setupBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -60,28 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-
-
-    }
-
-    public static void LoadingComplete(){
-        progress++;
-        if(progress == 6)
-            progressBar.setVisibility(View.INVISIBLE);
-
-
-    }
-
-
-    private void AnhXa() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        viewPager = findViewById(R.id.viewpager_main);
-        progressBar = findViewById(R.id.progressBar);
-        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
-
-
     }
 
     private void SetUpViewPager() {
@@ -120,5 +126,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public static void LoadingComplete(){
+        progress++;
+        if(progress == 6)
+            progressBar.setVisibility(View.INVISIBLE);
+
+
+    }
+    @Override
+    public void onBackPressed() {
+        if (backtime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(this, "Nhấn Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
+        }
+
+        backtime = System.currentTimeMillis();
     }
 }
