@@ -13,6 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
+        <activity android:name=".Activity.UserInfoActivity"></activity>
+        <activity android:name=".Activity.UserAlbumActivity" />
+        <activity android:name=".Activity.UserPlaylistActivity" />
+        <activity android:name=".Activity.UserCaSiActivity" />
+        <activity android:name=".Activity.UserBaiHatActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +33,7 @@
         <activity android:name=".Activity.AllAlbumActivity" />
         <activity android:name=".Activity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
-        <activity android:name=".Activity.MainActivity">
-
-        </activity>
+        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>

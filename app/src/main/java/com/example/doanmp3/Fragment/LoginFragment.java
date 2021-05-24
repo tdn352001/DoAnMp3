@@ -37,6 +37,7 @@ public class LoginFragment extends Fragment {
     MaterialButton btnLogin;
     User user;
     SharedPreferences sharedPreferences;
+    boolean LoginSuccess = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,17 +62,18 @@ public class LoginFragment extends Fragment {
         txtForget = view.findViewById(R.id.forget_password);
         txtRegister = view.findViewById(R.id.txt_register_login);
         btnLogin = view.findViewById(R.id.btn_facebook_login);
-        passwordinput= view.findViewById(R.id.edt_input_password_login);
+        passwordinput = view.findViewById(R.id.edt_input_password_login);
         sharedPreferences = getContext().getSharedPreferences("login", Context.MODE_PRIVATE);
     }
+
     private void AutoLogin() {
         edtEmail.setText(sharedPreferences.getString("username", ""));
         edtPassword.setText(sharedPreferences.getString("password", ""));
-        view.setVisibility(View.GONE);
-        if(!edtPassword.getText().toString().equals("") && !edtEmail.getText().toString().equals("")){
-            Login(edtEmail.getText().toString(), edtPassword.getText().toString());
-        }
-        else
+        view.setVisibility(View.INVISIBLE);
+        if (!edtPassword.getText().toString().equals("") && !edtEmail.getText().toString().equals("")) { {
+                Login(edtEmail.getText().toString(), edtPassword.getText().toString());
+            }
+        } else
             view.setVisibility(View.VISIBLE);
     }
 
@@ -98,23 +100,18 @@ public class LoginFragment extends Fragment {
                 else {
                     if (password.equals(""))
                         edtPassword.setError("Mật Khẩu Trống");
-                    else{
+                    else {
                         Login(email, password);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("username", email);
-                        editor.putString("password", password);
-                        editor.commit();
                     }
                 }
             }
         });
 
 
-
     }
 
-    private void Login(String email, String password){
-        mProgressDialog = ProgressDialog.show(getContext(),"Đang Đăng Nhập", "Vui Lòng Chờ...",false,false);
+    private void Login(String email, String password) {
+        mProgressDialog = ProgressDialog.show(getContext(), "Đang Đăng Nhập", "Vui Lòng Chờ...", false, false);
         DataService dataService = APIService.getUserService();
         Call<User> callback = dataService.GetUser(email, password);
         callback.enqueue(new Callback<User>() {
@@ -122,17 +119,25 @@ public class LoginFragment extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 user = (User) response.body();
                 btnLogin.setClickable(true);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 if (user.getIdUser().toString().equals("-1")) {
                     mProgressDialog.dismiss();
                     edtPassword.setError("Tài khoản hoặc mật khẩu không đúng");
                     Toast.makeText(getContext(), "Tài Khoản Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show();
                     edtPassword.setText("");
-                } else {
+                    view.setVisibility(View.VISIBLE);
+                    editor.remove("username");
+                    editor.remove("password");
+                    editor.commit();
 
+                } else {
                     mProgressDialog.dismiss();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("user", user);
                     startActivity(intent);
+                    editor.putString("username", email);
+                    editor.putString("password", password);
+                    editor.commit();
                     Toast.makeText(getContext(), "Đăng Nhập Thành Công", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 }
@@ -140,7 +145,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                view.setVisibility(View.VISIBLE);
             }
         });
     }

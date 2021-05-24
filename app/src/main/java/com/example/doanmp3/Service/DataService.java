@@ -112,4 +112,9 @@ public interface DataService {
     @FormUrlEncoded
     @POST("register.php")
     Call<User> RegisterUser(@Field("email") String email, @Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("uploadhinhanh.php")
+    Call<String> UploadPhoto(@Field("hinhanh") String image);
+
 }

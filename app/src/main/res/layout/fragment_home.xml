@@ -6,7 +6,6 @@
     android:background="#FBECEC"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
     android:id="@+id/Home"
     tools:context=".Fragment.HomeFragment">
 

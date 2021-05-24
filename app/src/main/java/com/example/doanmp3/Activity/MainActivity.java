@@ -1,5 +1,6 @@
 package com.example.doanmp3.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment;
-import com.example.doanmp3.Fragment.LibraryFragment;
 import com.example.doanmp3.Fragment.SearchFragment;
+import com.example.doanmp3.Fragment.UserFragment;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,13 +42,6 @@ public class MainActivity extends AppCompatActivity {
         getUser();
         setupBottomNavigation();
         SetUpViewPager();
-
-
-
-
-
-
-
     }
 
 
@@ -66,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void getUser() {
+        Intent intent = getIntent();
+        if(intent.hasExtra("user")){
+            user = (User) intent.getSerializableExtra("user");
+        }
 
     }
     private void setupBottomNavigation() {
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.homeFragment:
                         viewPager.setCurrentItem(1);
                         break;
-                    case R.id.libraryFragment:
+                    case R.id.userFragment:
                         viewPager.setCurrentItem(0);
                         break;
                 }
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private void SetUpViewPager() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         List<Fragment> arraylist = new ArrayList<>();
-        arraylist.add(new LibraryFragment());
+        arraylist.add(new UserFragment());
         arraylist.add(new HomeFragment());
         arraylist.add(new SearchFragment());
         adapter.setList(arraylist);
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                switch (position){
                    case 0:
-                       bottomNavigationView.getMenu().findItem(R.id.libraryFragment).setChecked(true);
+                       bottomNavigationView.getMenu().findItem(R.id.userFragment).setChecked(true);
                        break;
                    case 1:
                        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);

@@ -164,7 +164,7 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Toast.makeText(getActivity(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
             }
         });
 
