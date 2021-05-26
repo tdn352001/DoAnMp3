@@ -51,6 +51,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relative_music"
             android:layout_below="@id/relative_info_user"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
@@ -106,6 +107,21 @@
                 app:icon="@drawable/icon_playlist"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
         </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
+            android:backgroundTint="@color/teal_700"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            app:icon="@drawable/ic_logout"
+            android:text="Đăng Xuất"
+            android:textAllCaps="false"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/relative_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="10dp"/>
 
 
     </RelativeLayout>

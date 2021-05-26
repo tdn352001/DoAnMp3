@@ -59,6 +59,10 @@ public class RegisterFragment extends Fragment {
         txtlogin = view.findViewById(R.id.txt_register_login);
         a = view.findViewById(R.id.txt_haveac);
 
+
+
+
+
     }
 
     private void EventClick() {
@@ -101,8 +105,8 @@ public class RegisterFragment extends Fragment {
             edtUsername.setError("Username trống");
             return false;
         } else {
-            if (edtUsername.getText().toString().length() < 8) {
-                edtUsername.setError("Username có tối thiếu 8 kí tự");
+            if (edtUsername.getText().toString().length() < 5) {
+                edtUsername.setError("Username có tối thiếu 6 kí tự");
                 return false;
             }
         }
@@ -132,7 +136,7 @@ public class RegisterFragment extends Fragment {
         return true;
     }
 
-    public boolean EmailIsValid(String email) {
+    public static boolean EmailIsValid(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +

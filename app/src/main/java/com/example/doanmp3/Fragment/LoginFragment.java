@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
     TextView txtRegister, txtForget;
     MaterialButton btnLogin;
     User user;
-    SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
     boolean LoginSuccess = true;
 
     @Override

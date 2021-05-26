@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.AudioAdapter;
+import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ModelAudio;
 import com.example.doanmp3.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class LibraryFragment extends Fragment {
     public static final int PERMISSION_READ = 0;
@@ -30,6 +32,7 @@ public class LibraryFragment extends Fragment {
     RecyclerView recyclerView;
     AudioAdapter adapter;
     ArrayList<ModelAudio> audios;
+    ArrayList<BaiHat> arrayList;
     public LibraryFragment() {
         // Required empty public constructor
     }
@@ -46,6 +49,7 @@ public class LibraryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         audios = new ArrayList<>();
+        arrayList = new ArrayList<>();
         if(checkPermission())
             getAudioFiles();
 
@@ -94,6 +98,16 @@ public class LibraryFragment extends Fragment {
                 String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 ModelAudio modelAudio = new ModelAudio(title,duration, artist,  Uri.parse(url) );
                 audios.add(modelAudio);
+
+
+                // sua
+                BaiHat baiHat = new BaiHat();
+                baiHat.setCaSi(Collections.singletonList(artist));
+                baiHat.setIdBaiHat("-1");
+                baiHat.setTenBaiHat(title);
+                baiHat.setLinkBaiHat(Uri.parse(url).toString());
+                baiHat.setHinhBaiHat("R.drawable.img_disknhac");
+                arrayList.add(baiHat);
 
             } while (cursor.moveToNext());
         }

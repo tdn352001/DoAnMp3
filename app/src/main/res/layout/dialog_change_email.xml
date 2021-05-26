@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:paddingVertical="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txt_title_dialog_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="15dp"
+        android:text="Đổi Email"
+        android:textColor="#f12"
+        android:textSize="45dp" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_email_change"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_title_dialog_email"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="15dp"
+        app:boxStrokeColor="@color/black"
+        app:boxStrokeWidth="1dp"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintTextColor="@color/black"
+        app:placeholderText="New Email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_email_change"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/black" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textinput_email_change_checkpass"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textinput_email_change"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        tool:boxCornerRadiusBottomEnd="10dp"
+        tool:boxCornerRadiusBottomStart="10dp"
+        tool:boxCornerRadiusTopEnd="10dp"
+        tool:boxCornerRadiusTopStart="10dp"
+        tool:boxStrokeColor="@color/boxInputFields"
+        tool:endIconMode="password_toggle"
+        tool:hintTextColor="@color/boxInputFields"
+        tool:placeholderText="Password">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_email_change_checkpass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textColorHint="#000"
+            android:textSize="22dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cofirm_change_email"
+        android:text="Xác Nhận"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:layout_below="@id/textinput_email_change_checkpass"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        app:cornerRadius="5dp"
+        app:backgroundTint="@color/teal_700"
+        style="@style/Widget.MaterialComponents.Button"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel_change_email"
+        android:text="Hủy"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:layout_below="@id/textinput_email_change_checkpass"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        app:cornerRadius="5dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/black"
+        app:backgroundTint="@color/white"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+</RelativeLayout>

@@ -53,8 +53,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
                 android:layout_below="@id/btn_edt_avatar_user"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
         </RelativeLayout>
 
         <RelativeLayout

@@ -115,6 +115,18 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("uploadhinhanh.php")
-    Call<String> UploadPhoto(@Field("hinhanh") String image);
+    Call<String> UploadPhoto(@Field("hinhanh") String image, @Field("filename") String tenfile, @Field("IdUser") String Id);
+
+    @FormUrlEncoded
+    @POST("changeemail.php")
+    Call<String> ChangeEmail(@Field("email") String email, @Field("iduser") String Id );
+
+    @FormUrlEncoded
+    @POST("changeusername.php")
+    Call<String> ChangeUserName(@Field("username") String username, @Field("iduser") String Id );
+
+    @FormUrlEncoded
+    @POST("changepassword.php")
+    Call<String> ChangePassword(@Field("password") String password, @Field("iduser") String Id );
 
 }
