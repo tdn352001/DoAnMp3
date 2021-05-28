@@ -3,10 +3,10 @@ package com.example.doanmp3.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class BaiHat implements Parcelable {
 
@@ -25,8 +25,13 @@ public class BaiHat implements Parcelable {
     @SerializedName("CaSi")
     @Expose
     private List<String> caSi = null;
+    @SerializedName("LuotThich")
+    @Expose
+    private String luotThich;
 
-    public BaiHat(){}
+    public BaiHat(){
+        luotThich = "0";
+    }
 
     protected BaiHat(Parcel in) {
         idBaiHat = in.readString();
@@ -98,7 +103,7 @@ public class BaiHat implements Parcelable {
     }
 
 
-public void setCaSi(List<String> caSi) {
+    public void setCaSi(List<String> caSi) {
 this.caSi = caSi;
 }
 
@@ -115,4 +120,12 @@ this.caSi = caSi;
         dest.writeString(linkBaiHat);
         dest.writeStringList(caSi);
     }
+    public String getLuotThich() {
+        return luotThich;
+    }
+
+    public void setLuotThich(String luotThich) {
+        this.luotThich = luotThich;
+    }
+
 }

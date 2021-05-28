@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/baihat_like"
+        android:icon="@drawable/ic_phone"
+        android:iconTint="@color/teal_700"
+        android:title="Thích" />
+    <item
+        android:id="@+id/baihat_add"
+        android:icon="@drawable/ic_song"
+        android:iconTint="@color/teal_700"
+        android:title="Thêm Vào Playlist" />
+
+</menu>

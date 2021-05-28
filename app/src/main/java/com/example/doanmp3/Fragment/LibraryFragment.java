@@ -117,7 +117,5 @@ public class LibraryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-
-
     }
 }

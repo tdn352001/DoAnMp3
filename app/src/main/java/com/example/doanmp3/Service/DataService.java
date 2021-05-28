@@ -129,4 +129,15 @@ public interface DataService {
     @POST("changepassword.php")
     Call<String> ChangePassword(@Field("password") String password, @Field("iduser") String Id );
 
+    @FormUrlEncoded
+    @POST("getuserbaihat.php")
+    Call<List<BaiHat>> GetBaiHatYeuThich(@Field("iduser") String IdUser);
+
+    @FormUrlEncoded
+    @POST("thichbaihat.php")
+    Call<String> YeuThichBaiHat(@Field("idbaihat") String idbaihat, @Field("iduser") String iduser);
+
+    @FormUrlEncoded
+    @POST("bothichbaihat.php")
+    Call<String> BoThichBaiHat(@Field("idbaihat") String idbaihat, @Field("iduser") String iduser);
 }
