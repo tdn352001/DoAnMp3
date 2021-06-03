@@ -1,25 +1,19 @@
 package com.example.doanmp3.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.AllSongAdapter;
-import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ChuDeTheLoai;
@@ -31,9 +25,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,7 +32,6 @@ import java.util.Random;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Url;
 
 public class DanhSachBaiHatActivity extends AppCompatActivity {
 
@@ -55,12 +45,13 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     ImageView imageView;
     ArrayList<BaiHat> arrayList;
     public static String category = "";
-    public static  String TenCategoty= "";
+    public static String TenCategoty = "";
     ProgressBar progressBar;
     // Tùy Biến
     Album album;
     Playlist playlist;
     ChuDeTheLoai cdtl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,13 +66,15 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(arrayList.size() > 0) {
-                    Intent intentt = new Intent(DanhSachBaiHatActivity.this, PlayNhacActivity.class);
-                    Random rd = new Random();
-                    intentt.putExtra("mangbaihat", arrayList);
-                    intentt.putExtra("position", rd.nextInt(arrayList.size()));
-                    PlayNhacActivity.random = true;
-                    startActivity(intentt);
+                if (arrayList != null) {
+                    if (arrayList.size() > 0) {
+                        Intent intentt = new Intent(DanhSachBaiHatActivity.this, PlayNhacActivity.class);
+                        Random rd = new Random();
+                        intentt.putExtra("mangbaihat", arrayList);
+                        intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                        PlayNhacActivity.random = true;
+                        startActivity(intentt);
+                    }
                 }
 
             }
@@ -99,52 +92,48 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         });
 
     }
-    private void GetIntent()  {
+
+    private void GetIntent() {
         Intent intent = getIntent();
-        if(intent != null){
-            if(intent.hasExtra("album"))
-            {
+        if (intent != null) {
+            if (intent.hasExtra("album")) {
                 album = (Album) intent.getSerializableExtra("album");
                 category = "Album";
                 TenCategoty = album.getTenAlbum();
                 SetValueView(album.getTenAlbum(), album.getHinhAlbum());
                 GetDataAlbum(album.getIdAlbum());
-            }
-            else
-            {
-                if(intent.hasExtra("playlist"))
-                {
+            } else {
+                if (intent.hasExtra("playlist")) {
                     playlist = (Playlist) intent.getSerializableExtra("playlist");
                     category = "Playlist";
                     TenCategoty = playlist.getTen();
                     SetValueView(playlist.getTen(), playlist.getHinhAnh());
                     GetDataPlaylist(playlist.getIdPlaylist());
-                }
-                else
-                {
-                    if(intent.hasExtra("ChuDe")){
+                } else {
+                    if (intent.hasExtra("ChuDe")) {
                         cdtl = (ChuDeTheLoai) intent.getSerializableExtra("ChuDe");
-                        category="Chủ Đề";
+                        category = "Chủ Đề";
                         TenCategoty = cdtl.getTen();
                         SetValueView(cdtl.getTen(), cdtl.getHinh());
                         GetDataChuDe(cdtl.getId());
-                    }
-                    else{
-                        cdtl = (ChuDeTheLoai) intent.getSerializableExtra("TheLoai");
-                        category="Thể Loại";
-                        TenCategoty = cdtl.getTen();
-                        SetValueView(cdtl.getTen(), cdtl.getHinh());
-                        GetDataTheLoai(cdtl.getId());
+                    } else {
+                        if (intent.hasExtra("TheLoai")) {
+                            cdtl = (ChuDeTheLoai) intent.getSerializableExtra("TheLoai");
+                            category = "Thể Loại";
+                            TenCategoty = cdtl.getTen();
+                            SetValueView(cdtl.getTen(), cdtl.getHinh());
+                            GetDataTheLoai(cdtl.getId());
+                        }
+
                     }
                 }
             }
         }
-        
+
     }
 
 
-
-    private void AnhXa(){
+    private void AnhXa() {
         imageView = findViewById(R.id.img_tieudedanhsach);
         coordinatorLayout = findViewById(R.id.coordinatorlayout);
         collapsingToolbarLayout = findViewById(R.id.collapsingtoolbarlayout);
@@ -156,14 +145,14 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     }
 
 
-    private  void SetValueView(String Ten, String Hinh){
+    private void SetValueView(String Ten, String Hinh) {
         collapsingToolbarLayout.setTitle(Ten);
         Picasso.with(DanhSachBaiHatActivity.this).load(Hinh).into(imageView);
     }
 
-    private void GetDataAlbum(String id){
+    private void GetDataAlbum(String id) {
 
-        DataService dataService= APIService.getService();
+        DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatAlbum(id);
 
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -183,8 +172,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         });
     }
 
-    private  void GetDataPlaylist(String id){
-        DataService dataService= APIService.getService();
+    private void GetDataPlaylist(String id) {
+        DataService dataService = APIService.getService();
         Call<List<BaiHat>> call = dataService.GetBaiHatPlaylist(id);
         call.enqueue(new Callback<List<BaiHat>>() {
             @Override
@@ -203,7 +192,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         });
     }
 
-    private void GetDataChuDe(String id){
+    private void GetDataChuDe(String id) {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatChuDe(id);
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -225,7 +214,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     }
 
 
-    private void GetDataTheLoai(String id){
+    private void GetDataTheLoai(String id) {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatTheLoai(id);
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -245,7 +234,6 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

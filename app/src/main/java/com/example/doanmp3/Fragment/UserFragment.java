@@ -15,25 +15,32 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Activity.LoginActivity;
 import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.Activity.UserBaiHatActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
+import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserFragment extends Fragment {
     View view;
-
     MaterialButton btnEdit, btnLogout;
-    MaterialButton btnBaiHat, btnCaSi, btnPlaylist, btnAlbum;
+    public UserPlaylistFragment userPlaylistFragment;
     public static TextView txtUserName;
     public static ImageView imgBanner;
     public static CircleImageView imgAvatar;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    public static ViewPagerAdapter adapter;
     public static final int PERMISSION_READ = 0;
     public static final int PERMISSION_WRITE = 1;
 
@@ -49,10 +56,10 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
         AnhXa();
-        Setup();
+        SetupInfoUser();
+        SetupViewPager();
         checkPermission();
         EventClick();
-
         return view;
     }
 
@@ -60,21 +67,40 @@ public class UserFragment extends Fragment {
     private void AnhXa() {
         btnEdit = view.findViewById(R.id.btn_edit_user_info);
         btnLogout = view.findViewById(R.id.btn_logout);
-        btnBaiHat = view.findViewById(R.id.btn_user_baihat);
-        btnPlaylist = view.findViewById(R.id.btn_user_playlists);
-        btnCaSi = view.findViewById(R.id.btn_user_nghesi);
-        btnAlbum = view.findViewById(R.id.btn_user_album);
         imgAvatar = view.findViewById(R.id.img_user_avatar);
         imgBanner = view.findViewById(R.id.img_user_banner);
         txtUserName = view.findViewById(R.id.txt_username);
-
+        tabLayout = view.findViewById(R.id.tablayout_user);
+        viewPager = view.findViewById(R.id.viewpager_user);
     }
 
-    public void Setup() {
+    public void SetupInfoUser() {
         txtUserName.setText(MainActivity.user.getUserName());
         Picasso.with(getContext()).load(MainActivity.user.getBanner().toString()).into(imgBanner);
         Picasso.with(getContext()).load(MainActivity.user.getAvatar().toString()).into(imgAvatar);
     }
+
+    private void SetupViewPager() {
+        ArrayList<Fragment> arrayList = new ArrayList<>();
+        UserBaiHatFragment userBaiHatFragment = new UserBaiHatFragment();
+        userPlaylistFragment = new UserPlaylistFragment();
+        arrayList.add(userBaiHatFragment);
+        arrayList.add(new LibraryFragment());
+        arrayList.add(userPlaylistFragment);
+        ArrayList<String> title = new ArrayList<>();
+        title.add("Yêu Thích");
+        title.add("Trên Thiết Bị");
+        title.add("Playlist");
+        adapter = new ViewPagerAdapter(getFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter.setList(arrayList);
+        adapter.setTitle(title);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_song);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_phone);
+        tabLayout.getTabAt(2).setIcon(R.drawable.icon_playlist);
+    }
+
 
     private void EventClick() {
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +109,7 @@ public class UserFragment extends Fragment {
                 if (checkPermission()) {
                     Intent intent = new Intent(getActivity(), UserInfoActivity.class);
                     startActivity(intent);
-                    Setup();
+                    SetupInfoUser();
                 }
             }
         });
@@ -101,13 +127,6 @@ public class UserFragment extends Fragment {
             }
         });
 
-        btnBaiHat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UserBaiHatActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     public boolean checkPermission() {

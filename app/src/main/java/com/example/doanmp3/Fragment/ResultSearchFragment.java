@@ -9,16 +9,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doanmp3.R;
 
-public class SearchalbumFragment extends Fragment{
-
+public class ResultSearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view=inflater.inflate(R.layout.fragment_searchalbum, container, false);
-
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_result_search, container, false);
     }
-
 }

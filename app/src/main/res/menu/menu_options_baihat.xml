@@ -3,8 +3,7 @@
 
     <item
         android:id="@+id/baihat_like"
-        android:icon="@drawable/ic_phone"
-        android:iconTint="@color/teal_700"
+        android:icon="@drawable/ic_like"
         android:title="Thích" />
     <item
         android:id="@+id/baihat_add"

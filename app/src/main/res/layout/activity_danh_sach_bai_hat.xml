@@ -60,7 +60,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_action"
         android:src="@drawable/icon_random"
         app:elevation="30dp"

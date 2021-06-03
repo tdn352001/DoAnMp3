@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.UserInfoActivity"></activity>
+        <activity android:name=".Activity.DetailUserPlaylistActivity"></activity>
+        <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.UserAlbumActivity" />
         <activity android:name=".Activity.UserPlaylistActivity" />
         <activity android:name=".Activity.UserCaSiActivity" />

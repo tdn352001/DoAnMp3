@@ -87,6 +87,8 @@ public class RegisterFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+
+
     }
 
 

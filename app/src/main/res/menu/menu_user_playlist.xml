@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_add_baihat_playlist_menu"
+        android:icon="@drawable/ic_add"
+        android:title="Thêm Bài Hát" />
+    <item
+        android:id="@+id/rename_playlist_menu"
+        android:icon="@drawable/ic_edit"
+        android:title="Đổi Tên Playlist" />
+    <item
+        android:id="@+id/btn_delete_playlist_menu"
+        android:icon="@drawable/ic_delete"
+        android:title="Xóa Playlist" />
+</menu>

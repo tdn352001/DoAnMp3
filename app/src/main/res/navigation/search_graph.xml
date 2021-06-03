@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search_graph"
+    app:startDestination="@id/recentSearchFragment">
+
+    <fragment
+        android:id="@+id/recentSearchFragment"
+        android:name="com.example.doanmp3.Fragment.RecentSearchFragment"
+        android:label="fragment_recent_search"
+        tools:layout="@layout/fragment_recent_search" >
+        <action
+            android:id="@+id/action_recentSearchFragment_to_resultSearchFragment"
+            app:destination="@id/resultSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultSearchFragment"
+        android:name="com.example.doanmp3.Fragment.ResultSearchFragment"
+        android:label="fragment_result_search"
+        tools:layout="@layout/fragment_result_search" />
+</navigation>

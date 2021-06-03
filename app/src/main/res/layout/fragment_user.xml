@@ -1,128 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:scrollbars="none"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout_userinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/noname"
+        android:fitsSystemWindows="true"
+        app:elevation="40dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingtoolbarlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+
+            app:expandedTitleGravity="center|bottom"
+            app:expandedTitleMarginBottom="40dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <RelativeLayout
+                android:id="@+id/relative_info_user"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:id="@+id/img_user_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/music3" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_user_avatar"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="100dp"
+                    android:src="@drawable/person" />
+
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/img_user_avatar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:text="Nguyễn Tiến Dũng"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_edit_user_info"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txt_username"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Chỉnh Sửa Thông Tin"
+                    android:textColor="@color/black"
+                    app:icon="@drawable/ic_pen" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_logout"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_edit_user_info"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="Đăng Xuất"
+                    android:textColor="@color/black"
+                    app:icon="@drawable/ic_logout" />
+
+
+            </RelativeLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_logout"
+            android:layout_gravity="bottom|end"
+            app:layout_collapseMode="pin" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager_user"
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-        <RelativeLayout
-            android:id="@+id/relative_info_user"
-            android:layout_width="match_parent"
-            android:layout_height="370dp">
-            <ImageView
-                android:id="@+id/img_user_banner"
-                android:src="@drawable/music3"
-                android:scaleType="fitXY"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"/>
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_user_avatar"
-                android:src="@drawable/person"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="100dp"
-                android:layout_width="180dp"
-                android:layout_height="180dp"/>
-            <TextView
-                android:id="@+id/txt_username"
-                android:text="Nguyễn Tiến Dũng"
-                android:textSize="18dp"
-                android:textColor="@color/black"
-                android:layout_below="@id/img_user_avatar"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_edit_user_info"
-                android:text="Chỉnh Sửa Thông Tin"
-                android:textColor="@color/black"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/txt_username"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/ic_pen"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relative_music"
-            android:layout_below="@id/relative_info_user"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_user_baihat"
-                android:text="Bài Hát"
-                android:textColor="@color/black"
-                android:textAlignment="textStart"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="start|center"
-                app:iconTint="@color/black"
-                app:icon="@drawable/ic_song"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_user_album"
-                android:text="Album"
-                android:textColor="@color/black"
-                android:textAlignment="textStart"
-                android:layout_below="@id/btn_user_baihat"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="start|center"
-                app:iconTint="@color/black"
-                app:icon="@drawable/ic_song"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_user_nghesi"
-                android:text="Nghệ Sĩ"
-                android:textColor="@color/black"
-                android:textAlignment="textStart"
-                android:layout_below="@id/btn_user_album"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="start|center"
-                app:iconTint="@color/black"
-                app:icon="@drawable/ic_song"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_user_playlists"
-                android:text="Playlists"
-                android:textColor="@color/black"
-                android:textAlignment="textStart"
-                android:layout_below="@id/btn_user_nghesi"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:gravity="start|center"
-                app:iconTint="@color/black"
-
-                app:icon="@drawable/icon_playlist"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-        </RelativeLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_logout"
-            android:backgroundTint="@color/teal_700"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            app:icon="@drawable/ic_logout"
-            android:text="Đăng Xuất"
-            android:textAllCaps="false"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/relative_music"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cornerRadius="10dp"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
-    </RelativeLayout>
-</ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!--    <androidx.core.widget.NestedScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+    <!--   -->
+    <!--            <androidx.recyclerview.widget.RecyclerView-->
+    <!--                android:id="@+id/viewpager_user"-->
+    <!--                android:background="@color/black"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent" />-->
+    <!--        -->
+
+
+    <!--    </androidx.core.widget.NestedScrollView>-->

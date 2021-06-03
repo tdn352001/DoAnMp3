@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fitsSystemWindows="true"
+    tools:context=".Activity.DanhSachBaiHatActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout_user_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:backgroundTint="@color/noname"
+        android:fitsSystemWindows="true"
+        app:elevation="40dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingtoolbarlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:padding="5dp"
+            app:expandedTitleGravity="center|bottom"
+            app:expandedTitleMarginBottom="40dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/img_tieudedanhsach_userplaylist"
+                android:src="@drawable/ic_user_playlist"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="80dp"
+                android:elevation="15dp"
+                android:scaleType="fitXY"
+                app:riv_corner_radius="12dp" />
+
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progress_load_baihat_userplaylist"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center" />-->
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_dsbh_userplaylist"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginBottom="15dp"
+                android:elevation="35dp"
+                app:layout_collapseMode="pin"
+                app:titleMarginBottom="5dp" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_action_userplaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_imageview"
+        android:src="@drawable/icon_random"
+        app:elevation="30dp"
+        app:fabSize="auto"
+        app:layout_anchor="@id/appbarlayout_user_playlist"
+        app:layout_anchorGravity="center|bottom"
+        app:layout_behavior="@string/bottom_sheet_behavior" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/relative_btn_add_baihat_userplaylist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/relative_img_add_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:background="#059F9F">
+
+                        <ImageButton
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerInParent="true"
+                            android:background="@color/noname"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_add" />
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/txt_add_user_playlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/relative_img_add_playlist"
+                    android:text="Thêm Bài Hát"
+                    android:textColor="#059F9F"
+                    android:textSize="18dp" />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_dsbh_userplaylist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relative_btn_add_baihat_userplaylist" />
+
+            <TextView
+                android:id="@+id/txt_no_info_user_playlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relative_btn_add_baihat_userplaylist"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="Không có bài hát"
+                android:textColor="@color/black"
+                android:textSize="26dp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,15 +1,20 @@
 package com.example.doanmp3.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,15 +22,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
+import com.example.doanmp3.Fragment.UserBaiHatFragment;
+import com.example.doanmp3.Fragment.UserPlaylistFragment;
 import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,11 +70,12 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
         Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
+
     }
 
     @Override
     public int getItemCount() {
-        if (arrayList.size() > 0)
+        if (arrayList != null)
             return arrayList.size();
 
         return 0;
@@ -96,7 +109,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             btnOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PopupMenu popupMenu =new PopupMenu(context, btnOptions);
+                    PopupMenu popupMenu = new PopupMenu(context, btnOptions);
                     setupPopupMenu(getPosition(), popupMenu);
                     if (popupMenu != null) {
                         popupMenu.show();
@@ -112,27 +125,194 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             popupMenu.setGravity(Gravity.RIGHT);
             popupMenu.setForceShowIcon(true);
 
-            if (MainActivity.checkLiked(arrayList.get(postion).getIdBaiHat()))
+            if (UserBaiHatFragment.checkLiked(arrayList.get(postion).getIdBaiHat())) {
                 popupMenu.getMenu().getItem(0).setTitle("Bỏ Thích");
-            else
+                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_like);
+            } else {
                 popupMenu.getMenu().getItem(0).setTitle("Thích");
+                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_dislike);
+            }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     if (item.getItemId() == R.id.baihat_like) {
-                        if (MainActivity.checkLiked(arrayList.get(postion).getIdBaiHat())) {
+                        if (UserBaiHatFragment.checkLiked(arrayList.get(postion).getIdBaiHat())) {
                             BoThich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
                         } else
                             Thich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
                     } else {
-                        Toast.makeText(context, "Đã" + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+                        setupBottomSheetMenu(bottomSheetDialog, getPosition());
                     }
                     return true;
                 }
             });
 
         }
+
+        private void setupBottomSheetMenu(BottomSheetDialog dialog, int position){
+            dialog.setContentView(R.layout.dialog_add_baihat_playlist);
+            RoundedImageView imgBaiHat;
+            TextView txtBaiHat, txtCaSi;
+            MaterialButton btnAddPlaylist;
+            RecyclerView recyclerView;
+
+            // Ánh Xạ
+            imgBaiHat = dialog.findViewById(R.id.img_baihat_bottomsheet_add);
+            txtBaiHat = dialog.findViewById(R.id.txt_tenbaihat_bottomsheet_add);
+            txtCaSi = dialog.findViewById(R.id.txt_tencasi_bottomsheet_add);
+            btnAddPlaylist = dialog.findViewById(R.id.add_playlist_bottomsheet_add);
+            recyclerView = dialog.findViewById(R.id.rv_bottomsheet_add);
+
+            // Set Ảnh cộng tên
+            Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).into(imgBaiHat);
+            txtBaiHat.setText(arrayList.get(position).getTenBaiHat());
+            txtCaSi.setText(arrayList.get(position).getTenAllCaSi());
+
+            // Set RV
+            ArrayList<Playlist> playlists = MainActivity.userPlaylist;
+            UserPlaylistAdapter adapter = new UserPlaylistAdapter(playlists, context);
+            adapter.setAddbaihat(true);
+            adapter.setIdBaiHat(arrayList.get(position).getIdBaiHat());
+            recyclerView.setAdapter(adapter);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            // bat su kien click tren recycleview de tat dialog
+
+            final Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if(adapter.isResponse()){
+                        dialog.dismiss();
+                    }
+                    Log.e("BBB", "vandem");
+                    handler.postDelayed(this, 200);
+                }
+            };
+            handler.postDelayed(runnable, 200);
+
+            // taoplaylist moi
+            btnAddPlaylist.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OpenCreateDialog(position);
+                    dialog.dismiss();
+                }
+            });
+
+            // show dialog
+            dialog.show();
+        }
+
+        private void OpenCreateDialog(int position) {
+            Dialog dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_add_playlist);
+            Window window = dialog.getWindow();
+
+            if (window == null)
+                return;
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            layoutParams.gravity = Gravity.CENTER;
+            window.setAttributes(layoutParams);
+            dialog.setCancelable(true);
+
+            TextInputEditText edtTenPlaylist;
+            MaterialButton btnConfirm, btnCancel;
+
+            edtTenPlaylist = dialog.findViewById(R.id.edt_add_playlist);
+            btnCancel = dialog.findViewById(R.id.btnCancel);
+            btnConfirm = dialog.findViewById(R.id.btnAdd);
+
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String tenplaylist = edtTenPlaylist.getText().toString();
+                    if (tenplaylist.equals(""))
+                        edtTenPlaylist.setError("Tên Playlist Trống");
+                    else {
+                        int i = 0;
+                        if (MainActivity.userPlaylist != null) {
+                            for (i = 0; i < MainActivity.userPlaylist.size(); i++) {
+                                if (MainActivity.userPlaylist.get(i).getTen().equals(tenplaylist))
+                                    return;
+                            }
+                            if(i >= MainActivity.userPlaylist.size() || i ==0){
+                                ProgressDialog progressDialog;
+                                progressDialog = ProgressDialog.show(context,"Đang Tạo Playlist", "Loading...!", false, false);
+                                DataService dataService = APIService.getUserService();
+                                Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
+                                callback.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        String Idplaylist = (String) response.body();
+                                        if(Idplaylist.equals("That Bai"))
+                                            Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                                        else
+                                        {
+                                            // Thêm Playlist sau khi tạo
+                                            Playlist playlist = new Playlist();
+                                            playlist.setIdPlaylist(Idplaylist);
+                                            playlist.setTen(tenplaylist);
+                                            playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
+                                            UserPlaylistFragment.userPlaylist.add(playlist);
+
+                                            // Thêm Bài Hát Vào Playlist Mới tạo
+                                            Call<String> callBack = dataService.ThemBaiHatPlaylist(Idplaylist, arrayList.get(position).getIdBaiHat());
+                                            callBack.enqueue(new Callback<String>() {
+                                                @Override
+                                                public void onResponse(Call<String> call, Response<String> response) {
+                                                    String result = (String) response.body();
+                                                    if(result.equals("Thanh Cong"))
+                                                        Toast.makeText(context, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
+                                                    else
+                                                        Toast.makeText(context, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<String> call, Throwable t) {
+
+                                                }
+                                            });
+                                            UserPlaylistFragment.adapter.notifyDataSetChanged();
+                                            dialog.dismiss();
+                                        }
+                                        progressDialog.dismiss();
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(context, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                            else{
+                                edtTenPlaylist.setError("Playlist Đã Tồn tại");
+                            }
+                        }
+                    }
+                }
+            });
+
+            dialog.show();
+        }
+
+
     }
 
     public void setArrayList(ArrayList<BaiHat> baiHats) {
@@ -142,20 +322,22 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
 
 
     public void BoThich(String iduser, String idbaihat, int position) {
-        Log.d("BBB", "Bo Thich");
         DataService dataService = APIService.getUserService();
         Call<String> callback = dataService.BoThichBaiHat(idbaihat, iduser);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = (String) response.body();
-                Log.d("BBB", result);
                 if (result.equals("Thanh Cong")) {
                     Toast.makeText(context, "Đã Bỏ Thích", Toast.LENGTH_SHORT).show();
-                    MainActivity.baihatyeuthichList.remove(arrayList.get(position));
-                    notifyDataSetChanged();
+                    Log.d("BBB", UserBaiHatFragment.arrayList.size() + "");
+                    UserBaiHatFragment.BoThichBaiHat(arrayList.get(position).getIdBaiHat());
+                    if (UserBaiHatFragment.arrayList.size() <= 0)
+                        UserBaiHatFragment.textView.setVisibility(View.VISIBLE);
+
                 } else
                     Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                UserBaiHatFragment.adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -166,18 +348,16 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
     }
 
     public void Thich(String iduser, String idbaihat, int position) {
-        Log.d("BBB", "Thich");
         DataService dataService = APIService.getUserService();
         Call<String> callback = dataService.YeuThichBaiHat(idbaihat, iduser);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = (String) response.body();
-                notifyDataSetChanged();
-                Log.d("BBB", result);
                 if (result.equals("Thanh Cong")) {
-                    if (!MainActivity.baihatyeuthichList.contains(arrayList.get(position)))
-                        MainActivity.baihatyeuthichList.add(arrayList.get(position));
+                    if (!UserBaiHatFragment.arrayList.contains(arrayList.get(position)))
+                        UserBaiHatFragment.arrayList.add(arrayList.get(position));
+                    UserBaiHatFragment.adapter.notifyDataSetChanged();
                     Toast.makeText(context, "Đã Thích", Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();

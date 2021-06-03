@@ -2,7 +2,6 @@ package com.example.doanmp3.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -18,7 +17,7 @@ import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment;
 import com.example.doanmp3.Fragment.SearchFragment;
 import com.example.doanmp3.Fragment.UserFragment;
-import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -37,11 +36,13 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     ViewPagerAdapter adapter;
+    UserFragment userFragment;
     public static ProgressBar progressBar;
     public static int progress;
     private long backtime;
     public static User user;
-    public static ArrayList<BaiHat> baihatyeuthichList;
+    public static boolean success;
+    public static ArrayList<Playlist> userPlaylist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
         progress = 0;
         AnhXa();
         getUser();
-        setupBottomNavigation();
         SetUpViewPager();
-        GetBaiHatYeuThich();
+        setupBottomNavigation();
+        GetUserPlaylist();
+
+
     }
+
 
 
     private void AnhXa() {
@@ -95,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
     private void SetUpViewPager() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         List<Fragment> arraylist = new ArrayList<>();
-        arraylist.add(new UserFragment());
-        arraylist.add(new HomeFragment());
-        arraylist.add(new SearchFragment());
+        userFragment = new UserFragment();
+        HomeFragment homeFragment = new HomeFragment();
+        SearchFragment searchFragment = new SearchFragment();
+        arraylist.add(userFragment);
+        arraylist.add(homeFragment);
+        arraylist.add(searchFragment);
         adapter.setList(arraylist);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
@@ -149,32 +156,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void GetBaiHatYeuThich() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatYeuThich(user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
+    private void GetUserPlaylist() {
+        DataService dataService = APIService.getUserService();
+        Call<List<Playlist>> callback = dataService.GetUserPlaylist(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                baihatyeuthichList = (ArrayList<BaiHat>) response.body();
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                userPlaylist = (ArrayList<Playlist>) response.body();
             }
 
             @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+
             }
         });
     }
 
-    public static boolean checkLiked(String IdBaiHat) {
 
-        if (MainActivity.baihatyeuthichList != null && MainActivity.baihatyeuthichList.size() > 0)
-            for(int i = 0; i < MainActivity.baihatyeuthichList.size(); i++) {
-                Log.d("BBC",MainActivity.baihatyeuthichList.get(i).getTenBaiHat() );
-                if (MainActivity.baihatyeuthichList.get(i).getIdBaiHat().equals(IdBaiHat))
-                    return true;
-            }
 
-        return false;
-    }
+
 
 }

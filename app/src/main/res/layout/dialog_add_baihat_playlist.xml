@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_rectangle_background"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="15dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/img_baihat_bottomsheet_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:riv_corner_radius="8dp" />
+
+    <TextView
+        android:id="@+id/txt_tenbaihat_bottomsheet_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/img_baihat_bottomsheet_add"
+        android:maxLines="1"
+        android:text="Tên Bài Hát"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/txt_tencasi_bottomsheet_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_tenbaihat_bottomsheet_add"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@id/img_baihat_bottomsheet_add"
+        android:maxLines="1"
+        android:text="Tên Bài Hát"
+        android:textColor="@color/black"
+        android:textSize="14dp" />
+
+    <View
+        android:id="@+id/view_bottomsheet_add"
+        android:layout_below="@id/img_baihat_bottomsheet_add"
+        android:layout_marginVertical="10dp"
+        android:background="@color/teal_700"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/add_playlist_bottomsheet_add"
+        android:layout_below="@id/view_bottomsheet_add"
+        android:text="   Tạo Playlist Mới"
+        app:icon="@drawable/ic_add"
+        app:iconTint="@color/black"
+        android:textColor="@color/black"
+        android:gravity="start|center"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bottomsheet_add"
+        android:layout_below="@id/add_playlist_bottomsheet_add"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+
+</RelativeLayout>

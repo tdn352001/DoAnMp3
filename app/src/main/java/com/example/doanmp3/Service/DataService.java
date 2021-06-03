@@ -4,6 +4,7 @@ import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.ChuDeTheLoai;
+import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.Model.User;
@@ -99,11 +100,6 @@ public interface DataService {
     Call<List<BaiHat>> GetBaiHatTheLoai(@Field("IdTheLoai") String IdPlaylist);
 
 
-
-
-
-
-
     // User
     @FormUrlEncoded
     @POST("login.php")
@@ -119,15 +115,15 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("changeemail.php")
-    Call<String> ChangeEmail(@Field("email") String email, @Field("iduser") String Id );
+    Call<String> ChangeEmail(@Field("email") String email, @Field("iduser") String Id);
 
     @FormUrlEncoded
     @POST("changeusername.php")
-    Call<String> ChangeUserName(@Field("username") String username, @Field("iduser") String Id );
+    Call<String> ChangeUserName(@Field("username") String username, @Field("iduser") String Id);
 
     @FormUrlEncoded
     @POST("changepassword.php")
-    Call<String> ChangePassword(@Field("password") String password, @Field("iduser") String Id );
+    Call<String> ChangePassword(@Field("password") String password, @Field("iduser") String Id);
 
     @FormUrlEncoded
     @POST("getuserbaihat.php")
@@ -140,4 +136,28 @@ public interface DataService {
     @FormUrlEncoded
     @POST("bothichbaihat.php")
     Call<String> BoThichBaiHat(@Field("idbaihat") String idbaihat, @Field("iduser") String iduser);
+
+    @FormUrlEncoded
+    @POST("getuserplaylist.php")
+    Call<List<Playlist>> GetUserPlaylist(@Field("iduser") String iduser);
+
+    @FormUrlEncoded
+    @POST("taoplaylist.php")
+    Call<String> TaoPlaylist(@Field("iduser") String iduser, @Field("tenplaylist") String tenplaylist);
+
+    @FormUrlEncoded
+    @POST("getuserbaihatplaylist.php")
+    Call<List<BaiHat>> GetUserBaiHatPlaylist(@Field("iduser") String iduser, @Field("idplaylist") String idplaylist);
+
+    @FormUrlEncoded
+    @POST("thembaihatplaylist.php")
+    Call<String> ThemBaiHatPlaylist(@Field("idplaylist") String idplaylist, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("deletebaihatplaylist.php")
+    Call<String> DeleteBaiHatPlaylist(@Field("idplaylist") String idplaylist, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("GetRecentSearch.php")
+    Call<List<KeyWord>> GetKeyWordRecent();
 }
