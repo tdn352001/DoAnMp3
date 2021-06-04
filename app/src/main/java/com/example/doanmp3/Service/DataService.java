@@ -159,5 +159,13 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("GetRecentSearch.php")
-    Call<List<KeyWord>> GetKeyWordRecent();
+    Call<List<KeyWord>> GetKeyWordRecent(@Field("iduser") String iduser);
+
+    @FormUrlEncoded
+    @POST("playnhac.php")
+    Call<String> PlayNhac(@Field("iduser") String iduser, @Field("idbaihat") String idbaihat);
+
+    @FormUrlEncoded
+    @POST("getbaihatrecent.php")
+    Call<List<BaiHat>> GetBaiHatRecent(@Field("iduser") String iduser);
 }

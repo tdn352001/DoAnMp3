@@ -1,13 +1,12 @@
 package com.example.doanmp3.Activity;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.GridLayout;
 
 import com.example.doanmp3.Adapter.AllCategoryAdapter;
 import com.example.doanmp3.Model.ChuDeTheLoai;
@@ -65,7 +64,7 @@ public class AllCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
                 ArrayList<ChuDeTheLoai> ChuDeList = (ArrayList<ChuDeTheLoai>) response.body();
-                adapterChude = new AllCategoryAdapter(AllCategoryActivity.this, ChuDeList, true);
+                adapterChude = new AllCategoryAdapter(AllCategoryActivity.this, ChuDeList, 1);
                 rvChuDe.setLayoutManager(gridLayoutManager);
                 rvChuDe.setAdapter(adapterChude);
             }
@@ -81,7 +80,8 @@ public class AllCategoryActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
                 ArrayList<ChuDeTheLoai> TheLoaiList = (ArrayList<ChuDeTheLoai>) response.body();
-                adapterTheLoai = new AllCategoryAdapter(AllCategoryActivity.this, TheLoaiList, false);
+                adapterTheLoai = new AllCategoryAdapter(AllCategoryActivity.this, TheLoaiList, 2);
+
                 rvTheLoai.setAdapter(adapterTheLoai);
                 rvTheLoai.setLayoutManager(new GridLayoutManager(AllCategoryActivity.this, 2));
             }

@@ -1,32 +1,31 @@
 package com.example.doanmp3.Activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerPlaySongAdapter;
 import com.example.doanmp3.Fragment.ListSongFragment;
 import com.example.doanmp3.Fragment.PlayFragment;
+import com.example.doanmp3.Fragment.RecentFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -35,6 +34,9 @@ import java.util.Random;
 import java.util.Stack;
 
 import me.relex.circleindicator.CircleIndicator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlayNhacActivity extends AppCompatActivity {
 
@@ -58,7 +60,6 @@ public class PlayNhacActivity extends AppCompatActivity {
     Stack<Integer> stack;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,17 +72,15 @@ public class PlayNhacActivity extends AppCompatActivity {
     }
 
     private void CheckRepeatRandom() {
-        if(random){
+        if (random) {
             btnRandom.setImageResource(R.drawable.random_true);
-        }
-        else{
+        } else {
             btnRandom.setImageResource(R.drawable.icon_random);
         }
 
-        if(repeat){
+        if (repeat) {
             btnLoop.setImageResource(R.drawable.ic_loop);
-        }
-        else{
+        } else {
             btnLoop.setImageResource(R.drawable.ic_loopone);
         }
     }
@@ -106,20 +105,20 @@ public class PlayNhacActivity extends AppCompatActivity {
                 }
             }
         });
-        
+
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 playedlist.add(Pos);
                 stack.push(Pos);
-                if(arrayList.size() == playedlist.size()){
+                if (arrayList.size() == playedlist.size()) {
                     playedlist.clear();
                 }
 
                 if (random) {
                     Random rd = new Random();
                     Pos = rd.nextInt(arrayList.size());
-                    while(playedlist.contains(Pos))
+                    while (playedlist.contains(Pos))
                         Pos = rd.nextInt(arrayList.size());
                     PlayNhac();
                 } else {
@@ -135,13 +134,12 @@ public class PlayNhacActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (random) {
-                   if(!stack.empty()){
-                       Pos=stack.pop();
-                       if(playedlist.size() > 0)
-                           playedlist.remove(playedlist.size() - 1);
-                   }
-                   else
-                       Pos = 0;
+                    if (!stack.empty()) {
+                        Pos = stack.pop();
+                        if (playedlist.size() > 0)
+                            playedlist.remove(playedlist.size() - 1);
+                    } else
+                        Pos = 0;
 
                     PlayNhac();
                 } else {
@@ -157,11 +155,10 @@ public class PlayNhacActivity extends AppCompatActivity {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                if(random){
+                if (random) {
                     btnRandom.setImageResource(R.drawable.icon_random);
                     random = false;
-                }
-                else{
+                } else {
                     btnRandom.setImageResource(R.drawable.random_true);
                     random = true;
                 }
@@ -171,12 +168,11 @@ public class PlayNhacActivity extends AppCompatActivity {
         btnLoop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(repeat){
-                    repeat=false;
+                if (repeat) {
+                    repeat = false;
                     btnLoop.setImageResource(R.drawable.ic_loopone);
-                }
-                else{
-                    repeat=true;
+                } else {
+                    repeat = true;
                     btnLoop.setImageResource(R.drawable.ic_loop);
                 }
             }
@@ -187,7 +183,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             public void onCompletion(MediaPlayer mp) {
                 playedlist.add(Pos);
                 stack.push(Pos);
-                if(arrayList.size() == playedlist.size()){
+                if (arrayList.size() == playedlist.size()) {
                     playedlist.clear();
                 }
 
@@ -198,7 +194,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                     if (random) {
                         Random rd = new Random();
                         Pos = rd.nextInt(arrayList.size());
-                        while(playedlist.contains(Pos))
+                        while (playedlist.contains(Pos))
                             Pos = rd.nextInt(arrayList.size());
                         PlayNhac();
                     } else {
@@ -269,7 +265,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             }
         }
 
-        if(intent.hasExtra("audio"))
+        if (intent.hasExtra("audio"))
             isAudio = true;
 
 
@@ -289,7 +285,7 @@ public class PlayNhacActivity extends AppCompatActivity {
 
 
         simpleDateFormat = new SimpleDateFormat("mm:ss");
-        playedlist=new ArrayList<>();
+        playedlist = new ArrayList<>();
         stack = new Stack<>();
     }
 
@@ -309,6 +305,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
             mediaPlayer.prepare();
             mediaPlayer.start();
+            UploadToPlayRecent();
             btnPlay.setImageResource(R.drawable.ic_pause);
             SetConTent();
             TimeSong();
@@ -316,6 +313,37 @@ public class PlayNhacActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    private void UploadToPlayRecent() {
+        String id = arrayList.get(Pos).getIdBaiHat();
+        if (!id.equals("-1")) {
+            DataService dataService = APIService.getUserService();
+            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
+            callback.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String result = (String) response.body();
+                    if (result.equals("S")) {
+
+                        if (!RecentFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
+                            RecentFragment.baihatrecents.add(0, arrayList.get(Pos));
+                            Log.e("BBB", RecentFragment.baihatrecents.size() + "");
+                            RecentFragment.searchSongAdapter.notifyDataSetChanged();
+                        }
+                        else{
+                            Log.e("BBB", "Da Ton Tai");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
 
     public void SetConTent() {
         final Handler handler = new Handler();
@@ -340,7 +368,6 @@ public class PlayNhacActivity extends AppCompatActivity {
         Pos = Position;
         PlayNhac();
     }
-
 
 
 }

@@ -15,10 +15,6 @@
         android:theme="@style/Theme.DoAnMp3">
         <activity android:name=".Activity.DetailUserPlaylistActivity"></activity>
         <activity android:name=".Activity.UserInfoActivity" />
-        <activity android:name=".Activity.UserAlbumActivity" />
-        <activity android:name=".Activity.UserPlaylistActivity" />
-        <activity android:name=".Activity.UserCaSiActivity" />
-        <activity android:name=".Activity.UserBaiHatActivity" />
         <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

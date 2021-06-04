@@ -73,7 +73,7 @@
                 android:text="Bài Hát  "
                 android:textSize="20dp"
                 android:layout_margin="10dp"
-                android:drawableRight="@drawable/ic_viewmore"
+                android:drawableRight="@drawable/icon_viewmore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -100,7 +100,7 @@
                 android:text="Album  "
                 android:textSize="20dp"
                 android:layout_margin="10dp"
-                android:drawableRight="@drawable/ic_viewmore"
+                android:drawableRight="@drawable/icon_viewmore"
                 android:layout_below="@id/btn_viewmore_baihat_detailsinger"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

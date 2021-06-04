@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/txt_album_fragment"
         android:text="ALBUM HOT"
-        android:drawableRight="@drawable/ic_viewmore"
+        android:drawableRight="@drawable/icon_viewmore"
         android:layout_marginHorizontal="10dp"
         android:textSize="22sp"
         android:textColor="@color/black"

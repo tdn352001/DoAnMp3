@@ -25,6 +25,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/custom_searchview"
                 android:gravity="end"
+                app:layout_collapseMode="pin"
                 app:queryHint="Tìm Kiếm...." />
         </RelativeLayout>
 
@@ -48,6 +49,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragmentContainerView"

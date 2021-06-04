@@ -118,6 +118,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                     if (arrayList.size() > 0) {
                         Intent intentt = new Intent(DetailUserPlaylistActivity.this, PlayNhacActivity.class);
                         Random rd = new Random();
+                        DanhSachBaiHatActivity.category = "Playlist";
+                        DanhSachBaiHatActivity.TenCategoty = TenPlaylist;
                         intentt.putExtra("mangbaihat", arrayList);
                         intentt.putExtra("position", rd.nextInt(arrayList.size()));
                         PlayNhacActivity.random = true;
