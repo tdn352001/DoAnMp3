@@ -1,13 +1,13 @@
 package com.example.doanmp3.Activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.doanmp3.Adapter.AllSongAdapter;
 import com.example.doanmp3.Model.BaiHat;
@@ -54,6 +54,8 @@ public class AllSongActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
+                DanhSachBaiHatActivity.TenCategoty="Playlist";
+                DanhSachBaiHatActivity.TenCategoty = "Bài Hát Được Yêu Thích";
                 AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
                 recyclerView.setAdapter(adapter);

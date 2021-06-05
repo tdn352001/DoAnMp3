@@ -21,7 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.doanmp3.Adapter.ViewPagerPlaySongAdapter;
 import com.example.doanmp3.Fragment.ListSongFragment;
 import com.example.doanmp3.Fragment.PlayFragment;
-import com.example.doanmp3.Fragment.RecentFragment;
+import com.example.doanmp3.Fragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -325,10 +325,10 @@ public class PlayNhacActivity extends AppCompatActivity {
                     String result = (String) response.body();
                     if (result.equals("S")) {
 
-                        if (!RecentFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
-                            RecentFragment.baihatrecents.add(0, arrayList.get(Pos));
-                            Log.e("BBB", RecentFragment.baihatrecents.size() + "");
-                            RecentFragment.searchSongAdapter.notifyDataSetChanged();
+                        if (!SearchFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
+                            SearchFragment.baihatrecents.add(0, arrayList.get(Pos));
+                            Log.e("BBB", SearchFragment.baihatrecents.size() + "");
+                            SearchFragment.searchSongAdapter.notifyDataSetChanged();
                         }
                         else{
                             Log.e("BBB", "Da Ton Tai");

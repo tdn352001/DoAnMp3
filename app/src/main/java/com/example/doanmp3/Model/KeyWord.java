@@ -13,7 +13,16 @@ private String idSearch;
 @Expose
 private String keyWord;
 
-public String getIdSearch() {
+    public KeyWord(){
+
+    }
+
+    public KeyWord(String idSearch, String keyWord) {
+        this.idSearch = idSearch;
+        this.keyWord = keyWord;
+    }
+
+    public String getIdSearch() {
 return idSearch;
 }
 

@@ -162,6 +162,10 @@ public interface DataService {
     Call<List<KeyWord>> GetKeyWordRecent(@Field("iduser") String iduser);
 
     @FormUrlEncoded
+    @POST("search.php")
+    Call<String> Search(@Field("iduser") String iduser, @Field("keyword") String keyword);
+
+    @FormUrlEncoded
     @POST("playnhac.php")
     Call<String> PlayNhac(@Field("iduser") String iduser, @Field("idbaihat") String idbaihat);
 

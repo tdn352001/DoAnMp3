@@ -23,6 +23,7 @@ import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.google.android.material.button.MaterialButton;
 import com.wefika.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
@@ -37,17 +38,17 @@ public class RecentFragment extends Fragment {
     View view;
 
     //     Phần Tìm Kiếm Gần Đây
-    FlowLayout flowLayout;
     RelativeLayout SearchRecentLayout;
     TextView btnDelete;
-    ArrayList<KeyWord> keyWordArrayList;
+    FlowLayout flowLayout;
+    public static ArrayList<KeyWord> keyWordArrayList;
 
     // Bài Hát Gần Đây
+    MaterialButton btnViewMore;
     RelativeLayout SongRecentLayout;
     RecyclerView rvBaiHatRecent;
     public static ArrayList<BaiHat> baihatrecents;
     public static SearchSongAdapter searchSongAdapter;
-
     //ChuDeTheLoai
     RecyclerView rvcategory;
     ArrayList<ChuDeTheLoai> categoryList;
@@ -62,6 +63,7 @@ public class RecentFragment extends Fragment {
         GetResentKeyWord();
         GetRecentSong();
         SetCategoty();
+        EventClick();
         return view;
     }
 
@@ -75,7 +77,7 @@ public class RecentFragment extends Fragment {
         // Bài Hát Gần Đây
         rvBaiHatRecent = view.findViewById(R.id.rv_recent_baihat);
         SongRecentLayout = view.findViewById(R.id.layout_recent_song);
-
+        btnViewMore = view.findViewById(R.id.btn_viewmore_baihat_recent);
         //Phần category
         rvcategory = view.findViewById(R.id.rv_category_recent_fragment);
     }
@@ -149,6 +151,11 @@ public class RecentFragment extends Fragment {
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                     rvBaiHatRecent.setLayoutManager(linearLayoutManager);
+
+
+                    if (baihatrecents.size() > 5)
+                        btnViewMore.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -205,5 +212,59 @@ public class RecentFragment extends Fragment {
         });
 
     }
+
+    private void EventClick() {
+
+
+        btnViewMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (searchSongAdapter != null) {
+                    if (searchSongAdapter.isViewMore()) {
+                        searchSongAdapter.setViewMore(false);
+                        btnViewMore.setText("Xem Thêm");
+                    } else {
+                        searchSongAdapter.setViewMore(true);
+                        btnViewMore.setText("Hiển Thị Ít");
+                    }
+                }
+            }
+        });
+    }
+
+    public static void addKeyWord(String keyword, TextView textView) {
+        if (keyWordArrayList != null) {
+            for (int i = 0; i < keyWordArrayList.size(); i++)
+                if (keyWordArrayList.get(i).getKeyWord() == keyword)
+                    return;
+        } else {
+            keyWordArrayList = new ArrayList<>();
+        }
+        Call<String> callback = APIService.getUserService().Search(MainActivity.user.getIdUser(), keyword);
+        callback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String IdKeyWord = response.body();
+                if (!keyword.equals("F")) {
+                    {
+                        keyWordArrayList.add(0, new KeyWord(IdKeyWord, keyword));
+                        if (keyWordArrayList.size() > 15)
+                            keyWordArrayList.remove(keyWordArrayList.size() - 1);
+
+                    }
+
+                    Log.e("BBB", IdKeyWord);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
 
 }
