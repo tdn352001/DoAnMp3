@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.wefika.flowlayout.FlowLayout;
 
@@ -166,6 +168,19 @@ public class SearchFragment extends Fragment {
                 if (newText.equals("")) {
                     ResultLayout.setVisibility(View.GONE);
                     RecentLayout.setVisibility(View.VISIBLE);
+
+                    if(SearchbaihatFragment.arrayList != null)
+                    SearchbaihatFragment.arrayList.clear();
+
+                    if(SearchcasiFragment.arrayList != null)
+                    SearchcasiFragment.arrayList.clear();
+
+                    if(SearchalbumFragment.arrayList != null)
+                        SearchalbumFragment.arrayList.clear();
+
+                    if(SearchplaylistFragment.arrayList != null)
+                        SearchplaylistFragment.arrayList.clear();
+
                 }
                 return true;
             }
@@ -379,23 +394,44 @@ public class SearchFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<String> callback = APIService.getUserService().DeleteSearch(MainActivity.user.getIdUser());
-                callback.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String rel = (String) response.body();
-                        if (rel != null)
-                            if (rel.equals("S")) {
-                                keyWordArrayList.clear();
-                                SetFlowLayout();
-                            }
-                    }
 
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+                dialog.setTitle("Xóa Lịch Sử Tìm Kiếm!");
+                dialog.setMessage("Bạn có Chắc Chắn?");
+                dialog.setIcon(R.drawable.error);
+                dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+                dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
 
                     }
                 });
+
+                dialog.setNegativeButton("Thực Hiện", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Call<String> callback = APIService.getUserService().DeleteSearch(MainActivity.user.getIdUser());
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                String rel = (String) response.body();
+                                if (rel != null)
+                                    if (rel.equals("S")) {
+                                        keyWordArrayList.clear();
+                                        SetFlowLayout();
+                                    }
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+
+                dialog.show();
             }
         });
 
@@ -453,11 +489,14 @@ public class SearchFragment extends Fragment {
     }
 
     public void SearchBaiHat(String query) {
+        baiHats = null;
         Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHats = (ArrayList<BaiHat>) response.body();
+                if(baiHats == null)
+                    baiHats = new ArrayList<>();
                 searchbaihatFragment.SetRV();
                 progress++;
                 if (progress > 2)
@@ -472,11 +511,14 @@ public class SearchFragment extends Fragment {
     }
 
     public void SearchAlbum(String query) {
+        albums =null;
         Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
         callback.enqueue(new Callback<List<Album>>() {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
                 albums = (ArrayList<Album>) response.body();
+                if(albums == null)
+                    albums = new ArrayList<>();
                 searchalbumFragment.SetRv();
                 progress++;
                 if (progress > 2)
@@ -491,11 +533,14 @@ public class SearchFragment extends Fragment {
     }
 
     public void SearchCaSi(String query) {
+        caSis = null;
         Call<List<CaSi>> callback = APIService.getService().GetSearchCaSi(query);
         callback.enqueue(new Callback<List<CaSi>>() {
             @Override
             public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
                 caSis = (ArrayList<CaSi>) response.body();
+                if(caSis == null)
+                    caSis = new ArrayList<>();
                 searchcasiFragment.SetRV();
                 progress++;
                 if (progress > 2)
@@ -510,14 +555,17 @@ public class SearchFragment extends Fragment {
     }
 
     public void SearchPlaylist(String query) {
+        playlists = null;
         Call<List<Playlist>> callback = APIService.getService().GetSearchPlaylist(query);
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 playlists = (ArrayList<Playlist>) response.body();
+                if(playlists == null)
+                    playlists = new ArrayList<>();
                 searchplaylistFragment.SetRv();
                 progress++;
-                if (progress > 2)
+                if (progress > 3)
                     progressDialog.dismiss();
             }
 

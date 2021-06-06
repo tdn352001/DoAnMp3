@@ -58,26 +58,41 @@ public class SearchalbumFragment extends Fragment {
     }
 
     public void SetRv() {
+        if (recyclerView != null)
+            recyclerView.removeAllViews();
+
         Handler handler = new Handler();
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 300);
+                if (SearchFragment.albums != null) {
+                    arrayList = SearchFragment.albums;
+                    if (SearchFragment.albums.size() > 0) {
+                        adapter = new AlbumAdapter(getContext(), SearchFragment.albums);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        textView.setVisibility(View.INVISIBLE);
+                    } else {
+                        textView.setText("Không Tìm Thấy Kết Quả");
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 500);
                 if (recyclerView != null) {
-                    if (SearchFragment.albums != null) {
-                        if (SearchFragment.albums.size() > 0) {
-                            arrayList = SearchFragment.albums;
-                            recyclerView.removeAllViews();
-                            adapter = new AlbumAdapter(getContext(), SearchFragment.albums);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                            textView.setVisibility(View.INVISIBLE);
-                        } else
-                            textView.setVisibility(View.VISIBLE);
-                    } else {
-                        textView.setVisibility(View.VISIBLE);
-                    }
-
+                    recyclerView.removeAllViews();
+                    textView.setText("Đang Lấy Dữ Liệu...!");
+                    textView.setVisibility(View.VISIBLE);
+                    handler.postDelayed(run, 300);
                     handler.removeCallbacks(this);
                 }
 
@@ -87,3 +102,20 @@ public class SearchalbumFragment extends Fragment {
     }
 
 }
+
+//if (SearchFragment.albums != null) {
+//        arrayList = SearchFragment.albums;
+//        if (SearchFragment.albums.size() > 0) {
+//        adapter = new AlbumAdapter(getContext(), SearchFragment.albums);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        textView.setVisibility(View.INVISIBLE);
+//        } else {
+//        textView.setText("Không Tìm Thấy Kết Quả");
+//        textView.setVisibility(View.VISIBLE);
+//        }
+//        handler.removeCallbacks(this);
+//        } else {
+//        textView.setText("Đang Lấy Dữ Liệu...!");
+//        textView.setVisibility(View.VISIBLE);
+//        }

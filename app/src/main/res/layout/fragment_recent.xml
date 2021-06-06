@@ -14,6 +14,7 @@
 
         <RelativeLayout
             android:id="@+id/layout_recent_search"
+            android:layout_marginBottom="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -45,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_history_search"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="10dp">
 
             </com.wefika.flowlayout.FlowLayout>
 
@@ -53,9 +54,9 @@
 
         <RelativeLayout
             android:id="@+id/layout_recent_song"
+            android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txt_history_song"
@@ -98,8 +99,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txt_category_recent_fragment"

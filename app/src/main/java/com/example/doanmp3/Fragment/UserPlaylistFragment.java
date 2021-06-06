@@ -61,7 +61,6 @@ public class UserPlaylistFragment extends Fragment {
     private void AnhXa() {
         btnAddPlaylist = view.findViewById(R.id.relative_btn_add_playlist);
         recyclerView = view.findViewById(R.id.rv_user_playlist);
-        Log.e("BBB", "Da anh xa");
     }
 
 

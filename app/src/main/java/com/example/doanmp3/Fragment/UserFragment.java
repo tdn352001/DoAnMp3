@@ -1,6 +1,8 @@
 package com.example.doanmp3.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -24,6 +26,7 @@ import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -115,15 +118,36 @@ public class UserFragment extends Fragment {
         });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
-                editor.remove("username");
-                editor.remove("password");
-                editor.commit();
-                startActivity(intent);
-                getActivity().finish();
+
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+                dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+                dialog.setTitle("Đăng Xuất");
+                dialog.setIcon(R.drawable.ic_logout);
+                dialog.setMessage("Bạn có chắc muốn đăng suất?");
+                dialog.setNegativeButton("Đồng Ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
+                        editor.remove("username");
+                        editor.remove("password");
+                        editor.commit();
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                });
+
+                dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
 

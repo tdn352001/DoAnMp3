@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.PlaylistAdapter;
@@ -52,9 +52,7 @@ public class SearchplaylistFragment extends Fragment {
                 recyclerView.removeAllViews();
                 adapter = new PlaylistAdapter(getContext(), arrayList);
                 recyclerView.setAdapter(adapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 textView.setVisibility(View.INVISIBLE);
             } else
                 textView.setVisibility(View.VISIBLE);
@@ -63,29 +61,67 @@ public class SearchplaylistFragment extends Fragment {
     }
 
     public void SetRv() {
+        if (recyclerView != null)
+            recyclerView.removeAllViews();
+
         Handler handler = new Handler();
+
+        // Kiểm tra Kết quả
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 300);
+                if (SearchFragment.playlists != null) {
+                    arrayList = SearchFragment.playlists;
+                    if (SearchFragment.playlists.size() > 0) {
+                        adapter = new PlaylistAdapter(getContext(), SearchFragment.playlists);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        textView.setVisibility(View.INVISIBLE);
+                    } else {
+                        textView.setVisibility(View.VISIBLE);
+                        textView.setText("Không Tìm Thấy Kết Quả");
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
+        // Kiểm tra ánh xạ
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 500);
                 if (recyclerView != null) {
-                    if (SearchFragment.playlists != null) {
-                        arrayList = SearchFragment.playlists;
-                        recyclerView.removeAllViews();
-                        adapter = new PlaylistAdapter(getContext(), SearchFragment.playlists);
-                        recyclerView.setAdapter(adapter);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView.setLayoutManager(linearLayoutManager);
-                        textView.setVisibility(View.INVISIBLE);
-                    } else
-                        textView.setVisibility(View.VISIBLE);
-
+                    recyclerView.removeAllViews();
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText("Đang Lấy Dữ Liệu...!");
+                    handler.postDelayed(run, 300);
                     handler.removeCallbacks(this);
                 }
             }
         };
+
         handler.postDelayed(runnable, 500);
 
     }
 }
+
+
+//                    if (SearchFragment.playlists != null) {
+//                        arrayList = SearchFragment.playlists;
+//                        if (SearchFragment.playlists.size() > 0) {
+//                            adapter = new PlaylistAdapter(getContext(), SearchFragment.playlists);
+//                            recyclerView.setAdapter(adapter);
+//                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//                            textView.setVisibility(View.INVISIBLE);
+//                        } else {
+//                            textView.setVisibility(View.VISIBLE);
+//                            textView.setText("Không Tìm Thấy Kết Quả");
+//                        }
+//                        handler.removeCallbacks(this);
+//                    } else {
+//                        textView.setVisibility(View.VISIBLE);
+//                        textView.setText("Đang Lấy Dữ Liệu...!");
+//                    }

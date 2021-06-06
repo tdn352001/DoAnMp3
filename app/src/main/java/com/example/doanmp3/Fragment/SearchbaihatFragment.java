@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -61,24 +62,44 @@ public class SearchbaihatFragment extends Fragment {
 
 
     public void SetRV() {
+        if (recyclerView != null)
+            recyclerView.removeAllViews();
+
         Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+
+        Runnable run = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 500);
-                if (recyclerView != null) {
-                    if (SearchFragment.baiHats != null) {
-                        arrayList = SearchFragment.baiHats;
-                        recyclerView.removeAllViews();
+                handler.postDelayed(this, 300);
+                if (SearchFragment.baiHats != null) {
+                    arrayList = SearchFragment.baiHats;
+                    if (SearchFragment.baiHats.size() > 0) {
                         adapter = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true);
                         recyclerView.setAdapter(adapter);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         recyclerView.setLayoutManager(linearLayoutManager);
                         textView.setVisibility(View.INVISIBLE);
-                    } else
+                    } else{
                         textView.setVisibility(View.VISIBLE);
+                        textView.setText("Không Tìm Thấy Kết Quả");
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
 
+
+        Runnable runnable = new Runnable() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void run() {
+                handler.postDelayed(this, 500);
+                if (recyclerView != null) {
+                    recyclerView.removeAllViews();
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText("Đang Lấy Dữ Liệu...!");
+                    handler.postDelayed(run, 300);
                     handler.removeCallbacks(this);
                 }
 
@@ -90,3 +111,23 @@ public class SearchbaihatFragment extends Fragment {
 
 
 }
+
+
+//                    if (SearchFragment.baiHats != null) {
+//                        arrayList = SearchFragment.baiHats;
+//                        if (SearchFragment.baiHats.size() > 0) {
+//                            adapter = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true);
+//                            recyclerView.setAdapter(adapter);
+//                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//                            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+//                            recyclerView.setLayoutManager(linearLayoutManager);
+//                            textView.setVisibility(View.INVISIBLE);
+//                        } else{
+//                            textView.setVisibility(View.VISIBLE);
+//                            textView.setText("Không Tìm Thấy Kết Quả");
+//                        }
+//                        handler.removeCallbacks(this);
+//                    } else {
+//                        textView.setVisibility(View.VISIBLE);
+//                        textView.setText("Đang Lấy Dữ Liệu...!");
+//                    }

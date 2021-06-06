@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -58,25 +59,41 @@ public class SearchcasiFragment extends Fragment {
 
 
     public void SetRV() {
+        if (recyclerView != null)
+            recyclerView.removeAllViews();
+
         Handler handler = new Handler();
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 300);
+                if (SearchFragment.albums != null) {
+                    arrayList = SearchFragment.caSis;
+                    if (SearchFragment.albums.size() > 0) {
+                        adapter = new AllSingerAdapter(getContext(), SearchFragment.caSis);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        textView.setVisibility(View.INVISIBLE);
+                    } else {
+                        textView.setText("Không Tìm Thấy Kết Quả");
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
         Runnable runnable = new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
                 handler.postDelayed(this, 500);
                 if (recyclerView != null) {
-                    if (SearchFragment.caSis != null) {
-                        if (SearchFragment.caSis.size() > 0) {
-                            arrayList = SearchFragment.caSis;
-                            recyclerView.removeAllViews();
-                            adapter = new AllSingerAdapter(getContext(), SearchFragment.caSis);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                            textView.setVisibility(View.INVISIBLE);
-                        } else
-                            textView.setVisibility(View.VISIBLE);
-                    } else
-                        textView.setVisibility(View.VISIBLE);
-
+                    recyclerView.removeAllViews();
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText("Đang Lấy Dữ Liệu...!");
+                    handler.postDelayed(run, 300);
                     handler.removeCallbacks(this);
                 }
 
@@ -87,3 +104,20 @@ public class SearchcasiFragment extends Fragment {
     }
 
 }
+
+//                      if (SearchFragment.caSis != null) {
+//                        arrayList = SearchFragment.caSis;
+//                        if (SearchFragment.caSis.size() > 0) {
+//                            adapter = new AllSingerAdapter(getContext(), SearchFragment.caSis);
+//                            recyclerView.setAdapter(adapter);
+//                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//                            textView.setVisibility(View.INVISIBLE);
+//                        } else {
+//                            textView.setVisibility(View.VISIBLE);
+//                            textView.setText("Không Tìm Thấy Kết Quả");
+//                        }
+//                        handler.removeCallbacks(this);
+//                    } else {
+//                        textView.setVisibility(View.VISIBLE);
+//                        textView.setText("Đang Lấy Dữ Liệu...!");
+//                    }
