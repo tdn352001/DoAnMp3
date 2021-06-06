@@ -166,6 +166,10 @@ public interface DataService {
     Call<String> Search(@Field("iduser") String iduser, @Field("keyword") String keyword);
 
     @FormUrlEncoded
+    @POST("deleterecentsearch.php")
+    Call<String> DeleteSearch(@Field("iduser") String iduser);
+
+    @FormUrlEncoded
     @POST("playnhac.php")
     Call<String> PlayNhac(@Field("iduser") String iduser, @Field("idbaihat") String idbaihat);
 

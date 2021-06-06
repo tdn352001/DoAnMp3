@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
@@ -10,20 +11,23 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewsearchalbum"
+        android:id="@+id/rv_search_album"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <TextView
-        android:visibility="gone"
-        android:textColor="@color/black"
-        android:text="Không Có Kết Quả"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:drawableStart="@drawable/ic_error"
-        android:drawableLeft="@drawable/ic_error"
-        android:textSize="35sp"
-        android:id="@+id/textviewkhongcodulieualbum"
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/txt_search_album_noinfo"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Không Tìm Thấy Kết Quả"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:icon="@drawable/error"
+        app:iconSize="40dp"
+        app:strokeWidth="0dp" />
 
 </RelativeLayout>
