@@ -34,6 +34,12 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
         ViewMore = false;
     }
 
+    public SearchSongAdapter(Context context, ArrayList<BaiHat> arrayList, boolean isSearch, boolean viewMore) {
+        this.context = context;
+        this.arrayList = arrayList;
+        IsSearch = isSearch;
+        ViewMore = viewMore;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -52,15 +58,17 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
 
     @Override
     public int getItemCount() {
-        if (arrayList != null)
-            if(IsSearch)
-                return arrayList.size();
-            else{
-                if(ViewMore || arrayList.size() < 5)
+        if (arrayList != null) {
+            if (ViewMore) {
+                if (arrayList.size() < 5)
                     return arrayList.size();
                 else
                     return 5;
             }
+            else
+                return arrayList.size();
+        }
+
         return 0;
     }
 
@@ -89,7 +97,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
                     else{
                         ArrayList<BaiHat> BaiHatSearch = new ArrayList<>();
                         BaiHatSearch.add(arrayList.get(getPosition()));
-                        intent.putExtra("mangbaihat", arrayList);
+                        intent.putExtra("mangbaihat", BaiHatSearch);
                         intent.putExtra("position", 0);
                         context.startActivity(intent);
                     }

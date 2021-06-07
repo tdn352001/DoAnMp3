@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
@@ -23,10 +22,18 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     Context context;
     ArrayList<Playlist> arrayList;
+    boolean viewmore;
 
     public PlaylistAdapter(Context context, ArrayList<Playlist> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+        viewmore = false;
+    }
+
+    public PlaylistAdapter(Context context, ArrayList<Playlist> arrayList, boolean viewmore) {
+        this.context = context;
+        this.arrayList = arrayList;
+        this.viewmore = viewmore;
     }
 
     @NonNull
@@ -46,7 +53,14 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        if (arrayList != null) {
+            if (viewmore && arrayList.size() > 4) {
+                return 4;
+            }
+            else
+                return  arrayList.size();
+        }
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

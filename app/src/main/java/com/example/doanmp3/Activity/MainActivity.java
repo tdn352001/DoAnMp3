@@ -17,6 +17,7 @@ import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment;
 import com.example.doanmp3.Fragment.SearchFragment;
 import com.example.doanmp3.Fragment.UserFragment;
+import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public static User user;
     public static boolean success;
     public static ArrayList<Playlist> userPlaylist;
+    public static ArrayList<BaiHat> userbaihats;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,7 +175,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void GetBaiHatYeuThich() {
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatYeuThich(user.getIdUser());
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                userbaihats = (ArrayList<BaiHat>) response.body();
+                if(userbaihats == null)
+                    userbaihats = new ArrayList<>();
+            }
 
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+            }
+        });
+    }
 
 
 }

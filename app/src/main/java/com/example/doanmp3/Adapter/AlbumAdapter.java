@@ -17,16 +17,23 @@ import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
+public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> {
 
     Context context;
     ArrayList<Album> arrayList;
+    boolean viewmore;
 
     public AlbumAdapter(Context context, ArrayList<Album> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+        viewmore = false;
+    }
+
+    public AlbumAdapter(Context context, ArrayList<Album> arrayList, boolean viewmore) {
+        this.context = context;
+        this.arrayList = arrayList;
+        this.viewmore = viewmore;
     }
 
     @NonNull
@@ -34,7 +41,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dong_all_album, parent, false);
-
 
 
         return new ViewHolder(view);
@@ -50,12 +56,20 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        if (arrayList != null) {
+            if (viewmore && arrayList.size() > 4) {
+                return 4;
+            }
+            else
+                return  arrayList.size();
+        }
+        return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView TenCaSi, TenAlbum;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

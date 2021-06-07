@@ -75,8 +75,8 @@ public class SearchFragment extends Fragment {
 
     /* Phần Result*/
     CoordinatorLayout ResultLayout;
-    TabLayout tabLayout;
-    ViewPager viewPager;
+    public static TabLayout tabLayout;
+    public static ViewPager viewPager;
     ViewPagerAdapter adapterSearch;
 
     int progress = 0; // Tiến Trình Lấy Kết Quả
@@ -90,6 +90,7 @@ public class SearchFragment extends Fragment {
 
 
     // Fragment kết quả
+    AllSearchFragment allSearchFragment = new AllSearchFragment();
     SearchbaihatFragment searchbaihatFragment = new SearchbaihatFragment();
     SearchalbumFragment searchalbumFragment = new SearchalbumFragment();
     SearchcasiFragment searchcasiFragment = new SearchcasiFragment();
@@ -169,16 +170,16 @@ public class SearchFragment extends Fragment {
                     ResultLayout.setVisibility(View.GONE);
                     RecentLayout.setVisibility(View.VISIBLE);
 
-                    if(SearchbaihatFragment.arrayList != null)
-                    SearchbaihatFragment.arrayList.clear();
+                    if (SearchbaihatFragment.arrayList != null)
+                        SearchbaihatFragment.arrayList.clear();
 
-                    if(SearchcasiFragment.arrayList != null)
-                    SearchcasiFragment.arrayList.clear();
+                    if (SearchcasiFragment.arrayList != null)
+                        SearchcasiFragment.arrayList.clear();
 
-                    if(SearchalbumFragment.arrayList != null)
+                    if (SearchalbumFragment.arrayList != null)
                         SearchalbumFragment.arrayList.clear();
 
-                    if(SearchplaylistFragment.arrayList != null)
+                    if (SearchplaylistFragment.arrayList != null)
                         SearchplaylistFragment.arrayList.clear();
 
                 }
@@ -464,7 +465,7 @@ public class SearchFragment extends Fragment {
 
         // List Fragment kết quả
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new AllSearchFragment());
+        fragments.add(allSearchFragment);
         fragments.add(searchbaihatFragment);
         fragments.add(searchalbumFragment);
         fragments.add(searchcasiFragment);
@@ -495,12 +496,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHats = (ArrayList<BaiHat>) response.body();
-                if(baiHats == null)
+                if (baiHats == null)
                     baiHats = new ArrayList<>();
                 searchbaihatFragment.SetRV();
                 progress++;
-                if (progress > 2)
+                if (progress > 3) {
                     progressDialog.dismiss();
+                    allSearchFragment.GetResult();
+                }
             }
 
             @Override
@@ -511,18 +514,20 @@ public class SearchFragment extends Fragment {
     }
 
     public void SearchAlbum(String query) {
-        albums =null;
+        albums = null;
         Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
         callback.enqueue(new Callback<List<Album>>() {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
                 albums = (ArrayList<Album>) response.body();
-                if(albums == null)
+                if (albums == null)
                     albums = new ArrayList<>();
                 searchalbumFragment.SetRv();
                 progress++;
-                if (progress > 2)
+                if (progress > 3) {
                     progressDialog.dismiss();
+                    allSearchFragment.GetResult();
+                }
             }
 
             @Override
@@ -539,12 +544,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
                 caSis = (ArrayList<CaSi>) response.body();
-                if(caSis == null)
+                if (caSis == null)
                     caSis = new ArrayList<>();
                 searchcasiFragment.SetRV();
                 progress++;
-                if (progress > 2)
+                if (progress > 3) {
                     progressDialog.dismiss();
+                    allSearchFragment.GetResult();
+                }
             }
 
             @Override
@@ -561,12 +568,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 playlists = (ArrayList<Playlist>) response.body();
-                if(playlists == null)
+                if (playlists == null)
                     playlists = new ArrayList<>();
                 searchplaylistFragment.SetRv();
                 progress++;
-                if (progress > 3)
+                if (progress > 3) {
                     progressDialog.dismiss();
+                    allSearchFragment.GetResult();
+                }
             }
 
             @Override

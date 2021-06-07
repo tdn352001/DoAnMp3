@@ -44,20 +44,18 @@ public class SearchbaihatFragment extends Fragment {
 
     private void SetRCV() {
         if (arrayList != null) {
-            if (SearchFragment.baiHats != null) {
-                if (arrayList.size() > 0) {
-                    recyclerView.removeAllViews();
-                    adapter = new SearchSongAdapter(getContext(), arrayList, true);
-                    recyclerView.setAdapter(adapter);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                    recyclerView.setLayoutManager(linearLayoutManager);
-                    textView.setVisibility(View.INVISIBLE);
-                } else
-                    textView.setVisibility(View.VISIBLE);
+            if (arrayList.size() > 0) {
+                recyclerView.removeAllViews();
+                adapter = new SearchSongAdapter(getContext(), arrayList, true);
+                recyclerView.setAdapter(adapter);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                textView.setVisibility(View.INVISIBLE);
             } else
                 textView.setVisibility(View.VISIBLE);
-        }
+        } else
+            textView.setVisibility(View.VISIBLE);
     }
 
 
@@ -80,7 +78,7 @@ public class SearchbaihatFragment extends Fragment {
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         recyclerView.setLayoutManager(linearLayoutManager);
                         textView.setVisibility(View.INVISIBLE);
-                    } else{
+                    } else {
                         textView.setVisibility(View.VISIBLE);
                         textView.setText("Không Tìm Thấy Kết Quả");
                     }
