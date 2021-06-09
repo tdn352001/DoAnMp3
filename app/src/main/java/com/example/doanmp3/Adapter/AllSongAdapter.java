@@ -27,8 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
-import com.example.doanmp3.Fragment.UserBaiHatFragment;
-import com.example.doanmp3.Fragment.UserPlaylistFragment;
+import com.example.doanmp3.Fragment.UserFragment.UserBaiHatFragment;
+import com.example.doanmp3.Fragment.UserFragment.UserPlaylistFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;

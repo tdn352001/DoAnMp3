@@ -14,10 +14,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
-import com.example.doanmp3.Fragment.HomeFragment;
-import com.example.doanmp3.Fragment.SearchFragment;
-import com.example.doanmp3.Fragment.UserFragment;
+import com.example.doanmp3.Fragment.HomeFragment.HomeFragment;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
+import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.ChuDeTheLoai;
+import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean success;
     public static ArrayList<Playlist> userPlaylist;
     public static ArrayList<BaiHat> userbaihats;
+    public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +58,10 @@ public class MainActivity extends AppCompatActivity {
         SetUpViewPager();
         setupBottomNavigation();
         GetUserPlaylist();
-
-
+        GetBaiHatYeuThich();
+        GetBaiHatRecent();
+        GetKeyWordRecent();
+        GetCategory();
     }
 
 
@@ -157,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         backtime = System.currentTimeMillis();
     }
 
-
     private void GetUserPlaylist() {
         DataService dataService = APIService.getUserService();
         Call<List<Playlist>> callback = dataService.GetUserPlaylist(MainActivity.user.getIdUser());
@@ -173,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void GetBaiHatYeuThich() {
         DataService dataService = APIService.getService();
@@ -192,5 +195,69 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void GetBaiHatRecent(){
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                SearchFragment.baihatrecents = (ArrayList<BaiHat>) response.body();
+                if(SearchFragment.baihatrecents == null){
+                    SearchFragment.baihatrecents = new ArrayList<>();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void GetKeyWordRecent(){
+        DataService dataService = APIService.getUserService();
+        Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<KeyWord>>() {
+            @Override
+            public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
+                SearchFragment.keyWordArrayList = (ArrayList<KeyWord>) response.body();
+                if(SearchFragment.keyWordArrayList == null)
+                    SearchFragment.keyWordArrayList = new ArrayList<>();
+            }
+
+            @Override
+            public void onFailure(Call<List<KeyWord>> call, Throwable t) {
+            }
+        });
+    }
+
+    public void GetCategory(){
+        DataService dataService = APIService.getService();
+        Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
+        Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
+        callChuDe.enqueue(new Callback<List<ChuDeTheLoai>>() {
+            @Override
+            public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
+                chudelist = (ArrayList<ChuDeTheLoai>) response.body();
+
+                callTheLoai.enqueue(new Callback<List<ChuDeTheLoai>>() {
+                    @Override
+                    public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
+                        theloailist = (ArrayList<ChuDeTheLoai>) response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
+
+            }
+        });
+    }
 }

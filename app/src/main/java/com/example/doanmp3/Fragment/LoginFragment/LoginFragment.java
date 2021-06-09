@@ -1,4 +1,4 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -104,6 +104,13 @@ public class LoginFragment extends Fragment {
                         Login(email, password);
                     }
                 }
+            }
+        });
+
+        txtForget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
             }
         });
 

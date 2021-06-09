@@ -1,4 +1,4 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.UserFragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -24,6 +24,7 @@ import com.example.doanmp3.Activity.LoginActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
+import com.example.doanmp3.Fragment.LoginFragment.LoginFragment;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

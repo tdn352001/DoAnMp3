@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
@@ -92,11 +93,15 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
                     if (!IsSearch) {
                         intent.putExtra("mangbaihat", arrayList);
                         intent.putExtra("position", getPosition());
+                        DanhSachBaiHatActivity.category ="Playlist";
+                        DanhSachBaiHatActivity.TenCategoty ="Bài hát gần đây";
                         context.startActivity(intent);
                     }
                     else{
                         ArrayList<BaiHat> BaiHatSearch = new ArrayList<>();
                         BaiHatSearch.add(arrayList.get(getPosition()));
+                        DanhSachBaiHatActivity.category ="Danh Mục";
+                        DanhSachBaiHatActivity.TenCategoty ="Unknown";
                         intent.putExtra("mangbaihat", BaiHatSearch);
                         intent.putExtra("position", 0);
                         context.startActivity(intent);

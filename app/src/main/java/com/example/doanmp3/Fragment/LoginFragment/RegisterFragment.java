@@ -1,4 +1,4 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -16,6 +15,7 @@ import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.regex.Pattern;
@@ -30,7 +30,7 @@ public class RegisterFragment extends Fragment {
     ProgressDialog mProgressDialog;
     View view;
     TextInputEditText edtEmail, edtUsername, edtPassword, edtCpassword;
-    AppCompatButton btnRegister;
+    MaterialButton btnRegister;
     TextView txtlogin;
     TextView a;
     public boolean thanhcong;

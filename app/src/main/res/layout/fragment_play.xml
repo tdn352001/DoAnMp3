@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.PlayFragment">
+    tools:context=".Fragment.PlayFragment.PlayFragment">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout_playfragment"
         android:background="@color/noname"

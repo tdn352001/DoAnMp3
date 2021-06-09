@@ -1,7 +1,8 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class AllSearchFragment extends Fragment {
         btnAlbum = view.findViewById(R.id.btn_viewmore_album_result);
         btnCaSi = view.findViewById(R.id.btn_viewmore_casi_result);
         btnPlaylist = view.findViewById(R.id.btn_viewmore_playlist_result);
+
     }
 
     private void ClickViewMore() {
@@ -109,13 +111,14 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void SaveResultSearch() {
-        countResult =0;
+        countResult = 0;
         progress = 0;
         SetReultBaiHat();
         SetReultAlbum();
         SetReultCaSi();
         SetReultPlaylist();
     }
+
     private void SetReultBaiHat() {
         if (SearchbaihatFragment.arrayList != null) {
             if (SearchbaihatFragment.arrayList.size() > 0) {
@@ -168,8 +171,8 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void SetReultCaSi() {
-        if(SearchcasiFragment.arrayList != null){
-            if(SearchcasiFragment.arrayList.size() > 0){
+        if (SearchcasiFragment.arrayList != null) {
+            if (SearchcasiFragment.arrayList.size() > 0) {
                 adapterSinger = new AllSingerAdapter(getContext(), SearchcasiFragment.arrayList, true);
                 rvCaSi.setAdapter(adapterSinger);
                 rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -192,8 +195,8 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void SetReultPlaylist() {
-        if(SearchplaylistFragment.arrayList != null){
-            if(SearchplaylistFragment.arrayList.size() > 0){
+        if (SearchplaylistFragment.arrayList != null) {
+            if (SearchplaylistFragment.arrayList.size() > 0) {
                 adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
                 rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 rvPlaylist.setAdapter(adapterPlaylist);
@@ -216,34 +219,43 @@ public class AllSearchFragment extends Fragment {
 
     public void GetResult() {
         Handler handler = new Handler();
-        progress = 0;
-        countResult = 0;
+
 
         Runnable runbaihat = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 300);
+                handler.postDelayed(this, 100);
 
-                // Lấy Dữ Liệu Bài Hát
                 if (SearchFragment.baiHats != null) {
+                    Log.e("BBB", " Lấy Thành Công dữ liệu bài hát");
+                    progress++;
                     if (SearchFragment.baiHats.size() > 0) {
                         adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baihatrecents, true, true);
                         rvBaiHat.setAdapter(adapterSong);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         rvBaiHat.setLayoutManager(linearLayoutManager);
-                        progress++;
+                        countResult++;
                         if (progress > 0) {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
+                        Log.e("BBB", "tiến trình bài hát:" + progress  );
+                        Log.e("BBB", "Kết quả bài hát:" + countResult  );
                     } else {
                         layoutBaihat.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
+                        if (progress == 4) {
+                            if (countResult == 0) {
+                                progress = 0;
+                                linearLayout.setVisibility(View.GONE);
+                                textView.setVisibility(View.VISIBLE);
+                                textView.setText("Không Tìm Thấy Kết Quả");
+                            }else{
+                                textView.setVisibility(View.GONE);
+                                linearLayout.setVisibility(View.VISIBLE);
+                            }
                         }
+
                     }
                     handler.removeCallbacks(this);
                 }
@@ -253,18 +265,23 @@ public class AllSearchFragment extends Fragment {
         Runnable runalbum = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 300);
+                handler.postDelayed(this, 100);
                 if (SearchFragment.albums != null) {
+                    Log.e("BBB", " Lấy Thành Công dữ liệu album");
+                    progress++;
                     if (SearchFragment.albums.size() > 0) {
                         adapterAlbum = new AlbumAdapter(getContext(), SearchFragment.albums, true);
                         rvAlbum.setAdapter(adapterAlbum);
                         rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        progress++;
+                        countResult++;
                         if (progress > 0) {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
+                        Log.e("BBB", "thành công album:" + progress  );
+                        Log.e("BBB", "Kết quả album:" + countResult  );
                     } else {
+                        Log.e("BBB", "failed album:" + progress  );
                         layoutAlbum.setVisibility(View.GONE);
                         if (progress == 4 && countResult == 0) {
                             linearLayout.setVisibility(View.GONE);
@@ -281,13 +298,15 @@ public class AllSearchFragment extends Fragment {
         Runnable runcasi = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 100);
                 if (SearchFragment.caSis != null) {
+                    progress++;
+                    Log.e("BBB", " Lấy Thành Công dữ liệu casi");
                     if (SearchFragment.caSis.size() > 0) {
                         adapterSinger = new AllSingerAdapter(getContext(), SearchFragment.caSis, true);
                         rvCaSi.setAdapter(adapterSinger);
                         rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        progress++;
+                        countResult++;
                         if (progress > 0) {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
@@ -309,17 +328,21 @@ public class AllSearchFragment extends Fragment {
         Runnable runplaylist = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 100);
                 if (SearchFragment.playlists != null) {
+                    progress++;
+                    Log.e("BBB", " Lấy Thành Công dữ liệu playlsit");
                     if (SearchFragment.playlists.size() > 0) {
                         adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
                         rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
                         rvPlaylist.setAdapter(adapterPlaylist);
-                        progress++;
+                        countResult++;
                         if (progress > 0) {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
+                        Log.e("BBB", "failed playlsit:" + progress  );
+                        Log.e("BBB", "Kết quả playlsit:" + countResult  );
                     } else {
                         layoutPlaylist.setVisibility(View.GONE);
                         if (progress == 4 && countResult == 0) {
@@ -327,8 +350,9 @@ public class AllSearchFragment extends Fragment {
                             textView.setVisibility(View.VISIBLE);
                             textView.setText("Không Tìm Thấy Kết Quả");
                         }
-                        handler.removeCallbacks(this);
+
                     }
+                    handler.removeCallbacks(this);
                 }
             }
         };
@@ -336,7 +360,7 @@ public class AllSearchFragment extends Fragment {
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 500);
+                handler.postDelayed(this, 100);
                 if (rvPlaylist != null) {
                     rvBaiHat.removeAllViews();
                     rvAlbum.removeAllViews();
@@ -345,17 +369,19 @@ public class AllSearchFragment extends Fragment {
                     textView.setText("Đang Lấy Dữ Liệu");
                     textView.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.GONE);
-                    handler.postDelayed(runbaihat, 500);
-                    handler.postDelayed(runalbum, 400);
-                    handler.postDelayed(runcasi, 200);
-                    handler.postDelayed(runplaylist, 200);
+                    progress = 0;
+                    countResult = 0;
+                    handler.postDelayed(runbaihat, 100);
+                    handler.postDelayed(runalbum, 100);
+                    handler.postDelayed(runcasi, 100);
+                    handler.postDelayed(runplaylist, 100);
                     handler.removeCallbacks(this);
                 }
             }
         };
 
 
-        handler.postDelayed(run, 500);
+        handler.postDelayed(run, 100);
 
 
     }

@@ -1,22 +1,19 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.PlayFragment;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Adapter.PlaySongAdapter;
 import com.example.doanmp3.Model.BaiHat;
-import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 
 import java.util.ArrayList;

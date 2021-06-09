@@ -1,4 +1,4 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.PlayFragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;

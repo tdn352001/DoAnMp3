@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.UserBaiHatFragment">
+    tools:context=".Fragment.UserFragment.UserBaiHatFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Fragment.UserBaiHatFragment">
+        tools:context=".Fragment.UserFragment.UserBaiHatFragment">
 
         <RelativeLayout
             android:id="@+id/relative_btn_add_playlist"

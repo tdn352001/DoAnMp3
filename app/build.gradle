@@ -29,6 +29,9 @@ android {
 }
 
 dependencies {
+    implementation files('libs/mail.jar')
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
     implementation "com.wefika:flowlayout:0.4.1"
     implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
@@ -45,7 +48,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-    implementation 'androidx.appcompat:appcompat:1.4.0-alpha01'
+    implementation 'androidx.appcompat:appcompat:1.4.0-alpha02'
 
 
     testImplementation 'junit:junit:4.13.2'

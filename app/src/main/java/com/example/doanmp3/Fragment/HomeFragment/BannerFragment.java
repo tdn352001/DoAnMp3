@@ -1,19 +1,16 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.HomeFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Adapter.BannerAdapter;
-import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;

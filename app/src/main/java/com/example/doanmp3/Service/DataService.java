@@ -110,6 +110,10 @@ public interface DataService {
     Call<User> RegisterUser(@Field("email") String email, @Field("username") String username, @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("forgotpassword.php")
+    Call<String> ForgotPassword(@Field("email") String Email);
+
+    @FormUrlEncoded
     @POST("uploadhinhanh.php")
     Call<String> UploadPhoto(@Field("hinhanh") String image, @Field("filename") String tenfile, @Field("IdUser") String Id);
 

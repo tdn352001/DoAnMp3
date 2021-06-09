@@ -1,11 +1,11 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.UserFragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,15 +16,8 @@ import com.example.doanmp3.Adapter.AllSongAdapter;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class UserBaiHatFragment extends Fragment {
 
@@ -59,15 +52,12 @@ public class UserBaiHatFragment extends Fragment {
     }
 
     public void SetupBaiHatYeuThich() {
-        if (arrayList != null) {
-            if (arrayList.size() > 0) {
-                textView.setVisibility(View.INVISIBLE);
-                SetRecyclerView();
-            } else
-                textView.setVisibility(View.VISIBLE);
-        } else {
+
+        if (arrayList.size() > 0) {
+            textView.setVisibility(View.INVISIBLE);
+            SetRecyclerView();
+        } else
             textView.setVisibility(View.VISIBLE);
-        }
     }
 
     public void SetRecyclerView() {
@@ -79,20 +69,20 @@ public class UserBaiHatFragment extends Fragment {
     }
 
     private void GetBaiHatYeuThich() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatYeuThich(user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                arrayList = (ArrayList<BaiHat>) response.body();
-                SetupBaiHatYeuThich();
+            public void run() {
+                handler.postDelayed(this, 300);
+                if(MainActivity.userbaihats != null){
+                    arrayList = MainActivity.userbaihats;
+                    SetupBaiHatYeuThich();
+                    handler.removeCallbacks(this);
+                }
             }
+        };
 
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-            }
-        });
+        handler.postDelayed(runnable, 300);
     }
 
     public static boolean checkLiked(String IdBaiHat) {

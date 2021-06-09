@@ -1,4 +1,4 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
 import android.util.Log;

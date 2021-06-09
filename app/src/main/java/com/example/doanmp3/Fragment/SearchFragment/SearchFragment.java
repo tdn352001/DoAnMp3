@@ -1,9 +1,9 @@
-package com.example.doanmp3.Fragment;
+package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +33,6 @@ import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -58,11 +57,11 @@ public class SearchFragment extends Fragment {
     RelativeLayout SearchRecentLayout;
     TextView btnDelete;
     FlowLayout flowLayout;
-    public ArrayList<KeyWord> keyWordArrayList;
+    public static ArrayList<KeyWord> keyWordArrayList;
 
     // Bài Hát Gần Đây
-    MaterialButton btnViewMore;
-    RelativeLayout SongRecentLayout;
+    public static MaterialButton btnViewMore;
+    public static RelativeLayout SongRecentLayout;
     RecyclerView rvBaiHatRecent;
     public static ArrayList<BaiHat> baihatrecents;
     public static SearchSongAdapter searchSongAdapter;
@@ -160,6 +159,7 @@ public class SearchFragment extends Fragment {
                     SearchAlbum(query);
                     SearchCaSi(query);
                     SearchPlaylist(query);
+                    allSearchFragment.GetResult();
                 }
                 return true;
             }
@@ -201,42 +201,44 @@ public class SearchFragment extends Fragment {
     // Lấy Từ Khóa Tìm Kiếm Gần Đây
 
     private void GetResentKeyWord() {
-        DataService dataService = APIService.getUserService();
-        Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<KeyWord>>() {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
-            public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
-                keyWordArrayList = (ArrayList<KeyWord>) response.body();
-                SetFlowLayout();
+            public void run() {
+                handler.postDelayed(this, 250);
+                SearchRecentLayout.setVisibility(View.GONE);
+                if(keyWordArrayList != null){
+                    SetFlowLayout();
+                    handler.removeCallbacks(this);
+                }
             }
+        };
 
-            @Override
-            public void onFailure(Call<List<KeyWord>> call, Throwable t) {
-            }
-        });
+        handler.postDelayed(runnable, 250);
     }
 
     // SetLayout Flow
 
+
     public void SetFlowLayout() {
-        Log.e("BBB", "Set Flowlayout");
+
 
         if (flowLayout == null)
             return;
         flowLayout.removeAllViews();
+
         while (keyWordArrayList.size() > 15)
             keyWordArrayList.remove(keyWordArrayList.size() - 1);
 
-        if (keyWordArrayList != null) {
-            if (keyWordArrayList.size() > 0) {
-                for (int i = 0; i < keyWordArrayList.size(); i++) {
-                    AddViewIntoFlowLayout(keyWordArrayList.get(i));
-                }
-                SearchRecentLayout.setVisibility(View.VISIBLE);
-            } else
-                SearchRecentLayout.setVisibility(View.GONE);
+
+        if (keyWordArrayList.size() > 0) {
+            for (int i = 0; i < keyWordArrayList.size(); i++) {
+                AddViewIntoFlowLayout(keyWordArrayList.get(i));
+            }
+            SearchRecentLayout.setVisibility(View.VISIBLE);
         } else
             SearchRecentLayout.setVisibility(View.GONE);
+
     }
 
     //Thêm View vào layout
@@ -268,13 +270,11 @@ public class SearchFragment extends Fragment {
         if (keyWordArrayList == null)
             keyWordArrayList = new ArrayList<>();
         if (!checkSearchBefore(keyword)) {
-            Log.e("BBB", keyword);
             Call<String> callback = APIService.getUserService().Search(MainActivity.user.getIdUser(), keyword);
             callback.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     String IdKeyWord = (String) response.body();
-                    Log.e("BBB", IdKeyWord);
                     if (!IdKeyWord.equals("F")) {
                         KeyWord keyWord = new KeyWord(IdKeyWord, keyword);
                         keyWordArrayList.add(0, keyWord);
@@ -304,36 +304,43 @@ public class SearchFragment extends Fragment {
 
     // lấy Bài Hát Nghe Gần Đây
     private void GetRecentSong() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                baihatrecents = (ArrayList<BaiHat>) response.body();
-                if (baihatrecents == null) {
-                    baihatrecents = new ArrayList<>();
-                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false);
-                    SongRecentLayout.setVisibility(View.GONE);
-                } else {
-                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false);
-                    searchSongAdapter.notifyDataSetChanged();
+            public void run() {
+                handler.postDelayed(this, 250);
+                SongRecentLayout.setVisibility(View.GONE);
+                if(baihatrecents != null){
+                    if (baihatrecents.size() > 0)
+                        SongRecentLayout.setVisibility(View.VISIBLE);
+                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
                     rvBaiHatRecent.setAdapter(searchSongAdapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                     rvBaiHatRecent.setLayoutManager(linearLayoutManager);
-
-
-                    if (baihatrecents.size() > 5)
-                        btnViewMore.setVisibility(View.VISIBLE);
-
+                    handler.removeCallbacks(this);
                 }
             }
+        };
+        handler.postDelayed(runnable, 250);
 
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
 
-            }
-        });
+
+
+    }
+    // Thêm Bài Hát Gần Đây
+    public static void AddBaiHatRecent(BaiHat baiHat){
+        if(!CheckinSongRecent(baiHat.getIdBaiHat())){
+            baihatrecents.add(0, baiHat);
+            searchSongAdapter.notifyDataSetChanged();
+            if(baihatrecents.size() > 4)
+                btnViewMore.setVisibility(View.VISIBLE);
+
+            if(SongRecentLayout.getVisibility() == View.GONE)
+                SongRecentLayout.setVisibility(View.VISIBLE);
+
+        }
     }
 
     // Kiểm Tra Bài Hát Có Được Chơi Gần Đây Không
@@ -343,50 +350,32 @@ public class SearchFragment extends Fragment {
                 if (baihatrecents.get(i).getIdBaiHat().equals(IdBaihat))
                     return true;
         }
+        else
+            return true;
 
         return false;
     }
 
     //Lấy Danh Sách Category
     private void SetCategoty() {
-        DataService dataService = APIService.getService();
-        Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
-        Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
-
-        callChuDe.enqueue(new Callback<List<ChuDeTheLoai>>() {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
             @Override
-            public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                ArrayList<ChuDeTheLoai> ChuDeList = (ArrayList<ChuDeTheLoai>) response.body();
-                categoryList = ChuDeList;
-                callTheLoai.enqueue(new Callback<List<ChuDeTheLoai>>() {
-                    @Override
-                    public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                        ArrayList<ChuDeTheLoai> TheLoaiList = (ArrayList<ChuDeTheLoai>) response.body();
-                        if (categoryList != null) {
-                            categoryList.addAll(TheLoaiList);
-                            categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
-                            categoryAdapter.setTongChuDe(categoryList.size() - TheLoaiList.size());
-                            rvcategory.setAdapter(categoryAdapter);
-                            rvcategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-                    }
-                });
-
+            public void run() {
+                handler.postDelayed(this, 300);
+                if(MainActivity.chudelist != null && MainActivity.theloailist != null){
+                    categoryList = MainActivity.chudelist;
+                    categoryList.addAll(MainActivity.theloailist);
+                    categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
+                    categoryAdapter.setTongChuDe(categoryList.size() - MainActivity.theloailist.size());
+                    rvcategory.setAdapter(categoryAdapter);
+                    rvcategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    handler.removeCallbacks(this);
+                }
             }
+        };
 
-            @Override
-            public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-            }
-        });
-
-
+        handler.postDelayed(runnable, 300);
     }
 
     // Sự kiến click của layout gần đây
@@ -442,10 +431,10 @@ public class SearchFragment extends Fragment {
                 if (searchSongAdapter != null) {
                     if (searchSongAdapter.isViewMore()) {
                         searchSongAdapter.setViewMore(false);
-                        btnViewMore.setText("Xem Thêm");
+                        btnViewMore.setText("Hiển Thị Ít");
                     } else {
                         searchSongAdapter.setViewMore(true);
-                        btnViewMore.setText("Hiển Thị Ít");
+                        btnViewMore.setText("Xem Thêm");
                     }
                 }
             }
@@ -500,9 +489,9 @@ public class SearchFragment extends Fragment {
                     baiHats = new ArrayList<>();
                 searchbaihatFragment.SetRV();
                 progress++;
-                if (progress > 3) {
+                if (progress > 2) {
                     progressDialog.dismiss();
-                    allSearchFragment.GetResult();
+
                 }
             }
 
@@ -524,9 +513,9 @@ public class SearchFragment extends Fragment {
                     albums = new ArrayList<>();
                 searchalbumFragment.SetRv();
                 progress++;
-                if (progress > 3) {
+                if (progress > 2) {
                     progressDialog.dismiss();
-                    allSearchFragment.GetResult();
+//                    allSearchFragment.GetResult();
                 }
             }
 
@@ -548,9 +537,9 @@ public class SearchFragment extends Fragment {
                     caSis = new ArrayList<>();
                 searchcasiFragment.SetRV();
                 progress++;
-                if (progress > 3) {
+                if (progress > 2) {
                     progressDialog.dismiss();
-                    allSearchFragment.GetResult();
+//                    allSearchFragment.GetResult();
                 }
             }
 
@@ -572,9 +561,9 @@ public class SearchFragment extends Fragment {
                     playlists = new ArrayList<>();
                 searchplaylistFragment.SetRv();
                 progress++;
-                if (progress > 3) {
+                if (progress > 2) {
                     progressDialog.dismiss();
-                    allSearchFragment.GetResult();
+//                    allSearchFragment.GetResult();
                 }
             }
 
@@ -585,4 +574,125 @@ public class SearchFragment extends Fragment {
         });
     }
 
+
+  /*
+    Phần Cũ ( Dự Phòng Phần Mới bị lỗi)
+    -- Lấy Bài Hát Gần Đây--
+    private void GetRecentSong(){
+                DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                baihatrecents = (ArrayList<BaiHat>) response.body();
+                if (baihatrecents == null) {
+                    baihatrecents = new ArrayList<>();
+                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
+                    SongRecentLayout.setVisibility(View.GONE);
+                } else {
+                    if(baihatrecents.size() == 0)
+                        SongRecentLayout.setVisibility(View.GONE);
+
+                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
+                    searchSongAdapter.notifyDataSetChanged();
+                    rvBaiHatRecent.setAdapter(searchSongAdapter);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    rvBaiHatRecent.setLayoutManager(linearLayoutManager);
+
+
+                    if (baihatrecents.size() > 5)
+                        btnViewMore.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    -- Lấy Từ Khóa Tìm Kiếm Gần Đây--
+
+        private void GetResentKeyWord() {
+        DataService dataService = APIService.getUserService();
+        Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<KeyWord>>() {
+            @Override
+            public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
+                keyWordArrayList = (ArrayList<KeyWord>) response.body();
+                SetFlowLayout();
+            }
+
+            @Override
+            public void onFailure(Call<List<KeyWord>> call, Throwable t) {
+            }
+        });
+    }
+
+
+    public void SetFlowLayout() {
+
+        if (flowLayout == null)
+            return;
+        flowLayout.removeAllViews();
+        while (keyWordArrayList.size() > 15)
+            keyWordArrayList.remove(keyWordArrayList.size() - 1);
+
+        if (keyWordArrayList != null) {
+            if (keyWordArrayList.size() > 0) {
+                for (int i = 0; i < keyWordArrayList.size(); i++) {
+                    AddViewIntoFlowLayout(keyWordArrayList.get(i));
+                }
+                SearchRecentLayout.setVisibility(View.VISIBLE);
+            } else
+                SearchRecentLayout.setVisibility(View.GONE);
+        } else
+            SearchRecentLayout.setVisibility(View.GONE);
+    }
+
+        //Lấy Danh Sách Category
+    private void SetCategoty() {
+        DataService dataService = APIService.getService();
+        Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
+        Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
+
+        callChuDe.enqueue(new Callback<List<ChuDeTheLoai>>() {
+            @Override
+            public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
+                ArrayList<ChuDeTheLoai> ChuDeList = (ArrayList<ChuDeTheLoai>) response.body();
+                categoryList = ChuDeList;
+                callTheLoai.enqueue(new Callback<List<ChuDeTheLoai>>() {
+                    @Override
+                    public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
+                        ArrayList<ChuDeTheLoai> TheLoaiList = (ArrayList<ChuDeTheLoai>) response.body();
+                        if (categoryList != null) {
+                            categoryList.addAll(TheLoaiList);
+                            categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
+                            categoryAdapter.setTongChuDe(categoryList.size() - TheLoaiList.size());
+                            rvcategory.setAdapter(categoryAdapter);
+                            rvcategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+*/
 }

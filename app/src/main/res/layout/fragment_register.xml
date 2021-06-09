@@ -153,19 +153,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_register"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_below="@id/edt_input_cpassword_register"
-            android:layout_marginHorizontal="100dp"
-            android:layout_marginTop="35dp"
-            android:background="@drawable/rounded_rectangle_background"
-            android:paddingVertical="12dp"
-            android:elevation="40dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#099A94"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="30dp"
             android:text="Đăng Ký"
             android:textAllCaps="false"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            tool:cornerRadius="30dp"
+            tool:elevation="35dp"/>
 
 
         <TextView

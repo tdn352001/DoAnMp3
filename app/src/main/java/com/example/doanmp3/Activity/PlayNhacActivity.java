@@ -19,9 +19,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerPlaySongAdapter;
-import com.example.doanmp3.Fragment.ListSongFragment;
-import com.example.doanmp3.Fragment.PlayFragment;
-import com.example.doanmp3.Fragment.SearchFragment;
+import com.example.doanmp3.Fragment.PlayFragment.ListSongFragment;
+import com.example.doanmp3.Fragment.PlayFragment.PlayFragment;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -306,6 +306,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             mediaPlayer.prepare();
             mediaPlayer.start();
             UploadToPlayRecent();
+            Log.e("BBB", arrayList.get(Pos).getIdBaiHat());
             btnPlay.setImageResource(R.drawable.ic_pause);
             SetConTent();
             TimeSong();
@@ -323,16 +324,13 @@ public class PlayNhacActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     String result = (String) response.body();
+                    Log.e("BBB", result);
                     if (result.equals("S")) {
-
-                        if (!SearchFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
-                            SearchFragment.baihatrecents.add(0, arrayList.get(Pos));
-                            Log.e("BBB", SearchFragment.baihatrecents.size() + "");
-                            SearchFragment.searchSongAdapter.notifyDataSetChanged();
-                        }
-                        else{
-                            Log.e("BBB", "Da Ton Tai");
-                        }
+//                        if (!SearchFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
+//                            SearchFragment.baihatrecents.add(0, arrayList.get(Pos));
+//                            SearchFragment.searchSongAdapter.notifyDataSetChanged();
+//                        }
+                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
                     }
                 }
 
