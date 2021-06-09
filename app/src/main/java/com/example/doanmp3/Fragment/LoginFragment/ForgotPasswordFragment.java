@@ -72,32 +72,22 @@ public class ForgotPasswordFragment extends Fragment {
                             String iduser = response.body();
                             if (iduser == null) {
                                 progressDialog.dismiss();
-                                Toast.makeText(getContext(), "Không Tìm THấy Email Trên Hệ Thống", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Không Tìm Thấy Email Trên Hệ Thống", Toast.LENGTH_SHORT).show();
                             } else {
                                 Random random = new Random();
-                                int a = random.nextInt(99999 - 10000) + 10000;
+                                int code = random.nextInt(99999 - 10000) + 10000;
                                 Email email = new Email();
-                                if (email.Sendto(edtEmail.getText().toString(), "Quên Mật Khẩu", "Mật Khẩu Mới Của Bạn Là:" + a)) {
-                                    Call<String> callchangepassword = dataService.ChangePassword(a + "", iduser);
-                                    callchangepassword.enqueue(new Callback<String>() {
-                                        @Override
-                                        public void onResponse(Call<String> call, Response<String> response) {
-                                            progressDialog.dismiss();
-                                            Navigation.findNavController(view).navigateUp();
-                                            String result = (String) response.body();
-                                            if (result.equals("Thanh Cong"))
-                                                Toast.makeText(getContext(), "Mật Khẩu Đã Được Gửi Về Email Của Bạn", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<String> call, Throwable t) {
-                                            progressDialog.dismiss();
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_SHORT).show();
+                                if (email.Sendto(edtEmail.getText().toString(), "Quên Mật Khẩu", "Mã Xác Nhận Của Bạn là:" + code)) {
                                     progressDialog.dismiss();
-                                 }
+                                    Toast.makeText(getContext(), "Mã Xác Nhận Đã Được Gửi Đến Email Của Bạn", Toast.LENGTH_SHORT).show();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("iduser", iduser);
+                                    bundle.putInt("code", code);
+                                    Navigation.findNavController(view).navigate(R.id.action_forgotPasswordFragment_to_confirmCodeFragment, bundle);
+                                } else {
+                                    Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+                                    progressDialog.dismiss();
+                                }
                             }
                         }
 

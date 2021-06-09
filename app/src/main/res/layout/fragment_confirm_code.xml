@@ -1,14 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Fragment.LoginFragment.ConfirmCodeFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/img_login"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/music2" />
+        <!--    <View-->
+        <!--        android:background="@drawable/custom_background_color"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent"/>-->
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_login"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:text="Quên Mật Khẩu"
+            android:textColor="#0d6e6a"
+            android:textSize="45dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/newaccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/welcome"
+            android:layout_centerHorizontal="true"
+            android:text="Music Player siêu cấp Vip Pro"
+            android:textColor="#0d6e6a"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newaccount"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="30dp"
+            android:text="Nhập Mã Xác Nhận:"
+            android:textColor="#000"
+            android:textSize="28dp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edt_input_code_cf"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="18dp"
+            tool:boxCornerRadiusBottomEnd="10dp"
+            tool:boxCornerRadiusBottomStart="10dp"
+            tool:boxCornerRadiusTopEnd="10dp"
+            tool:helperText="Kiểm tra Email của bạn và nhập mã xác nhận"
+            tool:helperTextTextColor="#f21"
+            tool:boxCornerRadiusTopStart="10dp"
+            tool:boxStrokeColor="@color/boxInputFields"
+            tool:endIconMode="clear_text"
+            tool:hintTextColor="@color/boxInputFields"
+            tool:placeholderText="Email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_code_cf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mã Xác Nhận"
+                android:inputType="textEmailAddress"
+                android:padding="18dp"
+                android:textColorHint="#000"
+                android:textSize="22dp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cf_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_input_code_cf"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#099A94"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:text="Xác Nhận"
+            android:textAllCaps="false"
+            android:textSize="25dp"
+            tool:cornerRadius="45dp"
+            tool:elevation="35dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/btn_cf_code"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quay Trở Lại"
+                android:textColor="#0d6e6a"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_cf_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Đăng Nhập"
+                android:textColor="#070707"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
