@@ -2,6 +2,7 @@ package com.example.doanmp3.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.UserBaiHatPlaylistAdapter;
 import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
@@ -40,12 +42,14 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     String IdPlaylist;
     String TenPlaylist;
     public static ArrayList<BaiHat> arrayList;
+    public static User user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user_playlist);
+        Log.e("BBB", "die onCreate");
         AnhXa();
         GetIntent();
         SetupToolBar();
@@ -81,12 +85,13 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         if (intent.hasExtra("idplaylist"))
             IdPlaylist = intent.getStringExtra("idplaylist");
         TenPlaylist = intent.getStringExtra("tenplaylist");
+        btnAddBaiHat.setClickable(false);
     }
 
     private void GetBaiHatPlaylist() {
         arrayList = null;
         DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetUserBaiHatPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
+        Call<List<BaiHat>> callback = dataService.GetUserBaiHatPlaylist(user.getIdUser(), IdPlaylist);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
@@ -102,11 +107,14 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                         recyclerView.setLayoutManager(linearLayoutManager);
                     }
                 }
+                else
+                    arrayList = new ArrayList<>();
+                btnAddBaiHat.setClickable(true);
             }
 
             @Override
             public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-
+                btnAddBaiHat.setClickable(true);
             }
         });
     }
@@ -118,6 +126,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                 Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
                 intent.putExtra("idplaylist",IdPlaylist);
                 intent.putExtra("tenplaylist", TenPlaylist);
+                intent.putExtra("baihat", arrayList);
                 startActivity(intent);
             }
         });
@@ -139,6 +148,5 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

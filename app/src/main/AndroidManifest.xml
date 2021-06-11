@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
         <activity android:name=".Activity.AddBaiHatActivity">
-
         </activity>
         <activity android:name=".Activity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
@@ -24,6 +23,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".Activity.DetailSingerActivity" />
         <activity android:name=".Activity.DanhSachBaiHatActivity" />

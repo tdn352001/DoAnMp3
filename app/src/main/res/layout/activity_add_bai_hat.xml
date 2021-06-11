@@ -57,7 +57,7 @@
                 app:tabIndicator="@drawable/tab_indicator"
                 app:tabIndicatorAnimationMode="elastic"
                 app:tabIndicatorGravity="stretch"
-                app:tabMinWidth="20mm"
+                app:tabMinWidth="18mm"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@color/white" />
 

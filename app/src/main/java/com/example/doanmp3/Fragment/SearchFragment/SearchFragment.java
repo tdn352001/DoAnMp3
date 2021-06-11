@@ -183,6 +183,22 @@ public class SearchFragment extends Fragment {
                         SearchplaylistFragment.arrayList.clear();
 
                 }
+//                // Lưu Từ Khóa
+//                addKeyWord(newText);
+//
+//                //Hiển THị màn Hình kết quả, ẩn màn hình gần đây
+//                ResultLayout.setVisibility(View.VISIBLE);
+//                RecentLayout.setVisibility(View.GONE);
+//                viewPager.setCurrentItem(0);
+//
+//                // Lấy Dữ Liệu.
+//                progress = 0;
+//                progressDialog = ProgressDialog.show(getContext(), "Đang Lấy Dữ Liêu", "Loading....!", false, true);
+//                SearchBaiHat(newText);
+//                SearchAlbum(newText);
+//                SearchCaSi(newText);
+//                SearchPlaylist(newText);
+//                allSearchFragment.GetResult();
                 return true;
             }
         });

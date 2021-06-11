@@ -88,6 +88,7 @@ public class Online_AddFragment extends Fragment {
                             textView.setVisibility(View.GONE);
                             return;
                         }
+
                     }
                     textView.setVisibility(View.VISIBLE);
                     handler.removeCallbacks(this);

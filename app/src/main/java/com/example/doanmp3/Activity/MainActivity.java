@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.hasExtra("user")){
             user = (User) intent.getSerializableExtra("user");
+            DetailUserPlaylistActivity.user = user;
         }
 
     }
