@@ -1,5 +1,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/custom_background_toolbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,8 +8,8 @@
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/noname"
         android:fitsSystemWindows="true"
+        android:background="@android:color/transparent"
         android:paddingTop="5dp"
         app:elevation="4000dp">
 
@@ -41,9 +42,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
@@ -58,6 +59,7 @@
 
             <include
                 android:id="@+id/scrollview_result"
+                android:layout_marginTop="10dp"
                 layout="@layout/fragment_result_search"
                 android:visibility="gone"
                 android:layout_width="match_parent"

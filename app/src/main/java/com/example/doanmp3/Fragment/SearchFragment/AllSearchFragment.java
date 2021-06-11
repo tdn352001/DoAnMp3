@@ -2,7 +2,6 @@ package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,14 @@ import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.AllSingerAdapter;
 import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Adapter.SearchSongAdapter;
+import com.example.doanmp3.Model.Album;
+import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.Model.CaSi;
+import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+
+import java.util.ArrayList;
 
 public class AllSearchFragment extends Fragment {
 
@@ -41,6 +46,12 @@ public class AllSearchFragment extends Fragment {
     AlbumAdapter adapterAlbum;
     AllSingerAdapter adapterSinger;
     PlaylistAdapter adapterPlaylist;
+
+    //Arraylist
+    static ArrayList<BaiHat> baiHats;
+    static ArrayList<Album> albums;
+    static ArrayList<CaSi> caSis;
+    static ArrayList<Playlist> playlists;
 
 
     @Override
@@ -113,16 +124,17 @@ public class AllSearchFragment extends Fragment {
     private void SaveResultSearch() {
         countResult = 0;
         progress = 0;
-        SetReultBaiHat();
-        SetReultAlbum();
-        SetReultCaSi();
-        SetReultPlaylist();
+        SetResultBaiHat();
+        SetResultAlbum();
+        SetResultCaSi();
+        SetResultPlaylist();
     }
 
-    private void SetReultBaiHat() {
-        if (SearchbaihatFragment.arrayList != null) {
-            if (SearchbaihatFragment.arrayList.size() > 0) {
-                adapterSong = new SearchSongAdapter(getContext(), SearchbaihatFragment.arrayList, true, true);
+    private void SetResultBaiHat() {
+        if (baiHats != null) {
+            if (baiHats.size() > 0) {
+                rvBaiHat.removeAllViews();
+                adapterSong = new SearchSongAdapter(getContext(), baiHats, true, true);
                 rvBaiHat.setAdapter(adapterSong);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -134,22 +146,24 @@ public class AllSearchFragment extends Fragment {
                 }
                 return;
             }
+            layoutBaihat.setVisibility(View.GONE);
+            if (progress == 4 && countResult == 0) {
+                linearLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("Không Tìm Thấy Kết Quả");
+            }
         }
 
 
-        layoutBaihat.setVisibility(View.GONE);
-        if (progress == 4 && countResult == 0) {
-            linearLayout.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText("Không Tìm Thấy Kết Quả");
-        }
+
 
     }
 
-    private void SetReultAlbum() {
-        if (SearchalbumFragment.arrayList != null) {
-            if (SearchalbumFragment.arrayList.size() > 0) {
-                adapterAlbum = new AlbumAdapter(getContext(), SearchalbumFragment.arrayList, true);
+    private void SetResultAlbum() {
+        if (albums != null) {
+            if (albums.size() > 0) {
+                rvAlbum.removeAllViews();
+                adapterAlbum = new AlbumAdapter(getContext(), albums, true);
                 rvAlbum.setAdapter(adapterAlbum);
                 rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 progress++;
@@ -159,21 +173,22 @@ public class AllSearchFragment extends Fragment {
                 }
                 return;
             }
+            layoutAlbum.setVisibility(View.GONE);
+            if (progress == 4 && countResult == 0) {
+                linearLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("Không Tìm Thấy Kết Quả");
+            }
         }
 
-        layoutAlbum.setVisibility(View.GONE);
-        if (progress == 4 && countResult == 0) {
-            linearLayout.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText("Không Tìm Thấy Kết Quả");
-        }
 
     }
 
-    private void SetReultCaSi() {
-        if (SearchcasiFragment.arrayList != null) {
-            if (SearchcasiFragment.arrayList.size() > 0) {
-                adapterSinger = new AllSingerAdapter(getContext(), SearchcasiFragment.arrayList, true);
+    private void SetResultCaSi() {
+        if (caSis != null) {
+            if (caSis.size() > 0) {
+                rvCaSi.removeAllViews();
+                adapterSinger = new AllSingerAdapter(getContext(), caSis, true);
                 rvCaSi.setAdapter(adapterSinger);
                 rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 progress++;
@@ -184,19 +199,21 @@ public class AllSearchFragment extends Fragment {
 
                 return;
             }
+            layoutCasi.setVisibility(View.GONE);
+            if (progress == 4 && countResult == 0) {
+                linearLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("Không Tìm Thấy Kết Quả");
+            }
         }
 
-        layoutCasi.setVisibility(View.GONE);
-        if (progress == 4 && countResult == 0) {
-            linearLayout.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText("Không Tìm Thấy Kết Quả");
-        }
+
     }
 
-    private void SetReultPlaylist() {
-        if (SearchplaylistFragment.arrayList != null) {
-            if (SearchplaylistFragment.arrayList.size() > 0) {
+    private void SetResultPlaylist() {
+        if (playlists != null) {
+            if (playlists.size() > 0) {
+                rvPlaylist.removeAllViews();
                 adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
                 rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
                 rvPlaylist.setAdapter(adapterPlaylist);
@@ -206,15 +223,17 @@ public class AllSearchFragment extends Fragment {
                     linearLayout.setVisibility(View.VISIBLE);
                 }
                 return;
+
+            }
+            layoutPlaylist.setVisibility(View.GONE);
+            if (progress == 4 && countResult == 0) {
+                linearLayout.setVisibility(View.GONE);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("Không Tìm Thấy Kết Quả");
             }
         }
 
-        layoutPlaylist.setVisibility(View.GONE);
-        if (progress == 4 && countResult == 0) {
-            linearLayout.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
-            textView.setText("Không Tìm Thấy Kết Quả");
-        }
+
     }
 
     public void GetResult() {
@@ -226,11 +245,12 @@ public class AllSearchFragment extends Fragment {
             public void run() {
                 handler.postDelayed(this, 100);
 
+                // Tìm Kiếm Bài Hát
                 if (SearchFragment.baiHats != null) {
-                    Log.e("BBB", " Lấy Thành Công dữ liệu bài hát");
                     progress++;
+                    baiHats = SearchFragment.baiHats;
                     if (SearchFragment.baiHats.size() > 0) {
-                        adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baihatrecents, true, true);
+                        adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true, true);
                         rvBaiHat.setAdapter(adapterSong);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -240,8 +260,6 @@ public class AllSearchFragment extends Fragment {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
-                        Log.e("BBB", "tiến trình bài hát:" + progress  );
-                        Log.e("BBB", "Kết quả bài hát:" + countResult  );
                     } else {
                         layoutBaihat.setVisibility(View.GONE);
                         if (progress == 4) {
@@ -250,7 +268,7 @@ public class AllSearchFragment extends Fragment {
                                 linearLayout.setVisibility(View.GONE);
                                 textView.setVisibility(View.VISIBLE);
                                 textView.setText("Không Tìm Thấy Kết Quả");
-                            }else{
+                            } else {
                                 textView.setVisibility(View.GONE);
                                 linearLayout.setVisibility(View.VISIBLE);
                             }
@@ -262,12 +280,13 @@ public class AllSearchFragment extends Fragment {
             }
         };
 
+        // Tìm Tiếm ALbum
         Runnable runalbum = new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 100);
                 if (SearchFragment.albums != null) {
-                    Log.e("BBB", " Lấy Thành Công dữ liệu album");
+                    albums = SearchFragment.albums;
                     progress++;
                     if (SearchFragment.albums.size() > 0) {
                         adapterAlbum = new AlbumAdapter(getContext(), SearchFragment.albums, true);
@@ -278,10 +297,7 @@ public class AllSearchFragment extends Fragment {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
-                        Log.e("BBB", "thành công album:" + progress  );
-                        Log.e("BBB", "Kết quả album:" + countResult  );
                     } else {
-                        Log.e("BBB", "failed album:" + progress  );
                         layoutAlbum.setVisibility(View.GONE);
                         if (progress == 4 && countResult == 0) {
                             linearLayout.setVisibility(View.GONE);
@@ -295,13 +311,14 @@ public class AllSearchFragment extends Fragment {
             }
         };
 
+        // Tìm Kiếm Ca Sĩ
         Runnable runcasi = new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 100);
                 if (SearchFragment.caSis != null) {
                     progress++;
-                    Log.e("BBB", " Lấy Thành Công dữ liệu casi");
+                    caSis = SearchFragment.caSis;
                     if (SearchFragment.caSis.size() > 0) {
                         adapterSinger = new AllSingerAdapter(getContext(), SearchFragment.caSis, true);
                         rvCaSi.setAdapter(adapterSinger);
@@ -316,7 +333,6 @@ public class AllSearchFragment extends Fragment {
                         if (progress == 4 && countResult == 0) {
                             linearLayout.setVisibility(View.GONE);
                             textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
                         }
                     }
                     handler.removeCallbacks(this);
@@ -325,13 +341,15 @@ public class AllSearchFragment extends Fragment {
             }
         };
 
+        // Tìm Kiếm Playlist
+
         Runnable runplaylist = new Runnable() {
             @Override
             public void run() {
                 handler.postDelayed(this, 100);
                 if (SearchFragment.playlists != null) {
                     progress++;
-                    Log.e("BBB", " Lấy Thành Công dữ liệu playlsit");
+                    playlists = SearchFragment.playlists;
                     if (SearchFragment.playlists.size() > 0) {
                         adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
                         rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -341,14 +359,86 @@ public class AllSearchFragment extends Fragment {
                             textView.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.VISIBLE);
                         }
-                        Log.e("BBB", "failed playlsit:" + progress  );
-                        Log.e("BBB", "Kết quả playlsit:" + countResult  );
                     } else {
                         layoutPlaylist.setVisibility(View.GONE);
                         if (progress == 4 && countResult == 0) {
                             linearLayout.setVisibility(View.GONE);
                             textView.setVisibility(View.VISIBLE);
                             textView.setText("Không Tìm Thấy Kết Quả");
+                        }
+
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+        // Kiểm Tra Ánh Xạ
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (rvPlaylist != null) {
+                    rvBaiHat.removeAllViews();
+                    rvAlbum.removeAllViews();
+                    rvCaSi.removeAllViews();
+                    rvPlaylist.removeAllViews();
+                    textView.setText("Đang Lấy Dữ Liệu");
+                    linearLayout.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                    progress = 0;
+                    countResult = 0;
+                    handler.postDelayed(runbaihat, 100);
+                    handler.postDelayed(runalbum, 100);
+                    handler.postDelayed(runcasi, 100);
+                    handler.postDelayed(runplaylist, 100);
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
+        handler.postDelayed(run, 100);
+
+
+    }
+
+    public void GetResultBaiHat(){
+        Handler handler = new Handler();
+
+
+        Runnable runbaihat = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+
+                // Tìm Kiếm Bài Hát
+                if (SearchFragment.baiHats != null) {
+                    progress++;
+                    baiHats = SearchFragment.baiHats;
+                    if (SearchFragment.baiHats.size() > 0) {
+                        adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true, true);
+                        rvBaiHat.setAdapter(adapterSong);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        rvBaiHat.setLayoutManager(linearLayoutManager);
+                        countResult++;
+                        if (progress > 0) {
+                            textView.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        layoutBaihat.setVisibility(View.GONE);
+                        if (progress == 4) {
+                            if (countResult == 0) {
+                                progress = 0;
+                                linearLayout.setVisibility(View.GONE);
+                                textView.setVisibility(View.VISIBLE);
+                                textView.setText("Không Tìm Thấy Kết Quả");
+                            } else {
+                                textView.setVisibility(View.GONE);
+                                linearLayout.setVisibility(View.VISIBLE);
+                            }
                         }
 
                     }
@@ -367,13 +457,180 @@ public class AllSearchFragment extends Fragment {
                     rvCaSi.removeAllViews();
                     rvPlaylist.removeAllViews();
                     textView.setText("Đang Lấy Dữ Liệu");
-                    textView.setVisibility(View.VISIBLE);
                     linearLayout.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
                     progress = 0;
                     countResult = 0;
                     handler.postDelayed(runbaihat, 100);
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
+        handler.postDelayed(run, 100);
+    }
+
+    public void GetResultAlbum(){
+        Handler handler = new Handler();
+        Runnable runalbum = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (SearchFragment.albums != null) {
+                    albums = SearchFragment.albums;
+                    progress++;
+                    if (SearchFragment.albums.size() > 0) {
+                        adapterAlbum = new AlbumAdapter(getContext(), SearchFragment.albums, true);
+                        rvAlbum.setAdapter(adapterAlbum);
+                        rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        countResult++;
+                        if (progress > 0) {
+                            textView.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        layoutAlbum.setVisibility(View.GONE);
+                        if (progress == 4 && countResult == 0) {
+                            linearLayout.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText("Không Tìm Thấy Kết Quả");
+                        }
+                    }
+
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (rvPlaylist != null) {
+                    rvBaiHat.removeAllViews();
+                    rvAlbum.removeAllViews();
+                    rvCaSi.removeAllViews();
+                    rvPlaylist.removeAllViews();
+                    textView.setText("Đang Lấy Dữ Liệu");
+                    linearLayout.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                    progress = 0;
+                    countResult = 0;
                     handler.postDelayed(runalbum, 100);
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
+        handler.postDelayed(run, 100);
+
+    }
+
+    public void GetResultCasi(){
+        Handler handler = new Handler();
+
+        Runnable runcasi = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (SearchFragment.caSis != null) {
+                    progress++;
+                    caSis = SearchFragment.caSis;
+                    if (SearchFragment.caSis.size() > 0) {
+                        adapterSinger = new AllSingerAdapter(getContext(), SearchFragment.caSis, true);
+                        rvCaSi.setAdapter(adapterSinger);
+                        rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        countResult++;
+                        if (progress > 0) {
+                            textView.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        layoutCasi.setVisibility(View.GONE);
+                        if (progress == 4 && countResult == 0) {
+                            linearLayout.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    handler.removeCallbacks(this);
+                }
+
+            }
+        };
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (rvPlaylist != null) {
+                    rvBaiHat.removeAllViews();
+                    rvAlbum.removeAllViews();
+                    rvCaSi.removeAllViews();
+                    rvPlaylist.removeAllViews();
+                    textView.setText("Đang Lấy Dữ Liệu");
+                    linearLayout.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                    progress = 0;
+                    countResult = 0;
                     handler.postDelayed(runcasi, 100);
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+
+        handler.postDelayed(run, 100);
+    }
+
+    public void GetResultPlaylist(){
+        Handler handler = new Handler();
+
+        Runnable runplaylist = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (SearchFragment.playlists != null) {
+                    progress++;
+                    playlists = SearchFragment.playlists;
+                    if (SearchFragment.playlists.size() > 0) {
+                        adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
+                        rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        rvPlaylist.setAdapter(adapterPlaylist);
+                        countResult++;
+                        if (progress > 0) {
+                            textView.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        layoutPlaylist.setVisibility(View.GONE);
+                        if (progress == 4 && countResult == 0) {
+                            linearLayout.setVisibility(View.GONE);
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText("Không Tìm Thấy Kết Quả");
+                        }
+
+                    }
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+
+        // Kiểm Tra Ánh Xạ
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if (rvPlaylist != null) {
+                    rvBaiHat.removeAllViews();
+                    rvAlbum.removeAllViews();
+                    rvCaSi.removeAllViews();
+                    rvPlaylist.removeAllViews();
+                    textView.setText("Đang Lấy Dữ Liệu");
+                    linearLayout.setVisibility(View.GONE);
+                    textView.setVisibility(View.VISIBLE);
+                    progress = 0;
+                    countResult = 0;
                     handler.postDelayed(runplaylist, 100);
                     handler.removeCallbacks(this);
                 }
@@ -383,8 +640,5 @@ public class AllSearchFragment extends Fragment {
 
         handler.postDelayed(run, 100);
 
-
     }
-
-
 }

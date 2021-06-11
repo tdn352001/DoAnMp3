@@ -47,6 +47,7 @@ public class UserFragment extends Fragment {
     public static ViewPagerAdapter adapter;
     public static final int PERMISSION_READ = 0;
     public static final int PERMISSION_WRITE = 1;
+    public static UserBaiHatFragment userBaiHatFragment;
 
 
     @Override
@@ -84,9 +85,9 @@ public class UserFragment extends Fragment {
         Picasso.with(getContext()).load(MainActivity.user.getAvatar().toString()).into(imgAvatar);
     }
 
-    private void SetupViewPager() {
+    public void SetupViewPager() {
         ArrayList<Fragment> arrayList = new ArrayList<>();
-        UserBaiHatFragment userBaiHatFragment = new UserBaiHatFragment();
+        userBaiHatFragment = new UserBaiHatFragment();
         userPlaylistFragment = new UserPlaylistFragment();
         arrayList.add(userBaiHatFragment);
         arrayList.add(new LibraryFragment());
@@ -99,6 +100,7 @@ public class UserFragment extends Fragment {
         adapter.setList(arrayList);
         adapter.setTitle(title);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_song);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_phone);

@@ -68,7 +68,7 @@ public class SearchFragment extends Fragment {
 
     //ChuDeTheLoai
     RecyclerView rvcategory;
-    ArrayList<ChuDeTheLoai> categoryList;
+    public  static ArrayList<ChuDeTheLoai> categoryList;
     AllCategoryAdapter categoryAdapter;
 
 
@@ -154,7 +154,7 @@ public class SearchFragment extends Fragment {
 
                     // Lấy Dữ Liệu.
                     progress = 0;
-                    progressDialog = ProgressDialog.show(getContext(), "Đang Lấy Dữ Liêu", "Loading....!", false, false);
+                    progressDialog = ProgressDialog.show(getContext(), "Đang Lấy Dữ Liêu", "Loading....!", false, true);
                     SearchBaiHat(query);
                     SearchAlbum(query);
                     SearchCaSi(query);
@@ -363,9 +363,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 300);
-                if(MainActivity.chudelist != null && MainActivity.theloailist != null){
-                    categoryList = MainActivity.chudelist;
-                    categoryList.addAll(MainActivity.theloailist);
+                if(categoryList != null){
                     categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
                     categoryAdapter.setTongChuDe(categoryList.size() - MainActivity.theloailist.size());
                     rvcategory.setAdapter(categoryAdapter);
@@ -474,6 +472,7 @@ public class SearchFragment extends Fragment {
 
         //Hoàn Thành Set up
         viewPager.setAdapter(adapterSearch);
+        viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
 
     }
@@ -491,7 +490,6 @@ public class SearchFragment extends Fragment {
                 progress++;
                 if (progress > 2) {
                     progressDialog.dismiss();
-
                 }
             }
 
@@ -515,7 +513,6 @@ public class SearchFragment extends Fragment {
                 progress++;
                 if (progress > 2) {
                     progressDialog.dismiss();
-//                    allSearchFragment.GetResult();
                 }
             }
 
@@ -539,7 +536,6 @@ public class SearchFragment extends Fragment {
                 progress++;
                 if (progress > 2) {
                     progressDialog.dismiss();
-//                    allSearchFragment.GetResult();
                 }
             }
 
@@ -563,7 +559,6 @@ public class SearchFragment extends Fragment {
                 progress++;
                 if (progress > 2) {
                     progressDialog.dismiss();
-//                    allSearchFragment.GetResult();
                 }
             }
 

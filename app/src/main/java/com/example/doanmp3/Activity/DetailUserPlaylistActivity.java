@@ -36,10 +36,10 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     RelativeLayout btnAddBaiHat;
     RecyclerView recyclerView;
     TextView txtNoInf;
-    ArrayList<BaiHat> arrayList;
     UserBaiHatPlaylistAdapter adapter;
     String IdPlaylist;
     String TenPlaylist;
+    public static ArrayList<BaiHat> arrayList;
 
 
     @Override
@@ -84,6 +84,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     }
 
     private void GetBaiHatPlaylist() {
+        arrayList = null;
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetUserBaiHatPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -111,6 +112,15 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     }
 
     private void EventClick() {
+        btnAddBaiHat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
+                intent.putExtra("idplaylist",IdPlaylist);
+                intent.putExtra("tenplaylist", TenPlaylist);
+                startActivity(intent);
+            }
+        });
         btnPlayAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

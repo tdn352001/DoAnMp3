@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.UserFragment.Online_AddFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_add_love"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:id="@+id/txt_noinfo_add_love"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20mm"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:textAlignment="center"
+        android:visibility="gone" >
+        <ImageView
+            android:id="@+id/img_noinfo"
+            android:src="@drawable/ic_sorry"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:layout_width="30mm"
+            android:layout_height="30mm"/>
+        <TextView
+            android:layout_below="@id/img_noinfo"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            android:text="Không Có Dữ Liệu"
+            android:fontFamily="sans-serif"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

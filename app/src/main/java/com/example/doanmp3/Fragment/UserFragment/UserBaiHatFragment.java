@@ -60,29 +60,29 @@ public class UserBaiHatFragment extends Fragment {
             textView.setVisibility(View.VISIBLE);
     }
 
-    public void SetRecyclerView() {
-        adapter = new AllSongAdapter(getContext(), arrayList);
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-    }
 
     private void GetBaiHatYeuThich() {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 300);
-                if(MainActivity.userbaihats != null){
-                    arrayList = MainActivity.userbaihats;
+                handler.postDelayed(this, 200);
+                if (arrayList != null) {
                     SetupBaiHatYeuThich();
                     handler.removeCallbacks(this);
                 }
             }
         };
 
-        handler.postDelayed(runnable, 300);
+        handler.postDelayed(runnable, 200);
+    }
+
+    public void SetRecyclerView() {
+        adapter = new AllSongAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
     public static boolean checkLiked(String IdBaiHat) {

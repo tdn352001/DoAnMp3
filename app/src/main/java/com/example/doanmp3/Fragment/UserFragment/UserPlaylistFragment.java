@@ -3,6 +3,7 @@ package com.example.doanmp3.Fragment.UserFragment;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -65,12 +66,24 @@ public class UserPlaylistFragment extends Fragment {
 
 
     private void SetUpRecycleview() {
-        userPlaylist = MainActivity.userPlaylist;
-        adapter = new UserPlaylistAdapter(userPlaylist, getContext());
-        recyclerView.setAdapter(adapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 100);
+                if(MainActivity.userPlaylist != null){
+                    userPlaylist = MainActivity.userPlaylist;
+                    adapter = new UserPlaylistAdapter(userPlaylist, getContext());
+                    recyclerView.setAdapter(adapter);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    Log.e("BBB", "TC");
+                    handler.removeCallbacks(this);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 100);
     }
 
     private void EventClick() {
@@ -126,7 +139,6 @@ public class UserPlaylistFragment extends Fragment {
                                 break;
                             }
                         }
-                        Log.e("BBB", "1");
                         if (i >= userPlaylist.size() || i == 0) {
                             progressDialog = ProgressDialog.show(getContext(), "Đang Tạo Playlist", "Loading...!", false, false);
                             DataService dataService = APIService.getUserService();

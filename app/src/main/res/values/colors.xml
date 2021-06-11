@@ -25,5 +25,6 @@
     <color name="primaryTextColor">#11CFC5</color>
     <color name="boxInputFields">#094C34</color>
     <color name="boxInPutFields">#0d6e6a</color>
+    <color name="banner">#2F2F30</color>
 
 </resources>

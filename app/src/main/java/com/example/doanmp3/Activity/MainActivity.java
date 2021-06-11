@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment.HomeFragment;
 import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
+import com.example.doanmp3.Fragment.UserFragment.UserBaiHatFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ChuDeTheLoai;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private long backtime;
     public static User user;
     public static boolean success;
+    public static ArrayList<BaiHat> baiHats;
     public static ArrayList<Playlist> userPlaylist;
-    public static ArrayList<BaiHat> userbaihats;
     public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setList(arraylist);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
+        viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -145,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public static void LoadingComplete(){
         progress++;
-        if(progress == 6)
+        if(progress >= 3)
             progressBar.setVisibility(View.INVISIBLE);
 
 
@@ -169,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 userPlaylist = (ArrayList<Playlist>) response.body();
+                if(userPlaylist == null)
+                    userPlaylist = new ArrayList<>();
             }
 
             @Override
@@ -184,9 +188,9 @@ public class MainActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                userbaihats = (ArrayList<BaiHat>) response.body();
-                if(userbaihats == null)
-                    userbaihats = new ArrayList<>();
+                UserBaiHatFragment.arrayList = (ArrayList<BaiHat>) response.body();
+                if(UserBaiHatFragment.arrayList == null)
+                    UserBaiHatFragment.arrayList = new ArrayList<>();
             }
 
             @Override
@@ -202,8 +206,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 SearchFragment.baihatrecents = (ArrayList<BaiHat>) response.body();
+                baiHats = (ArrayList<BaiHat>) response.body();
                 if(SearchFragment.baihatrecents == null){
                     SearchFragment.baihatrecents = new ArrayList<>();
+                    baiHats = new ArrayList<>();
                 }
             }
 
@@ -244,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
                         theloailist = (ArrayList<ChuDeTheLoai>) response.body();
+                        SearchFragment.categoryList = chudelist;
+                        SearchFragment.categoryList.addAll(theloailist);
                     }
 
                     @Override
