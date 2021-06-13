@@ -42,8 +42,8 @@ public class Love_AddFragment extends Fragment {
     public void GetLoveSong() {
         arrayList = UserBaiHatFragment.arrayList;
         if (arrayList != null) {
+            adapter = new AddBaiHatAdapter(getContext(), arrayList, false, true);
             if (arrayList.size() > 0) {
-                adapter = new AddBaiHatAdapter(getContext(), arrayList);
                 recyclerView.setAdapter(adapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);

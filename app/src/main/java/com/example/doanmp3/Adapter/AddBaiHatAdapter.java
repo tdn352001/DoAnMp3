@@ -29,11 +29,21 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
     ArrayList<BaiHat> arrayList;
     ArrayList<BaiHat> mArrayList;
     boolean isAddedFragment;
+    boolean check =false;
 
     public AddBaiHatAdapter(Context context, ArrayList<BaiHat> arrayList, boolean isAddedFragment) {
         this.context = context;
         this.arrayList = arrayList;
+        mArrayList = arrayList;
         this.isAddedFragment = isAddedFragment;
+    }
+
+    public AddBaiHatAdapter(Context context, ArrayList<BaiHat> arrayList, boolean isAddedFragment, boolean check) {
+        this.context = context;
+        this.arrayList = arrayList;
+        mArrayList = arrayList;
+        this.isAddedFragment = isAddedFragment;
+        this.check = check;
     }
 
     public AddBaiHatAdapter(Context context, ArrayList<BaiHat> arrayList) {
@@ -43,6 +53,7 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
         isAddedFragment = false;
     }
 
+
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -50,46 +61,40 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).into(holder.Avatar);
-        holder.txtBaiHat.setText(arrayList.get(position).getTenBaiHat());
-        holder.txtCaSi.setText(arrayList.get(position).getTenAllCaSi());
+        BaiHat baiHat = arrayList.get(position);
+        Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.Avatar);
+        holder.txtBaiHat.setText(baiHat.getTenBaiHat());
+        holder.txtCaSi.setText(baiHat.getTenAllCaSi());
 
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Added_AddFragment.arrayList.remove(Added_AddFragment.position);
-                Added_AddFragment.adapter.notifyItemRemoved(position);
-                holder.Status.setImageResource(R.drawable.icon_add);
-                notifyItemChanged(position);
-            }
-        });
         if (isAddedFragment) {
             holder.Status.setImageResource(R.drawable.ic_delete);
             holder.Status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Added_AddFragment.arrayList.remove(position);
-                    notifyItemRemoved(position);
+                    Added_AddFragment.Remove(baiHat.getIdBaiHat());
+                    notifyDataSetChanged();
                 }
             });
 
         } else {
-            if (Added_AddFragment.chechAddedBefore(arrayList.get(position).getIdBaiHat()))
+
+            if (Added_AddFragment.checkAddedBefore(baiHat.getIdBaiHat())) {
                 holder.Status.setImageResource(R.drawable.ic_check);
-            else
+            } else {
                 holder.Status.setImageResource(R.drawable.icon_add);
+            }
 
             holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Added_AddFragment.chechAddedBefore(arrayList.get(position).getIdBaiHat())) {
-                        Added_AddFragment.arrayList.remove(Added_AddFragment.position);
-                        Added_AddFragment.adapter.notifyItemRemoved(Added_AddFragment.position);
+                    if (Added_AddFragment.checkAddedBefore(baiHat.getIdBaiHat())) {
+                        Added_AddFragment.Remove(baiHat.getIdBaiHat());
                         holder.Status.setImageResource(R.drawable.icon_add);
-                    }else{
-                        Added_AddFragment.arrayList.add(arrayList.get(position));
+                    } else {
+                        Added_AddFragment.Add(baiHat);
                         Added_AddFragment.adapter.notifyDataSetChanged();
                         holder.Status.setImageResource(R.drawable.ic_check);
                     }

@@ -29,7 +29,7 @@ public class Online_AddFragment extends Fragment {
     View view;
     RelativeLayout textView;
     RecyclerView recyclerView;
-    AddBaiHatAdapter adapter;
+    public AddBaiHatAdapter adapter;
     public ArrayList<BaiHat> arrayList;
     public ArrayList<BaiHat> SearchArrayList;
 
@@ -84,8 +84,8 @@ public class Online_AddFragment extends Fragment {
                     if (SearchArrayList != null) {
                         SetRv();
                         if (SearchArrayList.size() > 0) {
-                            handler.removeCallbacks(this);
                             textView.setVisibility(View.GONE);
+                            handler.removeCallbacks(this);
                             return;
                         }
 

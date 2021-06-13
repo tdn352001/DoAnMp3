@@ -180,4 +180,8 @@ public interface DataService {
     @FormUrlEncoded
     @POST("getbaihatrecent.php")
     Call<List<BaiHat>> GetBaiHatRecent(@Field("iduser") String iduser);
+
+    @FormUrlEncoded
+    @POST("updateuserplaylist.php")
+    Call<String> UpdateUserPlaylist(@Field("idplaylist") String idplaylist);
 }

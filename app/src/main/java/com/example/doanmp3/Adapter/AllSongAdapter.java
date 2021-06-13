@@ -356,6 +356,9 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                 if (result.equals("Thanh Cong")) {
                     if (!UserBaiHatFragment.arrayList.contains(arrayList.get(position)))
                         UserBaiHatFragment.arrayList.add(arrayList.get(position));
+                    if(UserBaiHatFragment.adapter.getItemCount() >= 0)
+                        UserBaiHatFragment.textView.setVisibility(View.GONE);
+
                     UserBaiHatFragment.adapter.notifyDataSetChanged();
                     Toast.makeText(context, "Đã Thích", Toast.LENGTH_SHORT).show();
                 } else
@@ -368,5 +371,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             }
         });
     }
+
 
 }

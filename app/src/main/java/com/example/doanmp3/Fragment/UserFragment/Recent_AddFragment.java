@@ -42,8 +42,8 @@ public class Recent_AddFragment extends Fragment {
     public void GetRecentSong() {
         arrayList = MainActivity.baiHats;
         if (arrayList != null) {
+            adapter = new AddBaiHatAdapter(getContext(), arrayList);
             if (arrayList.size() > 0) {
-                adapter = new AddBaiHatAdapter(getContext(), arrayList);
                 recyclerView.setAdapter(adapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -55,6 +55,4 @@ public class Recent_AddFragment extends Fragment {
 
         textView.setVisibility(View.VISIBLE);
     }
-
-
 }

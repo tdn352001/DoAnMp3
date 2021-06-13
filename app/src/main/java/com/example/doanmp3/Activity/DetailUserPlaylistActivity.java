@@ -20,7 +20,6 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +37,10 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     RelativeLayout btnAddBaiHat;
     RecyclerView recyclerView;
     TextView txtNoInf;
-    UserBaiHatPlaylistAdapter adapter;
     String IdPlaylist;
     String TenPlaylist;
     public static ArrayList<BaiHat> arrayList;
+    public static UserBaiHatPlaylistAdapter adapter;
     public static User user;
 
 
@@ -49,7 +48,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user_playlist);
-        Log.e("BBB", "die onCreate");
         AnhXa();
         GetIntent();
         SetupToolBar();
@@ -82,9 +80,10 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
     private void GetIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra("idplaylist"))
+        if (intent.hasExtra("idplaylist")) {
             IdPlaylist = intent.getStringExtra("idplaylist");
-        TenPlaylist = intent.getStringExtra("tenplaylist");
+            TenPlaylist = intent.getStringExtra("tenplaylist");
+        }
         btnAddBaiHat.setClickable(false);
     }
 
@@ -97,18 +96,11 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
 
-                if (arrayList != null) {
-                    if (arrayList.size() > 0) {
-                        Picasso.with(DetailUserPlaylistActivity.this).load(arrayList.get(0).getHinhBaiHat().toString()).into(imgPlaylist);
-                        adapter = new UserBaiHatPlaylistAdapter(DetailUserPlaylistActivity.this, arrayList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailUserPlaylistActivity.this);
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setLayoutManager(linearLayoutManager);
-                    }
-                }
-                else
+                if (arrayList == null) {
                     arrayList = new ArrayList<>();
+                }
+                setRV();
+                Log.e("BBB", "Lay Xong Thong Tin");
                 btnAddBaiHat.setClickable(true);
             }
 
@@ -124,7 +116,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
-                intent.putExtra("idplaylist",IdPlaylist);
+                intent.putExtra("idplaylist", IdPlaylist);
                 intent.putExtra("tenplaylist", TenPlaylist);
                 intent.putExtra("baihat", arrayList);
                 startActivity(intent);
@@ -149,4 +141,11 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         });
     }
 
+    private void setRV(){
+        adapter = new UserBaiHatPlaylistAdapter(DetailUserPlaylistActivity.this, arrayList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailUserPlaylistActivity.this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+    }
 }

@@ -52,10 +52,9 @@ public class UserBaiHatFragment extends Fragment {
     }
 
     public void SetupBaiHatYeuThich() {
-
+        SetRecyclerView();
         if (arrayList.size() > 0) {
             textView.setVisibility(View.INVISIBLE);
-            SetRecyclerView();
         } else
             textView.setVisibility(View.VISIBLE);
     }
