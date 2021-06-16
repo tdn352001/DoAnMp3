@@ -1,12 +1,14 @@
 package com.example.doanmp3.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -16,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerPlaySongAdapter;
@@ -26,11 +29,10 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.MusicService;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Stack;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -42,6 +44,7 @@ public class PlayNhacActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     ViewPagerPlaySongAdapter ListSongAdapter;
+    @SuppressLint("StaticFieldLeak")
     public static PlayFragment playFragment;
     ListSongFragment listSongFragment;
     SeekBar seekBar;
@@ -60,6 +63,26 @@ public class PlayNhacActivity extends AppCompatActivity {
     Stack<Integer> stack;
 
 
+    // Action From Service
+
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra("pos")) {
+                Pos = intent.getIntExtra("pos", 0);
+                SetConTent();
+                UploadToPlayRecent();
+            }
+            if (intent.hasExtra("action")) {
+                int action = intent.getIntExtra("action", 0);
+                ActionFromService(action);
+            }
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,180 +90,88 @@ public class PlayNhacActivity extends AppCompatActivity {
         AnhXa();
         CheckRepeatRandom();
         GetIntent();
+        StartService();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_activity"));
         eventClick();
 
     }
 
+
+    @SuppressLint("SimpleDateFormat")
+    private void AnhXa() {
+        seekBar = findViewById(R.id.seekbar_time);
+        txtCurrent = findViewById(R.id.current_time);
+        txtTotal = findViewById(R.id.total_time);
+        btnLoop = findViewById(R.id.btn_loop);
+        btnNext = findViewById(R.id.btn_next);
+        btnPre = findViewById(R.id.btn_prev);
+        btnPlay = findViewById(R.id.btn_play);
+        btnRandom = findViewById(R.id.btn_random);
+        indicator = findViewById(R.id.circle_play);
+
+
+        simpleDateFormat = new SimpleDateFormat("mm:ss");
+        playedlist = new ArrayList<>();
+        stack = new Stack<>();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void ActionFromService(int action) {
+        switch (action) {
+            case MusicService.ACTION_PLAY:
+                ActionPlay();
+                break;
+            case MusicService.ACTION_PREVIOUS:
+                break;
+            case MusicService.ACTION_CLEAR:
+                break;
+            case MusicService.ACTION_START_PLAY:
+                TimeSong();
+                break;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void ActionPlay() {
+        if (!MusicService.mediaPlayer.isPlaying()) {
+            btnPlay.setImageResource(R.drawable.icon_play);
+            playFragment.objectAnimator.pause();
+        } else {
+            btnPlay.setImageResource(R.drawable.ic_pause);
+            playFragment.objectAnimator.resume();
+        }
+    }
+
+    private void SendActionToService(int action) {
+        Intent intent = new Intent(this, MusicService.class);
+        intent.putExtra("action_activity", action);
+        switch (action){
+            case MusicService.ACTION_CHANGE_POS:
+                intent.putExtra("pos", Pos);
+                break;
+        }
+
+
+        startService(intent);
+    }
+
+
+    // Kiểm tra random
     private void CheckRepeatRandom() {
-        if (random) {
+        if (MusicService.random) {
             btnRandom.setImageResource(R.drawable.random_true);
         } else {
             btnRandom.setImageResource(R.drawable.icon_random);
         }
 
-        if (repeat) {
+        if (MusicService.repeat) {
             btnLoop.setImageResource(R.drawable.ic_loop);
         } else {
             btnLoop.setImageResource(R.drawable.ic_loopone);
         }
     }
 
-
-    // BẮT SỰ KIỆN CLICK
-
-    private void eventClick() {
-
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.pause();
-                    btnPlay.setImageResource(R.drawable.ic_play);
-                    playFragment.objectAnimator.pause();
-                } else {
-                    mediaPlayer.start();
-                    btnPlay.setImageResource(R.drawable.ic_pause);
-                    playFragment.objectAnimator.resume();
-                }
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playedlist.add(Pos);
-                stack.push(Pos);
-                if (arrayList.size() == playedlist.size()) {
-                    playedlist.clear();
-                }
-
-                if (random) {
-                    Random rd = new Random();
-                    Pos = rd.nextInt(arrayList.size());
-                    while (playedlist.contains(Pos))
-                        Pos = rd.nextInt(arrayList.size());
-                    PlayNhac();
-                } else {
-                    Pos++;
-                    if (Pos > arrayList.size() - 1)
-                        Pos = 0;
-                    PlayNhac();
-                }
-            }
-        });
-
-        btnPre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (random) {
-                    if (!stack.empty()) {
-                        Pos = stack.pop();
-                        if (playedlist.size() > 0)
-                            playedlist.remove(playedlist.size() - 1);
-                    } else
-                        Pos = 0;
-
-                    PlayNhac();
-                } else {
-                    Pos--;
-                    if (Pos < 0)
-                        Pos = arrayList.size() - 1;
-                    PlayNhac();
-                }
-            }
-        });
-
-        btnRandom.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
-                if (random) {
-                    btnRandom.setImageResource(R.drawable.icon_random);
-                    random = false;
-                } else {
-                    btnRandom.setImageResource(R.drawable.random_true);
-                    random = true;
-                }
-            }
-        });
-
-        btnLoop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (repeat) {
-                    repeat = false;
-                    btnLoop.setImageResource(R.drawable.ic_loopone);
-                } else {
-                    repeat = true;
-                    btnLoop.setImageResource(R.drawable.ic_loop);
-                }
-            }
-        });
-
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                playedlist.add(Pos);
-                stack.push(Pos);
-                if (arrayList.size() == playedlist.size()) {
-                    playedlist.clear();
-                }
-
-
-                if (!repeat) {
-                    PlayNhac();
-                } else {
-                    if (random) {
-                        Random rd = new Random();
-                        Pos = rd.nextInt(arrayList.size());
-                        while (playedlist.contains(Pos))
-                            Pos = rd.nextInt(arrayList.size());
-                        PlayNhac();
-                    } else {
-                        Pos++;
-                        if (Pos > arrayList.size() - 1)
-                            Pos = 0;
-                        PlayNhac();
-                    }
-                }
-            }
-        });
-
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mediaPlayer.seekTo(seekBar.getProgress());
-            }
-        });
-
-
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                txtCurrent.setText(simpleDateFormat.format(mediaPlayer.getCurrentPosition()));
-                seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                handler.postDelayed(this, 1000);
-            }
-        };
-        handler.postDelayed(runnable, 1000);
-    }
-
-
-    // LẤY DỮ LIỆU
-
+    // Lấy Dữ Liệu, Danh Sách Bài Hát
     private void GetIntent() {
         Intent intent = getIntent();
 
@@ -261,87 +192,112 @@ public class PlayNhacActivity extends AppCompatActivity {
                 indicator.setViewPager(viewPager);
                 viewPager.setCurrentItem(1);
                 playFragment = (PlayFragment) ListSongAdapter.getItem(1);
-                PlayNhac();
             }
         }
 
         if (intent.hasExtra("audio"))
             isAudio = true;
-
-
     }
 
-    private void AnhXa() {
-//        toolbar = findViewById(R.id.toolbar_play);
-        seekBar = findViewById(R.id.seekbar_time);
-        txtCurrent = findViewById(R.id.current_time);
-        txtTotal = findViewById(R.id.total_time);
-        btnLoop = findViewById(R.id.btn_loop);
-        btnNext = findViewById(R.id.btn_next);
-        btnPre = findViewById(R.id.btn_prev);
-        btnPlay = findViewById(R.id.btn_play);
-        btnRandom = findViewById(R.id.btn_random);
-        indicator = findViewById(R.id.circle_play);
-
-
-        simpleDateFormat = new SimpleDateFormat("mm:ss");
-        playedlist = new ArrayList<>();
-        stack = new Stack<>();
+    private void StartService() {
+        Intent MusicService = new Intent(getApplicationContext(), com.example.doanmp3.Service.MusicService.class);
+        MusicService.putExtra("mangbaihat", arrayList);
+        MusicService.putExtra("audio", isAudio);
+        MusicService.putExtra("pos", Pos);
+        startService(MusicService);
+        SetConTent();
     }
 
+    // BẮT SỰ KIỆN CLICK
+
+    private void eventClick() {
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                SendActionToService(MusicService.ACTION_PLAY);
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendActionToService(MusicService.ACTION_NEXT);
+            }
+        });
+
+        btnPre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendActionToService(MusicService.ACTION_PREVIOUS);
+            }
+        });
+
+        btnRandom.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View v) {
+                if (MusicService.random) {
+                    btnRandom.setImageResource(R.drawable.icon_random);
+                    MusicService.random = false;
+                } else {
+                    btnRandom.setImageResource(R.drawable.random_true);
+                    MusicService.random = true;
+                }
+            }
+        });
+
+        btnLoop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MusicService.repeat) {
+                    MusicService.repeat = false;
+                    btnLoop.setImageResource(R.drawable.ic_loopone);
+                } else {
+                    MusicService.repeat = true;
+                    btnLoop.setImageResource(R.drawable.ic_loop);
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                MusicService.mediaPlayer.seekTo(seekBar.getProgress());
+            }
+        });
+
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                txtCurrent.setText(simpleDateFormat.format(MusicService.mediaPlayer.getCurrentPosition()));
+                seekBar.setProgress(MusicService.mediaPlayer.getCurrentPosition());
+                handler.postDelayed(this, 1000);
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+    }
+
+
+    // LẤY DỮ LIỆU
 
     private void TimeSong() {
-
-        txtTotal.setText(simpleDateFormat.format(mediaPlayer.getDuration()));
-        seekBar.setMax(mediaPlayer.getDuration());
+        txtTotal.setText(simpleDateFormat.format(MusicService.mediaPlayer.getDuration()));
+        seekBar.setMax(MusicService.mediaPlayer.getDuration());
     }
-
-
-    public void PlayNhac() {
-
-        try {
-            seekBar.setProgress(0);
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            UploadToPlayRecent();
-            Log.e("BBB", arrayList.get(Pos).getIdBaiHat());
-            btnPlay.setImageResource(R.drawable.ic_pause);
-            SetConTent();
-            TimeSong();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void UploadToPlayRecent() {
-        String id = arrayList.get(Pos).getIdBaiHat();
-        if (!id.equals("-1")) {
-            DataService dataService = APIService.getUserService();
-            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
-            callback.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    String result = (String) response.body();
-                    Log.e("BBB", result);
-                    if (result.equals("S")) {
-//                        if (!SearchFragment.CheckinSongRecent(arrayList.get(Pos).getIdBaiHat())) {
-//                            SearchFragment.baihatrecents.add(0, arrayList.get(Pos));
-//                            SearchFragment.searchSongAdapter.notifyDataSetChanged();
-//                        }
-                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-        }
-    }
-
 
     public void SetConTent() {
         final Handler handler = new Handler();
@@ -364,8 +320,37 @@ public class PlayNhacActivity extends AppCompatActivity {
 
     public void changePos(int Position) {
         Pos = Position;
-        PlayNhac();
+        SendActionToService(MusicService.ACTION_CHANGE_POS);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    private void UploadToPlayRecent() {
+        String id = arrayList.get(Pos).getIdBaiHat();
+        if (!id.equals("-1")) {
+            DataService dataService = APIService.getUserService();
+            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
+            callback.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String result = (String) response.body();
+                    if (result.equals("S")) {
+                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+    }
+
 
 
 }

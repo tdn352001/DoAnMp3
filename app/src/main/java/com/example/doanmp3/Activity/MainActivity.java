@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<BaiHat> baiHats;
     public static ArrayList<Playlist> userPlaylist;
     public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
         backtime = System.currentTimeMillis();
     }
+
+
 
     private void GetUserPlaylist() {
         DataService dataService = APIService.getUserService();

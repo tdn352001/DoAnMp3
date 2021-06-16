@@ -94,7 +94,6 @@ public class RecentFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<KeyWord>> call, Throwable t) {
-                Log.e("BBB", "loi");
             }
         });
     }
@@ -144,9 +143,7 @@ public class RecentFragment extends Fragment {
                     SongRecentLayout.setVisibility(View.GONE);
                 } else {
                     searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false);
-                    Log.e("BBB", baihatrecents.size() + "");
                     searchSongAdapter.notifyDataSetChanged();
-                    Log.e("BBB", searchSongAdapter.getItemCount() + "size");
                     rvBaiHatRecent.setAdapter(searchSongAdapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -253,7 +250,6 @@ public class RecentFragment extends Fragment {
 
                     }
 
-                    Log.e("BBB", IdKeyWord);
                 }
             }
 

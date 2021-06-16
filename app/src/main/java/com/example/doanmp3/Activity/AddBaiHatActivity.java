@@ -92,7 +92,29 @@ public class AddBaiHatActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (CheckChange()) {
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
+                    dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+                    dialog.setTitle("Thoát");
+                    dialog.setIcon(R.drawable.ic_warning);
+                    dialog.setMessage("Bạn Có Muốn Lưu Kết Quả?");
+                    dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SaveChange();
+                        }
+                    });
+                    dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Added_AddFragment.arrayList = null;
+                            AddBaiHatActivity.super.onBackPressed();
+                        }
+                    });
+                    dialog.show();
+
+                } else
+                    finish();
             }
         });
     }
