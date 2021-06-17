@@ -133,7 +133,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                         DanhSachBaiHatActivity.TenCategoty = TenPlaylist;
                         intentt.putExtra("mangbaihat", arrayList);
                         intentt.putExtra("position", rd.nextInt(arrayList.size()));
-                        PlayNhacActivity.random = true;
                         startActivity(intentt);
                     }
                 }

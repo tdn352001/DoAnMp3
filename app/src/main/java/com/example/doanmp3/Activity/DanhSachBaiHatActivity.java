@@ -21,6 +21,7 @@ import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -72,7 +73,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                         Random rd = new Random();
                         intentt.putExtra("mangbaihat", arrayList);
                         intentt.putExtra("position", rd.nextInt(arrayList.size()));
-                        PlayNhacActivity.random = true;
+                        MusicService.random = true;
                         startActivity(intentt);
                     }
                 }

@@ -1,95 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_diaglog_background">
+    android:background="@drawable/custom_diaglog_background"
+    tools:targetApi="lollipop">
 
-    <RelativeLayout
-        android:background="@android:color/transparent"
+    <TextView
+        android:id="@+id/txt_title_themplaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="Thêm Playlist"
+        android:textColor="#FD0012"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/txt_themplaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_title_themplaylist"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:text="Nhập Tên Playlist:"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_add_playlist"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_themplaylist"
+        android:layout_marginHorizontal="15dp"
+        app:errorEnabled="true"
+        app:placeholderText="Tên Playlist">
 
-        <TextView
-            android:id="@+id/txt_title_themplaylist"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_add_playlist"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-condensed-light"
-            android:text="Thêm Playlist"
-            android:textColor="#FD0012"
-            android:textSize="30dp" />
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/txt_themplaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt_title_themplaylist"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="20dp"
-            android:text="Nhập Tên Playlist:"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_input_add_playlist"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="30dp"
+        android:gravity="center"
+        android:paddingHorizontal="7dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAdd"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:backgroundTint="#04868A"
+            android:text="Thêm"
             android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textSize="20sp"
+            app:cornerRadius="7dp"
+            app:elevation="15dp"
+            app:strokeColor="@color/black"
+            tools:targetApi="lollipop" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/text_input_add_playlist"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt_themplaylist"
-            android:layout_marginHorizontal="15dp"
-            app:errorEnabled="true"
-            app:placeholderText="Tên Playlist">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_add_playlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text_input_add_playlist"
-            android:layout_centerHorizontal="true"
-            android:layout_marginVertical="30dp"
-            android:gravity="center"
-            android:paddingHorizontal="7dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAdd"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
-
-                android:backgroundTint="#04868A"
-                android:text="Thêm"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:cornerRadius="5dp"
-                app:elevation="15dp"
-                app:strokeColor="@color/black" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancel"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="120dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="80dp"
-                android:text="Hủy"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                app:elevation="15dp"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginLeft="90dp"
+            android:text="Hủy"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:cornerRadius="7dp"
+            app:elevation="15dp"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp" />
 
 
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
 
 
-</LinearLayout>

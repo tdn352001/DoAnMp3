@@ -14,9 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Application.BroadcastReceiver;
-import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 
@@ -27,10 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
 
@@ -49,7 +43,6 @@ public class MusicService extends Service {
     final public static int ACTION_NEXT = 3;
     final public static int ACTION_CLEAR = 4;
     final public static int ACTION_CHANGE_POS = 5;
-    final public static int ACTION_SEEKBAR_CHANGE = 6;
     final public static int ACTION_START_PLAY = 7;
 
 
@@ -76,10 +69,7 @@ public class MusicService extends Service {
                 if (arrayList.size() == playedlist.size()) {
                     playedlist.clear();
                 }
-
-
-                if (!repeat) {
-                } else {
+                if (repeat){
                     if (random) {
                         Random rd = new Random();
                         Pos = rd.nextInt(arrayList.size());
@@ -125,13 +115,6 @@ public class MusicService extends Service {
                 PlayNhac();
         }
 
-        // Kiểm Tra Random, repeat
-
-        if (intent.hasExtra("random"))
-            random = intent.getBooleanExtra("pos", false);
-
-        if (intent.hasExtra("repeat"))
-            repeat = intent.getBooleanExtra("pos", false);
 
         if (intent.hasExtra("action_activity")) {
             int action = intent.getIntExtra("action_activity", 0);
@@ -143,10 +126,6 @@ public class MusicService extends Service {
             ActionControlMusic(action);
         }
 
-        if (intent.hasExtra("seekbar_change")) {
-            Progress = intent.getIntExtra("seekbar_change", 0);
-            ActionChangeProgress();
-        }
     }
 
     // Chơi Nhạc
@@ -179,9 +158,6 @@ public class MusicService extends Service {
                 break;
             case ACTION_CHANGE_POS:
                 PlayNhac();
-                break;
-            case ACTION_SEEKBAR_CHANGE:
-                ActionChangeProgress();
                 break;
         }
         SendActionToActivity(action);
@@ -237,10 +213,6 @@ public class MusicService extends Service {
         PlayNhac();
     }
 
-    private void ActionChangeProgress() {
-        mediaPlayer.seekTo(Progress);
-    }
-
 
     //Push thông báo
     private void MusicControlNotification() {
@@ -252,19 +224,21 @@ public class MusicService extends Service {
                 .setSubText(arrayList.get(Pos).getTenBaiHat())
                 .setContentTitle(arrayList.get(Pos).getTenBaiHat())
                 .setContentText(arrayList.get(Pos).getTenAllCaSi())
-                .setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()))
+                .addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1, 3)
                         .setMediaSession(mediaSessionCompat.getSessionToken()));
+        if(!isAudio)
+            notificationBuilder.setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()));
+        else
+            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img_disknhac));
 
         if (mediaPlayer.isPlaying())
-            notificationBuilder.addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
-                    .addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
+            notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
                     .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
                     .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
         else
-            notificationBuilder.addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
-                    .addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY))
+            notificationBuilder.addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY))
                     .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
                     .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
 
@@ -303,7 +277,5 @@ public class MusicService extends Service {
         intent.putExtra("isPlaying", mediaPlayer.isPlaying());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-
-
 
 }

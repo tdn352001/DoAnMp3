@@ -2,19 +2,14 @@ package com.example.doanmp3.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.PlayNhacActivity;
@@ -22,7 +17,6 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHolder> {
@@ -31,12 +25,10 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
 
     PlayNhacActivity context;
     ArrayList<BaiHat> arrayList;
-    MediaPlayer mediaPlayer;
 
-    public PlaySongAdapter(Context context, ArrayList<BaiHat> arrayList, MediaPlayer mediaPlayer) {
+    public PlaySongAdapter(Context context, ArrayList<BaiHat> arrayList) {
         this.context = (PlayNhacActivity) context;
         this.arrayList = arrayList;
-        this.mediaPlayer = mediaPlayer;
         row_index = -1;
     }
 

@@ -95,7 +95,6 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
                 Intent intent = new Intent(context, PlayNhacActivity.class);
                 intent.putExtra("mangbaihat", arrayList);
                 intent.putExtra("position", position);
-                PlayNhacActivity.random = true;
                 context.startActivity(intent);
             }
         });

@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +32,6 @@ import com.example.doanmp3.Service.MusicService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Stack;
 
 import me.relex.circleindicator.CircleIndicator;
 import retrofit2.Call;
@@ -52,15 +50,9 @@ public class PlayNhacActivity extends AppCompatActivity {
     ImageButton btnLoop, btnRandom, btnPre, btnNext, btnPlay;
     CircleIndicator indicator;
     SimpleDateFormat simpleDateFormat;
-    public static MediaPlayer mediaPlayer = new MediaPlayer();
     ArrayList<BaiHat> arrayList;
-    ArrayList<Integer> playedlist;
     public boolean isAudio = false;
-
     int Pos;
-    public static boolean repeat = true;
-    public static boolean random = false;
-    Stack<Integer> stack;
 
 
     // Action From Service
@@ -108,11 +100,7 @@ public class PlayNhacActivity extends AppCompatActivity {
         btnPlay = findViewById(R.id.btn_play);
         btnRandom = findViewById(R.id.btn_random);
         indicator = findViewById(R.id.circle_play);
-
-
         simpleDateFormat = new SimpleDateFormat("mm:ss");
-        playedlist = new ArrayList<>();
-        stack = new Stack<>();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -145,7 +133,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     private void SendActionToService(int action) {
         Intent intent = new Intent(this, MusicService.class);
         intent.putExtra("action_activity", action);
-        switch (action){
+        switch (action) {
             case MusicService.ACTION_CHANGE_POS:
                 intent.putExtra("pos", Pos);
                 break;
@@ -181,7 +169,7 @@ public class PlayNhacActivity extends AppCompatActivity {
         if (intent.hasExtra("mangbaihat")) {
             arrayList = intent.getParcelableArrayListExtra("mangbaihat");
             if (arrayList.size() > 0) {
-                listSongFragment = new ListSongFragment(arrayList, mediaPlayer);
+                listSongFragment = new ListSongFragment(arrayList);
                 playFragment = new PlayFragment();
                 viewPager = findViewById(R.id.viewpager_play_activity);
                 ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
@@ -350,7 +338,6 @@ public class PlayNhacActivity extends AppCompatActivity {
             });
         }
     }
-
 
 
 }

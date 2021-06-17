@@ -3,9 +3,6 @@ package com.example.doanmp3.Fragment.PlayFragment;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.doanmp3.Model.CaSi;
+import androidx.fragment.app.Fragment;
+
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
 
@@ -52,11 +50,9 @@ public class PlayFragment extends Fragment {
         objectAnimator= ObjectAnimator.ofFloat(circleImageView, "rotation", 0f, 360f);
         objectAnimator.setDuration(10000);
         objectAnimator.setStartDelay(1);
-
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.setRepeatMode(ValueAnimator.RESTART);
         objectAnimator.setInterpolator(new LinearInterpolator());
-
         objectAnimator.setupStartValues();
         objectAnimator.start();
 

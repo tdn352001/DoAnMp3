@@ -1,6 +1,5 @@
 package com.example.doanmp3.Fragment.PlayFragment;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +23,11 @@ public class ListSongFragment extends Fragment {
     PlaySongAdapter playSongAdapter;
     RecyclerView recyclerView;
     ArrayList<BaiHat> arrayList;
-    MediaPlayer mediaPlayer;
     TextView txtCaSi, txtBaiHat, txtDanhMuc;
 
-    public ListSongFragment(ArrayList<BaiHat> arrayList, MediaPlayer mediaPlayer) {
+    public ListSongFragment(ArrayList<BaiHat> arrayList ) {
         this.arrayList = arrayList;
-        this.mediaPlayer = mediaPlayer;
+
     }
 
 
@@ -48,7 +46,7 @@ public class ListSongFragment extends Fragment {
         txtCaSi =view.findViewById(R.id.txt_info_casi);
         txtDanhMuc = view.findViewById(R.id.txt_info_danhmuc);
         recyclerView= view.findViewById(R.id.rv_listsong_fragment);
-        playSongAdapter = new PlaySongAdapter( getContext(), arrayList, mediaPlayer);
+        playSongAdapter = new PlaySongAdapter( getContext(), arrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setAdapter(playSongAdapter);
