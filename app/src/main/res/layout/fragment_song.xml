@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="15dp"
     tools:context=".Fragment.HomeFragment.SongFragment">
 
     <TextView
         android:id="@+id/txt_song"
-        android:text="Hôm Nay Nghe Gì"
+        android:text="Bảng Xếp Hạng"
         android:drawableRight="@drawable/icon_viewmore"
+        android:drawableTint="@color/black"
         android:textSize="22sp"
         android:textColor="@color/black"
         android:textStyle="bold"

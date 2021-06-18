@@ -1,7 +1,6 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +87,6 @@ public class Added_AddFragment extends Fragment {
         if (arrayList != null) {
             for (int i = 0; i < arrayList.size(); i++)
                 if (arrayList.get(i).getIdBaiHat().equals(IdBaiHat)) {
-                    Log.e("BBBB", "true");
                     position = i;
                     return true;
                 }

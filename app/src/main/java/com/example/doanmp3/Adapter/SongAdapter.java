@@ -7,16 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Activity.AllSongActivity;
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -56,6 +52,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
+        holder.txtStt.setText(position + 1 + "");
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
         Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imageView);
@@ -63,15 +60,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return 7;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
-        TextView txtCaSi, txtBaiHat;
+        TextView txtCaSi, txtBaiHat, txtStt;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            txtStt = itemView.findViewById(R.id.txt_stt);
             imageView = itemView.findViewById(R.id.img_baihat);
             txtCaSi = itemView.findViewById(R.id.txt_baihat_casi);
             txtBaiHat= itemView.findViewById(R.id.txt_baihat);
@@ -82,7 +80,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
                     Intent intent = new Intent(context, PlayNhacActivity.class);
                     GetData();
                     intent.putExtra("mangbaihat", arrayList);
-
                     intent.putExtra("position", getPosition());
                     DanhSachBaiHatActivity.category = "Playlist";
                     DanhSachBaiHatActivity.TenCategoty="Hôm nay nghe gì?";

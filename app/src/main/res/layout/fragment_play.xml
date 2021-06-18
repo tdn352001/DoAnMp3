@@ -60,7 +60,7 @@
         android:id="@+id/txt_song_casi_play_fragment"
         android:layout_below="@id/dianhac"
         android:layout_marginTop="40dp"
-        android:text="Tên Bài Hát -Ca Sĩ"
+        android:text="Loading....!"
         android:textAlignment="center"
         android:textSize="20dp"
         android:textColor="@color/black"

@@ -78,7 +78,6 @@ public class UserPlaylistFragment extends Fragment {
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                     recyclerView.setLayoutManager(linearLayoutManager);
-                    Log.e("BBB", "TC");
                     handler.removeCallbacks(this);
                 }
             }
@@ -172,7 +171,6 @@ public class UserPlaylistFragment extends Fragment {
                             edtTenPlaylist.setError("Playlist Đã Tồn tại");
                             Toast.makeText(getContext(), "Playlist Đã Tồn Tại", Toast.LENGTH_SHORT).show();
                         }
-                        Log.e("BBB", "2");
                     }
                 }
             }

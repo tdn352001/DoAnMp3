@@ -5,46 +5,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:layout_marginHorizontal="10dp"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="10dp"
+    android:layout_marginVertical="5dp"
+    android:elevation="10dp"
     app:cardCornerRadius="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearsong"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <TextView
+            android:id="@+id/txt_stt"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="stt"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/img_baihat"
             android:scaleType="fitXY"
+            app:riv_corner_radius="10dp"
+            android:layout_toRightOf="@id/txt_stt"
+            android:layout_marginLeft="20dp"
+            android:layout_marginVertical="5dp"
             android:layout_gravity="center"
-            android:layout_width="180dp"
-            android:layout_height="180dp"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
 
-        <TextView
-            android:id="@+id/txt_baihat"
-            android:text="Ten Bài Hát"
-            android:textSize="20dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textAlignment="center"
-            android:layout_marginHorizontal="5dp"
-            android:layout_gravity="center"
-            android:layout_width="162dp"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:layout_toRightOf="@id/img_baihat"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_baihat"
+                android:text="Ten Bài Hát"
+                android:textSize="18sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:id="@+id/txt_baihat_casi"
-            android:text="casi"
-            android:textSize="16dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginHorizontal="5dp"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:layout_width="162dp"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_baihat_casi"
+                android:text="casi"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp"
+                android:layout_width="162dp"
+                android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 
 

@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -28,20 +30,12 @@ import java.util.Collections;
 
 public class LibraryFragment extends Fragment {
     public static final int PERMISSION_READ = 0;
-    public static final int PERMISSION_WRITE = 1;
     RecyclerView recyclerView;
     AudioAdapter adapter;
     ArrayList<ModelAudio> audios;
     ArrayList<BaiHat> arrayList;
-    public LibraryFragment() {
-        // Required empty public constructor
-    }
-   @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,15 +51,14 @@ public class LibraryFragment extends Fragment {
     }
     public boolean checkPermission() {
         int READ_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int WRITE_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
-        if((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED) && (WRITE_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
+        if((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ);
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
             return false;
         }
         return true;
     }
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
@@ -82,23 +75,19 @@ public class LibraryFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void getAudioFiles() {
         ContentResolver contentResolver = getActivity().getContentResolver();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
         Cursor cursor = contentResolver.query(uri, null, null, null, null);
-
-        //looping through all rows and adding to list
         if (cursor != null && cursor.moveToFirst()) {
             do {
-
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                 String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                ModelAudio modelAudio = new ModelAudio(title,duration, artist,  Uri.parse(url) );
+                ModelAudio modelAudio = new ModelAudio(title, artist,  Uri.parse(url) );
                 audios.add(modelAudio);
-
 
                 // sua
                 BaiHat baiHat = new BaiHat();

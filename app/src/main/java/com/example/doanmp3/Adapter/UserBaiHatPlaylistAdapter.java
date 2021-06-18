@@ -2,7 +2,6 @@ package com.example.doanmp3.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,6 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         String result = (String) response.body();
-                        Log.e("BBB", result);
                         if(result.equals("Thanh Cong")){
                             arrayList.remove(position);
                             notifyItemRemoved(position);

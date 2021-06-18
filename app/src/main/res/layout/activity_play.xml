@@ -81,7 +81,7 @@
                 android:layout_height="50dp"/>
             <ImageButton
                 android:id="@+id/btn_play"
-                android:src="@drawable/icon_play"
+                android:src="@drawable/ic_pause"
                 android:tint="@color/black"
                 android:layout_marginHorizontal="10dp"
                 android:scaleType="fitXY"

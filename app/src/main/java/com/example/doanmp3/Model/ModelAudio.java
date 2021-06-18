@@ -2,23 +2,19 @@ package com.example.doanmp3.Model;
 
 import android.net.Uri;
 
-import com.example.doanmp3.R;
-
 import java.util.Collections;
 
 public class ModelAudio {
 
     String audioTitle;
-    String audioDuration;
     String audioArtist;
     Uri audioUri;
 
     public ModelAudio() {
     }
 
-    public ModelAudio(String audioTitle, String audioDuration, String audioArtist, Uri audioUri) {
+    public ModelAudio(String audioTitle, String audioArtist, Uri audioUri) {
         this.audioTitle = audioTitle;
-        this.audioDuration = audioDuration;
         this.audioArtist = audioArtist;
         this.audioUri = audioUri;
     }
@@ -31,13 +27,6 @@ public class ModelAudio {
         this.audioTitle = audioTitle;
     }
 
-    public String getaudioDuration() {
-        return audioDuration;
-    }
-
-    public void setaudioDuration(String audioDuration) {
-        this.audioDuration = audioDuration;
-    }
 
     public String getaudioArtist() {
         return audioArtist;

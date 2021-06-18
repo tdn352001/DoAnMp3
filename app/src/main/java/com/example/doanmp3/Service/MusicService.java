@@ -6,11 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -30,8 +34,8 @@ import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
 
 public class MusicService extends Service {
     public static ArrayList<BaiHat> arrayList;
-    private boolean isAudio;
-    private int Pos;
+    public static boolean isAudio;
+    public static int Pos;
     int Progress;
     public static boolean random;
     public static boolean repeat;
@@ -44,7 +48,6 @@ public class MusicService extends Service {
     final public static int ACTION_CLEAR = 4;
     final public static int ACTION_CHANGE_POS = 5;
     final public static int ACTION_START_PLAY = 7;
-
 
 
     ArrayList<Integer> playedlist;
@@ -62,6 +65,7 @@ public class MusicService extends Service {
 
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCompletion(MediaPlayer mp) {
                 playedlist.add(Pos);
@@ -69,7 +73,7 @@ public class MusicService extends Service {
                 if (arrayList.size() == playedlist.size()) {
                     playedlist.clear();
                 }
-                if (repeat){
+                if (repeat) {
                     if (random) {
                         Random rd = new Random();
                         Pos = rd.nextInt(arrayList.size());
@@ -95,6 +99,7 @@ public class MusicService extends Service {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         GetDataBaiHat(intent);
@@ -102,46 +107,68 @@ public class MusicService extends Service {
         return START_STICKY;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void GetDataBaiHat(Intent intent) {
 
-        // Lấy Dữ Liệu Bài Hát
-        if (intent.hasExtra("mangbaihat"))
-            arrayList = intent.getParcelableArrayListExtra("mangbaihat");
-        if (intent.hasExtra("isaudio"))
-            isAudio = intent.getBooleanExtra("isaudio", false);
-        if (intent.hasExtra("pos")) {
-            Pos = intent.getIntExtra("pos", 0);
-            if (arrayList != null)
-                PlayNhac();
+        if (intent != null) { // Lấy Dữ Liệu Bài Hát
+            if (intent.hasExtra("mangbaihat"))
+                arrayList = intent.getParcelableArrayListExtra("mangbaihat");
+            if (intent.hasExtra("audio"))
+                isAudio = intent.getBooleanExtra("isaudio", false);
+            if (intent.hasExtra("pos")) {
+                Pos = intent.getIntExtra("pos", 0);
+                if (arrayList != null)
+                    PlayNhac();
+            }
+
+
+            if (intent.hasExtra("action_activity")) {
+                int action = intent.getIntExtra("action_activity", 0);
+                ActionControlMusic(action);
+            }
+
+            if (intent.hasExtra("action_notification")) {
+                int action = intent.getIntExtra("action_notification", 0);
+                ActionControlMusic(action);
+            }
         }
-
-
-        if (intent.hasExtra("action_activity")) {
-            int action = intent.getIntExtra("action_activity", 0);
-            ActionControlMusic(action);
-        }
-
-        if (intent.hasExtra("action_notification")) {
-            int action = intent.getIntExtra("action_notification", 0);
-            ActionControlMusic(action);
-        }
-
     }
 
     // Chơi Nhạc
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void PlayNhac() {
-        try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!isAudio) {
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                mediaPlayer.setAudioAttributes(
+                        new AudioAttributes.Builder()
+                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .setUsage(AudioAttributes.USAGE_MEDIA)
+                                .build()
+                );
+                mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(arrayList.get(Pos).getLinkBaiHat()));
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         SendActionToActivity(ACTION_START_PLAY);
+        SendActionToMain(ACTION_START_PLAY);
+
     }
 
     // Action Click Trên Thanh Thông Báo
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void ActionControlMusic(int action) {
         switch (action) {
             case ACTION_PREVIOUS:
@@ -161,10 +188,12 @@ public class MusicService extends Service {
                 break;
         }
         SendActionToActivity(action);
+        SendActionToMain(action);
     }
 
 
     // Quay Trờ về bài trước
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void ActionPrevious() {
         if (random) {
             if (!stack.empty()) {
@@ -192,6 +221,7 @@ public class MusicService extends Service {
     }
 
     // Chuyển đến bài tiếp theo
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void ActionNext() {
         playedlist.add(Pos);
         stack.push(Pos);
@@ -218,7 +248,6 @@ public class MusicService extends Service {
     private void MusicControlNotification() {
 
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
-
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_song)
                 .setSubText(arrayList.get(Pos).getTenBaiHat())
@@ -228,10 +257,10 @@ public class MusicService extends Service {
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1, 3)
                         .setMediaSession(mediaSessionCompat.getSessionToken()));
-        if(!isAudio)
+        if (!isAudio)
             notificationBuilder.setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()));
         else
-            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img_disknhac));
+            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.music2));
 
         if (mediaPlayer.isPlaying())
             notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
@@ -263,7 +292,6 @@ public class MusicService extends Service {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            // Log exception
             return null;
         }
     }
@@ -278,4 +306,17 @@ public class MusicService extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
+    private void SendActionToMain(int action){
+        Intent intent = new Intent("action_mainactivity");
+        intent.putExtra("action", action);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        mediaPlayer.seekTo(0);
+        mediaPlayer.stop();
+        super.onDestroy();
+    }
 }

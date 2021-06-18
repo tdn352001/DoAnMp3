@@ -1,16 +1,26 @@
 package com.example.doanmp3.Activity;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
@@ -26,11 +36,14 @@ import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Playlist> userPlaylist;
     public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
 
+    // AppBar Play
+    @SuppressLint("StaticFieldLeak")
+    public static RelativeLayout layoutPlay;
+    public static CircleImageView imgBaiHat;
+    @SuppressLint("StaticFieldLeak")
+    public static TextView txtBaiHat, txtCaSi;
+    @SuppressLint("StaticFieldLeak")
+    public static ImageView btnStop, btnNext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
         GetBaiHatRecent();
         GetKeyWordRecent();
         GetCategory();
+        AppbarClick();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_mainactivity"));
     }
-
 
 
     private void AnhXa() {
@@ -74,22 +97,29 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
 
+        layoutPlay = findViewById(R.id.appbar_play);
+        imgBaiHat = findViewById(R.id.img_appbar_play);
+        txtBaiHat = findViewById(R.id.txt_tenbaihat_appbar);
+        txtCaSi = findViewById(R.id.txt_tencasi_appbar);
+        btnNext = findViewById(R.id.btn_next_appbar);
+        btnStop = findViewById(R.id.btn_pause_appbar);
 
     }
+
     private void getUser() {
         Intent intent = getIntent();
-        if(intent.hasExtra("user")){
+        if (intent.hasExtra("user")) {
             user = (User) intent.getSerializableExtra("user");
             DetailUserPlaylistActivity.user = user;
         }
-
     }
+
     private void setupBottomNavigation() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.searchFragment:
                         viewPager.setCurrentItem(2);
                         break;
@@ -127,17 +157,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-               switch (position){
-                   case 0:
-                       bottomNavigationView.getMenu().findItem(R.id.userFragment).setChecked(true);
-                       break;
-                   case 1:
-                       bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
-                       break;
-                   case 2:
-                       bottomNavigationView.getMenu().findItem(R.id.searchFragment).setChecked(true);
-                       break;
-               }
+                switch (position) {
+                    case 0:
+                        bottomNavigationView.getMenu().findItem(R.id.userFragment).setChecked(true);
+                        break;
+                    case 1:
+                        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
+                        break;
+                    case 2:
+                        bottomNavigationView.getMenu().findItem(R.id.searchFragment).setChecked(true);
+                        break;
+                }
             }
 
             @Override
@@ -147,13 +177,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    public static void LoadingComplete(){
+
+    public static void LoadingComplete() {
         progress++;
-        if(progress >= 3)
+        if (progress >= 3)
             progressBar.setVisibility(View.INVISIBLE);
 
 
     }
+
     @Override
     public void onBackPressed() {
         if (backtime + 2000 > System.currentTimeMillis()) {
@@ -166,8 +198,6 @@ public class MainActivity extends AppCompatActivity {
         backtime = System.currentTimeMillis();
     }
 
-
-
     private void GetUserPlaylist() {
         DataService dataService = APIService.getUserService();
         Call<List<Playlist>> callback = dataService.GetUserPlaylist(MainActivity.user.getIdUser());
@@ -175,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
                 userPlaylist = (ArrayList<Playlist>) response.body();
-                if(userPlaylist == null)
+                if (userPlaylist == null)
                     userPlaylist = new ArrayList<>();
             }
 
@@ -193,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 UserBaiHatFragment.arrayList = (ArrayList<BaiHat>) response.body();
-                if(UserBaiHatFragment.arrayList == null)
+                if (UserBaiHatFragment.arrayList == null)
                     UserBaiHatFragment.arrayList = new ArrayList<>();
             }
 
@@ -203,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void GetBaiHatRecent(){
+    public void GetBaiHatRecent() {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -211,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 SearchFragment.baihatrecents = (ArrayList<BaiHat>) response.body();
                 baiHats = (ArrayList<BaiHat>) response.body();
-                if(SearchFragment.baihatrecents == null){
+                if (SearchFragment.baihatrecents == null) {
                     SearchFragment.baihatrecents = new ArrayList<>();
                     baiHats = new ArrayList<>();
                 }
@@ -224,14 +254,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void GetKeyWordRecent(){
+    public void GetKeyWordRecent() {
         DataService dataService = APIService.getUserService();
         Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
         callback.enqueue(new Callback<List<KeyWord>>() {
             @Override
             public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
                 SearchFragment.keyWordArrayList = (ArrayList<KeyWord>) response.body();
-                if(SearchFragment.keyWordArrayList == null)
+                if (SearchFragment.keyWordArrayList == null)
                     SearchFragment.keyWordArrayList = new ArrayList<>();
             }
 
@@ -241,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void GetCategory(){
+    public void GetCategory() {
         DataService dataService = APIService.getService();
         Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
         Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
@@ -272,4 +302,83 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void AppbarClick() {
+        layoutPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PlayNhacActivity.class);
+                intent.putExtra("notstart", 0);
+                startActivity(intent);
+            }
+        });
+
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendActionToService(MusicService.ACTION_PLAY);
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendActionToService(MusicService.ACTION_NEXT);
+            }
+        });
+    }
+
+    private void SendActionToService(int action) {
+        Intent intent = new Intent(this, MusicService.class);
+        intent.putExtra("action_activity", action);
+        startService(intent);
+    }
+
+    public void setVisibility() {
+        layoutPlay.setVisibility(View.VISIBLE);
+        if (MusicService.isAudio)
+            imgBaiHat.setImageResource(R.drawable.ic_song);
+        else
+            Picasso.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).into(imgBaiHat);
+        txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
+        txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
+        btnStop.setImageResource(R.drawable.ic_pause);
+    }
+
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra("pos")) {
+                setVisibility();
+            }
+            if (intent.hasExtra("action")) {
+                int action = intent.getIntExtra("action", 0);
+                ActionFromService(action);
+            }
+        }
+    };
+
+    private void ActionFromService(int action) {
+        switch (action) {
+            case MusicService.ACTION_START_PLAY:
+                setVisibility();
+                break;
+            case MusicService.ACTION_PLAY:
+                ActionPlay();
+                break;
+            case MusicService.ACTION_CLEAR:
+                layoutPlay.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+    private void ActionPlay() {
+        if (MusicService.mediaPlayer.isPlaying())
+            btnStop.setImageResource(R.drawable.ic_pause);
+        else
+            btnStop.setImageResource(R.drawable.icon_play);
+    }
+
 }

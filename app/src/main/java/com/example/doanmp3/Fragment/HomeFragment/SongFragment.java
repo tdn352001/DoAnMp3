@@ -66,14 +66,14 @@ public class SongFragment extends Fragment {
 
     private void GetData() {
         DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetRanDomBaiHat();
+        Call<List<BaiHat>> callback = dataService.GetAllSong();
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 ArrayList<BaiHat> songs = (ArrayList<BaiHat>) response.body();
                 adapter = new SongAdapter(getActivity(), songs);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
                 MainActivity.LoadingComplete();

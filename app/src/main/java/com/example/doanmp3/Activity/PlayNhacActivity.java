@@ -66,6 +66,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                 Pos = intent.getIntExtra("pos", 0);
                 SetConTent();
                 UploadToPlayRecent();
+                TimeSong();
             }
             if (intent.hasExtra("action")) {
                 int action = intent.getIntExtra("action", 0);
@@ -82,7 +83,6 @@ public class PlayNhacActivity extends AppCompatActivity {
         AnhXa();
         CheckRepeatRandom();
         GetIntent();
-        StartService();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_activity"));
         eventClick();
 
@@ -109,9 +109,8 @@ public class PlayNhacActivity extends AppCompatActivity {
             case MusicService.ACTION_PLAY:
                 ActionPlay();
                 break;
-            case MusicService.ACTION_PREVIOUS:
-                break;
             case MusicService.ACTION_CLEAR:
+                ActionClear();
                 break;
             case MusicService.ACTION_START_PLAY:
                 TimeSong();
@@ -123,11 +122,20 @@ public class PlayNhacActivity extends AppCompatActivity {
     private void ActionPlay() {
         if (!MusicService.mediaPlayer.isPlaying()) {
             btnPlay.setImageResource(R.drawable.icon_play);
-            playFragment.objectAnimator.pause();
+            PlayFragment.objectAnimator.pause();
+            MainActivity.btnStop.setImageResource(R.drawable.icon_play);
+
         } else {
             btnPlay.setImageResource(R.drawable.ic_pause);
-            playFragment.objectAnimator.resume();
+            PlayFragment.objectAnimator.resume();
+            MainActivity.btnStop.setImageResource(R.drawable.icon_play);
         }
+    }
+
+    private void ActionClear() {
+        btnPlay.setImageResource(R.drawable.icon_play);
+        seekBar.setProgress(0);
+        txtCurrent.setText(simpleDateFormat.format(0));
     }
 
     private void SendActionToService(int action) {
@@ -163,33 +171,50 @@ public class PlayNhacActivity extends AppCompatActivity {
     private void GetIntent() {
         Intent intent = getIntent();
 
-        if (intent.hasExtra("position"))
-            Pos = intent.getIntExtra("position", 0);
+        if (!intent.hasExtra("notstart")) {
+            if (intent.hasExtra("position"))
+                Pos = intent.getIntExtra("position", 0);
 
-        if (intent.hasExtra("mangbaihat")) {
-            arrayList = intent.getParcelableArrayListExtra("mangbaihat");
-            if (arrayList.size() > 0) {
-                listSongFragment = new ListSongFragment(arrayList);
-                playFragment = new PlayFragment();
-                viewPager = findViewById(R.id.viewpager_play_activity);
-                ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
-                fragmentArrayList.add(listSongFragment);
-                fragmentArrayList.add(playFragment);
-                ListSongAdapter = new ViewPagerPlaySongAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragmentArrayList);
-                viewPager.setAdapter(ListSongAdapter);
-                indicator.setViewPager(viewPager);
-                viewPager.setCurrentItem(1);
-                playFragment = (PlayFragment) ListSongAdapter.getItem(1);
+            if (intent.hasExtra("mangbaihat")) {
+                arrayList = intent.getParcelableArrayListExtra("mangbaihat");
+                if (arrayList.size() > 0) {
+                    setViewPager();
+                }
+            }
+
+            if (intent.hasExtra("audio"))
+                isAudio = true;
+            StartService();
+        } else {
+            arrayList = MusicService.arrayList;
+            Pos = MusicService.Pos;
+            isAudio = MusicService.isAudio;
+            if (arrayList != null) {
+                setViewPager();
+                TimeSong();
+                SetConTent();
             }
         }
+    }
 
-        if (intent.hasExtra("audio"))
-            isAudio = true;
+    private void setViewPager() {
+        listSongFragment = new ListSongFragment(arrayList);
+        playFragment = new PlayFragment();
+        viewPager = findViewById(R.id.viewpager_play_activity);
+        ArrayList<Fragment> fragmentArrayList = new ArrayList<>();
+        fragmentArrayList.add(listSongFragment);
+        fragmentArrayList.add(playFragment);
+        ListSongAdapter = new ViewPagerPlaySongAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragmentArrayList);
+        viewPager.setAdapter(ListSongAdapter);
+        indicator.setViewPager(viewPager);
+        viewPager.setCurrentItem(1);
+        playFragment = (PlayFragment) ListSongAdapter.getItem(1);
     }
 
     private void StartService() {
         Intent MusicService = new Intent(getApplicationContext(), com.example.doanmp3.Service.MusicService.class);
-        MusicService.putExtra("mangbaihat", arrayList);
+        if (arrayList != null)
+            MusicService.putExtra("mangbaihat", arrayList);
         MusicService.putExtra("audio", isAudio);
         MusicService.putExtra("pos", Pos);
         startService(MusicService);
