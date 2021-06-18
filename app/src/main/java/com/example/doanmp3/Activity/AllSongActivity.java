@@ -31,6 +31,8 @@ public class AllSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_song);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         init();
         Intent intent = getIntent();
@@ -73,7 +75,7 @@ public class AllSongActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Bài hát được yêu thích");
 
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -84,5 +86,11 @@ public class AllSongActivity extends AppCompatActivity {
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar_allsong);
         recyclerView = findViewById(R.id.rv_allsong);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

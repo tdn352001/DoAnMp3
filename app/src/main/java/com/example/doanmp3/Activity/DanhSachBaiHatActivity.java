@@ -57,6 +57,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_danh_sach_bai_hat);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         GetIntent();
         init();
@@ -236,5 +238,9 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+    }
 }

@@ -64,6 +64,8 @@ public class AddBaiHatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bai_hat);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         GetInfoPlaylist();
         SetToolBar();
@@ -387,5 +389,10 @@ public class AddBaiHatActivity extends AppCompatActivity {
         return !DetailUserPlaylistActivity.adapter.equals(Added_AddFragment.arrayList);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+    }
 
 }

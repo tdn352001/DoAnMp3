@@ -56,6 +56,8 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         Setup();
         EventClick();
@@ -458,4 +460,9 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
+    }
 }

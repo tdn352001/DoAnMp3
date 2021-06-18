@@ -17,8 +17,10 @@
             android:id="@+id/txt_info_song"
             android:text="Bài Hát: "
             android:maxLines="1"
+            android:fontFamily="@font/dancingscript_regular"
             android:layout_margin="12dp"
             android:textSize="18dp"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -26,7 +28,8 @@
             android:text="Ca Sĩ: "
             android:maxLines="1"
             android:layout_margin="12dp"
-            android:textSize="18dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
@@ -34,7 +37,8 @@
             android:text="Album: "
             android:maxLines="1"
             android:layout_margin="12dp"
-            android:textSize="18dp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

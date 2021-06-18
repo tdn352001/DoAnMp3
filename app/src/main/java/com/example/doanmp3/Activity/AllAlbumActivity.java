@@ -1,13 +1,12 @@
 package com.example.doanmp3.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Model.Album;
@@ -31,6 +30,8 @@ public class AllAlbumActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_album);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         init();
         GetData();
@@ -59,7 +60,7 @@ public class AllAlbumActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Album");
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -70,6 +71,12 @@ public class AllAlbumActivity extends AppCompatActivity {
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar_allalbum);
         recyclerView = findViewById(R.id.rv_allalbum);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 
 }

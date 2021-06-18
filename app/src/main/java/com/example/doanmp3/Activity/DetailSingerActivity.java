@@ -1,10 +1,5 @@
 package com.example.doanmp3.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.AllSongAdapter;
-import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.CaSi;
@@ -33,8 +31,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
 
 public class DetailSingerActivity extends AppCompatActivity {
     CoordinatorLayout coordinatorLayout;
@@ -53,6 +49,8 @@ public class DetailSingerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_singer);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         GetIntent();
         eventClick();
@@ -192,6 +190,12 @@ public class DetailSingerActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 
 }

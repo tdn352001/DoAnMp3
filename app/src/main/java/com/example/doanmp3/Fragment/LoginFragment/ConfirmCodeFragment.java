@@ -65,5 +65,12 @@ public class ConfirmCodeFragment extends Fragment {
                 }
             }
         });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_loginFragment);
+            }
+        });
     }
 }

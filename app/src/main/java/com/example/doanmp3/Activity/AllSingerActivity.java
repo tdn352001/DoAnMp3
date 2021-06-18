@@ -1,12 +1,12 @@
 package com.example.doanmp3.Activity;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.doanmp3.Adapter.AllSingerAdapter;
 import com.example.doanmp3.Model.CaSi;
@@ -25,14 +25,19 @@ public class AllSingerActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     AllSingerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_singer);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
+
         AnhXa();
         init();
         GetData();
     }
+
     private void GetData() {
         DataService dataService = APIService.getService();
         Call<List<CaSi>> callback = dataService.GetAllSinger();
@@ -57,7 +62,7 @@ public class AllSingerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Nghệ Sĩ");
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -68,5 +73,11 @@ public class AllSingerActivity extends AppCompatActivity {
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar_allsinger);
         recyclerView = findViewById(R.id.rv_allsinger);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

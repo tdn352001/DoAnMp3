@@ -80,6 +80,8 @@ public class PlayNhacActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
+
         AnhXa();
         CheckRepeatRandom();
         GetIntent();
@@ -150,7 +152,6 @@ public class PlayNhacActivity extends AppCompatActivity {
 
         startService(intent);
     }
-
 
     // Kiểm tra random
     private void CheckRepeatRandom() {
@@ -364,5 +365,9 @@ public class PlayNhacActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_top, R.anim.to_bottom);
+    }
 }

@@ -1,10 +1,9 @@
 package com.example.doanmp3.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +31,8 @@ public class AllPlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_playlist);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         init();
         GetData();
@@ -48,7 +49,7 @@ public class AllPlaylistActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Playlists");
 
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -64,10 +65,10 @@ public class AllPlaylistActivity extends AppCompatActivity {
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
-                    playlists = (ArrayList<Playlist>) response.body();
-                    adapter = new PlaylistAdapter(AllPlaylistActivity.this, playlists);
-                    recyclerView.setLayoutManager(new GridLayoutManager(AllPlaylistActivity.this, 2));
-                    recyclerView.setAdapter(adapter);
+                playlists = (ArrayList<Playlist>) response.body();
+                adapter = new PlaylistAdapter(AllPlaylistActivity.this, playlists);
+                recyclerView.setLayoutManager(new GridLayoutManager(AllPlaylistActivity.this, 2));
+                recyclerView.setAdapter(adapter);
 
             }
 
@@ -77,5 +78,11 @@ public class AllPlaylistActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

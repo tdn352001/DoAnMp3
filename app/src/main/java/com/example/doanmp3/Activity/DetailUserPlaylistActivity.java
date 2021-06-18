@@ -48,6 +48,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_user_playlist);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         AnhXa();
         GetIntent();
         SetupToolBar();
@@ -146,5 +148,11 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

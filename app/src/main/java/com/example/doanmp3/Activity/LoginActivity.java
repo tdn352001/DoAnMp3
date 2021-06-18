@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     @Override
     public void onBackPressed() {
-        if (navController.getCurrentDestination().getId() == R.id.registerFragment || navController.getCurrentDestination().getId() == R.id.forgotPasswordFragment)
+        if (navController.getCurrentDestination().getId() != R.id.loginFragment)
             navController.navigateUp();
         else {
             if (backtime + 2000 > System.currentTimeMillis()) {

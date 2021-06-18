@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
+
         progress = 0;
         AnhXa();
         getUser();
@@ -310,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, PlayNhacActivity.class);
                 intent.putExtra("notstart", 0);
                 startActivity(intent);
+                overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
             }
         });
 
@@ -380,5 +383,6 @@ public class MainActivity extends AppCompatActivity {
         else
             btnStop.setImageResource(R.drawable.icon_play);
     }
+
 
 }

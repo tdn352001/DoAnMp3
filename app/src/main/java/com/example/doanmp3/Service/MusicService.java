@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.StrictMode;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.Nullable;
@@ -63,6 +64,8 @@ public class MusicService extends Service {
         repeat = true;
         random = false;
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -294,6 +297,7 @@ public class MusicService extends Service {
         } catch (IOException e) {
             return null;
         }
+
     }
 
 
