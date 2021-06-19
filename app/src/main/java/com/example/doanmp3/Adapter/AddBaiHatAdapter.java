@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.Activity.AddBaiHatActivity;
 import com.example.doanmp3.Fragment.UserFragment.Added_AddFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
@@ -29,7 +30,7 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
     ArrayList<BaiHat> arrayList;
     ArrayList<BaiHat> mArrayList;
     boolean isAddedFragment;
-    boolean check =false;
+    boolean check = false;
 
     public AddBaiHatAdapter(Context context, ArrayList<BaiHat> arrayList, boolean isAddedFragment) {
         this.context = context;
@@ -76,6 +77,10 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
                 public void onClick(View v) {
                     Added_AddFragment.Remove(baiHat.getIdBaiHat());
                     notifyDataSetChanged();
+                    String query = AddBaiHatActivity.searchView.getQuery().toString();
+                    if (query != "") {
+                        AddBaiHatActivity.searchView.setQuery(query, true);
+                    }
                 }
             });
 
@@ -93,10 +98,18 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
                     if (Added_AddFragment.checkAddedBefore(baiHat.getIdBaiHat())) {
                         Added_AddFragment.Remove(baiHat.getIdBaiHat());
                         holder.Status.setImageResource(R.drawable.icon_add);
+                        String query = AddBaiHatActivity.searchView.getQuery().toString();
+                        if (query != "") {
+                            AddBaiHatActivity.searchView.setQuery(query, true);
+                        }
                     } else {
                         Added_AddFragment.Add(baiHat);
                         Added_AddFragment.adapter.notifyDataSetChanged();
                         holder.Status.setImageResource(R.drawable.ic_check);
+                        String query = AddBaiHatActivity.searchView.getQuery().toString();
+                        if (query != "") {
+                            AddBaiHatActivity.searchView.setQuery(query, true);
+                        }
                     }
                 }
             });

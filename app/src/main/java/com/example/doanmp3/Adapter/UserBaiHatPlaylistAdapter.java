@@ -130,4 +130,9 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
     public void setIdPlaylist(String idPlaylist) {
         IdPlaylist = idPlaylist;
     }
+
+    public void UpdateArraylist(ArrayList<BaiHat> baiHats){
+        arrayList = baiHats;
+        notifyDataSetChanged();
+    }
 }

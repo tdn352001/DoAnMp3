@@ -1,8 +1,8 @@
 package com.example.doanmp3.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -41,6 +41,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     String IdPlaylist;
     String TenPlaylist;
     public static ArrayList<BaiHat> arrayList;
+    @SuppressLint("StaticFieldLeak")
     public static UserBaiHatPlaylistAdapter adapter;
     public static User user;
 
@@ -109,7 +110,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                     arrayList = new ArrayList<>();
                 }
                 setRV();
-                Log.e("BBB", "Lay Xong Thong Tin");
                 btnAddBaiHat.setClickable(true);
             }
 
@@ -127,7 +127,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                 Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
                 intent.putExtra("idplaylist", IdPlaylist);
                 intent.putExtra("tenplaylist", TenPlaylist);
-                intent.putExtra("baihat", arrayList);
+                intent.putExtra("mangbaihat", arrayList);
                 startActivity(intent);
             }
         });
@@ -157,9 +157,21 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
+    public static void UpdateArraylist(ArrayList<BaiHat> baiHats){
+        if(baiHats != null){
+            arrayList = baiHats;
+            adapter.UpdateArraylist(arrayList);
+        }
+    }
+
     @Override
     public void finish() {
         super.finish();
+        adapter = null;
+        arrayList = null;
         overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
+
+
+
 }

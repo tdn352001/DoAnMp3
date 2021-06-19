@@ -44,10 +44,12 @@ import retrofit2.Response;
 public class AddBaiHatActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    SearchView searchView;
+    public static SearchView searchView;
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
+    public static ArrayList<BaiHat> baiHatsAdded;
+    private ArrayList<BaiHat> arrayList;
 
     //Fragment in View Pager;
     static Added_AddFragment addedFragment;
@@ -77,6 +79,11 @@ public class AddBaiHatActivity extends AppCompatActivity {
         Intent intent = getIntent();
         IdPlaylist = intent.getStringExtra("idplaylist");
         TenPlaylist = intent.getStringExtra("tenplaylist");
+        if (intent.hasExtra("mangbaihat")) {
+            baiHatsAdded = intent.getParcelableArrayListExtra("mangbaihat");
+            arrayList = new ArrayList<>();
+            arrayList.addAll(baiHatsAdded);
+        }
     }
 
 
@@ -94,7 +101,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CheckChange()) {
+                if (isChange()) {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
                     dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
                     dialog.setTitle("Thoát");
@@ -312,7 +319,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (CheckChange()) {
+        if (isChange()) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
             dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
             dialog.setTitle("Thoát");
@@ -339,7 +346,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
 
     private void SaveChange() {
         progressDialog = ProgressDialog.show(AddBaiHatActivity.this, "Đang Cập Nhật Playlsit", "Vui lòng chờ...!", true, true);
-        if (CheckChange()) {
+        if (isChange()) {
             DataService dataService = APIService.getUserService();
             Call<String> callUpdate = dataService.UpdateUserPlaylist(IdPlaylist);
             callUpdate.enqueue(new Callback<String>() {
@@ -360,8 +367,9 @@ public class AddBaiHatActivity extends AppCompatActivity {
                         });
                     }
                     progressDialog.dismiss();
-                    DetailUserPlaylistActivity.arrayList = Added_AddFragment.arrayList;
-                    DetailUserPlaylistActivity.adapter.notifyDataSetChanged();
+                    DetailUserPlaylistActivity.UpdateArraylist(Added_AddFragment.arrayList);
+//                    DetailUserPlaylistActivity.arrayList = Added_AddFragment.arrayList;
+//                    DetailUserPlaylistActivity.adapter.notifyDataSetChanged();
                     Added_AddFragment.arrayList = null;
                     Toast.makeText(AddBaiHatActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     finish();
@@ -379,19 +387,15 @@ public class AddBaiHatActivity extends AppCompatActivity {
         }
     }
 
-    private boolean CheckChange() {
-//        if (DetailUserPlaylistActivity.arrayList.size() == Added_AddFragment.arrayList.size()) {
-//            for (int i = 0; i < Added_AddFragment.arrayList.size(); i++)
-//                if (!DetailUserPlaylistActivity.arrayList.get(i).getIdBaiHat().equals(Added_AddFragment.arrayList.get(i).getIdBaiHat()))
-//                    return false;
-//        }
-
-        return !DetailUserPlaylistActivity.adapter.equals(Added_AddFragment.arrayList);
+    private boolean isChange() {
+        return !arrayList.equals(Added_AddFragment.arrayList);
     }
 
     @Override
     public void finish() {
         super.finish();
+        searchView = null;
+        baiHatsAdded = null;
         overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 

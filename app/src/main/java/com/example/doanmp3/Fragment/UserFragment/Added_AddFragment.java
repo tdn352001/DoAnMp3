@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.AddBaiHatActivity;
-import com.example.doanmp3.Activity.DetailUserPlaylistActivity;
 import com.example.doanmp3.Adapter.AddBaiHatAdapter;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
@@ -52,7 +51,7 @@ public class Added_AddFragment extends Fragment {
     }
 
     private void GetBaiHatAdded() {
-        arrayList = DetailUserPlaylistActivity.arrayList;
+        arrayList = AddBaiHatActivity.baiHatsAdded;
         if (arrayList != null) {
             adapter = new AddBaiHatAdapter(getContext(), arrayList, true);
             SetRV();
@@ -63,23 +62,6 @@ public class Added_AddFragment extends Fragment {
         }
         textView.setVisibility(View.VISIBLE);
 
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                handler.postDelayed(this, 10);
-//                if(DetailUserPlaylistActivity.arrayList != null){
-//                    arrayList = DetailUserPlaylistActivity.arrayList;
-//                    SetRV();
-//                    if (arrayList.size() > 0) {
-//                        textView.setVisibility(View.INVISIBLE);
-//                    }else
-//                        textView.setVisibility(View.VISIBLE);
-//
-//                    handler.removeCallbacks(this);
-//                }
-//            }
-//        }, 10);
     }
 
     public static boolean checkAddedBefore(String IdBaiHat) {
@@ -120,31 +102,11 @@ public class Added_AddFragment extends Fragment {
     }
 
 
-//    public void GetBaiHat() {
-//        Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                handler.postDelayed(this, 200);
-//                if (DetailUserPlaylistActivity.arrayList != null) {
-//                    arrayList = DetailUserPlaylistActivity.arrayList;
-//                    if (arrayList.size() > 0) {
-//                        adapter = new AddBaiHatAdapter(getContext(), arrayList, true);
-//                        recyclerView.setAdapter(adapter);
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-//                        recyclerView.setLayoutManager(linearLayoutManager);
-//                        textView.setVisibility(View.INVISIBLE);
-//                        return;
-//                    } else
-//                        textView.setVisibility(View.VISIBLE);
-//
-//                    handler.removeCallbacks(this);
-//                }
-//            }
-//        };
-//        handler.postDelayed(runnable, 200);
-//    }
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        textView = null;
+        adapter = null;
+        arrayList = null;
+    }
 }
