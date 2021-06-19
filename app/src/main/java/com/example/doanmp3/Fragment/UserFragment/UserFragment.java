@@ -102,9 +102,7 @@ public class UserFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_song);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_phone);
-        tabLayout.getTabAt(2).setIcon(R.drawable.icon_playlist);
+
     }
 
 

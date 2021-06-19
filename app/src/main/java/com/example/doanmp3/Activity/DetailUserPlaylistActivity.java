@@ -3,6 +3,7 @@ package com.example.doanmp3.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
     RoundedImageView imgPlaylist;
     Toolbar toolbar;
-    FloatingActionButton btnPlayAll;
+    MaterialButton btnPlayAll;
     RelativeLayout btnAddBaiHat;
     RecyclerView recyclerView;
     TextView txtNoInf;
@@ -78,6 +79,12 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void GetIntent() {

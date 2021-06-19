@@ -89,6 +89,7 @@ public class MusicService extends Service {
                     }
                 }
                 PlayNhac();
+                MusicControlNotification();
                 SendActionToActivity(ACTION_CHANGE_POS);
             }
         });

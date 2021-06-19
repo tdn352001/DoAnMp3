@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none">
@@ -18,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="40dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -53,7 +53,7 @@
                     android:layout_marginTop="15dp"
                     android:text="Nguyễn Tiến Dũng"
                     android:textColor="@color/black"
-                    android:textSize="22dp" />
+                    android:textSize="25sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_edit_user_info"
@@ -65,8 +65,9 @@
                     android:layout_marginTop="5dp"
                     android:text="Chỉnh Sửa Thông Tin"
                     android:textColor="@color/black"
-                    android:textSize="12dp"
-                    app:icon="@drawable/ic_pen" />
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_pen"
+                    app:iconTint="#06AA83" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_logout"
@@ -78,22 +79,32 @@
                     android:layout_marginTop="5dp"
                     android:text="Đăng Xuất"
                     android:textColor="@color/black"
-                    android:textSize="12dp"
-                    app:icon="@drawable/ic_logout" />
-
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_logout"
+                    app:iconTint="#06AA83" />
 
             </RelativeLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout_user"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_logout"
             android:layout_gravity="bottom|end"
+            app:tabIndicatorFullWidth="false"
             app:layout_collapseMode="pin"
-            app:tabTextAppearance="@style/Custom_TabLayout" />
+            app:tabTextColor="#E67E7E7D"
+            app:tabIndicatorColor="#AF05ED"
+            app:tabMinWidth="15mm"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="#000"
+            app:tabTextAppearance="@style/Custom_TabLayout"
+            tools:ignore="InOrMmUsage" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -1,51 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:paddingHorizontal="10dp"
-android:layout_marginVertical="10dp">
-<RelativeLayout
-    android:layout_centerInParent="true"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_all_audio"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="10dp"
+    android:paddingHorizontal="10dp">
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="7dp">
-        <ImageView
-            android:id="@+id/image"
-            android:src="@drawable/audio"
-            android:scaleType="fitXY"
-            android:layout_width="80dp"
-            android:layout_height="80dp"/>
-    </androidx.cardview.widget.CardView>
+        android:layout_centerInParent="true">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_all_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#787877"
+            app:cardCornerRadius="7dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:textSize="20dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/cardview_all_audio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/audio" />
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/artist"
-        android:textSize="16dp"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@id/cardview_all_audio"
-        android:layout_below="@id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/cardview_all_audio"
+            android:layout_toRightOf="@id/cardview_all_audio"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="60mm"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                tools:ignore="InOrMmUsage" />
+
+            <TextView
+                android:id="@+id/artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxWidth="60mm"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:ignore="InOrMmUsage" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

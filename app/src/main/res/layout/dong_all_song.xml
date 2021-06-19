@@ -20,33 +20,43 @@
 
             <ImageView
                 android:id="@+id/img_song_all"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
-
-        <TextView
-            android:id="@+id/txt_song_all"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/cardview_all_song"
             android:layout_toRightOf="@id/cardview_all_song"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="20dp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_song_casi_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txt_song_all"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_toRightOf="@id/cardview_all_song"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/txt_song_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="60mm"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txt_song_casi_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxWidth="60mm"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
     </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -55,9 +65,11 @@
         android:layout_width="50dp"
         android:layout_height="70dp"
         android:layout_alignParentRight="true"
-        app:strokeWidth="0dp"
-        app:strokeColor="@color/noname"
         app:backgroundTint="@color/noname"
-        app:icon="@drawable/ic_options" />
+        app:icon="@drawable/ic_options"
+        app:iconTint="@color/teal_700"
+        app:strokeColor="@color/noname"
+        app:strokeWidth="0dp"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

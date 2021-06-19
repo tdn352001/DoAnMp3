@@ -12,8 +12,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout_user_playlist"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
-        android:backgroundTint="@color/noname"
+        android:layout_height="405dp"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_marginBottom="8dp"
         android:fitsSystemWindows="true"
         app:elevation="40dp">
 
@@ -22,29 +23,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:padding="5dp"
+            android:paddingBottom="5dp"
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="40dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
+            <View
+                android:background="@drawable/view_user_playlist"
+                android:layout_gravity="fill"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_tieudedanhsach_userplaylist"
-                android:src="@drawable/ic_user_playlist"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
+                android:layout_width="40mm"
+                android:layout_height="40mm"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="35dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginTop="20mm"
+                android:layout_marginBottom="20mm"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                app:riv_corner_radius="12dp" />
+                android:src="@drawable/ic_user_playlist"
+                app:riv_corner_radius="12dp"
+                tools:ignore="InOrMmUsage"
+                tools:targetApi="lollipop" />
 
-<!--            <ProgressBar-->
-<!--                android:id="@+id/progress_load_baihat_userplaylist"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center" />-->
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_dsbh_userplaylist"
@@ -53,27 +54,33 @@
                 android:layout_marginBottom="15dp"
                 android:elevation="35dp"
                 app:layout_collapseMode="pin"
-                app:titleMarginBottom="5dp" />
+                app:titleMarginBottom="5dp"
+                tools:targetApi="lollipop" />
+
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_action_userplaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/custom_imageview"
+        android:layout_marginStart="50dp"
+        android:backgroundTint="#840CC5"
+        android:paddingHorizontal="25dp"
         android:src="@drawable/icon_random"
+        android:text="Phát Tất Cả"
+        android:textColor="@color/white"
+        app:cornerRadius="15dp"
         app:elevation="30dp"
         app:fabSize="auto"
         app:layout_anchor="@id/appbarlayout_user_playlist"
         app:layout_anchorGravity="center|bottom"
-        app:layout_behavior="@string/bottom_sheet_behavior" />
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:layout_marginLeft="50dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -131,10 +138,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_dsbh_userplaylist"
-                android:paddingHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/relative_btn_add_baihat_userplaylist" />
+                android:layout_below="@id/relative_btn_add_baihat_userplaylist"
+                android:paddingHorizontal="10dp" />
 
             <TextView
                 android:id="@+id/txt_no_info_user_playlist"

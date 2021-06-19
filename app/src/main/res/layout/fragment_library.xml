@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#F8F3F3"
     android:layout_height="match_parent"
     tools:context=".Fragment.UserFragment.LibraryFragment">
 
@@ -10,6 +9,5 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp" />
+        android:layout_height="match_parent" />
 </RelativeLayout>

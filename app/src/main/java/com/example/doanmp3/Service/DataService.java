@@ -184,4 +184,8 @@ public interface DataService {
     @FormUrlEncoded
     @POST("updateuserplaylist.php")
     Call<String> UpdateUserPlaylist(@Field("idplaylist") String idplaylist);
+
+    @FormUrlEncoded
+    @POST
+    Call<String> DeleteUserPlaylist(@Field("iduser") String IdUser, @Field("idplaylist") String idplaylist);
 }
