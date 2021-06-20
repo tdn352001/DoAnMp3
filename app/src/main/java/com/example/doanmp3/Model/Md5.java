@@ -5,8 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Md5 {
-    public String endcode(String string){
-        String hashtext="";
+    public String endcode(String string) {
+        String hashtext = "";
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(string.getBytes());

@@ -216,7 +216,6 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         });
     }
 
-
     private void GetDataTheLoai(String id) {
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatTheLoai(id);

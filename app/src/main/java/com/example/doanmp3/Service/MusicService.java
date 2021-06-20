@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -73,6 +73,8 @@ public class MusicService extends Service {
             public void onCompletion(MediaPlayer mp) {
                 playedlist.add(Pos);
                 stack.push(Pos);
+                if (arrayList == null)
+                    return;
                 if (arrayList.size() == playedlist.size()) {
                     playedlist.clear();
                 }
@@ -118,7 +120,7 @@ public class MusicService extends Service {
             if (intent.hasExtra("mangbaihat"))
                 arrayList = intent.getParcelableArrayListExtra("mangbaihat");
             if (intent.hasExtra("audio"))
-                isAudio = intent.getBooleanExtra("isaudio", false);
+                isAudio = intent.getBooleanExtra("audio", false);
             if (intent.hasExtra("pos")) {
                 Pos = intent.getIntExtra("pos", 0);
                 if (arrayList != null)
@@ -151,19 +153,15 @@ public class MusicService extends Service {
                 e.printStackTrace();
             }
         } else {
-            try {
-                mediaPlayer.setAudioAttributes(
-                        new AudioAttributes.Builder()
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .setUsage(AudioAttributes.USAGE_MEDIA)
-                                .build()
-                );
-                mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(arrayList.get(Pos).getLinkBaiHat()));
+            try{
+                mediaPlayer.reset();
+                Uri uri = Uri.parse(arrayList.get(Pos).getLinkBaiHat());
+                Log.e("BBB", uri.toString());
+                mediaPlayer.setDataSource(getBaseContext(), uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            catch (Exception ignored){}
         }
 
         SendActionToActivity(ACTION_START_PLAY);
@@ -257,6 +255,7 @@ public class MusicService extends Service {
                 .setSubText(arrayList.get(Pos).getTenBaiHat())
                 .setContentTitle(arrayList.get(Pos).getTenBaiHat())
                 .setContentText(arrayList.get(Pos).getTenAllCaSi())
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(1, 3)
@@ -311,7 +310,7 @@ public class MusicService extends Service {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void SendActionToMain(int action){
+    private void SendActionToMain(int action) {
         Intent intent = new Intent("action_mainactivity");
         intent.putExtra("action", action);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

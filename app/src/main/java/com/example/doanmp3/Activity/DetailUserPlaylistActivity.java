@@ -59,7 +59,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         EventClick();
     }
 
-
     private void AnhXa() {
         imgPlaylist = findViewById(R.id.img_tieudedanhsach_userplaylist);
         toolbar = findViewById(R.id.toolbar_dsbh_userplaylist);
@@ -171,7 +170,4 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         arrayList = null;
         overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
-
-
-
 }

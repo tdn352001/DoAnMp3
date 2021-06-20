@@ -1,140 +1,202 @@
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".Activity.UserInfoActivity">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_edit_infouser"
-            app:title="Chỉnh Sửa Thông Tin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:title="Chỉnh Sửa Thông Tin" />
+
+
+        <RelativeLayout
+            android:id="@+id/relative_info_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar_edit_infouser"
+            android:padding="15dp">
+
+            <View
+                android:id="@+id/view_boder1"
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/boder_line"
+                tools:targetApi="lollipop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/txt__edit_username"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_boder1"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:gravity="start|center"
+                android:maxLines="2"
+                android:text="@string/name_user"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_person"
+                app:iconPadding="15dp"
+                app:iconTint="@color/teal_700"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/txt_email"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt__edit_username"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:gravity="start|center"
+                android:maxLines="2"
+                android:text="@string/email_user"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_email"
+                app:iconPadding="15dp"
+                app:iconTint="@color/teal_700"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/txt_password"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_email"
+                android:layout_marginTop="5dp"
+                android:gravity="start|center"
+                android:text="@string/password"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_password"
+                app:iconPadding="15dp"
+                app:iconTint="@color/teal_700"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="0dp" />
+
+            <View
+                android:id="@+id/view_boder2"
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/txt_password"
+                android:layout_marginTop="15dp"
+                android:background="@color/boder_line"
+                tools:targetApi="lollipop" />
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/relative_avatar"
-            android:background="@drawable/outline_background"
-            android:padding="15dp"
-
-            android:layout_below="@+id/toolbar_edit_infouser"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_info_user"
+            android:padding="15dp">
+
             <TextView
                 android:id="@+id/txt_ten_user"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:text="Ảnh Đại Điện"
-                android:textSize="18dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/avatar"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edt_avatar_user"
-                android:text="Chỉnh Sửa"
-                android:textColor="@color/black"
-                android:layout_alignParentRight="true"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:strokeWidth="0dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/edit"
+                android:textAllCaps="false"
+                android:textColor="@color/teal_700"
+                app:strokeWidth="0dp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_edit_avater"
-                android:src="@drawable/person"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
-                android:layout_below="@id/btn_edt_avatar_user"
                 android:layout_width="150dp"
-                android:layout_height="150dp"/>
+                android:layout_height="150dp"
+                android:layout_below="@id/btn_edt_avatar_user"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/person" />
+
+            <View
+                android:id="@+id/view_boder3"
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/img_edit_avater"
+                android:layout_marginTop="25dp"
+                android:background="@color/boder_line"
+                tools:targetApi="lollipop" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/relative_banner"
-            android:background="@drawable/outline_background"
-            android:padding="15dp"
-            android:layout_below="@+id/relative_avatar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_avatar"
+            android:background="@drawable/outline_background"
+            android:padding="15dp">
+
             <TextView
                 android:id="@+id/txt_bia_user"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:text="Ảnh Bìa"
-                android:textSize="18dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/anh_bia"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edt_banner_user"
-                android:text="Chỉnh Sửa"
-                android:textColor="@color/black"
-                android:layout_alignParentRight="true"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:strokeWidth="0dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:layout_alignParentRight="true"
+                android:text="@string/edit"
+                android:textAllCaps="false"
+                android:textColor="@color/teal_700"
+                app:strokeWidth="0dp" />
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_edit_banner"
-                android:src="@drawable/person"
-                android:scaleType="fitXY"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="15dp"
-                android:layout_marginHorizontal="9dp"
-                android:layout_below="@id/btn_edt_banner_user"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                app:riv_corner_radius="25dp"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/relative_info_user"
-            android:background="@drawable/outline_background"
-            android:padding="15dp"
-            android:layout_below="@+id/relative_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/txt__edit_username"
-                android:text="Tên: "
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:drawableEnd="@drawable/ic_pen"
-                android:drawableRight="@drawable/ic_pen"
-                android:layout_marginVertical="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/txt_email"
-                android:text="Email:  "
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:drawableEnd="@drawable/ic_pen"
-                android:drawableRight="@drawable/ic_pen"
-                android:layout_below="@+id/txt__edit_username"
-                android:layout_marginVertical="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/txt_password"
-                android:text="Mật Khâu: *******  "
-                android:textSize="20dp"
-                android:textColor="@color/black"
-                android:drawableEnd="@drawable/ic_pen"
-                android:drawableRight="@drawable/ic_pen"
-                android:layout_marginVertical="10dp"
-                android:layout_below="@id/txt_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_below="@id/btn_edt_banner_user"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="9dp"
+                android:layout_marginTop="20dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/person"
+                app:riv_corner_radius="22dp" />
         </RelativeLayout>
 
 

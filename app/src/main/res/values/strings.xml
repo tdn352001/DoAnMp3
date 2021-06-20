@@ -4,4 +4,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="channel_name">Notification_control_mediaplayer</string>
     <string name="channel_description">Notification_control_mediaplayer</string>
+    <string name="name_user">Tên:</string>
+    <string name="email_user">Email:</string>
+    <string name="password">Mật Khẩu: ******</string>
+    <string name="anh_bia">Ảnh Bìa</string>
+    <string name="edit">Chỉnh Sửa</string>
+    <string name="avatar">Ảnh Đại Điện</string>
+    <string name="cancel">Hủy</string>
+    <string name="add">Thêm</string>
+    <string name="name_song">Tên Bài Hát</string>
+    <string name="create_new_playlist">Tạo Playlist Mới</string>
+    <string name="new_username">New Username</string>
+    <string name="change_username">Đổi Username</string>
+    <string name="mat_khau">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password">Đổi Password</string>
+    <string name="enter_password">Nhập Mật Khẩu</string>
+    <string name="change_email">Đổi Email</string>
+    <string name="new_email">New Email</string>
+    <string name="confirm">Xác Nhận</string>
+    <string name="add_playlist">Thêm Playlist</string>
+    <string name="enter_name_playlist">Nhập Tên Playlist:</string>
 </resources>

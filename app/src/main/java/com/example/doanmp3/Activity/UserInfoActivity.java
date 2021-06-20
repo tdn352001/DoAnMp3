@@ -3,6 +3,8 @@ package com.example.doanmp3.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,12 +14,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import com.example.doanmp3.Fragment.LoginFragment.RegisterFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.Md5;
@@ -42,10 +44,9 @@ import retrofit2.Response;
 public class UserInfoActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    MaterialButton btnBanner, btnAvatar;
+    MaterialButton btnBanner, btnAvatar, txtUserName, txtEmail, txtPassword;
     CircleImageView imgAvatar;
     RoundedImageView imgBanner;
-    TextView txtUserName, txtEmail, txtPassword;
     int RequestAvatar = 123;
     int RequestBanner = 321;
     User user;
@@ -220,6 +221,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_change_email);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
 
         if (window == null)
@@ -311,6 +313,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_change_username);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
 
         if (window == null)
@@ -386,6 +389,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_password_change);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
 
         if (window == null)

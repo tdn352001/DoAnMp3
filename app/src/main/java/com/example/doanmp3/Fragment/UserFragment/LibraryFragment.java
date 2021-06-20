@@ -58,6 +58,7 @@ public class LibraryFragment extends Fragment {
         }
         return true;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
