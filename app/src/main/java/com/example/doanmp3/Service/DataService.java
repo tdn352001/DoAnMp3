@@ -115,7 +115,7 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("uploadhinhanh.php")
-    Call<String> UploadPhoto(@Field("hinhanh") String image, @Field("filename") String tenfile, @Field("IdUser") String Id);
+    Call<String> UploadPhoto(@Field("hinhanh") String image, @Field("filename") String tenfile);
 
     @FormUrlEncoded
     @POST("changeemail.php")

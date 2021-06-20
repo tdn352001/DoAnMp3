@@ -37,7 +37,6 @@ public class LoginFragment extends Fragment {
     MaterialButton btnLogin;
     User user;
     public static SharedPreferences sharedPreferences;
-    boolean LoginSuccess = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

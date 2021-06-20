@@ -1,5 +1,6 @@
 package com.example.doanmp3.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doanmp3.Fragment.LoginFragment.RegisterFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.Md5;
@@ -77,11 +80,19 @@ public class UserInfoActivity extends AppCompatActivity {
         user = MainActivity.user;
     }
 
+    @SuppressLint("SetTextI18n")
     private void Setup() {
         txtEmail.setText("Email: " + user.getEmail().toString());
         txtUserName.setText("Tên: " + user.getUserName());
-        Picasso.with(this).load(MainActivity.user.getBanner().toString()).into(imgBanner);
-        Picasso.with(this).load(MainActivity.user.getAvatar().toString()).into(imgAvatar);
+
+
+        Glide.with(this).load(MainActivity.user.getBanner().toString())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .placeholder(R.drawable.banner).into(imgBanner);
+        Picasso.with(this).load(MainActivity.user.getAvatar().toString())
+                .skipMemoryCache().error(R.drawable.person)
+                .placeholder(R.drawable.person).into(imgAvatar);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -187,23 +198,20 @@ public class UserInfoActivity extends AppCompatActivity {
         byte[] imageInByte = byteArrayOutputStream.toByteArray();
         String encodedImage = Base64.encodeToString(imageInByte, Base64.DEFAULT);
 
-        String TenFile = "https://tiendung352001.000webhostapp.com/Client/image/" + user.getEmail() + Category + ".jpg";
 
 
         DataService dataService = APIService.getUserService();
-        Call<String> callback = dataService.UploadPhoto(encodedImage, user.getEmail() + Category, user.getIdUser());
+        Call<String> callback = dataService.UploadPhoto(encodedImage, user.getEmail() + Category);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = (String) response.body();
-                Toast.makeText(UserInfoActivity.this, result, Toast.LENGTH_SHORT).show();
                 if (Category.equals("Avatar")) {
-                    MainActivity.user.setAvatar(TenFile);
                     UserFragment.imgAvatar.setImageBitmap(bitmap);
                 } else {
-                    MainActivity.user.setBanner(TenFile);
                     UserFragment.imgBanner.setImageBitmap(bitmap);
                 }
+                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
             }
 
             @Override

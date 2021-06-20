@@ -19,6 +19,8 @@ import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Random;
 
 import retrofit2.Call;
@@ -62,6 +64,7 @@ public class ForgotPasswordFragment extends Fragment {
             public void onClick(View v) {
                 if (edtEmail.getText().toString().equals("")) {
                     edtEmail.setError("Vui Lòng Nhập Email");
+                    Toast.makeText(getContext(), "Vui Lòng Nhập Email", Toast.LENGTH_SHORT).show();
                 } else {
                     progressDialog = ProgressDialog.show(getContext(), "Đang Kiểm Tra", "Vui Lòng Chờ.....!", false, false);
                     DataService dataService = APIService.getUserService();
@@ -92,8 +95,9 @@ public class ForgotPasswordFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
+                        public void onFailure(@NotNull Call<String> call, Throwable t) {
+                            Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
                         }
                     });
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:scaleType="fitXY"
-            android:src="@drawable/music2" />
+            android:src="@drawable/music2"
+            android:contentDescription="@string/todo" />
         <!--    <View-->
         <!--        android:background="@drawable/custom_background_color"-->
         <!--        android:layout_width="match_parent"-->
@@ -26,9 +28,9 @@
             android:layout_below="@id/img_login"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
-            android:text="Quên Mật Khẩu"
+            android:text="@string/forgot_password"
             android:textColor="#0d6e6a"
-            android:textSize="45dp"
+            android:textSize="45sp"
             android:textStyle="bold" />
 
         <TextView
@@ -37,9 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/welcome"
             android:layout_centerHorizontal="true"
-            android:text="Music Player siêu cấp Vip Pro"
+            android:text="@string/music_player_vip_pro"
             android:textColor="#0d6e6a"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -49,10 +51,11 @@
             android:layout_below="@id/newaccount"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="30dp"
-            android:text="Nhập Mã Xác Nhận:"
+            android:text="@string/enter_confirm_code"
             android:textColor="#000"
-            android:textSize="28dp"
-            android:textStyle="bold" />
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginStart="30dp" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,11 +81,11 @@
                 android:id="@+id/edt_code_cf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã Xác Nhận"
+                android:hint="@string/confirm_code"
                 android:inputType="textEmailAddress"
                 android:padding="18dp"
                 android:textColorHint="#000"
-                android:textSize="22dp" />
+                android:textSize="22sp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,11 +104,12 @@
             android:backgroundTint="#099A94"
             android:paddingHorizontal="30dp"
             android:paddingVertical="10dp"
-            android:text="Xác Nhận"
+            android:text="@string/confirm"
             android:textAllCaps="false"
-            android:textSize="25dp"
+            android:textSize="25sp"
             tool:cornerRadius="45dp"
-            tool:elevation="35dp" />
+            tool:elevation="35dp"
+            tools:targetApi="lollipop" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -118,9 +122,9 @@
                 android:id="@+id/txt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Quay Trở Lại"
+                android:text="@string/back"
                 android:textColor="#0d6e6a"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -128,14 +132,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Đăng Nhập"
+                android:text="@string/login"
                 android:textColor="#070707"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp" />
         </LinearLayout>
-
-
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

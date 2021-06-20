@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,11 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:scaleType="fitXY"
-            android:src="@drawable/music2" />
-        <!--    <View-->
-        <!--        android:background="@drawable/custom_background_color"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="match_parent"/>-->
+            android:src="@drawable/music2"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/welcome"
@@ -26,9 +24,9 @@
             android:layout_below="@id/img_login"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
-            android:text="Welcome"
+            android:text="@string/welcome"
             android:textColor="#0d6e6a"
-            android:textSize="45dp"
+            android:textSize="45sp"
             android:textStyle="bold" />
 
         <TextView
@@ -37,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/welcome"
             android:layout_centerHorizontal="true"
-            android:text="Music Player siêu cấp Vip Pro"
+            android:text="@string/music_player_vip_pro"
             android:textColor="#0d6e6a"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -63,11 +61,11 @@
                 android:id="@+id/edt_email_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:padding="15dp"
                 android:textColorHint="#000"
-                android:textSize="22dp" />
+                android:textSize="22sp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,11 +91,11 @@
                 android:id="@+id/edt_password_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/mat_khau"
                 android:inputType="textPassword"
                 android:padding="15dp"
                 android:textColorHint="#000"
-                android:textSize="22dp" />
+                android:textSize="22sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,10 +108,12 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="20dp"
             android:layout_marginRight="30dp"
-            android:text="Quên mật Khẩu"
+            android:text="@string/forgot_password"
             android:textColor="#0d6e6a"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -126,11 +126,12 @@
             android:backgroundTint="#099A94"
             android:paddingHorizontal="30dp"
             android:paddingVertical="10dp"
-            android:text="Đăng Nhập"
+            android:text="@string/login"
             android:textAllCaps="false"
-            android:textSize="25dp"
+            android:textSize="25sp"
             tool:cornerRadius="45dp"
-            tool:elevation="35dp" />
+            tool:elevation="35dp"
+            tools:targetApi="lollipop" />
 
         <LinearLayout
             android:layout_centerHorizontal="true"
@@ -144,9 +145,9 @@
                 android:id="@+id/txt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chưa có tài khoản?"
+                android:text="@string/not_have_account"
                 android:textColor="#0d6e6a"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -154,13 +155,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="Đăng Ký Ngay"
+                android:text="@string/register_now"
                 android:textColor="#070707"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp" />
         </LinearLayout>
-
-
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

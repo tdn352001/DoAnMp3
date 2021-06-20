@@ -81,8 +81,12 @@ public class UserFragment extends Fragment {
 
     public void SetupInfoUser() {
         txtUserName.setText(MainActivity.user.getUserName());
-        Picasso.with(getContext()).load(MainActivity.user.getBanner().toString()).into(imgBanner);
-        Picasso.with(getContext()).load(MainActivity.user.getAvatar().toString()).into(imgAvatar);
+        Picasso.with(getContext()).load(MainActivity.user.getBanner().toString())
+                .skipMemoryCache()
+                .placeholder(R.drawable.banner).into(imgBanner);
+        Picasso.with(getContext()).load(MainActivity.user.getAvatar().toString())
+                .skipMemoryCache()
+                .placeholder(R.drawable.person).into(imgAvatar);
     }
 
     public void SetupViewPager() {

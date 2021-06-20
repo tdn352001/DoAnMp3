@@ -48,7 +48,7 @@ public class ChangePasswordFragment extends Fragment {
 
     private void GetUser() {
         Bundle bundle = this.getArguments();
-        if(bundle != null){
+        if (bundle != null) {
             IdUser = bundle.getString("iduser");
         }
     }
@@ -66,13 +66,17 @@ public class ChangePasswordFragment extends Fragment {
             public void onClick(View v) {
                 String password = edtPW.getText().toString();
                 String cpassword = edtCF.getText().toString();
-                if(password.equals("")){
-                    edtPW.setError("Vui Lòng Nhập Mật Khẩu Mới");
-                }else{
-                    if(password.length() < 6)
+                if (password.equals("")) {
+                    {
+                        edtPW.setError("Vui Lòng Nhập Mật Khẩu Mới!");
+                        Toast.makeText(getContext(), "Vui Lòng Nhập Mật Khẩu Mới!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (password.length() < 6) {
                         edtPW.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự!");
-                    else{
-                        if(password.equals(cpassword)){
+                        Toast.makeText(getContext(), "Mật Khẩu Có Tối Thiểu 6 Kí Tự!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (password.equals(cpassword)) {
                             ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ....!!!", false, false);
                             Call<String> callback = APIService.getUserService().ChangePassword(password, IdUser);
                             callback.enqueue(new Callback<String>() {
@@ -93,9 +97,10 @@ public class ChangePasswordFragment extends Fragment {
                                 }
                             });
 
-                        }else{
+                        } else {
                             edtCF.setText("");
                             edtCF.setError("Mật Khẩu Không Trùng Khớp");
+                            Toast.makeText(getContext(), "Mật Khẩu Không Trùng Khớp", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

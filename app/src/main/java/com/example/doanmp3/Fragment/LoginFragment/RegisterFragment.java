@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RegisterFragment extends Fragment {
+public class
+RegisterFragment extends Fragment {
 
     ProgressDialog mProgressDialog;
     View view;
@@ -33,7 +35,6 @@ public class RegisterFragment extends Fragment {
     MaterialButton btnRegister;
     TextView txtlogin;
     TextView a;
-    public boolean thanhcong;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,11 +59,6 @@ public class RegisterFragment extends Fragment {
         btnRegister = view.findViewById(R.id.btn_register);
         txtlogin = view.findViewById(R.id.txt_register_login);
         a = view.findViewById(R.id.txt_haveac);
-
-
-
-
-
     }
 
     private void EventClick() {
@@ -70,13 +66,17 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 btnRegister.setClickable(false);
-                String email = edtEmail.getText().toString();
-                String username = edtUsername.getText().toString();
+                String email = edtEmail.getText().toString().trim();
+                String username = edtUsername.getText().toString().trim();
                 String password = edtPassword.getText().toString();
 
                 if (isValid()) {
-                    mProgressDialog = ProgressDialog.show(getContext(),"Đang Thực Hiện", "Vui Lòng Chờ...",false,false);
+                    mProgressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", false, false);
                     Register(email, username, password);
+                } else {
+                    Log.e("BBB", " Form không hợp lệ");
+                    btnRegister.setClickable(true);
+
                 }
             }
         });
@@ -87,46 +87,52 @@ public class RegisterFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-
-
     }
 
 
     private boolean isValid() {
-        if (edtEmail.getText().toString().equals("")) {
+        if (edtEmail.getText().toString().trim().equals("")) {
             edtEmail.setError("Email trống");
+            Toast.makeText(getContext(), "Email trống", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             if (!EmailIsValid(edtEmail.getText().toString())) {
                 edtEmail.setError("Email không hợp lệ");
+                Toast.makeText(getContext(), "Email không hợp lệ", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
 
-        if (edtUsername.getText().toString().equals("")) {
+        if (edtUsername.getText().toString().trim().equals("")) {
             edtUsername.setError("Username trống");
+            Toast.makeText(getContext(), "Username trống", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             if (edtUsername.getText().toString().length() < 5) {
                 edtUsername.setError("Username có tối thiếu 6 kí tự");
+                Toast.makeText(getContext(), "Username có tối thiếu 6 kí tự", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
 
         if (edtPassword.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "Vui Lòng Nhập Mật Khẩu", Toast.LENGTH_SHORT).show();
             edtPassword.setError("Vui Lòng Nhập Mật Khẩu");
             return false;
         } else {
             if (edtPassword.getText().toString().length() < 6) {
+                Toast.makeText(getContext(), "Mật Khẩu phải có tối thiểu 6 kí tự", Toast.LENGTH_SHORT).show();
                 edtPassword.setError("Mật Khẩu phải có tối thiểu 6 kí tự");
                 return false;
             } else {
                 if (edtCpassword.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Vui lòng xác nhận mật khẩu", Toast.LENGTH_SHORT).show();
                     edtCpassword.setError("Vui lòng xác nhận mật khẩu");
                     return false;
                 } else {
                     if (!edtCpassword.getText().toString().equals(edtPassword.getText().toString())) {
                         edtCpassword.setError("Mật Khẩu Không Trùng Khớp");
+                        Toast.makeText(getContext(), "Mật Khẩu Không Trùng Khớp", Toast.LENGTH_SHORT).show();
                         edtCpassword.setText("");
                         return false;
                     }
@@ -161,16 +167,23 @@ public class RegisterFragment extends Fragment {
                 btnRegister.setClickable(true);
                 mProgressDialog.dismiss();
                 if (user.getIdUser().equals("-1")) {
-                    edtEmail.setError("Email đã tồn tại");
+                    {
+                        edtEmail.setError("Email đã tồn tại");
+                        Toast.makeText(getContext(), "Email đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), "Đăng Ký Thành Công", Toast.LENGTH_LONG).show();
                     Navigation.findNavController(view).navigateUp();
                 }
+                btnRegister.setClickable(true);
+
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getActivity(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                btnRegister.setClickable(true);
+
             }
         });
 

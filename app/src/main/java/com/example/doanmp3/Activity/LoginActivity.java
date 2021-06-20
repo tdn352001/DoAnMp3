@@ -2,7 +2,6 @@ package com.example.doanmp3.Activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import com.example.doanmp3.R;
 public class LoginActivity extends AppCompatActivity {
 
 
-    View navHostFragment;
     private long backtime;
     NavController navController;
 

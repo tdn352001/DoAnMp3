@@ -26,4 +26,21 @@
     <string name="confirm">Xác Nhận</string>
     <string name="add_playlist">Thêm Playlist</string>
     <string name="enter_name_playlist">Nhập Tên Playlist:</string>
+    <string name="register">Đăng Ký</string>
+    <string name="have_accout">Đã có tài khoản?</string>
+    <string name="login">Đăng Nhập</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="music_player_vip_pro">Music Player siêu cấp Vip Pro</string>
+    <string name="welcome">Welcome</string>
+    <string name="todo">TODO</string>
+    <string name="forgot_password">Quên mật Khẩu</string>
+    <string name="not_have_account">Chưa có tài khoản?</string>
+    <string name="register_now">Đăng Ký Ngay</string>
+    <string name="enter_email_address">Nhập Địa Chỉ Email:</string>
+    <string name="back">Quay Trở Lại</string>
+    <string name="enter_confirm_code">Nhập Mã Xác Nhận:</string>
+    <string name="confirm_code">Mã Xác Nhận</string>
+    <string name="doi_mat_khau">Đổi Mật Khẩu</string>
+    <string name="finish">Hoàn Thành</string>
 </resources>
