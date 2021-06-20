@@ -7,21 +7,20 @@
 
     <TextView
         android:id="@+id/txt_album_fragment"
-        android:text="ALBUM HOT"
-        android:drawableRight="@drawable/icon_viewmore"
-        android:layout_marginHorizontal="10dp"
-        android:textSize="22sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:drawableEnd="@drawable/icon_viewmore"
+        android:drawableRight="@drawable/icon_viewmore"
+        android:text="@string/album_hot"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_album"
-        android:layout_below="@id/txt_album_fragment"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_album_fragment"
+        android:layout_marginTop="10dp" />
 </RelativeLayout>

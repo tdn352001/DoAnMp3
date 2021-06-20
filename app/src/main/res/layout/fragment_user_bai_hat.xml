@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,16 +12,16 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_user_baihat_yeuthich"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/txt_user_baihat_yeuthich"
-            android:text="Không Có Dữ Liệu"
-            android:textSize="36dp"
-            android:layout_centerInParent="true"
+            style="@style/Widget.MaterialComponents.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            style="@style/Widget.MaterialComponents.TextView"/>
+            android:layout_centerInParent="true"
+            android:text="@string/no_data"
+            android:textSize="36sp"
+            android:visibility="invisible" />
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

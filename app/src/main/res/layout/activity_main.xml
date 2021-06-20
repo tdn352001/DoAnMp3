@@ -31,19 +31,21 @@
 
     <RelativeLayout
         android:id="@+id/appbar_play"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bottom_navigation"
         android:background="@drawable/custom_appbar_play"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="10dp">
+        android:paddingVertical="10dp"
+        android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_appbar_play"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:src="@drawable/music2" />
 
@@ -52,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/img_appbar_play"
             android:layout_toRightOf="@id/img_appbar_play"
             android:orientation="vertical">
 
@@ -61,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxWidth="40mm"
-                android:text="Tên Bài Hát"
+                android:text="@string/name_song"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -73,9 +76,10 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxWidth="30mm"
-                android:text="Tên Bài Hát"
+                android:text="@string/name_song"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="InOrMmUsage" />
 
         </LinearLayout>
 
@@ -90,7 +94,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_next"
-            android:tint="@color/black" />
+            android:tint="@color/black"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/btn_pause_appbar"
@@ -101,9 +106,11 @@
             android:layout_marginRight="20dp"
             android:layout_toStartOf="@id/btn_next_appbar"
             android:layout_toLeftOf="@id/btn_next_appbar"
+            android:layout_toEndOf="@id/txt_info_song"
             android:layout_toRightOf="@id/txt_info_song"
             android:gravity="left"
-            android:src="@drawable/ic_pause" />
+            android:src="@drawable/ic_pause"
+            tools:ignore="ContentDescription,RtlHardcoded" />
     </RelativeLayout>
 
 

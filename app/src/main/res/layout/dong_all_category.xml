@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -17,21 +18,19 @@
             android:scaleType="fitXY"
             android:layout_gravity="center"
             android:layout_width="180dp"
-            android:layout_height="150dp"/>
+            android:layout_height="150dp"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/txt_categoty_all"
-            android:text="Ten Album"
+            android:text="@string/name_album"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:maxLines="1"
             android:layout_centerInParent="true"
             android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

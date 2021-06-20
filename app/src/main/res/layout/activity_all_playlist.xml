@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.AllPlaylistActivity">
-    
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_allplaylist"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/Theme.AppCompat.Light"/>
+        app:popupTheme="@style/Theme.AppCompat.Light" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_allplaylist"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/toolbar_allplaylist"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_allplaylist"
+        android:layout_marginTop="15dp" />
 
 </RelativeLayout>

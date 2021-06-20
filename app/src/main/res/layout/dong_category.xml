@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:id="@+id/linearcategory"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/img_categoty"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"
             android:layout_width="300dp"
-            android:layout_height="160dp"/>
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/txt_categoty"
-            android:text="Ten Album"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:ellipsize="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-
+            android:maxLines="1"
+            android:text="@string/name_album"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
-
-
 
 </androidx.cardview.widget.CardView>

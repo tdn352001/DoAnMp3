@@ -3,7 +3,6 @@ package com.example.doanmp3.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class DetailSingerActivity extends AppCompatActivity {
     Toolbar toolbar;
     ImageView imageView;
     RecyclerView recyclerViewBaiHat, recyclerViewAlBum;
-    Button btn;
+    MaterialButton btn;
     ProgressBar progressBar;
     TextView txtAlbum;
     ArrayList<BaiHat> baiHatArrayList;

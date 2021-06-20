@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="Không Tìm Thấy Kết Quả"
+        android:text="@string/no_result"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:visibility="invisible"

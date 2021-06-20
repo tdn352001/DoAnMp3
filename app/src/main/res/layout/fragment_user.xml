@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/noname"
         android:fitsSystemWindows="true"
-        app:elevation="40dp">
+        app:elevation="40dp"
+        tools:targetApi="lollipop">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingtoolbarlayout"
@@ -34,7 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="fitXY"
-                    android:src="@color/banner" />
+                    android:src="@color/banner"
+                    tools:ignore="ContentDescription" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/img_user_avatar"
@@ -51,7 +53,7 @@
                     android:layout_below="@id/img_user_avatar"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
-                    android:text="Nguyễn Tiến Dũng"
+                    android:text="@string/username"
                     android:textColor="@color/black"
                     android:textSize="25sp" />
 
@@ -63,7 +65,7 @@
                     android:layout_below="@id/txt_username"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:text="Chỉnh Sửa Thông Tin"
+                    android:text="@string/edit_info_user"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     app:icon="@drawable/ic_pen"
@@ -77,7 +79,7 @@
                     android:layout_below="@id/btn_edit_user_info"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:text="Đăng Xuất"
+                    android:text="@string/logout"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     app:icon="@drawable/ic_logout"
@@ -90,20 +92,21 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout_user"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_logout"
             android:layout_gravity="bottom|end"
-            app:tabIndicatorFullWidth="false"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
             app:layout_collapseMode="pin"
-            app:tabTextColor="#E67E7E7D"
             app:tabIndicatorColor="#AF05ED"
+            app:tabIndicatorFullWidth="false"
             app:tabMinWidth="15mm"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="#000"
             app:tabTextAppearance="@style/Custom_TabLayout"
+            app:tabTextColor="#E67E7E7D"
             tools:ignore="InOrMmUsage" />
     </com.google.android.material.appbar.AppBarLayout>
 

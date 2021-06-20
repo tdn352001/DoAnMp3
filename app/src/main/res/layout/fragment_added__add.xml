@@ -19,23 +19,27 @@
         android:gravity="center"
         android:orientation="vertical"
         android:textAlignment="center"
-        android:visibility="gone" >
+        android:visibility="gone"
+        tools:ignore="InOrMmUsage">
+
         <ImageView
             android:id="@+id/img_noinfo"
-            android:src="@drawable/ic_sorry"
-            android:scaleType="fitXY"
-            android:layout_centerHorizontal="true"
             android:layout_width="30mm"
-            android:layout_height="30mm"/>
+            android:layout_height="30mm"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_sorry"
+            tools:ignore="ContentDescription" />
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/img_noinfo"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/black"
-            android:textSize="30dp"
-            android:text="Không Có Dữ Liệu"
             android:fontFamily="sans-serif"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="@string/no_info"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
     </RelativeLayout>
 
 </RelativeLayout>

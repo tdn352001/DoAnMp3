@@ -1,47 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_album"
-        app:cardCornerRadius="10dp"
-        android:layout_margin="15dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardCornerRadius="10dp">
+
         <ImageView
             android:id="@+id/img_album_all"
-            android:scaleType="fitXY"
             android:layout_width="180dp"
-            android:layout_height="180dp"/>
+            android:layout_height="180dp"
+            android:scaleType="fitXY"
+            tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
+
     <TextView
         android:id="@+id/txt_album_all"
-        android:text="Ten Playlist"
-        android:textAlignment="center"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_below="@id/cardview_album"
-
-        android:layout_centerHorizontal="true"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        tools:ignore="NotSibling"
-        android:gravity="center_horizontal" />
+        android:layout_below="@id/cardview_album"
+        android:layout_centerHorizontal="true"
+        android:ellipsize="end"
+
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="@string/name_playlist"
+        android:textAlignment="center"
+        tools:ignore="NotSibling" />
+
     <TextView
         android:id="@+id/txt_album_casi_all"
-        android:text="Ten Casi"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:layout_below="@id/txt_album_all"
-        android:layout_centerHorizontal="true"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        tools:ignore="NotSibling"
-        android:gravity="center_horizontal" />
+        android:layout_below="@id/txt_album_all"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="@string/name_singer"
+        android:textAlignment="center"
+        tools:ignore="NotSibling" />
 
 </RelativeLayout>

@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/noname"
         android:fitsSystemWindows="true"
-        app:elevation="40dp">
+        app:elevation="40dp"
+        tools:targetApi="lollipop">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,7 +60,8 @@
                 app:tabIndicatorGravity="stretch"
                 app:tabMinWidth="18mm"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="@color/white" />
+                app:tabSelectedTextColor="@color/white"
+                tools:ignore="InOrMmUsage" />
 
             <View
                 android:layout_width="match_parent"

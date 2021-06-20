@@ -25,13 +25,15 @@
                 android:layout_margin="15dp"
                 android:background="@color/noname"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_under" />
+                android:src="@drawable/ic_under"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:id="@+id/linear_info_baihat_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/img_finish_play"
                 android:layout_toRightOf="@id/img_finish_play"
                 android:orientation="vertical">
 
@@ -40,8 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:maxLines="1"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -76,13 +78,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dianhac"
         android:layout_marginTop="40dp"
-        android:gravity="center_horizontal"
         android:fontFamily="@font/dancingscript_variablefont_wght"
-        android:text="Loading....!"
-        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:text="@string/dang_tai"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

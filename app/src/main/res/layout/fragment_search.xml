@@ -1,15 +1,16 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/custom_background_toolbar"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_background_toolbar">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
         android:paddingTop="5dp"
         app:elevation="4000dp">
 
@@ -21,8 +22,10 @@
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/custom_searchview"
                 android:gravity="end"
@@ -36,20 +39,22 @@
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
             android:background="#f023"
-            android:elevation="30dp" />
+            android:elevation="30dp"
+            tools:ignore="UnusedAttribute" />
 
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <include
                 android:id="@+id/scrollview_recent"
@@ -59,11 +64,11 @@
 
             <include
                 android:id="@+id/scrollview_result"
-                android:layout_marginTop="10dp"
                 layout="@layout/fragment_result_search"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:visibility="gone" />
 
 
         </RelativeLayout>
