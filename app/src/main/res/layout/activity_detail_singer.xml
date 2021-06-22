@@ -77,9 +77,12 @@
                 android:layout_margin="10dp"
                 android:drawableRight="@drawable/icon_viewmore"
                 android:drawablePadding="15dp"
+                android:drawableTint="@color/black"
                 android:text="@string/bai_hat"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="RtlHardcoded"
+                tools:targetApi="m" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detailsinger_baihat"
@@ -111,15 +114,19 @@
                 android:layout_margin="10dp"
                 android:drawableRight="@drawable/icon_viewmore"
                 android:drawablePadding="15dp"
+                android:drawableTint="@color/black"
                 android:text="@string/album"
+                android:textColor="@color/black"
                 android:textSize="20sp"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="RtlHardcoded"
+                tools:targetApi="m" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detailsinger_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_detailsinger_album" />
+                android:layout_below="@+id/txt_detailsinger_album"
+                android:layout_marginBottom="10dp" />
 
 
         </RelativeLayout>

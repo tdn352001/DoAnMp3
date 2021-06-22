@@ -41,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_themplaylist"
         android:layout_marginHorizontal="15dp"
+        app:boxStrokeColor="#04868A"
         app:errorEnabled="true"
         app:placeholderText="Tên Playlist">
 

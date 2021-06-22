@@ -78,6 +78,7 @@ public class UserBaiHatFragment extends Fragment {
 
     public void SetRecyclerView() {
         adapter = new AllSongAdapter(getContext(), arrayList);
+        adapter.setUserBaiHat(true);
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);

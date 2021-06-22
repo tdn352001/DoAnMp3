@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
@@ -44,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         ChuDeTheLoai categorys = arrayList.get(position);
         holder.txtCategory.setText(categorys.getTen());
-        Picasso.with(context).load(categorys.getHinh().toString()).into(holder.imageView);
+        Picasso.with(context).load(categorys.getHinh().toString()).error(R.drawable.song).into(holder.imageView);
     }
 
     @Override

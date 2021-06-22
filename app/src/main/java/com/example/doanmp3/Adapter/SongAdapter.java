@@ -55,7 +55,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         holder.txtStt.setText(position + 1 + "");
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
-        Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).into(holder.imageView);
+        Picasso.with(context).load(baiHat.getHinhBaiHat().toString()).error(R.drawable.song).into(holder.imageView);
     }
 
     @Override

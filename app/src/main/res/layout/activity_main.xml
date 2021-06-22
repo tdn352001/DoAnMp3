@@ -54,6 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/btn_pause_appbar"
+            android:layout_toLeftOf="@id/btn_pause_appbar"
             android:layout_toEndOf="@id/img_appbar_play"
             android:layout_toRightOf="@id/img_appbar_play"
             android:orientation="vertical">
@@ -64,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxWidth="40mm"
+                android:maxLines="1"
                 android:text="@string/name_song"
                 android:textColor="@color/black"
                 android:textSize="16sp"
@@ -76,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxWidth="30mm"
+                android:maxLines="1"
                 android:text="@string/name_song"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -106,12 +110,10 @@
             android:layout_marginRight="20dp"
             android:layout_toStartOf="@id/btn_next_appbar"
             android:layout_toLeftOf="@id/btn_next_appbar"
-            android:layout_toEndOf="@id/txt_info_song"
-            android:layout_toRightOf="@id/txt_info_song"
             android:gravity="left"
+            android:tint="@color/black"
             android:src="@drawable/ic_pause"
             tools:ignore="ContentDescription,RtlHardcoded" />
     </RelativeLayout>
-
 
 </RelativeLayout>

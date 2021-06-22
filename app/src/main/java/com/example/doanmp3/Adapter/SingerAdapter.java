@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Model.CaSi;
-import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +41,7 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
     public void onBindViewHolder(@NonNull SingerAdapter.ViewHolder holder, int position) {
         CaSi casi= arrayList.get(position);
         holder.txtPlaylist.setText(casi.getTenCaSi());
-        Picasso.with(context).load(casi.getHinhCaSi()).into(holder.imageView);
+        Picasso.with(context).load(casi.getHinhCaSi()).error(R.drawable.song).into(holder.imageView);
     }
 
 

@@ -4,11 +4,8 @@ package com.example.doanmp3.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -303,8 +300,6 @@ public class AddBaiHatActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_add, menu);
-        SpannableString s = new SpannableString("Xong");
-        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
         return super.onCreateOptionsMenu(menu);
     }
 

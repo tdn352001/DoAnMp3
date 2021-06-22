@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_mainactivity"));
 
         progress = 0;
         AnhXa();
@@ -89,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
         GetKeyWordRecent();
         GetCategory();
         AppbarClick();
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_mainactivity"));
+        if(MusicService.mediaPlayer != null){
+            AppBarSetVisibility();
+        }
     }
 
 
@@ -337,12 +340,12 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    public void setVisibility() {
+    public void AppBarSetVisibility() {
         layoutPlay.setVisibility(View.VISIBLE);
         if (MusicService.isAudio)
-            imgBaiHat.setImageResource(R.drawable.ic_song);
+            imgBaiHat.setImageResource(R.drawable.song);
         else
-            Picasso.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).into(imgBaiHat);
+            Picasso.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
         txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
         txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
         btnStop.setImageResource(R.drawable.ic_pause);
@@ -354,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.hasExtra("pos")) {
-                setVisibility();
+                AppBarSetVisibility();
             }
             if (intent.hasExtra("action")) {
                 int action = intent.getIntExtra("action", 0);
@@ -366,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
     private void ActionFromService(int action) {
         switch (action) {
             case MusicService.ACTION_START_PLAY:
-                setVisibility();
+                AppBarSetVisibility();
                 break;
             case MusicService.ACTION_PLAY:
                 ActionPlay();

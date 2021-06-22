@@ -51,7 +51,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         Album album = arrayList.get(position);
         holder.TenAlbum.setText(album.getTenAlbum());
         holder.TenCaSi.setText(album.getTenCaSi());
-        Picasso.with(context).load(album.getHinhAlbum().toString()).into(holder.imageView);
+        Picasso.with(context).load(album.getHinhAlbum().toString()).error(R.drawable.song).into(holder.imageView);
     }
 
     @Override
@@ -59,9 +59,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         if (arrayList != null) {
             if (viewmore && arrayList.size() > 4) {
                 return 4;
-            }
-            else
-                return  arrayList.size();
+            } else
+                return arrayList.size();
         }
         return 0;
     }

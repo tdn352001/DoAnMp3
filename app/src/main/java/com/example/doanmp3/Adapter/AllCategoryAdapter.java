@@ -43,7 +43,7 @@ public class AllCategoryAdapter extends RecyclerView.Adapter<AllCategoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChuDeTheLoai category = arrayList.get(position);
-        Picasso.with(context).load(category.getHinh()).into(holder.imageView);
+        Picasso.with(context).load(category.getHinh()).error(R.drawable.song).into(holder.imageView);
         holder.Ten.setText(category.getTen());
     }
 

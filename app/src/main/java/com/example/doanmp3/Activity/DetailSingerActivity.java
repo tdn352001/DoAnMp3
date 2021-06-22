@@ -90,6 +90,8 @@ public class DetailSingerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
+                if(baiHatArrayList == null)
+                    return;
                 ViewMore();
                 setDataBaiHat();
             }
@@ -115,6 +117,7 @@ public class DetailSingerActivity extends AppCompatActivity {
     }
 
     private void setDataBaiHat() {
+
         if( baiHatArrayList.size() < 5)
             Songadapter = new AllSongAdapter(this, baiHatArrayList);
         else
@@ -132,6 +135,8 @@ public class DetailSingerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
                 albumArrayList = (ArrayList<Album>) response.body();
+                if(albumArrayList == null)
+                    return;
                 setDataAlbum();
             }
 

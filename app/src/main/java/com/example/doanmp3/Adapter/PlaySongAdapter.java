@@ -45,7 +45,7 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
     public void onBindViewHolder(@NonNull PlaySongAdapter.ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
         if(!context.isAudio)
-            Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
+            Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
         else
         {
             holder.imageView.setImageResource(R.drawable.ic_song);

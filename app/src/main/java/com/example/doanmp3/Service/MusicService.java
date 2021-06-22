@@ -39,7 +39,7 @@ public class MusicService extends Service {
     public static int Pos;
     int Progress;
     public static boolean random;
-    public static boolean repeat;
+    public static boolean repeat = true;
     public static MediaPlayer mediaPlayer;
 
     // Action
@@ -49,6 +49,7 @@ public class MusicService extends Service {
     final public static int ACTION_CLEAR = 4;
     final public static int ACTION_CHANGE_POS = 5;
     final public static int ACTION_START_PLAY = 7;
+    final public static int ACTION_PLAY_FALIED = 8;
 
 
     ArrayList<Integer> playedlist;
@@ -71,28 +72,7 @@ public class MusicService extends Service {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onCompletion(MediaPlayer mp) {
-                playedlist.add(Pos);
-                stack.push(Pos);
-                if (arrayList == null)
-                    return;
-                if (arrayList.size() == playedlist.size()) {
-                    playedlist.clear();
-                }
-                if (repeat) {
-                    if (random) {
-                        Random rd = new Random();
-                        Pos = rd.nextInt(arrayList.size());
-                        while (playedlist.contains(Pos))
-                            Pos = rd.nextInt(arrayList.size());
-                    } else {
-                        Pos++;
-                        if (Pos > arrayList.size() - 1)
-                            Pos = 0;
-                    }
-                }
-                PlayNhac();
-                MusicControlNotification();
-                SendActionToActivity(ACTION_CHANGE_POS);
+
             }
         });
 
@@ -147,26 +127,52 @@ public class MusicService extends Service {
             try {
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
-                mediaPlayer.prepare();
-                mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(null);
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                        MusicControlNotification();
+                        if (mp.isPlaying() ) {
+                            SendActionToActivity(ACTION_START_PLAY);
+                            SendActionToMain(ACTION_START_PLAY);
+                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    ActionPlayComplete();
+                                }
+                            });
+                        }
+                    }
+                });
+
+
             } catch (IOException e) {
                 e.printStackTrace();
+                SendActionToActivity(ACTION_PLAY_FALIED);
+                SendActionToMain(ACTION_PLAY_FALIED);
             }
         } else {
-            try{
+            try {
                 mediaPlayer.reset();
                 Uri uri = Uri.parse(arrayList.get(Pos).getLinkBaiHat());
-                Log.e("BBB", uri.toString());
                 mediaPlayer.setDataSource(getBaseContext(), uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        ActionPlayComplete();
+                    }
+                });
+                MusicControlNotification();
+                SendActionToActivity(ACTION_START_PLAY);
+                SendActionToMain(ACTION_START_PLAY);
+            } catch (Exception ignored) {
+
             }
-            catch (Exception ignored){}
         }
-
-        SendActionToActivity(ACTION_START_PLAY);
-        SendActionToMain(ACTION_START_PLAY);
-
     }
 
     // Action Click Trên Thanh Thông Báo
@@ -245,10 +251,35 @@ public class MusicService extends Service {
         PlayNhac();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void ActionPlayComplete(){
+        playedlist.add(Pos);
+        stack.push(Pos);
+        if (arrayList == null)
+            return;
+        if (arrayList.size() == playedlist.size()) {
+            playedlist.clear();
+        }
+        if (repeat) {
+            if (random) {
+                Random rd = new Random();
+                Pos = rd.nextInt(arrayList.size());
+                while (playedlist.contains(Pos))
+                    Pos = rd.nextInt(arrayList.size());
+            } else {
+                Pos++;
+                if (Pos > arrayList.size() - 1)
+                    Pos = 0;
+            }
+        }
+        PlayNhac();
+        SendActionToActivity(ACTION_CHANGE_POS);
+    }
+
 
     //Push thông báo
     private void MusicControlNotification() {
-
+        Log.e("BBB", "push thông báo");
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_song)

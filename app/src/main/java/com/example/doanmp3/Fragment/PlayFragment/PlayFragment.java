@@ -79,7 +79,7 @@ public class PlayFragment extends Fragment {
 
     public void setHinh(String link, boolean isAudio) {
         if (!isAudio) {
-            Picasso.with(getContext()).load(link).into(circleImageView);
+            Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).into(circleImageView);
         } else {
             circleImageView.setImageResource(R.drawable.img_disknhac);
 

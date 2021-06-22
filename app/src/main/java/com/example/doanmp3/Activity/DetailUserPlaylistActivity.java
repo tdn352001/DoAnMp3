@@ -1,25 +1,32 @@
 package com.example.doanmp3.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.UserBaiHatPlaylistAdapter;
+import com.example.doanmp3.Fragment.UserFragment.UserPlaylistFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -81,11 +88,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        return super.onCreateOptionsMenu(menu);
-    }
 
     private void GetIntent() {
         Intent intent = getIntent();
@@ -161,6 +163,60 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
             arrayList = baiHats;
             adapter.UpdateArraylist(arrayList);
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_delete_user_playlist, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(DetailUserPlaylistActivity.this);
+        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setTitle("Xóa Playlist");
+        dialog.setIcon(R.drawable.ic_warning);
+        dialog.setMessage("Bạn Chắc Muốn Xóa Playlist?");
+        dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DeletePlaylist();
+                dialog.dismiss();
+            }
+        });
+        dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void DeletePlaylist() {
+        ProgressDialog progressDialog = ProgressDialog.show(this, "Đang Thực Hiện", "Vui Lòng Chờ");
+        Call<String> callback = APIService.getUserService().DeleteUserPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
+        callback.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result =response.body();
+                if(result.equals("S")){
+                    UserPlaylistFragment.RemovePlaylist(IdPlaylist);
+                    Toast.makeText(DetailUserPlaylistActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(DetailUserPlaylistActivity.this, "Lỗi Kết Nối! Vui Lòng Thử Lại Sau.", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     @Override

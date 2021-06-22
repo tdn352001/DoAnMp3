@@ -29,7 +29,7 @@ public class BaiHat implements Parcelable {
     @Expose
     private String luotThich;
 
-    public BaiHat(){
+    public BaiHat() {
         luotThich = "0";
     }
 
@@ -89,23 +89,27 @@ public class BaiHat implements Parcelable {
         return caSi;
     }
 
-    public String getTenAllCaSi()
-    {
+    public String getTenAllCaSi() {
         String TenCaSi = "";
-        for (int i = 0; i < caSi.size(); i++) {
-            if (i != 0)
-                TenCaSi = TenCaSi + ", ";
+        if (caSi != null) {
+            if (caSi.size() > 0) {
+                for (int i = 0; i < caSi.size(); i++) {
+                    if (i != 0)
+                        TenCaSi = TenCaSi + ", ";
 
-                TenCaSi = TenCaSi + getCaSi().get(i);
+                    TenCaSi = TenCaSi + getCaSi().get(i);
+                }
+                return TenCaSi;
+            }
         }
-
+        TenCaSi = "Unknown";
         return TenCaSi;
     }
 
 
     public void setCaSi(List<String> caSi) {
-this.caSi = caSi;
-}
+        this.caSi = caSi;
+    }
 
     @Override
     public int describeContents() {
@@ -120,6 +124,7 @@ this.caSi = caSi;
         dest.writeString(linkBaiHat);
         dest.writeStringList(caSi);
     }
+
     public String getLuotThich() {
         return luotThich;
     }

@@ -41,7 +41,7 @@ public class SearchCaSiAdapter extends RecyclerView.Adapter<SearchCaSiAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         CaSi casi = arrayList.get(position);
-        Picasso.with(context).load(casi.getHinhCaSi()).into(holder.imageView);
+        Picasso.with(context).load(casi.getHinhCaSi()).error(R.drawable.song).into(holder.imageView);
         holder.TenCaSi.setText(casi.getTenCaSi());
     }
 

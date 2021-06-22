@@ -38,6 +38,8 @@ public class AllSongActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("mangbaihat")) {
             arrayList = intent.getParcelableArrayListExtra("mangbaihat");
+            if(arrayList == null)
+                return;
             if (arrayList.size() > 0) {
                 AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -56,6 +58,9 @@ public class AllSongActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
+                if(arrayList == null)
+                    return;
+
                 DanhSachBaiHatActivity.TenCategoty="Playlist";
                 DanhSachBaiHatActivity.TenCategoty = "Bài Hát Được Yêu Thích";
                 AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);

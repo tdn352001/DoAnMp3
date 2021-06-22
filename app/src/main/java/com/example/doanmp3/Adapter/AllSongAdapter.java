@@ -27,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
 import com.example.doanmp3.Fragment.UserFragment.UserBaiHatFragment;
@@ -51,6 +52,8 @@ import retrofit2.Response;
 public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHolder> {
     Context context;
     ArrayList<BaiHat> arrayList;
+    boolean isUserBaiHat;
+
 
     public AllSongAdapter(Context context, ArrayList<BaiHat> arrayList) {
         this.context = context;
@@ -69,7 +72,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).into(holder.imageView);
+        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
 
@@ -103,6 +106,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                     Intent intent = new Intent(context, PlayNhacActivity.class);
                     intent.putExtra("mangbaihat", arrayList);
                     intent.putExtra("position", getPosition());
+                    if(isUserBaiHat){
+                        DanhSachBaiHatActivity.category = "Playlist";
+                        DanhSachBaiHatActivity.TenCategoty = "Bài Hát Yêu Thích";
+                    }
                     context.startActivity(intent);
                 }
             });
@@ -374,6 +381,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                 Toast.makeText(context, "Lỗi Mạng", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void setUserBaiHat(boolean userBaiHat) {
+        isUserBaiHat = userBaiHat;
     }
 
 

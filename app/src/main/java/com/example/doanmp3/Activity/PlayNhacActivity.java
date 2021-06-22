@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -76,6 +77,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +85,8 @@ public class PlayNhacActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
 
         AnhXa();
-        CheckRepeatRandom();
         GetIntent();
+        CheckRepeatRandom();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_activity"));
         eventClick();
 
@@ -117,6 +119,9 @@ public class PlayNhacActivity extends AppCompatActivity {
             case MusicService.ACTION_START_PLAY:
                 TimeSong();
                 break;
+            case MusicService.ACTION_PLAY_FALIED:
+                ActionPlayFailed();
+                break;
         }
     }
 
@@ -138,6 +143,10 @@ public class PlayNhacActivity extends AppCompatActivity {
         btnPlay.setImageResource(R.drawable.icon_play);
         seekBar.setProgress(0);
         txtCurrent.setText(simpleDateFormat.format(0));
+    }
+
+    private void ActionPlayFailed() {
+        Toast.makeText(this, "Bài Hát Không Tồn Tại", Toast.LENGTH_SHORT).show();
     }
 
     private void SendActionToService(int action) {
@@ -169,6 +178,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     }
 
     // Lấy Dữ Liệu, Danh Sách Bài Hát
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void GetIntent() {
         Intent intent = getIntent();
 
@@ -194,6 +204,23 @@ public class PlayNhacActivity extends AppCompatActivity {
                 setViewPager();
                 TimeSong();
                 SetConTent();
+            }
+
+            if (MusicService.mediaPlayer != null) {
+                if (MusicService.mediaPlayer.isPlaying()) {
+                    btnPlay.setImageResource(R.drawable.ic_pause);
+                    PlayFragment.objectAnimator.start();
+                } else {
+                    btnPlay.setImageResource(R.drawable.icon_play);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            PlayFragment.objectAnimator.pause();
+                        }
+                    },300);
+
+                }
             }
         }
     }
@@ -304,7 +331,6 @@ public class PlayNhacActivity extends AppCompatActivity {
         };
         handler.postDelayed(runnable, 1000);
     }
-
 
     // LẤY DỮ LIỆU
 

@@ -181,5 +181,17 @@ public class UserPlaylistFragment extends Fragment {
         dialog.show();
     }
 
+    public static void RemovePlaylist(String IdPlaylist){
+        for(int i = 0; i < userPlaylist.size(); i++){
+            if(userPlaylist.get(i).getIdPlaylist().equals(IdPlaylist)){
+                userPlaylist.remove(i);
+                adapter.notifyItemRemoved(i);
 
+                if(userPlaylist.isEmpty()){
+
+                }
+                return;
+            }
+        }
+    }
 }

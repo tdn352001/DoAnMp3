@@ -32,6 +32,7 @@
         android:maxLines="1"
         android:text="@string/name_playlist"
         android:textAlignment="center"
+        android:textColor="@color/black"
         tools:ignore="NotSibling" />
 
     <TextView
@@ -46,6 +47,7 @@
         android:maxLines="1"
         android:text="@string/name_singer"
         android:textAlignment="center"
+        android:textColor="@color/black"
         tools:ignore="NotSibling" />
 
 </RelativeLayout>

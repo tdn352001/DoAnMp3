@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -61,9 +62,11 @@ public class SearchFragment extends Fragment {
 
     // Bài Hát Gần Đây
     public static MaterialButton btnViewMore;
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout SongRecentLayout;
     RecyclerView rvBaiHatRecent;
     public static ArrayList<BaiHat> baihatrecents;
+    @SuppressLint("StaticFieldLeak")
     public static SearchSongAdapter searchSongAdapter;
 
     //ChuDeTheLoai

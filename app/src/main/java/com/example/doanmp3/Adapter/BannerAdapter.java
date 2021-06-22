@@ -74,8 +74,8 @@ public class BannerAdapter extends PagerAdapter {
         TextView titleSongBanner = view.findViewById(R.id.titleBannerBaiHat);
         TextView contentBanner = view.findViewById(R.id.contentBanner);
 
-        Picasso.with(context).load(arrayList.get(position).getHinhAnh()).into(imgBanner);
-        Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).into(imgSong);
+        Picasso.with(context).load(arrayList.get(position).getHinhAnh()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBanner);
+        Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).error(R.drawable.song).into(imgSong);
         titleSongBanner.setText(arrayList.get(position).getTenBaiHat());
         contentBanner.setText(arrayList.get(position).getNoiDung());
         container.addView(view);

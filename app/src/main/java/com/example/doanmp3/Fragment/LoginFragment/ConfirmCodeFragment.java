@@ -75,5 +75,6 @@ public class ConfirmCodeFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_loginFragment);
             }
         });
+
     }
 }
