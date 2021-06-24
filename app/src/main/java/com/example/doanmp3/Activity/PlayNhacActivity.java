@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -46,14 +45,14 @@ public class PlayNhacActivity extends AppCompatActivity {
     CircleIndicator indicator;
     SimpleDateFormat simpleDateFormat;
     ArrayList<BaiHat> arrayList;
-    public boolean isAudio = false;
     int Pos;
     private boolean isRecent;
+    public static boolean ServiceIsClear = false;
+    public boolean isAudio = false;
+
 
 
     // Action From Service
-
-
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
@@ -61,7 +60,6 @@ public class PlayNhacActivity extends AppCompatActivity {
             if (intent.hasExtra("pos")) {
                 Pos = intent.getIntExtra("pos", 0);
                 SetConTent();
-                TimeSong();
             }
             if (intent.hasExtra("action")) {
                 int action = intent.getIntExtra("action", 0);
@@ -121,6 +119,11 @@ public class PlayNhacActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void ActionPlay() {
+        if(ServiceIsClear){
+            StartService();
+            ActionPlay();
+            return;
+        }
         if (!MusicService.mediaPlayer.isPlaying()) {
             btnPlay.setImageResource(R.drawable.icon_play);
             PlayFragment.objectAnimator.pause();
@@ -133,10 +136,13 @@ public class PlayNhacActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void ActionClear() {
+        ServiceIsClear = true;
         btnPlay.setImageResource(R.drawable.icon_play);
         seekBar.setProgress(0);
         txtCurrent.setText(simpleDateFormat.format(0));
+        PlayFragment.objectAnimator.pause();
     }
 
     private void ActionPlayFailed() {
@@ -175,7 +181,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void GetIntent() {
         Intent intent = getIntent();
-        if(intent.hasExtra("recent"))
+        if (intent.hasExtra("recent"))
             isRecent = intent.getBooleanExtra("recent", false);
 
         if (!intent.hasExtra("notstart")) {
@@ -214,7 +220,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                         public void run() {
                             PlayFragment.objectAnimator.pause();
                         }
-                    },300);
+                    }, 300);
 
                 }
             }
@@ -236,6 +242,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     }
 
     private void StartService() {
+        ServiceIsClear = false;
         Intent MusicService = new Intent(getApplicationContext(), com.example.doanmp3.Service.MusicService.class);
         if (arrayList != null)
             MusicService.putExtra("mangbaihat", arrayList);
@@ -250,52 +257,29 @@ public class PlayNhacActivity extends AppCompatActivity {
 
     private void eventClick() {
 
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-                SendActionToService(MusicService.ACTION_PLAY);
+        btnPlay.setOnClickListener(v -> SendActionToService(MusicService.ACTION_PLAY));
+
+        btnNext.setOnClickListener(v -> SendActionToService(MusicService.ACTION_NEXT));
+
+        btnPre.setOnClickListener(v -> SendActionToService(MusicService.ACTION_PREVIOUS));
+
+        btnRandom.setOnClickListener(v -> {
+            if (MusicService.random) {
+                btnRandom.setImageResource(R.drawable.icon_random);
+                MusicService.random = false;
+            } else {
+                btnRandom.setImageResource(R.drawable.random_true);
+                MusicService.random = true;
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendActionToService(MusicService.ACTION_NEXT);
-            }
-        });
-
-        btnPre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendActionToService(MusicService.ACTION_PREVIOUS);
-            }
-        });
-
-        btnRandom.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
-                if (MusicService.random) {
-                    btnRandom.setImageResource(R.drawable.icon_random);
-                    MusicService.random = false;
-                } else {
-                    btnRandom.setImageResource(R.drawable.random_true);
-                    MusicService.random = true;
-                }
-            }
-        });
-
-        btnLoop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MusicService.repeat) {
-                    MusicService.repeat = false;
-                    btnLoop.setImageResource(R.drawable.ic_loopone);
-                } else {
-                    MusicService.repeat = true;
-                    btnLoop.setImageResource(R.drawable.ic_loop);
-                }
+        btnLoop.setOnClickListener(v -> {
+            if (MusicService.repeat) {
+                MusicService.repeat = false;
+                btnLoop.setImageResource(R.drawable.ic_loopone);
+            } else {
+                MusicService.repeat = true;
+                btnLoop.setImageResource(R.drawable.ic_loop);
             }
         });
 
@@ -321,9 +305,12 @@ public class PlayNhacActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                txtCurrent.setText(simpleDateFormat.format(MusicService.mediaPlayer.getCurrentPosition()));
-                seekBar.setProgress(MusicService.mediaPlayer.getCurrentPosition());
-                handler.postDelayed(this, 1000);
+                if (MusicService.mediaPlayer != null) {
+                    txtCurrent.setText(simpleDateFormat.format(MusicService.mediaPlayer.getCurrentPosition()));
+                    seekBar.setProgress(MusicService.mediaPlayer.getCurrentPosition());
+                    handler.postDelayed(this, 1000);
+                } else
+                    handler.removeCallbacks(this);
             }
         };
         handler.postDelayed(runnable, 1000);
@@ -365,7 +352,6 @@ public class PlayNhacActivity extends AppCompatActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
-
 
 
     @Override

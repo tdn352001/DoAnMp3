@@ -131,21 +131,25 @@ public class MusicService extends Service {
                 mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
                 mediaPlayer.setOnCompletionListener(null);
                 mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(mp -> {
-                    mp.start();
-                    UploadToPlayRecent();
-                    MusicControlNotification();
-                    if (mp.isPlaying()) {
-                        SendActionToActivity(ACTION_START_PLAY);
-                        SendActionToMain(ACTION_START_PLAY);
-                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                ActionPlayComplete();
-                            }
-                        });
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.start();
+                        UploadToPlayRecent();
+                        MusicControlNotification();
+                        if (mp.isPlaying()) {
+                            SendActionToActivity(ACTION_START_PLAY);
+                            SendActionToMain(ACTION_START_PLAY);
+                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    ActionPlayComplete();
+                                }
+                            });
+                        }
                     }
                 });
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -159,7 +163,12 @@ public class MusicService extends Service {
                 mediaPlayer.setDataSource(getBaseContext(), uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-                mediaPlayer.setOnCompletionListener(mp -> ActionPlayComplete());
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        ActionPlayComplete();
+                    }
+                });
                 MusicControlNotification();
                 SendActionToActivity(ACTION_START_PLAY);
                 SendActionToMain(ACTION_START_PLAY);

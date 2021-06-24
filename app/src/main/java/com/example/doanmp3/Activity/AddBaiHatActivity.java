@@ -101,16 +101,16 @@ public class AddBaiHatActivity extends AppCompatActivity {
                 if (isChange()) {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
                     dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
-                    dialog.setTitle("Thoát");
+                    dialog.setTitle(R.string.exit);
                     dialog.setIcon(R.drawable.ic_warning);
-                    dialog.setMessage("Bạn Có Muốn Lưu Kết Quả?");
-                    dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                    dialog.setMessage(R.string.save_result);
+                    dialog.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             SaveChange();
                         }
                     });
-                    dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                    dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Added_AddFragment.arrayList = null;
@@ -317,16 +317,16 @@ public class AddBaiHatActivity extends AppCompatActivity {
         if (isChange()) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
             dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
-            dialog.setTitle("Thoát");
+            dialog.setTitle(R.string.exit);
             dialog.setIcon(R.drawable.ic_warning);
-            dialog.setMessage("Bạn Có Muốn Lưu Kết Quả?");
-            dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+            dialog.setMessage(R.string.save_result);
+            dialog.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     SaveChange();
                 }
             });
-            dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+            dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Added_AddFragment.arrayList = null;
@@ -340,7 +340,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
     }
 
     private void SaveChange() {
-        progressDialog = ProgressDialog.show(AddBaiHatActivity.this, "Đang Cập Nhật Playlsit", "Vui lòng chờ...!", true, true);
+        progressDialog = ProgressDialog.show(AddBaiHatActivity.this, "Đang Cập Nhật Playlist", "Vui lòng chờ...!", true, true);
         if (isChange()) {
             DataService dataService = APIService.getUserService();
             Call<String> callUpdate = dataService.UpdateUserPlaylist(IdPlaylist);

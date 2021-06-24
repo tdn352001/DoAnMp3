@@ -77,4 +77,8 @@
     <string name="bxh">Bảng Xếp Hạng</string>
     <string name="edit_info_user">Chỉnh Sửa Thông Tin</string>
     <string name="logout">Đăng Xuất</string>
+
+    <string name="exit">Thoát</string>
+    <string name="save_result">Bạn Có Muốn Lưu Kết Quả?</string>
+    <string name="yes">Có</string>
 </resources>

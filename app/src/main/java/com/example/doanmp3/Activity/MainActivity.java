@@ -89,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
         GetKeyWordRecent();
         GetCategory();
         AppbarClick();
-        if(MusicService.mediaPlayer != null){
-            AppBarSetVisibility();
+        if (MusicService.mediaPlayer != null) {
+            if (MusicService.mediaPlayer.isPlaying())
+                AppBarSetVisibility();
         }
     }
 
@@ -106,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         txtCaSi = findViewById(R.id.txt_tencasi_appbar);
         btnNext = findViewById(R.id.btn_next_appbar);
         btnStop = findViewById(R.id.btn_pause_appbar);
-
     }
 
     private void getUser() {
@@ -235,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     public void GetKeyWordRecent() {
