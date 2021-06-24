@@ -1,7 +1,6 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,15 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.APIService;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AllSearchFragment extends Fragment {
 
@@ -33,13 +38,14 @@ public class AllSearchFragment extends Fragment {
     int progress = 0;
     // Layout Kết Quả
     LinearLayout linearLayout;
-    RelativeLayout layoutBaihat, layoutCasi, layoutAlbum, layoutPlaylist;
+    RelativeLayout layoutBaihat, layoutCasi, layoutAlbum, layoutPlaylist, layoutNoinfo;
+
 
     // Recyclerview
     RecyclerView rvBaiHat, rvAlbum, rvCaSi, rvPlaylist;
 
-    // btn Xem Thêm, noinfo;
-    MaterialButton btnBaiHat, btnAlbum, btnCaSi, btnPlaylist, textView;
+    // btn Xem Thêm
+    MaterialButton btnBaiHat, btnAlbum, btnCaSi, btnPlaylist;
 
     // Adapter
     SearchSongAdapter adapterSong;
@@ -60,14 +66,14 @@ public class AllSearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_all_search, container, false);
         AnhXa();
         ClickViewMore();
-        SaveResultSearch();
+        linearLayout.setVisibility(View.VISIBLE);
         return view;
     }
 
 
     private void AnhXa() {
         linearLayout = view.findViewById(R.id.layout_all_result);
-        textView = view.findViewById(R.id.txt_search_result_noinfo);
+        layoutNoinfo = view.findViewById(R.id.txt_search_result_noinfo);
         layoutBaihat = view.findViewById(R.id.layout_result_baihat);
         layoutAlbum = view.findViewById(R.id.layout_result_album);
         layoutCasi = view.findViewById(R.id.layout_result_casi);
@@ -121,524 +127,169 @@ public class AllSearchFragment extends Fragment {
         });
     }
 
-    private void SaveResultSearch() {
-        countResult = 0;
+    public void Search(String query) {
         progress = 0;
-        SetResultBaiHat();
-        SetResultAlbum();
-        SetResultCaSi();
-        SetResultPlaylist();
+        countResult = 0;
+        linearLayout.setVisibility(View.INVISIBLE);
+        layoutNoinfo.setVisibility(View.GONE);
+        SearchBaiHat(query);
+        SearchAlbum(query);
+        SearchCaSi(query);
+        SearchPlaylist(query);
     }
 
-    private void SetResultBaiHat() {
-        if (baiHats != null) {
-            if (baiHats.size() > 0) {
-                rvBaiHat.removeAllViews();
-                adapterSong = new SearchSongAdapter(getContext(), baiHats, true, true);
-                rvBaiHat.setAdapter(adapterSong);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                rvBaiHat.setLayoutManager(linearLayoutManager);
-                progress++;
-                if (progress > 0) {
-                    textView.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
+    private void SearchBaiHat(String query) {
+        rvBaiHat.removeAllViews();
+        Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                baiHats = (ArrayList<BaiHat>) response.body();
+                if (baiHats != null) {
+                    if (baiHats.size() > 0) {
+                        layoutBaihat.setVisibility(View.VISIBLE);
+                        SetRecycleViewBaiHat();
+                        CountResult(true);
+                        return;
+                    }
                 }
-                return;
+                CountResult(false);
+                layoutBaihat.setVisibility(View.GONE);
             }
-            layoutBaihat.setVisibility(View.GONE);
-            if (progress == 4 && countResult == 0) {
-                linearLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("Không Tìm Thấy Kết Quả");
+
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void SearchAlbum(String query) {
+        rvAlbum.removeAllViews();
+        Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
+        callback.enqueue(new Callback<List<Album>>() {
+            @Override
+            public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
+                albums = (ArrayList<Album>) response.body();
+                if (albums != null) {
+                    if (albums.size() > 0) {
+                        layoutAlbum.setVisibility(View.VISIBLE);
+                        CountResult(true);
+                        SetRecycleViewAlbum();
+                        return;
+                    }
+                }
+                CountResult(false);
+                layoutAlbum.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<List<Album>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void SearchCaSi(String query) {
+        rvCaSi.removeAllViews();
+        Call<List<CaSi>> callback = APIService.getService().GetSearchCaSi(query);
+        callback.enqueue(new Callback<List<CaSi>>() {
+            @Override
+            public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
+                caSis = (ArrayList<CaSi>) response.body();
+                if (caSis != null) {
+                    if (caSis.size() > 0) {
+                        layoutCasi.setVisibility(View.VISIBLE);
+                        CountResult(true);
+                        SetRecycleViewCaSi();
+                        return;
+                    }
+                }
+                CountResult(false);
+                layoutCasi.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<List<CaSi>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void SearchPlaylist(String query) {
+        rvPlaylist.removeAllViews();
+        Call<List<Playlist>> callback = APIService.getService().GetSearchPlaylist(query);
+        callback.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                playlists = (ArrayList<Playlist>) response.body();
+                SearchFragment.CountResult();
+                if (playlists != null) {
+                    if (playlists.size() > 0) {
+                        layoutPlaylist.setVisibility(View.VISIBLE);
+                        CountResult(true);
+                        SetRecycleViewPlaylists();
+                        return;
+                    }
+                }
+                CountResult(false);
+                layoutPlaylist.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    private void SetRecycleViewBaiHat() {
+        adapterSong = new SearchSongAdapter(getContext(), baiHats, true, true);
+        rvBaiHat.setAdapter(adapterSong);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rvBaiHat.setLayoutManager(linearLayoutManager);
+    }
+
+    private void SetRecycleViewAlbum() {
+        adapterAlbum = new AlbumAdapter(getContext(), albums, true);
+        rvAlbum.setAdapter(adapterAlbum);
+        rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    }
+
+    private void SetRecycleViewCaSi() {
+        adapterSinger = new AllSingerAdapter(getContext(), caSis, true);
+        rvCaSi.setAdapter(adapterSinger);
+        rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    }
+
+    private void SetRecycleViewPlaylists() {
+        adapterPlaylist = new PlaylistAdapter(getContext(), playlists, true);
+        rvPlaylist.setAdapter(adapterPlaylist);
+        rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
+    }
+
+
+    private void CountResult(boolean haveResult) {
+        progress++;
+        if (haveResult)
+            countResult++;
+        if (progress >= 2) {
+
+            if (countResult >= 1) {
+                linearLayout.setVisibility(View.VISIBLE);
+                layoutNoinfo.setVisibility(View.GONE);
+            }
+
+            if (progress >= 4) {
+                SearchFragment.CountResult();
+                if (countResult == 0) {
+                    linearLayout.setVisibility(View.GONE);
+                    layoutNoinfo.setVisibility(View.VISIBLE);
+                }
             }
         }
-
-
-
-
     }
 
-    private void SetResultAlbum() {
-        if (albums != null) {
-            if (albums.size() > 0) {
-                rvAlbum.removeAllViews();
-                adapterAlbum = new AlbumAdapter(getContext(), albums, true);
-                rvAlbum.setAdapter(adapterAlbum);
-                rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                progress++;
-                if (progress > 0) {
-                    textView.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
-                }
-                return;
-            }
-            layoutAlbum.setVisibility(View.GONE);
-            if (progress == 4 && countResult == 0) {
-                linearLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("Không Tìm Thấy Kết Quả");
-            }
-        }
-
-
-    }
-
-    private void SetResultCaSi() {
-        if (caSis != null) {
-            if (caSis.size() > 0) {
-                rvCaSi.removeAllViews();
-                adapterSinger = new AllSingerAdapter(getContext(), caSis, true);
-                rvCaSi.setAdapter(adapterSinger);
-                rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                progress++;
-                if (progress > 0) {
-                    textView.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
-                }
-
-                return;
-            }
-            layoutCasi.setVisibility(View.GONE);
-            if (progress == 4 && countResult == 0) {
-                linearLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("Không Tìm Thấy Kết Quả");
-            }
-        }
-
-
-    }
-
-    private void SetResultPlaylist() {
-        if (playlists != null) {
-            if (playlists.size() > 0) {
-                rvPlaylist.removeAllViews();
-                adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
-                rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                rvPlaylist.setAdapter(adapterPlaylist);
-                progress++;
-                if (progress > 0) {
-                    textView.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.VISIBLE);
-                }
-                return;
-
-            }
-            layoutPlaylist.setVisibility(View.GONE);
-            if (progress == 4 && countResult == 0) {
-                linearLayout.setVisibility(View.GONE);
-                textView.setVisibility(View.VISIBLE);
-                textView.setText("Không Tìm Thấy Kết Quả");
-            }
-        }
-
-
-    }
-
-    public void GetResult() {
-        Handler handler = new Handler();
-
-
-        Runnable runbaihat = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-
-                // Tìm Kiếm Bài Hát
-                if (SearchFragment.baiHats != null) {
-                    progress++;
-                    baiHats = SearchFragment.baiHats;
-                    if (SearchFragment.baiHats.size() > 0) {
-                        adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true, true);
-                        rvBaiHat.setAdapter(adapterSong);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        rvBaiHat.setLayoutManager(linearLayoutManager);
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutBaihat.setVisibility(View.GONE);
-                        if (progress == 4) {
-                            if (countResult == 0) {
-                                progress = 0;
-                                linearLayout.setVisibility(View.GONE);
-                                textView.setVisibility(View.VISIBLE);
-                                textView.setText("Không Tìm Thấy Kết Quả");
-                            } else {
-                                textView.setVisibility(View.GONE);
-                                linearLayout.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-                    }
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-        // Tìm Tiếm ALbum
-        Runnable runalbum = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.albums != null) {
-                    albums = SearchFragment.albums;
-                    progress++;
-                    if (SearchFragment.albums.size() > 0) {
-                        adapterAlbum = new AlbumAdapter(getContext(), SearchFragment.albums, true);
-                        rvAlbum.setAdapter(adapterAlbum);
-                        rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutAlbum.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
-                        }
-                    }
-
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-        // Tìm Kiếm Ca Sĩ
-        Runnable runcasi = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.caSis != null) {
-                    progress++;
-                    caSis = SearchFragment.caSis;
-                    if (SearchFragment.caSis.size() > 0) {
-                        adapterSinger = new AllSingerAdapter(getContext(), SearchFragment.caSis, true);
-                        rvCaSi.setAdapter(adapterSinger);
-                        rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutCasi.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    handler.removeCallbacks(this);
-                }
-
-            }
-        };
-
-        // Tìm Kiếm Playlist
-
-        Runnable runplaylist = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.playlists != null) {
-                    progress++;
-                    playlists = SearchFragment.playlists;
-                    if (SearchFragment.playlists.size() > 0) {
-                        adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
-                        rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        rvPlaylist.setAdapter(adapterPlaylist);
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutPlaylist.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
-                        }
-
-                    }
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-        // Kiểm Tra Ánh Xạ
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (rvPlaylist != null) {
-                    rvBaiHat.removeAllViews();
-                    rvAlbum.removeAllViews();
-                    rvCaSi.removeAllViews();
-                    rvPlaylist.removeAllViews();
-                    textView.setText("Đang Lấy Dữ Liệu");
-                    linearLayout.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    progress = 0;
-                    countResult = 0;
-                    handler.postDelayed(runbaihat, 100);
-                    handler.postDelayed(runalbum, 100);
-                    handler.postDelayed(runcasi, 100);
-                    handler.postDelayed(runplaylist, 100);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-
-        handler.postDelayed(run, 100);
-
-
-    }
-
-    public void GetResultBaiHat(){
-        Handler handler = new Handler();
-
-
-        Runnable runbaihat = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-
-                // Tìm Kiếm Bài Hát
-                if (SearchFragment.baiHats != null) {
-                    progress++;
-                    baiHats = SearchFragment.baiHats;
-                    if (SearchFragment.baiHats.size() > 0) {
-                        adapterSong = new SearchSongAdapter(getContext(), SearchFragment.baiHats, true, true);
-                        rvBaiHat.setAdapter(adapterSong);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        rvBaiHat.setLayoutManager(linearLayoutManager);
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutBaihat.setVisibility(View.GONE);
-                        if (progress == 4) {
-                            if (countResult == 0) {
-                                progress = 0;
-                                linearLayout.setVisibility(View.GONE);
-                                textView.setVisibility(View.VISIBLE);
-                                textView.setText("Không Tìm Thấy Kết Quả");
-                            } else {
-                                textView.setVisibility(View.GONE);
-                                linearLayout.setVisibility(View.VISIBLE);
-                            }
-                        }
-
-                    }
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (rvPlaylist != null) {
-                    rvBaiHat.removeAllViews();
-                    rvAlbum.removeAllViews();
-                    rvCaSi.removeAllViews();
-                    rvPlaylist.removeAllViews();
-                    textView.setText("Đang Lấy Dữ Liệu");
-                    linearLayout.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    progress = 0;
-                    countResult = 0;
-                    handler.postDelayed(runbaihat, 100);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-
-        handler.postDelayed(run, 100);
-    }
-
-    public void GetResultAlbum(){
-        Handler handler = new Handler();
-        Runnable runalbum = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.albums != null) {
-                    albums = SearchFragment.albums;
-                    progress++;
-                    if (SearchFragment.albums.size() > 0) {
-                        adapterAlbum = new AlbumAdapter(getContext(), SearchFragment.albums, true);
-                        rvAlbum.setAdapter(adapterAlbum);
-                        rvAlbum.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutAlbum.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
-                        }
-                    }
-
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (rvPlaylist != null) {
-                    rvBaiHat.removeAllViews();
-                    rvAlbum.removeAllViews();
-                    rvCaSi.removeAllViews();
-                    rvPlaylist.removeAllViews();
-                    textView.setText("Đang Lấy Dữ Liệu");
-                    linearLayout.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    progress = 0;
-                    countResult = 0;
-                    handler.postDelayed(runalbum, 100);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-
-        handler.postDelayed(run, 100);
-
-    }
-
-    public void GetResultCasi(){
-        Handler handler = new Handler();
-
-        Runnable runcasi = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.caSis != null) {
-                    progress++;
-                    caSis = SearchFragment.caSis;
-                    if (SearchFragment.caSis.size() > 0) {
-                        adapterSinger = new AllSingerAdapter(getContext(), SearchFragment.caSis, true);
-                        rvCaSi.setAdapter(adapterSinger);
-                        rvCaSi.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutCasi.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    handler.removeCallbacks(this);
-                }
-
-            }
-        };
-
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (rvPlaylist != null) {
-                    rvBaiHat.removeAllViews();
-                    rvAlbum.removeAllViews();
-                    rvCaSi.removeAllViews();
-                    rvPlaylist.removeAllViews();
-                    textView.setText("Đang Lấy Dữ Liệu");
-                    linearLayout.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    progress = 0;
-                    countResult = 0;
-                    handler.postDelayed(runcasi, 100);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-
-        handler.postDelayed(run, 100);
-    }
-
-    public void GetResultPlaylist(){
-        Handler handler = new Handler();
-
-        Runnable runplaylist = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (SearchFragment.playlists != null) {
-                    progress++;
-                    playlists = SearchFragment.playlists;
-                    if (SearchFragment.playlists.size() > 0) {
-                        adapterPlaylist = new PlaylistAdapter(getContext(), SearchFragment.playlists, true);
-                        rvPlaylist.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        rvPlaylist.setAdapter(adapterPlaylist);
-                        countResult++;
-                        if (progress > 0) {
-                            textView.setVisibility(View.GONE);
-                            linearLayout.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        layoutPlaylist.setVisibility(View.GONE);
-                        if (progress == 4 && countResult == 0) {
-                            linearLayout.setVisibility(View.GONE);
-                            textView.setVisibility(View.VISIBLE);
-                            textView.setText("Không Tìm Thấy Kết Quả");
-                        }
-
-                    }
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-        // Kiểm Tra Ánh Xạ
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 100);
-                if (rvPlaylist != null) {
-                    rvBaiHat.removeAllViews();
-                    rvAlbum.removeAllViews();
-                    rvCaSi.removeAllViews();
-                    rvPlaylist.removeAllViews();
-                    textView.setText("Đang Lấy Dữ Liệu");
-                    linearLayout.setVisibility(View.GONE);
-                    textView.setVisibility(View.VISIBLE);
-                    progress = 0;
-                    countResult = 0;
-                    handler.postDelayed(runplaylist, 100);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-
-
-        handler.postDelayed(run, 100);
-
-    }
 }

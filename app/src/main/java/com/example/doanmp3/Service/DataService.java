@@ -175,7 +175,7 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("playnhac.php")
-    Call<String> PlayNhac(@Field("iduser") String iduser, @Field("idbaihat") String idbaihat);
+    Call<String>    PlayNhac(@Field("iduser") String iduser, @Field("idbaihat") String idbaihat);
 
     @FormUrlEncoded
     @POST("getbaihatrecent.php")

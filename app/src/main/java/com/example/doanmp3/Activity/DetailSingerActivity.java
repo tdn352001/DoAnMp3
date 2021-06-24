@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -154,7 +155,7 @@ public class DetailSingerActivity extends AppCompatActivity {
             AlbumAdapter adapter = new AlbumAdapter(this, albumArrayList);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailSingerActivity.this);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            recyclerViewAlBum.setLayoutManager(linearLayoutManager);
+            recyclerViewAlBum.setLayoutManager(new GridLayoutManager(this, 2));
             recyclerViewAlBum.setAdapter(adapter);
         }
         else

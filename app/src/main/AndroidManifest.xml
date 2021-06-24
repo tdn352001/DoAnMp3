@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".Application.Notification"
@@ -15,8 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.AddBaiHatActivity">
-        </activity>
+        <activity android:name=".Activity.AddBaiHatActivity"></activity>
         <activity android:name=".Activity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.LoginActivity">
@@ -36,8 +35,9 @@
         <activity android:name=".Activity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
         <activity android:name=".Activity.MainActivity" />
-        <service android:name=".Service.MusicService"/>
-        <receiver android:name=".Application.BroadcastReceiver"/>
+
+        <service android:name=".Service.MusicService" />
+        <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 
 </manifest>

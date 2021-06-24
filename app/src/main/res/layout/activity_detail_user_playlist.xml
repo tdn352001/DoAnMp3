@@ -148,19 +148,39 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relative_btn_add_baihat_userplaylist"
                 android:paddingHorizontal="10dp" />
-
-            <TextView
+            <RelativeLayout
                 android:id="@+id/txt_no_info_user_playlist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20mm"
+                android:gravity="center"
                 android:layout_below="@id/relative_btn_add_baihat_userplaylist"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/no_song"
-                android:textColor="@color/black"
-                android:textSize="26sp"
-                android:visibility="invisible" />
+                android:orientation="vertical"
+                android:textAlignment="center"
+                android:visibility="gone"
+                tools:ignore="InOrMmUsage">
+
+                <ImageView
+                    android:id="@+id/img_noinfo"
+                    android:layout_width="30mm"
+                    android:layout_height="30mm"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_sorry"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/img_noinfo"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/no_info"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+            </RelativeLayout>
+
         </RelativeLayout>
 
 

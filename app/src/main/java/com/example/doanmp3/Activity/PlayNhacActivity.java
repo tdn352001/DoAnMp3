@@ -24,20 +24,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.doanmp3.Adapter.ViewPagerPlaySongAdapter;
 import com.example.doanmp3.Fragment.PlayFragment.ListSongFragment;
 import com.example.doanmp3.Fragment.PlayFragment.PlayFragment;
-import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.MusicService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PlayNhacActivity extends AppCompatActivity {
 
@@ -54,6 +48,7 @@ public class PlayNhacActivity extends AppCompatActivity {
     ArrayList<BaiHat> arrayList;
     public boolean isAudio = false;
     int Pos;
+    private boolean isRecent;
 
 
     // Action From Service
@@ -66,7 +61,6 @@ public class PlayNhacActivity extends AppCompatActivity {
             if (intent.hasExtra("pos")) {
                 Pos = intent.getIntExtra("pos", 0);
                 SetConTent();
-                UploadToPlayRecent();
                 TimeSong();
             }
             if (intent.hasExtra("action")) {
@@ -181,6 +175,8 @@ public class PlayNhacActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void GetIntent() {
         Intent intent = getIntent();
+        if(intent.hasExtra("recent"))
+            isRecent = intent.getBooleanExtra("recent", false);
 
         if (!intent.hasExtra("notstart")) {
             if (intent.hasExtra("position"))
@@ -245,6 +241,7 @@ public class PlayNhacActivity extends AppCompatActivity {
             MusicService.putExtra("mangbaihat", arrayList);
         MusicService.putExtra("audio", isAudio);
         MusicService.putExtra("pos", Pos);
+        MusicService.putExtra("recent", isRecent);
         startService(MusicService);
         SetConTent();
     }
@@ -369,27 +366,7 @@ public class PlayNhacActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
-    private void UploadToPlayRecent() {
-        String id = arrayList.get(Pos).getIdBaiHat();
-        if (!id.equals("-1")) {
-            DataService dataService = APIService.getUserService();
-            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
-            callback.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    String result = (String) response.body();
-                    if (result.equals("S")) {
-                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-        }
-    }
 
     @Override
     public void finish() {

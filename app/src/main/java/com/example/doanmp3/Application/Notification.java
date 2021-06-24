@@ -4,7 +4,6 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
-import android.util.Log;
 
 import com.example.doanmp3.R;
 
@@ -26,7 +25,6 @@ public class Notification extends Application {
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-            Log.e("BBB", "da tao channel");
         }
     }
 }

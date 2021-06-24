@@ -41,6 +41,7 @@ public class UserPlaylistFragment extends Fragment {
     public RecyclerView recyclerView;
     public static ArrayList<Playlist> userPlaylist;
     public static UserPlaylistAdapter adapter;
+    public static RelativeLayout Noinfo;
     ProgressDialog progressDialog;
 
     @Override
@@ -63,6 +64,7 @@ public class UserPlaylistFragment extends Fragment {
     private void AnhXa() {
         btnAddPlaylist = view.findViewById(R.id.relative_btn_add_playlist);
         recyclerView = view.findViewById(R.id.rv_user_playlist);
+        Noinfo = view.findViewById(R.id.txt_user_baihat_yeuthich);
     }
 
 
@@ -72,8 +74,9 @@ public class UserPlaylistFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 100);
-                if(MainActivity.userPlaylist != null){
+                if (MainActivity.userPlaylist != null) {
                     userPlaylist = MainActivity.userPlaylist;
+                    CheckArrayListEmpty();
                     adapter = new UserPlaylistAdapter(userPlaylist, getContext());
                     recyclerView.setAdapter(adapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -156,6 +159,7 @@ public class UserPlaylistFragment extends Fragment {
                                         playlist.setTen(tenplaylist);
                                         playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
                                         userPlaylist.add(playlist);
+                                        CheckArrayListEmpty();
                                         adapter.notifyDataSetChanged();
                                         dialog.dismiss();
                                     }
@@ -181,17 +185,26 @@ public class UserPlaylistFragment extends Fragment {
         dialog.show();
     }
 
-    public static void RemovePlaylist(String IdPlaylist){
-        for(int i = 0; i < userPlaylist.size(); i++){
-            if(userPlaylist.get(i).getIdPlaylist().equals(IdPlaylist)){
+    public static void RemovePlaylist(String IdPlaylist) {
+        for (int i = 0; i < userPlaylist.size(); i++) {
+            if (userPlaylist.get(i).getIdPlaylist().equals(IdPlaylist)) {
                 userPlaylist.remove(i);
                 adapter.notifyItemRemoved(i);
-
-                if(userPlaylist.isEmpty()){
-
-                }
+                CheckArrayListEmpty();
                 return;
             }
         }
+    }
+
+
+    public static void CheckArrayListEmpty() {
+        if (userPlaylist != null) {
+            if (userPlaylist.size() > 0) {
+                Noinfo.setVisibility(View.GONE);
+                return;
+            }
+        }
+        Noinfo.setVisibility(View.VISIBLE);
+
     }
 }

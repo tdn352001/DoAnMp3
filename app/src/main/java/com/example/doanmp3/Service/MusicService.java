@@ -19,7 +19,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Application.BroadcastReceiver;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 
@@ -30,6 +32,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
 
@@ -54,6 +60,7 @@ public class MusicService extends Service {
 
     ArrayList<Integer> playedlist;
     Stack<Integer> stack;
+    private boolean isRecent;
 
 
     @Override
@@ -105,8 +112,11 @@ public class MusicService extends Service {
                 Pos = intent.getIntExtra("pos", 0);
                 if (arrayList != null)
                     PlayNhac();
+
             }
 
+            if(intent.hasExtra("recent"))
+                isRecent = intent.getBooleanExtra("recent", false);
 
             if (intent.hasExtra("action_activity")) {
                 int action = intent.getIntExtra("action_activity", 0);
@@ -133,8 +143,9 @@ public class MusicService extends Service {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         mp.start();
+                        UploadToPlayRecent();
                         MusicControlNotification();
-                        if (mp.isPlaying() ) {
+                        if (mp.isPlaying()) {
                             SendActionToActivity(ACTION_START_PLAY);
                             SendActionToMain(ACTION_START_PLAY);
                             mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -146,6 +157,15 @@ public class MusicService extends Service {
                         }
                     }
                 });
+
+//                mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//                    @Override
+//                    public boolean onError(MediaPlayer mp, int what, int extra) {
+//                        Log.e("BBB", "Play Music Failed");
+//                        Toast.makeText(MusicService.this, "Không thể nghe bài hát này!", Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//                });
 
 
             } catch (IOException e) {
@@ -252,7 +272,7 @@ public class MusicService extends Service {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void ActionPlayComplete(){
+    private void ActionPlayComplete() {
         playedlist.add(Pos);
         stack.push(Pos);
         if (arrayList == null)
@@ -279,33 +299,34 @@ public class MusicService extends Service {
 
     //Push thông báo
     private void MusicControlNotification() {
-        Log.e("BBB", "push thông báo");
-        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_song)
-                .setSubText(arrayList.get(Pos).getTenBaiHat())
-                .setContentTitle(arrayList.get(Pos).getTenBaiHat())
-                .setContentText(arrayList.get(Pos).getTenAllCaSi())
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1, 3)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()));
-        if (!isAudio)
-            notificationBuilder.setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()));
-        else
-            notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.music2));
+        if (arrayList != null) {
+            MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_song)
+                    .setSubText(arrayList.get(Pos).getTenBaiHat())
+                    .setContentTitle(arrayList.get(Pos).getTenBaiHat())
+                    .setContentText(arrayList.get(Pos).getTenAllCaSi())
+                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                    .addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
+                    .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                            .setShowActionsInCompactView(1, 3)
+                            .setMediaSession(mediaSessionCompat.getSessionToken()));
+            if (!isAudio)
+                notificationBuilder.setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()));
+            else
+                notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.music2));
 
-        if (mediaPlayer.isPlaying())
-            notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
-                    .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
-                    .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
-        else
-            notificationBuilder.addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY))
-                    .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
-                    .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
+            if (mediaPlayer.isPlaying())
+                notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
+                        .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
+                        .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
+            else
+                notificationBuilder.addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY))
+                        .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
+                        .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
 
-        startForeground(1, notificationBuilder.build());
+            startForeground(1, notificationBuilder.build());
+        }
     }
 
     // Lấy Sự Kiện Click từ Thông Báo
@@ -345,6 +366,29 @@ public class MusicService extends Service {
         Intent intent = new Intent("action_mainactivity");
         intent.putExtra("action", action);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private void UploadToPlayRecent() {
+        String id = arrayList.get(Pos).getIdBaiHat();
+        if (!id.equals("-1") && !isRecent) {
+            DataService dataService = APIService.getUserService();
+            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
+            callback.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String result = (String) response.body();
+                    Log.e("BBB", result);
+                    if (result.equals("S")) {
+                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
 

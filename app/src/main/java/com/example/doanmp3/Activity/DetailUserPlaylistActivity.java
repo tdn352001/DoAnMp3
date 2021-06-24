@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,7 +43,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     MaterialButton btnPlayAll;
     RelativeLayout btnAddBaiHat;
     RecyclerView recyclerView;
-    TextView txtNoInf;
+    static RelativeLayout txtNoInf;
     String IdPlaylist;
     String TenPlaylist;
     public static ArrayList<BaiHat> arrayList;
@@ -110,6 +109,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                 if (arrayList == null) {
                     arrayList = new ArrayList<>();
                 }
+                CheckArrayListEmpty();
                 setRV();
                 btnAddBaiHat.setClickable(true);
             }
@@ -161,6 +161,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     public static void UpdateArraylist(ArrayList<BaiHat> baiHats){
         if(baiHats != null){
             arrayList = baiHats;
+            CheckArrayListEmpty();
             adapter.UpdateArraylist(arrayList);
         }
     }
@@ -217,6 +218,16 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    public static void CheckArrayListEmpty(){
+        if (arrayList != null){
+            if(arrayList.size() > 0){
+                txtNoInf.setVisibility(View.GONE);
+                return;
+            }
+        }
+            txtNoInf.setVisibility(View.VISIBLE);
     }
 
     @Override

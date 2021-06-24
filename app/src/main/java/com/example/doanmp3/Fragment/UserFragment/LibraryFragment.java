@@ -92,14 +92,10 @@ public class LibraryFragment extends Fragment {
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
-                Log.e("BBB", url);
+
                 ModelAudio modelAudio = new ModelAudio(title, artist, Uri.parse(url));
                 audios.add(modelAudio);
-                String url1 = url.replace(" ", "%20");
-                String url2 = url1.replace("/storage/", "content://com.android.externalstorage.documents/document/");
-                String url3 = url2.replace("/", "%3AMusic%2F");
-                Log.e("BBB", url3);
-                // sua
+
                 BaiHat baiHat = new BaiHat();
                 baiHat.setCaSi(Collections.singletonList(artist));
                 baiHat.setIdBaiHat("-1");
@@ -110,11 +106,11 @@ public class LibraryFragment extends Fragment {
 
             } while (cursor.moveToNext());
         }
-        String url = String.valueOf(audios.get(0).getaudioUri());
-        String urii = url.replace(" ", "%20");
-        String[] path = urii.split("/");
-        String content = "content://com.android.externalstorage.documents/document/";
-        content = content+ "%3A" + path[1];
+//        String url = String.valueOf(audios.get(0).getaudioUri());
+//        String urii = url.replace(" ", "%20");
+//        String[] path = urii.split("/");
+//        String content = "content://com.android.externalstorage.documents/document/";
+//        content = content+ "%3A" + path[1];
 
 //  /storage/14E6-290A/Music/Duong Toi Cho Em Ve Cukak Remix_ - buitr.mp3
 // content://com.android.externalstorage.documents/document/14E6-290A%3AMusic%2FDuong%20Toi%20Cho%20Em%20Ve%20Cukak%20Remix_%20-%20buitr.mp3

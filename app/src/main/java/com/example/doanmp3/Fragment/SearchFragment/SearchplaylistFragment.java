@@ -1,10 +1,10 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,17 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
-import com.google.android.material.button.MaterialButton;
+import com.example.doanmp3.Service.APIService;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchplaylistFragment extends Fragment {
 
     View view;
     RecyclerView recyclerView;
-    public PlaylistAdapter adapter;
-    MaterialButton textView;
-    public static ArrayList<Playlist> arrayList;
+    PlaylistAdapter adapter;
+    RelativeLayout layoutNoinfo;
+    public ArrayList<Playlist> arrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,92 +41,43 @@ public class SearchplaylistFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_search_playlist, container, false);
         AnhXa();
-        SetRCV();
         return view;
     }
 
 
     private void AnhXa() {
         recyclerView = view.findViewById(R.id.rv_search_playlist);
-        textView = view.findViewById(R.id.txt_search_playlist_noinfo);
+        layoutNoinfo = view.findViewById(R.id.txt_search_playlist_noinfo);
     }
 
-    private void SetRCV() {
-        if (arrayList != null) {
-            if (arrayList.size() > 0) {
-                recyclerView.removeAllViews();
-                adapter = new PlaylistAdapter(getContext(), arrayList);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                textView.setVisibility(View.INVISIBLE);
-            } else
-                textView.setVisibility(View.VISIBLE);
-        } else
-            textView.setVisibility(View.VISIBLE);
-    }
-
-    public void SetRv() {
-        if (recyclerView != null)
-            recyclerView.removeAllViews();
-
-        Handler handler = new Handler();
-
-        // Kiểm tra Kết quả
-        Runnable run = new Runnable() {
+    public void Search(String query){
+        recyclerView.removeAllViews();
+        Call<List<Playlist>> callback = APIService.getService().GetSearchPlaylist(query);
+        callback.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void run() {
-                handler.postDelayed(this, 300);
-                if (SearchFragment.playlists != null) {
-                    arrayList = SearchFragment.playlists;
-                    if (SearchFragment.playlists.size() > 0) {
-                        adapter = new PlaylistAdapter(getContext(), SearchFragment.playlists);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        textView.setVisibility(View.INVISIBLE);
-                    } else {
-                        textView.setVisibility(View.VISIBLE);
-                        textView.setText("Không Tìm Thấy Kết Quả");
+            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+                arrayList = (ArrayList<Playlist>) response.body();
+                SearchFragment.CountResult();
+                if (arrayList != null) {
+                    if (arrayList.size() > 0) {
+                        layoutNoinfo.setVisibility(View.INVISIBLE);
+                        SetRecycleView();
+                        return;
                     }
-                    handler.removeCallbacks(this);
                 }
+                layoutNoinfo.setVisibility(View.VISIBLE);
+                SetRecycleView();
             }
-        };
-
-
-        // Kiểm tra ánh xạ
-        Runnable runnable = new Runnable() {
             @Override
-            public void run() {
-                handler.postDelayed(this, 500);
-                if (recyclerView != null) {
-                    recyclerView.removeAllViews();
-                    textView.setVisibility(View.VISIBLE);
-                    textView.setText("Đang Lấy Dữ Liệu...!");
-                    handler.postDelayed(run, 300);
-                    handler.removeCallbacks(this);
-                }
+            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+
             }
-        };
+        });
+    }
 
-        handler.postDelayed(runnable, 500);
-
+    private void SetRecycleView() {
+        adapter = new PlaylistAdapter(getContext(), arrayList, true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }
 }
-
-
-//                    if (SearchFragment.playlists != null) {
-//                        arrayList = SearchFragment.playlists;
-//                        if (SearchFragment.playlists.size() > 0) {
-//                            adapter = new PlaylistAdapter(getContext(), SearchFragment.playlists);
-//                            recyclerView.setAdapter(adapter);
-//                            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//                            textView.setVisibility(View.INVISIBLE);
-//                        } else {
-//                            textView.setVisibility(View.VISIBLE);
-//                            textView.setText("Không Tìm Thấy Kết Quả");
-//                        }
-//                        handler.removeCallbacks(this);
-//                    } else {
-//                        textView.setVisibility(View.VISIBLE);
-//                        textView.setText("Đang Lấy Dữ Liệu...!");
-//                    }

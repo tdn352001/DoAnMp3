@@ -95,6 +95,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
                         intent.putExtra("position", getPosition());
                         DanhSachBaiHatActivity.category ="Playlist";
                         DanhSachBaiHatActivity.TenCategoty ="Bài hát gần đây";
+                        intent.putExtra("recent", true);
                         context.startActivity(intent);
                     }
                     else{

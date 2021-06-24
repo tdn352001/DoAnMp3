@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNavigation();
         GetUserPlaylist();
         GetBaiHatYeuThich();
-        GetBaiHatRecent();
         GetKeyWordRecent();
         GetCategory();
         AppbarClick();
@@ -101,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewpager_main);
         progressBar = findViewById(R.id.progressBar);
         bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
-
         layoutPlay = findViewById(R.id.appbar_play);
         imgBaiHat = findViewById(R.id.img_appbar_play);
         txtBaiHat = findViewById(R.id.txt_tenbaihat_appbar);
@@ -238,26 +236,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void GetBaiHatRecent() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
-            @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                SearchFragment.baihatrecents = (ArrayList<BaiHat>) response.body();
-                baiHats = (ArrayList<BaiHat>) response.body();
-                if (SearchFragment.baihatrecents == null) {
-                    SearchFragment.baihatrecents = new ArrayList<>();
-                    baiHats = new ArrayList<>();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-
-            }
-        });
-    }
 
     public void GetKeyWordRecent() {
         DataService dataService = APIService.getUserService();

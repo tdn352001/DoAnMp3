@@ -64,15 +64,39 @@
             android:layout_height="match_parent"
             android:layout_below="@id/relative_btn_add_playlist" />
 
-        <TextView
-            android:id="@+id/txt_user_playlist"
-            style="@style/Widget.MaterialComponents.TextView"
+        <RelativeLayout
+            android:id="@+id/txt_user_baihat_yeuthich"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/no_data"
-            android:textSize="36sp"
-            android:visibility="invisible" />
+            android:layout_below="@id/relative_btn_add_playlist"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5mm"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center"
+            android:visibility="gone"
+            tools:ignore="InOrMmUsage">
+
+            <ImageView
+                android:id="@+id/img_noinfo"
+                android:layout_width="30mm"
+                android:layout_height="30mm"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_sorry"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_noinfo"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="sans-serif"
+                android:text="@string/no_info"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
 

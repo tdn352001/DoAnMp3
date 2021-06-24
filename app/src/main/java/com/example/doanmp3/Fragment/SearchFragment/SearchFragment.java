@@ -26,14 +26,12 @@ import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Adapter.AllCategoryAdapter;
 import com.example.doanmp3.Adapter.SearchSongAdapter;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
-import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.Model.KeyWord;
-import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -71,7 +69,7 @@ public class SearchFragment extends Fragment {
 
     //ChuDeTheLoai
     RecyclerView rvcategory;
-    public  static ArrayList<ChuDeTheLoai> categoryList;
+    public static ArrayList<ChuDeTheLoai> categoryList;
     AllCategoryAdapter categoryAdapter;
 
 
@@ -81,15 +79,8 @@ public class SearchFragment extends Fragment {
     public static ViewPager viewPager;
     ViewPagerAdapter adapterSearch;
 
-    int progress = 0; // Tiến Trình Lấy Kết Quả
-    ProgressDialog progressDialog;
-
-    // Mảng Kết Quả
-    public static ArrayList<BaiHat> baiHats;
-    public static ArrayList<Album> albums;
-    public static ArrayList<CaSi> caSis;
-    public static ArrayList<Playlist> playlists;
-
+    static int progress = 0; // Tiến Trình Lấy Kết Quả
+    static ProgressDialog progressDialog;
 
     // Fragment kết quả
     AllSearchFragment allSearchFragment = new AllSearchFragment();
@@ -158,11 +149,11 @@ public class SearchFragment extends Fragment {
                     // Lấy Dữ Liệu.
                     progress = 0;
                     progressDialog = ProgressDialog.show(getContext(), "Đang Lấy Dữ Liêu", "Loading....!", false, true);
-                    SearchBaiHat(query);
-                    SearchAlbum(query);
-                    SearchCaSi(query);
-                    SearchPlaylist(query);
-                    allSearchFragment.GetResult();
+                    allSearchFragment.Search(query);
+                    searchbaihatFragment.Search(query);
+                    searchalbumFragment.Search(query);
+                    searchcasiFragment.Search(query);
+                    searchplaylistFragment.Search(query);
                 }
                 return true;
             }
@@ -172,36 +163,7 @@ public class SearchFragment extends Fragment {
                 if (newText.equals("")) {
                     ResultLayout.setVisibility(View.GONE);
                     RecentLayout.setVisibility(View.VISIBLE);
-
-                    if (SearchbaihatFragment.arrayList != null)
-                        SearchbaihatFragment.arrayList.clear();
-
-                    if (SearchcasiFragment.arrayList != null)
-                        SearchcasiFragment.arrayList.clear();
-
-                    if (SearchalbumFragment.arrayList != null)
-                        SearchalbumFragment.arrayList.clear();
-
-                    if (SearchplaylistFragment.arrayList != null)
-                        SearchplaylistFragment.arrayList.clear();
-
                 }
-//                // Lưu Từ Khóa
-//                addKeyWord(newText);
-//
-//                //Hiển THị màn Hình kết quả, ẩn màn hình gần đây
-//                ResultLayout.setVisibility(View.VISIBLE);
-//                RecentLayout.setVisibility(View.GONE);
-//                viewPager.setCurrentItem(0);
-//
-//                // Lấy Dữ Liệu.
-//                progress = 0;
-//                progressDialog = ProgressDialog.show(getContext(), "Đang Lấy Dữ Liêu", "Loading....!", false, true);
-//                SearchBaiHat(newText);
-//                SearchAlbum(newText);
-//                SearchCaSi(newText);
-//                SearchPlaylist(newText);
-//                allSearchFragment.GetResult();
                 return true;
             }
         });
@@ -212,7 +174,7 @@ public class SearchFragment extends Fragment {
 
     private void SetupReCent() {
         GetResentKeyWord();
-        GetRecentSong();
+        GetBaiHatRecent();
         SetCategoty();
         RecentEventClick();
     }
@@ -226,7 +188,7 @@ public class SearchFragment extends Fragment {
             public void run() {
                 handler.postDelayed(this, 250);
                 SearchRecentLayout.setVisibility(View.GONE);
-                if(keyWordArrayList != null){
+                if (keyWordArrayList != null) {
                     SetFlowLayout();
                     handler.removeCallbacks(this);
                 }
@@ -237,8 +199,6 @@ public class SearchFragment extends Fragment {
     }
 
     // SetLayout Flow
-
-
     public void SetFlowLayout() {
 
 
@@ -261,7 +221,6 @@ public class SearchFragment extends Fragment {
     }
 
     //Thêm View vào layout
-
     public void AddViewIntoFlowLayout(KeyWord keyWord) {
 
         TextView textView = new TextView(getContext());
@@ -321,58 +280,61 @@ public class SearchFragment extends Fragment {
         return false;
     }
 
-    // lấy Bài Hát Nghe Gần Đây
-    private void GetRecentSong() {
-
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                handler.postDelayed(this, 250);
-                SongRecentLayout.setVisibility(View.GONE);
-                if(baihatrecents != null){
-                    if (baihatrecents.size() > 0)
-                        SongRecentLayout.setVisibility(View.VISIBLE);
-                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
-                    rvBaiHatRecent.setAdapter(searchSongAdapter);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                    rvBaiHatRecent.setLayoutManager(linearLayoutManager);
-                    handler.removeCallbacks(this);
-                }
-            }
-        };
-        handler.postDelayed(runnable, 250);
-
-
-
-
-    }
-    // Thêm Bài Hát Gần Đây
-    public static void AddBaiHatRecent(BaiHat baiHat){
-        if(!CheckinSongRecent(baiHat.getIdBaiHat())){
-            baihatrecents.add(0, baiHat);
-            searchSongAdapter.notifyDataSetChanged();
-            if(baihatrecents.size() > 4)
-                btnViewMore.setVisibility(View.VISIBLE);
-
-            if(SongRecentLayout.getVisibility() == View.GONE)
+    private void SetRVRecent() {
+        if (baihatrecents != null) {
+            if (baihatrecents.size() > 0)
                 SongRecentLayout.setVisibility(View.VISIBLE);
 
+            searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
+            rvBaiHatRecent.setAdapter(searchSongAdapter);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+            rvBaiHatRecent.setLayoutManager(linearLayoutManager);
+
+            if (baihatrecents.size() > 5)
+                btnViewMore.setVisibility(View.VISIBLE);
+
         }
     }
 
-    // Kiểm Tra Bài Hát Có Được Chơi Gần Đây Không
-    public static boolean CheckinSongRecent(String IdBaihat) {
-        if (baihatrecents != null) {
-            for (int i = 0; i > baihatrecents.size(); i++)
-                if (baihatrecents.get(i).getIdBaiHat().equals(IdBaihat))
-                    return true;
-        }
-        else
-            return true;
+    // lấy Bài Hát Nghe Gần Đây
+    public void GetBaiHatRecent() {
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
+        callback.enqueue(new Callback<List<BaiHat>>() {
+            @Override
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                SearchFragment.baihatrecents = (ArrayList<BaiHat>) response.body();
+                if (SearchFragment.baihatrecents == null) {
+                    SearchFragment.baihatrecents = new ArrayList<>();
+                }
+                SetRVRecent();
+            }
+            @Override
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
 
-        return false;
+            }
+        });
+    }
+
+    // Thêm Bài Hát Gần Đây
+    public static void AddBaiHatRecent(BaiHat baiHat) {
+        int i = 0;
+        while (i < baihatrecents.size()) {
+            if (baihatrecents.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat())) {
+                baihatrecents.remove(i);
+                break;
+            }
+            i++;
+        }
+        baihatrecents.add(0, baiHat);
+        searchSongAdapter.notifyDataSetChanged();
+        if (baihatrecents.size() > 4)
+            btnViewMore.setVisibility(View.VISIBLE);
+
+        if (SongRecentLayout.getVisibility() == View.GONE)
+            SongRecentLayout.setVisibility(View.VISIBLE);
+
     }
 
     //Lấy Danh Sách Category
@@ -382,7 +344,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
                 handler.postDelayed(this, 300);
-                if(categoryList != null){
+                if (categoryList != null) {
                     categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
                     categoryAdapter.setTongChuDe(categoryList.size() - MainActivity.theloailist.size());
                     rvcategory.setAdapter(categoryAdapter);
@@ -461,12 +423,7 @@ public class SearchFragment extends Fragment {
 
     /* ===================== SETUP RESULT ======================*/
 
-
     private void SetupResult() {
-        setupViewPager();
-    }
-
-    private void setupViewPager() {
         adapterSearch = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
         // List Fragment kết quả
@@ -491,222 +448,20 @@ public class SearchFragment extends Fragment {
 
         //Hoàn Thành Set up
         viewPager.setAdapter(adapterSearch);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(5);
+        viewPager.setCurrentItem(1);
         tabLayout.setupWithViewPager(viewPager);
 
     }
 
-    public void SearchBaiHat(String query) {
-        baiHats = null;
-        Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
-        callback.enqueue(new Callback<List<BaiHat>>() {
-            @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                baiHats = (ArrayList<BaiHat>) response.body();
-                if (baiHats == null)
-                    baiHats = new ArrayList<>();
-                searchbaihatFragment.SetRV();
-                progress++;
-                if (progress > 2) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void SearchAlbum(String query) {
-        albums = null;
-        Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
-        callback.enqueue(new Callback<List<Album>>() {
-            @Override
-            public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
-                albums = (ArrayList<Album>) response.body();
-                if (albums == null)
-                    albums = new ArrayList<>();
-                searchalbumFragment.SetRv();
-                progress++;
-                if (progress > 2) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Album>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void SearchCaSi(String query) {
-        caSis = null;
-        Call<List<CaSi>> callback = APIService.getService().GetSearchCaSi(query);
-        callback.enqueue(new Callback<List<CaSi>>() {
-            @Override
-            public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
-                caSis = (ArrayList<CaSi>) response.body();
-                if (caSis == null)
-                    caSis = new ArrayList<>();
-                searchcasiFragment.SetRV();
-                progress++;
-                if (progress > 2) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CaSi>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    public void SearchPlaylist(String query) {
-        playlists = null;
-        Call<List<Playlist>> callback = APIService.getService().GetSearchPlaylist(query);
-        callback.enqueue(new Callback<List<Playlist>>() {
-            @Override
-            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
-                playlists = (ArrayList<Playlist>) response.body();
-                if (playlists == null)
-                    playlists = new ArrayList<>();
-                searchplaylistFragment.SetRv();
-                progress++;
-                if (progress > 2) {
-                    progressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Playlist>> call, Throwable t) {
-
-            }
-        });
+    public static void CountResult(){
+        progress++;
+        if(progress > 3){
+            progressDialog.dismiss();
+        }
     }
 
 
-  /*
-    Phần Cũ ( Dự Phòng Phần Mới bị lỗi)
-    -- Lấy Bài Hát Gần Đây--
-    private void GetRecentSong(){
-                DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
-            @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                baihatrecents = (ArrayList<BaiHat>) response.body();
-                if (baihatrecents == null) {
-                    baihatrecents = new ArrayList<>();
-                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
-                    SongRecentLayout.setVisibility(View.GONE);
-                } else {
-                    if(baihatrecents.size() == 0)
-                        SongRecentLayout.setVisibility(View.GONE);
-
-                    searchSongAdapter = new SearchSongAdapter(getContext(), baihatrecents, false, true);
-                    searchSongAdapter.notifyDataSetChanged();
-                    rvBaiHatRecent.setAdapter(searchSongAdapter);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                    rvBaiHatRecent.setLayoutManager(linearLayoutManager);
 
 
-                    if (baihatrecents.size() > 5)
-                        btnViewMore.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-
-            }
-        });
-    }
-
-
-    -- Lấy Từ Khóa Tìm Kiếm Gần Đây--
-
-        private void GetResentKeyWord() {
-        DataService dataService = APIService.getUserService();
-        Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<KeyWord>>() {
-            @Override
-            public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
-                keyWordArrayList = (ArrayList<KeyWord>) response.body();
-                SetFlowLayout();
-            }
-
-            @Override
-            public void onFailure(Call<List<KeyWord>> call, Throwable t) {
-            }
-        });
-    }
-
-
-    public void SetFlowLayout() {
-
-        if (flowLayout == null)
-            return;
-        flowLayout.removeAllViews();
-        while (keyWordArrayList.size() > 15)
-            keyWordArrayList.remove(keyWordArrayList.size() - 1);
-
-        if (keyWordArrayList != null) {
-            if (keyWordArrayList.size() > 0) {
-                for (int i = 0; i < keyWordArrayList.size(); i++) {
-                    AddViewIntoFlowLayout(keyWordArrayList.get(i));
-                }
-                SearchRecentLayout.setVisibility(View.VISIBLE);
-            } else
-                SearchRecentLayout.setVisibility(View.GONE);
-        } else
-            SearchRecentLayout.setVisibility(View.GONE);
-    }
-
-        //Lấy Danh Sách Category
-    private void SetCategoty() {
-        DataService dataService = APIService.getService();
-        Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
-        Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
-
-        callChuDe.enqueue(new Callback<List<ChuDeTheLoai>>() {
-            @Override
-            public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                ArrayList<ChuDeTheLoai> ChuDeList = (ArrayList<ChuDeTheLoai>) response.body();
-                categoryList = ChuDeList;
-                callTheLoai.enqueue(new Callback<List<ChuDeTheLoai>>() {
-                    @Override
-                    public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                        ArrayList<ChuDeTheLoai> TheLoaiList = (ArrayList<ChuDeTheLoai>) response.body();
-                        if (categoryList != null) {
-                            categoryList.addAll(TheLoaiList);
-                            categoryAdapter = new AllCategoryAdapter(getContext(), categoryList, 3);
-                            categoryAdapter.setTongChuDe(categoryList.size() - TheLoaiList.size());
-                            rvcategory.setAdapter(categoryAdapter);
-                            rvcategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-            }
-        });
-
-
-    }
-*/
 }
