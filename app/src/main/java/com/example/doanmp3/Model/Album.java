@@ -39,15 +39,9 @@ public class Album implements Serializable {
         return tenAlbum;
     }
 
-    public void setTenAlbum(String tenAlbum) {
-        this.tenAlbum = tenAlbum;
-    }
 
     public String getHinhAlbum() {
         return hinhAlbum;
     }
 
-    public void setHinhAlbum(String hinhAlbum) {
-        this.hinhAlbum = hinhAlbum;
-    }
 }

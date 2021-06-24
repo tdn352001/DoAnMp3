@@ -33,16 +33,6 @@ public class SongFragment extends Fragment {
     RecyclerView recyclerView;
     SongAdapter adapter;
 
-    public SongFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

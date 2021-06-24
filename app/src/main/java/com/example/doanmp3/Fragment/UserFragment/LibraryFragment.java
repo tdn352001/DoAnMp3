@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +85,7 @@ public class LibraryFragment extends Fragment {
         ContentResolver contentResolver = getActivity().getContentResolver();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
+        @SuppressLint("Recycle")
         Cursor cursor = contentResolver.query(uri, null, null, null, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -106,38 +107,9 @@ public class LibraryFragment extends Fragment {
 
             } while (cursor.moveToNext());
         }
-//        String url = String.valueOf(audios.get(0).getaudioUri());
-//        String urii = url.replace(" ", "%20");
-//        String[] path = urii.split("/");
-//        String content = "content://com.android.externalstorage.documents/document/";
-//        content = content+ "%3A" + path[1];
-
-//  /storage/14E6-290A/Music/Duong Toi Cho Em Ve Cukak Remix_ - buitr.mp3
-// content://com.android.externalstorage.documents/document/14E6-290A%3AMusic%2FDuong%20Toi%20Cho%20Em%20Ve%20Cukak%20Remix_%20-%20buitr.mp3
         adapter = new AudioAdapter(getActivity(), audios);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }
 
-    private ArrayList<File> findMusicFiles(File file) {
-        ArrayList<File> musicfileobject = new ArrayList<>();
-        File[] files = file.listFiles();
-
-        if (files == null) {
-            Log.e("BBB", "null");
-            return null;
-        }
-        for (File currentFiles : files) {
-            if (currentFiles.isDirectory() && !currentFiles.isHidden()) {
-                musicfileobject.addAll(findMusicFiles(currentFiles));
-            } else {
-                if (currentFiles.getName().endsWith(".mp3") || currentFiles.getName().endsWith(".mp4a") || currentFiles.getName().endsWith(".wav")) {
-                    musicfileobject.add(currentFiles);
-                    Log.e("BBBA", Uri.fromFile(currentFiles).toString());
-                }
-            }
-        }
-
-        return musicfileobject;
-    }
 }

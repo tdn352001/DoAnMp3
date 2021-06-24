@@ -121,62 +121,54 @@ public class UserPlaylistFragment extends Fragment {
         btnConfirm = dialog.findViewById(R.id.btnAdd);
 
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tenplaylist = edtTenPlaylist.getText().toString();
-                if (tenplaylist.equals(""))
-                    edtTenPlaylist.setError("Tên Playlist Trống");
-                else {
-                    int i = 0;
-                    if (userPlaylist != null) {
-                        for (i = 0; i < userPlaylist.size(); i++) {
-                            if (userPlaylist.get(i).getTen().equals(tenplaylist)) {
-                                i++;
-                                break;
+        btnConfirm.setOnClickListener(v -> {
+            String tenplaylist = edtTenPlaylist.getText().toString();
+            if (tenplaylist.equals(""))
+                edtTenPlaylist.setError("Tên Playlist Trống");
+            else {
+                int i = 0;
+                if (userPlaylist != null) {
+                    for (i = 0; i < userPlaylist.size(); i++) {
+                        if (userPlaylist.get(i).getTen().equals(tenplaylist)) {
+                            i++;
+                            break;
+                        }
+                    }
+                    if (i >= userPlaylist.size() || i == 0) {
+                        progressDialog = ProgressDialog.show(getContext(), "Đang Tạo Playlist", "Loading...!", false, false);
+                        DataService dataService = APIService.getUserService();
+                        Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                String Idplaylist = (String) response.body();
+                                if (Idplaylist.equals("That Bai"))
+                                    Toast.makeText(getContext(), "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                                else {
+                                    Playlist playlist = new Playlist();
+                                    playlist.setIdPlaylist(Idplaylist);
+                                    playlist.setTen(tenplaylist);
+                                    playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
+                                    userPlaylist.add(playlist);
+                                    CheckArrayListEmpty();
+                                    adapter.notifyDataSetChanged();
+                                    dialog.dismiss();
+                                }
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Tạo Thành Công", Toast.LENGTH_SHORT).show();
                             }
-                        }
-                        if (i >= userPlaylist.size() || i == 0) {
-                            progressDialog = ProgressDialog.show(getContext(), "Đang Tạo Playlist", "Loading...!", false, false);
-                            DataService dataService = APIService.getUserService();
-                            Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
-                            callback.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                    String Idplaylist = (String) response.body();
-                                    if (Idplaylist.equals("That Bai"))
-                                        Toast.makeText(getContext(), "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
-                                    else {
-                                        Playlist playlist = new Playlist();
-                                        playlist.setIdPlaylist(Idplaylist);
-                                        playlist.setTen(tenplaylist);
-                                        playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
-                                        userPlaylist.add(playlist);
-                                        CheckArrayListEmpty();
-                                        adapter.notifyDataSetChanged();
-                                        dialog.dismiss();
-                                    }
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "Tạo Thành Công", Toast.LENGTH_SHORT).show();
-                                }
 
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                            edtTenPlaylist.setError("Playlist Đã Tồn tại");
-                            Toast.makeText(getContext(), "Playlist Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        edtTenPlaylist.setError("Playlist Đã Tồn tại");
+                        Toast.makeText(getContext(), "Playlist Đã Tồn Tại", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

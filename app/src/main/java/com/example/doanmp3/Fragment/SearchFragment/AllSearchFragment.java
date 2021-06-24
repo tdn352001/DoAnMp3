@@ -24,6 +24,8 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.google.android.material.button.MaterialButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,39 +92,27 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void ClickViewMore() {
-        btnBaiHat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SearchFragment.viewPager != null) {
-                    SearchFragment.viewPager.setCurrentItem(1);
-                }
+        btnBaiHat.setOnClickListener(v -> {
+            if (SearchFragment.viewPager != null) {
+                SearchFragment.viewPager.setCurrentItem(1);
             }
         });
 
-        btnAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SearchFragment.viewPager != null) {
-                    SearchFragment.viewPager.setCurrentItem(2);
-                }
+        btnAlbum.setOnClickListener(v -> {
+            if (SearchFragment.viewPager != null) {
+                SearchFragment.viewPager.setCurrentItem(2);
             }
         });
 
-        btnCaSi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SearchFragment.viewPager != null) {
-                    SearchFragment.viewPager.setCurrentItem(3);
-                }
+        btnCaSi.setOnClickListener(v -> {
+            if (SearchFragment.viewPager != null) {
+                SearchFragment.viewPager.setCurrentItem(3);
             }
         });
 
-        btnPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SearchFragment.viewPager != null) {
-                    SearchFragment.viewPager.setCurrentItem(4);
-                }
+        btnPlaylist.setOnClickListener(v -> {
+            if (SearchFragment.viewPager != null) {
+                SearchFragment.viewPager.setCurrentItem(4);
             }
         });
     }
@@ -143,7 +133,7 @@ public class AllSearchFragment extends Fragment {
         Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+            public void onResponse(@NotNull Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHats = (ArrayList<BaiHat>) response.body();
                 if (baiHats != null) {
                     if (baiHats.size() > 0) {
@@ -158,7 +148,7 @@ public class AllSearchFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<BaiHat>> call, @NotNull Throwable t) {
 
             }
         });
@@ -237,7 +227,7 @@ public class AllSearchFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<Playlist>> call, @NotNull Throwable t) {
 
             }
         });

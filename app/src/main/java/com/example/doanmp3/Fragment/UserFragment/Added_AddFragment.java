@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,11 @@ import java.util.ArrayList;
 public class Added_AddFragment extends Fragment {
 
     View view;
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout textView;
     RecyclerView recyclerView;
     public static int position;
+    @SuppressLint("StaticFieldLeak")
     public static AddBaiHatAdapter adapter;
     public static ArrayList<BaiHat> arrayList;
 

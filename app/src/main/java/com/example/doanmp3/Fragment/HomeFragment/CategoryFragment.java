@@ -2,22 +2,18 @@ package com.example.doanmp3.Fragment.HomeFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.doanmp3.Activity.AllCategoryActivity;
 import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.CategoryAdapter;
-import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -36,16 +32,6 @@ public class CategoryFragment extends Fragment {
     View view;
     TextView txt;
     RecyclerView recyclerView;
-    public CategoryFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -363,8 +363,6 @@ public class AddBaiHatActivity extends AppCompatActivity {
                     }
                     progressDialog.dismiss();
                     DetailUserPlaylistActivity.UpdateArraylist(Added_AddFragment.arrayList);
-//                    DetailUserPlaylistActivity.arrayList = Added_AddFragment.arrayList;
-//                    DetailUserPlaylistActivity.adapter.notifyDataSetChanged();
                     Added_AddFragment.arrayList = null;
                     Toast.makeText(AddBaiHatActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     finish();

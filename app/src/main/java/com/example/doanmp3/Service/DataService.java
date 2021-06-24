@@ -27,8 +27,6 @@ public interface DataService {
     @GET("randomplaylist.php")
     Call<List<Playlist>> GetRandomPlaylist();
 
-    @GET("randomsong.php")
-    Call<List<BaiHat>> GetRanDomBaiHat();
 
     @GET("randomsinger.php")
     Call<List<CaSi>> GetRanDomCaSi();

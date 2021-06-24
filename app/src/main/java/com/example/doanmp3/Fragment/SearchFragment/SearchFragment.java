@@ -360,48 +360,45 @@ public class SearchFragment extends Fragment {
     // Sự kiến click của layout gần đây
     private void RecentEventClick() {
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnDelete.setOnClickListener(v -> {
 
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-                dialog.setTitle("Xóa Lịch Sử Tìm Kiếm!");
-                dialog.setMessage("Bạn có Chắc Chắn?");
-                dialog.setIcon(R.drawable.error);
-                dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
-                dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+            dialog.setTitle("Xóa Lịch Sử Tìm Kiếm!");
+            dialog.setMessage("Bạn có Chắc Chắn?");
+            dialog.setIcon(R.drawable.error);
+            dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
 
-                    }
-                });
+                }
+            });
 
-                dialog.setNegativeButton("Thực Hiện", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<String> callback = APIService.getUserService().DeleteSearch(MainActivity.user.getIdUser());
-                        callback.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                String rel = (String) response.body();
-                                if (rel != null)
-                                    if (rel.equals("S")) {
-                                        keyWordArrayList.clear();
-                                        SetFlowLayout();
-                                    }
-                            }
+            dialog.setNegativeButton("Thực Hiện", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Call<String> callback = APIService.getUserService().DeleteSearch(MainActivity.user.getIdUser());
+                    callback.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            String rel = (String) response.body();
+                            if (rel != null)
+                                if (rel.equals("S")) {
+                                    keyWordArrayList.clear();
+                                    SetFlowLayout();
+                                }
+                        }
 
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
 
-                            }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+            });
 
-                dialog.show();
-            }
+            dialog.show();
         });
 
         btnViewMore.setOnClickListener(new View.OnClickListener() {

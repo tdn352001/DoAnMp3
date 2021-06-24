@@ -33,17 +33,7 @@ public class BannerFragment extends Fragment {
     Runnable runnable;
     int CurrentItem;
 
-    public BannerFragment() {
-        // Required empty public constructor
-    }
 
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

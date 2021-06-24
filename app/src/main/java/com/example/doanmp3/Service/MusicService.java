@@ -75,14 +75,6 @@ public class MusicService extends Service {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-
-            }
-        });
-
         super.onCreate();
     }
 
@@ -139,34 +131,21 @@ public class MusicService extends Service {
                 mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
                 mediaPlayer.setOnCompletionListener(null);
                 mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                        UploadToPlayRecent();
-                        MusicControlNotification();
-                        if (mp.isPlaying()) {
-                            SendActionToActivity(ACTION_START_PLAY);
-                            SendActionToMain(ACTION_START_PLAY);
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    ActionPlayComplete();
-                                }
-                            });
-                        }
+                mediaPlayer.setOnPreparedListener(mp -> {
+                    mp.start();
+                    UploadToPlayRecent();
+                    MusicControlNotification();
+                    if (mp.isPlaying()) {
+                        SendActionToActivity(ACTION_START_PLAY);
+                        SendActionToMain(ACTION_START_PLAY);
+                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                ActionPlayComplete();
+                            }
+                        });
                     }
                 });
-
-//                mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-//                    @Override
-//                    public boolean onError(MediaPlayer mp, int what, int extra) {
-//                        Log.e("BBB", "Play Music Failed");
-//                        Toast.makeText(MusicService.this, "Không thể nghe bài hát này!", Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-//                });
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -180,12 +159,7 @@ public class MusicService extends Service {
                 mediaPlayer.setDataSource(getBaseContext(), uri);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        ActionPlayComplete();
-                    }
-                });
+                mediaPlayer.setOnCompletionListener(mp -> ActionPlayComplete());
                 MusicControlNotification();
                 SendActionToActivity(ACTION_START_PLAY);
                 SendActionToMain(ACTION_START_PLAY);

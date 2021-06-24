@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,7 +24,9 @@ public class UserBaiHatFragment extends Fragment {
 
     View view;
     public RecyclerView recyclerView;
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout textView;
+    @SuppressLint("StaticFieldLeak")
     public static AllSongAdapter adapter;
     public static ArrayList<BaiHat> arrayList;
     User user;

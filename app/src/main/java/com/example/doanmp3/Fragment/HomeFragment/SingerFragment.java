@@ -32,16 +32,7 @@ public class SingerFragment extends Fragment {
     View view;
     TextView txt;
     RecyclerView recyclerView;
-    public SingerFragment() {
-        // Required empty public constructor
-    }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

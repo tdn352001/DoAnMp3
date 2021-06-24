@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment.PlayFragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,11 +61,13 @@ public class ListSongFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     public void setInfoBaiHat(String BaiHat, String CaSi){
         txtBaiHat.setText("Bài Hát:  " + BaiHat);
         txtCaSi.setText("Ca Sĩ:  " + CaSi);
     }
 
+    @SuppressLint("SetTextI18n")
     public void setDanhMuc(){
         if(! (DanhSachBaiHatActivity.category ==""))
             txtDanhMuc.setText(DanhSachBaiHatActivity.category + ":  " + DanhSachBaiHatActivity.TenCategoty);

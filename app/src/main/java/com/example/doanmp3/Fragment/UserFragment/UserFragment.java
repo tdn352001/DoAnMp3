@@ -2,7 +2,6 @@ package com.example.doanmp3.Fragment.UserFragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -39,7 +38,9 @@ public class UserFragment extends Fragment {
     View view;
     MaterialButton btnEdit, btnLogout;
     public UserPlaylistFragment userPlaylistFragment;
+    @SuppressLint("StaticFieldLeak")
     public static TextView txtUserName;
+    @SuppressLint("StaticFieldLeak")
     public static ImageView imgBanner;
     public static CircleImageView imgAvatar;
     TabLayout tabLayout;
@@ -47,6 +48,7 @@ public class UserFragment extends Fragment {
     public static ViewPagerAdapter adapter;
     public static final int PERMISSION_READ = 0;
     public static final int PERMISSION_WRITE = 1;
+    @SuppressLint("StaticFieldLeak")
     public static UserBaiHatFragment userBaiHatFragment;
 
 
@@ -100,6 +102,7 @@ public class UserFragment extends Fragment {
         title.add("Yêu Thích");
         title.add("Trên Thiết Bị");
         title.add("Playlist");
+        assert getFragmentManager() != null;
         adapter = new ViewPagerAdapter(getFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         adapter.setList(arrayList);
         adapter.setTitle(title);
@@ -111,49 +114,34 @@ public class UserFragment extends Fragment {
 
 
     private void EventClick() {
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkPermission()) {
-                    Intent intent = new Intent(getActivity(), UserInfoActivity.class);
-                    startActivity(intent);
-                    SetupInfoUser();
-                }
+        btnEdit.setOnClickListener(v -> {
+            if (checkPermission()) {
+                Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                startActivity(intent);
+                SetupInfoUser();
             }
         });
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void onClick(View v) {
+        btnLogout.setOnClickListener(v -> {
 
-                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-                dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
-                dialog.setTitle("Đăng Xuất");
-                dialog.setIcon(R.drawable.ic_logout);
-                dialog.setMessage("Bạn có chắc muốn đăng suất?");
-                dialog.setNegativeButton("Đồng Ý", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+            dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setTitle("Đăng Xuất");
+            dialog.setIcon(R.drawable.ic_logout);
+            dialog.setMessage("Bạn có chắc muốn đăng suất?");
+            dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
 
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
-                        editor.remove("username");
-                        editor.remove("password");
-                        editor.commit();
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                });
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
+                editor.remove("username");
+                editor.remove("password");
+                editor.apply();
+                startActivity(intent);
+                getActivity().finish();
+            });
 
-                dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
-            }
+            dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
+            dialog.show();
         });
 
     }

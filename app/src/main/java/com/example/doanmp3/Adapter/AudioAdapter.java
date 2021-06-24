@@ -3,13 +3,10 @@ package com.example.doanmp3.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +17,6 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ModelAudio;
 import com.example.doanmp3.R;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
@@ -69,10 +64,6 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
             artist = (TextView) itemView.findViewById(R.id.artist);
 
 
-
-
-
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,30 +76,6 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                     context.startActivity(intent);
                 }
             });
-
-
-
-
-
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mediaPlayer.reset();
-//                    //set file path
-//                    try {
-//
-//                        mediaPlayer.reset();
-//                        mediaPlayer.setDataSource(context, Uri.fromFile(new File(audios.get(getPosition()).getaudioUri().toString())));
-//                        mediaPlayer.prepare();
-//                        mediaPlayer.start();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(context, audios.get(getPosition()).getaudioUri().toString(), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                }
-//            });
 
         }
     }

@@ -27,17 +27,6 @@ public class PlayFragment extends Fragment {
     CircleImageView circleImageView;
     public static ObjectAnimator objectAnimator;
 
-    public PlayFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
