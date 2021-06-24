@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -78,7 +79,8 @@ public class ChangePasswordFragment extends Fragment {
                     } else {
                         if (password.equals(cpassword)) {
                             ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ....!!!", false, false);
-                            Call<String> callback = APIService.getUserService().ChangePassword(password, IdUser);
+                            DataService dataService = APIService.getUserService();
+                            Call<String> callback = dataService.ChangePassword(password, IdUser);
                             callback.enqueue(new Callback<String>() {
                                 @Override
                                 public void onResponse(Call<String> call, Response<String> response) {

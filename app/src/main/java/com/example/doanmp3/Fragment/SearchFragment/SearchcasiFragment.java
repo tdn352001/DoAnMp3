@@ -14,6 +14,7 @@ import com.example.doanmp3.Adapter.AllSingerAdapter;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,8 @@ public class SearchcasiFragment extends Fragment {
 
     public void Search(String query) {
         recyclerView.removeAllViews();
-        Call<List<CaSi>> callback = APIService.getService().GetSearchCaSi(query);
+        DataService dataService = APIService.getService();
+        Call<List<CaSi>> callback = dataService.GetSearchCaSi(query);
         callback.enqueue(new Callback<List<CaSi>>() {
             @Override
             public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {

@@ -62,7 +62,7 @@ public class ForgotPasswordFragment extends Fragment {
         btnCofirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtEmail.getText().toString().equals("")) {
+                if (edtEmail.getText().toString().trim().equals("")) {
                     edtEmail.setError("Vui Lòng Nhập Email");
                     Toast.makeText(getContext(), "Vui Lòng Nhập Email", Toast.LENGTH_SHORT).show();
                 } else {

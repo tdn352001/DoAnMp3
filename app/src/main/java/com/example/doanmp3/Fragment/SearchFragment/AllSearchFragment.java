@@ -22,6 +22,7 @@ import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -130,7 +131,8 @@ public class AllSearchFragment extends Fragment {
 
     private void SearchBaiHat(String query) {
         rvBaiHat.removeAllViews();
-        Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
+        DataService dataService = APIService.getUserService();
+        Call<List<BaiHat>> callback = dataService.GetSearchBaiHat(query);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(@NotNull Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
@@ -156,7 +158,8 @@ public class AllSearchFragment extends Fragment {
 
     private void SearchAlbum(String query) {
         rvAlbum.removeAllViews();
-        Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
+        DataService dataService = APIService.getService();
+        Call<List<Album>> callback = dataService.GetSearchAlbum(query);
         callback.enqueue(new Callback<List<Album>>() {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
@@ -182,7 +185,8 @@ public class AllSearchFragment extends Fragment {
 
     private void SearchCaSi(String query) {
         rvCaSi.removeAllViews();
-        Call<List<CaSi>> callback = APIService.getService().GetSearchCaSi(query);
+        DataService dataService = APIService.getService();
+        Call<List<CaSi>> callback = dataService.GetSearchCaSi(query);
         callback.enqueue(new Callback<List<CaSi>>() {
             @Override
             public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
@@ -208,7 +212,8 @@ public class AllSearchFragment extends Fragment {
 
     private void SearchPlaylist(String query) {
         rvPlaylist.removeAllViews();
-        Call<List<Playlist>> callback = APIService.getService().GetSearchPlaylist(query);
+        DataService dataService = APIService.getService();
+        Call<List<Playlist>> callback = dataService.GetSearchPlaylist(query);
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
             public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {

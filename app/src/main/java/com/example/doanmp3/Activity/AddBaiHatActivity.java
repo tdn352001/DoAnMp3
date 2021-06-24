@@ -277,7 +277,8 @@ public class AddBaiHatActivity extends AppCompatActivity {
     // TÌm Kiếm Ở tab Online
     private void SearchOnline(String query) {
         onlineFragment.SearchArrayList = null;
-        Call<List<BaiHat>> callback = APIService.getService().GetSearchBaiHat(query);
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetSearchBaiHat(query);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {

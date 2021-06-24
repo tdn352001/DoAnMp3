@@ -199,7 +199,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
     private void DeletePlaylist() {
         ProgressDialog progressDialog = ProgressDialog.show(this, "Đang Thực Hiện", "Vui Lòng Chờ");
-        Call<String> callback = APIService.getUserService().DeleteUserPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
+        DataService dataService =APIService.getUserService();
+        Call<String> callback = dataService.DeleteUserPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

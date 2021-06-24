@@ -248,7 +248,8 @@ public class SearchFragment extends Fragment {
         if (keyWordArrayList == null)
             keyWordArrayList = new ArrayList<>();
         if (!checkSearchBefore(keyword)) {
-            Call<String> callback = APIService.getUserService().Search(MainActivity.user.getIdUser(), keyword);
+            DataService dataService = APIService.getUserService();
+            Call<String> callback = dataService.Search(MainActivity.user.getIdUser(), keyword);
             callback.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
@@ -310,6 +311,7 @@ public class SearchFragment extends Fragment {
                 }
                 SetRVRecent();
             }
+
             @Override
             public void onFailure(Call<List<BaiHat>> call, Throwable t) {
 
@@ -378,7 +380,8 @@ public class SearchFragment extends Fragment {
             dialog.setNegativeButton("Thực Hiện", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Call<String> callback = APIService.getUserService().DeleteSearch(MainActivity.user.getIdUser());
+                    DataService dataService = APIService.getUserService();
+                    Call<String> callback =dataService.DeleteSearch(MainActivity.user.getIdUser());
                     callback.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
@@ -451,14 +454,12 @@ public class SearchFragment extends Fragment {
 
     }
 
-    public static void CountResult(){
+    public static void CountResult() {
         progress++;
-        if(progress > 3){
+        if (progress > 3) {
             progressDialog.dismiss();
         }
     }
-
-
 
 
 }

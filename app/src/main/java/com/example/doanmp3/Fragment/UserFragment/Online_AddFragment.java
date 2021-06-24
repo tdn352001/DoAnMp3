@@ -15,6 +15,7 @@ import com.example.doanmp3.Adapter.AddBaiHatAdapter;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,8 @@ public class Online_AddFragment extends Fragment {
     }
 
     public void GetTopBaiHat() {
-        Call<List<BaiHat>> callback = APIService.getService().GetAllSong();
+        DataService dataService = APIService.getService();
+        Call<List<BaiHat>> callback = dataService.GetAllSong();
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {

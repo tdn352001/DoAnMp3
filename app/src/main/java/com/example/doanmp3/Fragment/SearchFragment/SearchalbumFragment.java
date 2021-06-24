@@ -14,6 +14,7 @@ import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,8 @@ public class SearchalbumFragment extends Fragment {
 
     public void Search(String query) {
         recyclerView.removeAllViews();
-        Call<List<Album>> callback = APIService.getService().GetSearchAlbum(query);
+        DataService dataService = APIService.getService();
+        Call<List<Album>> callback = dataService.GetSearchAlbum(query);
         callback.enqueue(new Callback<List<Album>>() {
             @Override
             public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
