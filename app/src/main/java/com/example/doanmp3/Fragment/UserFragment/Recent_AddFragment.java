@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Adapter.AddBaiHatAdapter;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 
@@ -40,7 +40,7 @@ public class Recent_AddFragment extends Fragment {
     }
 
     public void GetRecentSong() {
-        arrayList = MainActivity.baiHats;
+        arrayList = SearchFragment.baihatrecents;
         if (arrayList != null) {
             adapter = new AddBaiHatAdapter(getContext(), arrayList);
             if (arrayList.size() > 0) {

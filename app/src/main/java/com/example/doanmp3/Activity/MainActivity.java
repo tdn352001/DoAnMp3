@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     private long backtime;
     public static User user;
     public static boolean success;
-    public static ArrayList<BaiHat> baiHats;
     public static ArrayList<Playlist> userPlaylist;
     public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
 

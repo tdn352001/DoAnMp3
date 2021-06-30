@@ -10,9 +10,9 @@
     <application
         android:name=".Application.Notification"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/mppro"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/mppro"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
         <activity android:name=".Activity.AddBaiHatActivity"></activity>
@@ -35,7 +35,6 @@
         <activity android:name=".Activity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
         <activity android:name=".Activity.MainActivity" />
-
         <service android:name=".Service.MusicService" />
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>

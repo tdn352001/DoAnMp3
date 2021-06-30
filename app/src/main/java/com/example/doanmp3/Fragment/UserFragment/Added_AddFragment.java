@@ -84,6 +84,7 @@ public class Added_AddFragment extends Fragment {
             if (position != -1) {
                 arrayList.remove(position);
                 adapter.notifyItemRemoved(position);
+                adapter.notifyItemRangeChanged(position, arrayList.size());
                 AddBaiHatActivity.ChangeStatus(IdBaiHat);
                 if (arrayList.size() == 0)
                     textView.setVisibility(View.VISIBLE);

@@ -81,4 +81,6 @@
     <string name="exit">Thoát</string>
     <string name="save_result">Bạn Có Muốn Lưu Kết Quả?</string>
     <string name="yes">Có</string>
+    <string name="delete_playlist">Xóa Playlist</string>
+    <string name="change_name">Đổi Tên</string>
 </resources>

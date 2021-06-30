@@ -1,5 +1,6 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -40,7 +41,9 @@ public class UserPlaylistFragment extends Fragment {
     public RelativeLayout btnAddPlaylist;
     public RecyclerView recyclerView;
     public static ArrayList<Playlist> userPlaylist;
+    @SuppressLint("StaticFieldLeak")
     public static UserPlaylistAdapter adapter;
+    @SuppressLint("StaticFieldLeak")
     public static RelativeLayout Noinfo;
     ProgressDialog progressDialog;
 
@@ -124,19 +127,12 @@ public class UserPlaylistFragment extends Fragment {
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         btnConfirm.setOnClickListener(v -> {
-            String tenplaylist = edtTenPlaylist.getText().toString();
+            String tenplaylist = edtTenPlaylist.getText().toString().trim();
             if (tenplaylist.equals(""))
                 edtTenPlaylist.setError("Tên Playlist Trống");
             else {
-                int i = 0;
                 if (userPlaylist != null) {
-                    for (i = 0; i < userPlaylist.size(); i++) {
-                        if (userPlaylist.get(i).getTen().equals(tenplaylist)) {
-                            i++;
-                            break;
-                        }
-                    }
-                    if (i >= userPlaylist.size() || i == 0) {
+                    if (!CheckUserPlaylistExist(tenplaylist)) {
                         progressDialog = ProgressDialog.show(getContext(), "Đang Tạo Playlist", "Loading...!", false, false);
                         DataService dataService = APIService.getUserService();
                         Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
@@ -175,6 +171,26 @@ public class UserPlaylistFragment extends Fragment {
         });
 
         dialog.show();
+    }
+
+    public static boolean CheckUserPlaylistExist(String TenPlaylist) {
+
+        int i = 0;
+        for (i = 0; i < userPlaylist.size(); i++) {
+            if (userPlaylist.get(i).getTen().equals(TenPlaylist)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void ChangeNamePlaylist(String idplaylist, String TenPlaylist) {
+        for (int i = 0; i < userPlaylist.size(); i++) {
+            if (userPlaylist.get(i).getTen().equals(idplaylist)) {
+                userPlaylist.get(i).setTen(TenPlaylist);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     public static void RemovePlaylist(String IdPlaylist) {

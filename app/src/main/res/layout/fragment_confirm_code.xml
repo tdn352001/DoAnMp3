@@ -71,7 +71,7 @@
             tool:helperText="Kiểm tra Email của bạn và nhập mã xác nhận"
             tool:helperTextTextColor="#f21"
             tool:hintTextColor="@color/boxInputFields"
-            tool:placeholderText="Email">
+            tool:placeholderText="@string/confirm_code">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_code_cf"

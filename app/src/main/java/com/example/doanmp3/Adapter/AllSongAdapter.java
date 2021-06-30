@@ -119,9 +119,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                 public void onClick(View v) {
                     PopupMenu popupMenu = new PopupMenu(context, btnOptions);
                     setupPopupMenu(getPosition(), popupMenu);
-                    if (popupMenu != null) {
-                        popupMenu.show();
-                    }
+                    popupMenu.show();
                 }
             });
         }
@@ -135,10 +133,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
 
             if (UserBaiHatFragment.checkLiked(arrayList.get(postion).getIdBaiHat())) {
                 popupMenu.getMenu().getItem(0).setTitle("Bỏ Thích");
-                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_like);
+                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_love);
             } else {
                 popupMenu.getMenu().getItem(0).setTitle("Thích");
-                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_dislike);
+                popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_hate);
             }
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @SuppressLint("NonConstantResourceId")

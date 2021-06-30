@@ -16,6 +16,7 @@
             android:id="@+id/toolbar_allcategory"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/Theme.AppCompat.Light" />
 
         <TextView

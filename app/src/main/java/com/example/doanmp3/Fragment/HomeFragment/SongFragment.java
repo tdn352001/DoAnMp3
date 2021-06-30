@@ -43,13 +43,10 @@ public class SongFragment extends Fragment {
         GetData();
 
 
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AllSongActivity.class);
-                intent.putExtra("mangbaihat", adapter.getallarraylist());
-                startActivity(intent);
-            }
+        txt.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AllSongActivity.class);
+            intent.putExtra("mangbaihat", adapter.getallarraylist());
+            startActivity(intent);
         });
         return view;
     }

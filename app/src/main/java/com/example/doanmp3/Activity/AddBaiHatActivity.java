@@ -196,28 +196,26 @@ public class AddBaiHatActivity extends AppCompatActivity {
                 recentFragment.adapter.getFilter().filter(newText);
 
                 // Kiểm tra kết quả lần 1
-                if (1 == 1) {
-                    if (newText.equals("")) {
-                        onlineFragment.SearchArrayList = onlineFragment.arrayList;
-                        onlineFragment.SetResultBaiHat();
-                    } else
-                        SearchOnline(newText);
-                    if (addedFragment.adapter.getItemCount() == 0) {
-                        addedFragment.textView.setVisibility(View.VISIBLE);
-                    } else
-                        addedFragment.textView.setVisibility(View.GONE);
+                if (newText.equals("")) {
+                    onlineFragment.SearchArrayList = onlineFragment.arrayList;
+                    onlineFragment.SetResultBaiHat();
+                } else
+                    SearchOnline(newText);
+                if (addedFragment.adapter.getItemCount() == 0) {
+                    addedFragment.textView.setVisibility(View.VISIBLE);
+                } else
+                    addedFragment.textView.setVisibility(View.GONE);
 
-                    // Kiểm Tra Kết Quả Bài Hát Yêu Thích
-                    if (loveFragment.adapter.getItemCount() == 0) {
-                        loveFragment.textView.setVisibility(View.VISIBLE);
-                    } else
-                        loveFragment.textView.setVisibility(View.GONE);
-                    // Kiểm Tra Kết Quả Bài Hát Gần Đây
-                    if (recentFragment.adapter.getItemCount() == 0) {
-                        recentFragment.textView.setVisibility(View.VISIBLE);
-                    } else
-                        recentFragment.textView.setVisibility(View.GONE);
-                }
+                // Kiểm Tra Kết Quả Bài Hát Yêu Thích
+                if (loveFragment.adapter.getItemCount() == 0) {
+                    loveFragment.textView.setVisibility(View.VISIBLE);
+                } else
+                    loveFragment.textView.setVisibility(View.GONE);
+                // Kiểm Tra Kết Quả Bài Hát Gần Đây
+                if (recentFragment.adapter.getItemCount() == 0) {
+                    recentFragment.textView.setVisibility(View.VISIBLE);
+                } else
+                    recentFragment.textView.setVisibility(View.GONE);
 
                 // Kiểm tra kết quả lần 2
                 Handler handler = new Handler();

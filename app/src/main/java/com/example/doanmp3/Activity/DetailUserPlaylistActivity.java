@@ -1,14 +1,21 @@
 package com.example.doanmp3.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +33,7 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -78,12 +86,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         toolbar.setTitle(TenPlaylist);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
     }
 
@@ -150,7 +153,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         });
     }
 
-    private void setRV(){
+    private void setRV() {
         adapter = new UserBaiHatPlaylistAdapter(DetailUserPlaylistActivity.this, arrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailUserPlaylistActivity.this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -158,8 +161,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 
-    public static void UpdateArraylist(ArrayList<BaiHat> baiHats){
-        if(baiHats != null){
+    public static void UpdateArraylist(ArrayList<BaiHat> baiHats) {
+        if (baiHats != null) {
             arrayList = baiHats;
             CheckArrayListEmpty();
             adapter.UpdateArraylist(arrayList);
@@ -175,37 +178,43 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(DetailUserPlaylistActivity.this);
-        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
-        dialog.setTitle("Xóa Playlist");
-        dialog.setIcon(R.drawable.ic_warning);
-        dialog.setMessage("Bạn Chắc Muốn Xóa Playlist?");
-        dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                DeletePlaylist();
-                dialog.dismiss();
-            }
-        });
-        dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+        if (item.getItemId() == R.id.delete_playlist) {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(DetailUserPlaylistActivity.this);
+            dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setTitle("Xóa Playlist");
+            dialog.setIcon(R.drawable.ic_warning);
+            dialog.setMessage("Bạn Chắc Muốn Xóa Playlist?");
+            dialog.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DeletePlaylist();
+                    dialog.dismiss();
+                }
+            });
+            dialog.setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
+        if (item.getItemId() == R.id.change_name) {
+            OpenCreateDialog();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     private void DeletePlaylist() {
         ProgressDialog progressDialog = ProgressDialog.show(this, "Đang Thực Hiện", "Vui Lòng Chờ");
-        DataService dataService =APIService.getUserService();
+        DataService dataService = APIService.getUserService();
         Call<String> callback = dataService.DeleteUserPlaylist(MainActivity.user.getIdUser(), IdPlaylist);
         callback.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String result =response.body();
-                if(result.equals("S")){
+                String result = response.body();
+                if (result.equals("S")) {
                     UserPlaylistFragment.RemovePlaylist(IdPlaylist);
                     Toast.makeText(DetailUserPlaylistActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     finish();
@@ -221,14 +230,82 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         });
     }
 
-    public static void CheckArrayListEmpty(){
-        if (arrayList != null){
-            if(arrayList.size() > 0){
+
+    @SuppressLint("SetTextI18n")
+    private void OpenCreateDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_playlist);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+
+        if (window == null)
+            return;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.CENTER;
+        window.setAttributes(layoutParams);
+        dialog.setCancelable(true);
+
+        TextInputEditText edtTenPlaylist;
+        MaterialButton btnConfirm, btnCancel;
+
+        TextView title;
+
+        title = dialog.findViewById(R.id.txt_title_themplaylist);
+        edtTenPlaylist = dialog.findViewById(R.id.edt_add_playlist);
+        btnCancel = dialog.findViewById(R.id.btnCancel);
+        btnConfirm = dialog.findViewById(R.id.btnAdd);
+
+
+        title.setText("Đổi Tên Playlist");
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        btnConfirm.setOnClickListener(v -> {
+            String tenplaylist = edtTenPlaylist.getText().toString();
+            if (tenplaylist.equals(""))
+                edtTenPlaylist.setError("Tên Playlist Trống");
+            else {
+                if (UserPlaylistFragment.userPlaylist != null) {
+                    if (!UserPlaylistFragment.CheckUserPlaylistExist(tenplaylist)) {
+                        ProgressDialog progressDialog = ProgressDialog.show(this, "Đang Cập  Nhật", "Loading...!", false, false);
+                        DataService dataService = APIService.getUserService();
+                        Call<String> callback = dataService.ChangeName(IdPlaylist, tenplaylist);
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                UserPlaylistFragment.ChangeNamePlaylist(IdPlaylist, tenplaylist);
+                                TenPlaylist = tenplaylist;
+                                getSupportActionBar().setTitle(tenplaylist);
+                                progressDialog.dismiss();
+                                dialog.dismiss();
+                                Toast.makeText(DetailUserPlaylistActivity.this, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                progressDialog.dismiss();
+                                Toast.makeText(DetailUserPlaylistActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        edtTenPlaylist.setError("Playlist Đã Tồn tại");
+                        Toast.makeText(this, "Playlist Đã Tồn Tại", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    public static void CheckArrayListEmpty() {
+        if (arrayList != null) {
+            if (arrayList.size() > 0) {
                 txtNoInf.setVisibility(View.GONE);
                 return;
             }
         }
-            txtNoInf.setVisibility(View.VISIBLE);
+        txtNoInf.setVisibility(View.VISIBLE);
     }
 
     @Override

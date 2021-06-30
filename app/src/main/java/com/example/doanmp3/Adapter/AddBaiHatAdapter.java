@@ -76,7 +76,6 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
                 @Override
                 public void onClick(View v) {
                     Added_AddFragment.Remove(baiHat.getIdBaiHat());
-                    notifyDataSetChanged();
                     String query = AddBaiHatActivity.searchView.getQuery().toString();
                     if (query != "") {
                         AddBaiHatActivity.searchView.setQuery(query, true);

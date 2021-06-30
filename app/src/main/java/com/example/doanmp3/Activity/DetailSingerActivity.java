@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,7 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DetailSingerActivity extends AppCompatActivity {
-    CoordinatorLayout coordinatorLayout;
     Toolbar toolbar;
     ImageView imageView;
     RecyclerView recyclerViewBaiHat, recyclerViewAlBum;
@@ -51,7 +49,6 @@ public class DetailSingerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_singer);
         overridePendingTransition(R.anim.from_right, R.anim.to_left);
-
         AnhXa();
         GetIntent();
         eventClick();
