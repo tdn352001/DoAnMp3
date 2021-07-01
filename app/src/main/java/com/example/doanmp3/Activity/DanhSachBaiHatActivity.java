@@ -3,6 +3,8 @@ package com.example.doanmp3.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -52,6 +54,8 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     Album album;
     Playlist playlist;
     ChuDeTheLoai cdtl;
+    LayoutAnimationController animlayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,21 +70,18 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
     }
 
     private void eventClick() {
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (arrayList != null) {
-                    if (arrayList.size() > 0) {
-                        Intent intentt = new Intent(DanhSachBaiHatActivity.this, PlayNhacActivity.class);
-                        Random rd = new Random();
-                        intentt.putExtra("mangbaihat", arrayList);
-                        intentt.putExtra("position", rd.nextInt(arrayList.size()));
-                        MusicService.random = true;
-                        startActivity(intentt);
-                    }
+        button.setOnClickListener(v -> {
+            if (arrayList != null) {
+                if (arrayList.size() > 0) {
+                    Intent intentt = new Intent(DanhSachBaiHatActivity.this, PlayNhacActivity.class);
+                    Random rd = new Random();
+                    intentt.putExtra("mangbaihat", arrayList);
+                    intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                    MusicService.random = true;
+                    startActivity(intentt);
                 }
-
             }
+
         });
     }
 
@@ -145,6 +146,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
         button = findViewById(R.id.btn_action);
         progressBar = findViewById(R.id.progress_load_baihat);
         linearLayoutManager = new LinearLayoutManager(DanhSachBaiHatActivity.this, LinearLayoutManager.VERTICAL, false);
+        animlayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
     }
 
 
@@ -167,6 +169,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutAnimation(animlayout);
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -189,6 +192,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutAnimation(animlayout);
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -209,6 +213,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                 if(arrayList == null)
                     return;
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
+                recyclerView.setLayoutAnimation(animlayout);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.INVISIBLE);
@@ -233,6 +238,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
                     return;
                 AllSongAdapter adapter = new AllSongAdapter(DanhSachBaiHatActivity.this, arrayList);
                 recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setLayoutAnimation(animlayout);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.INVISIBLE);
 

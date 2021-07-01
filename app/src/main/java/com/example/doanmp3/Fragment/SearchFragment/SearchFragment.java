@@ -9,6 +9,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -291,7 +293,8 @@ public class SearchFragment extends Fragment {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             rvBaiHatRecent.setLayoutManager(linearLayoutManager);
-
+            LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+            rvBaiHatRecent.setLayoutAnimation(animlayout);
             if (baihatrecents.size() > 5)
                 btnViewMore.setVisibility(View.VISIBLE);
 

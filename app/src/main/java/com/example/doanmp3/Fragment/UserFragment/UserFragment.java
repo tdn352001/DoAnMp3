@@ -25,6 +25,7 @@ import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.LoginFragment.LoginFragment;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
@@ -137,6 +138,8 @@ public class UserFragment extends Fragment {
                 editor.remove("password");
                 editor.apply();
                 startActivity(intent);
+                Intent servivce = new Intent(getContext(), MusicService.class);
+                getActivity().stopService(servivce);
                 getActivity().finish();
             });
 

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class PlayFragment extends Fragment {
     TextView titleBaiHat, titleCaSi;
     CircleImageView circleImageView;
     public static ObjectAnimator objectAnimator;
+    public static ObjectAnimator textViewTranslate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,17 +66,14 @@ public class PlayFragment extends Fragment {
         objectAnimator.setupStartValues();
         objectAnimator.start();
 
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.translate_animation);
+        textView.startAnimation(animation);
+
     }
 
 
     public void setHinh(String link, boolean isAudio) {
-        if (!isAudio) {
-            Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).into(circleImageView);
-        } else {
-            circleImageView.setImageResource(R.drawable.img_disknhac);
-
-        }
-
+        Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
     }
 
     public void setContent(String BaiHat, String CaSi) {

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
@@ -50,6 +52,8 @@ public class Added_AddFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        recyclerView.setLayoutAnimation(animlayout);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 

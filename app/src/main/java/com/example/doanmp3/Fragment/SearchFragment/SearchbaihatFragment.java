@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class SearchbaihatFragment extends Fragment {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
+
                 SearchFragment.CountResult();
                 if (arrayList != null) {
                     if (arrayList.size() > 0) {

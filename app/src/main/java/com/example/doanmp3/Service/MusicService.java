@@ -1,5 +1,6 @@
 package com.example.doanmp3.Service;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -7,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.StrictMode;
@@ -107,7 +107,7 @@ public class MusicService extends Service {
 
             }
 
-            if(intent.hasExtra("recent"))
+            if (intent.hasExtra("recent"))
                 isRecent = intent.getBooleanExtra("recent", false);
 
             if (intent.hasExtra("action_activity")) {
@@ -125,58 +125,42 @@ public class MusicService extends Service {
     // Chơi Nhạc
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void PlayNhac() {
-        if (!isAudio) {
-            try {
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
-                mediaPlayer.setOnCompletionListener(null);
-                mediaPlayer.prepareAsync();
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                        UploadToPlayRecent();
-                        MusicControlNotification();
-                        if (mp.isPlaying()) {
-                            SendActionToActivity(ACTION_START_PLAY);
-                            SendActionToMain(ACTION_START_PLAY);
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    ActionPlayComplete();
-                                }
-                            });
-                        }
+
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
+            mediaPlayer.setOnCompletionListener(null);
+            mediaPlayer.prepareAsync();
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                    UploadToPlayRecent();
+                    MusicControlNotification();
+                    if (mp.isPlaying()) {
+                        SendActionToActivity(ACTION_START_PLAY);
+                        SendActionToMain(ACTION_START_PLAY);
+                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                ActionPlayComplete();
+                            }
+                        });
                     }
-                });
+                }
+            });
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-                SendActionToActivity(ACTION_PLAY_FALIED);
-                SendActionToMain(ACTION_PLAY_FALIED);
-            }
-        } else {
-            try {
-                mediaPlayer.reset();
-                Uri uri = Uri.parse(arrayList.get(Pos).getLinkBaiHat());
-                mediaPlayer.setDataSource(getBaseContext(), uri);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        ActionPlayComplete();
-                    }
-                });
-                MusicControlNotification();
-                SendActionToActivity(ACTION_START_PLAY);
-                SendActionToMain(ACTION_START_PLAY);
-            } catch (Exception ignored) {
-
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            SendActionToActivity(ACTION_PLAY_FALIED);
+            SendActionToMain(ACTION_PLAY_FALIED);
         }
+
     }
+
+    @SuppressLint("StaticFieldLeak")
+
 
     // Action Click Trên Thanh Thông Báo
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -286,6 +270,7 @@ public class MusicService extends Service {
             MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_song)
+                    .setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()))
                     .setSubText(arrayList.get(Pos).getTenBaiHat())
                     .setContentTitle(arrayList.get(Pos).getTenBaiHat())
                     .setContentText(arrayList.get(Pos).getTenAllCaSi())
@@ -294,10 +279,6 @@ public class MusicService extends Service {
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                             .setShowActionsInCompactView(1, 3)
                             .setMediaSession(mediaSessionCompat.getSessionToken()));
-            if (!isAudio)
-                notificationBuilder.setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()));
-            else
-                notificationBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.music2));
 
             if (mediaPlayer.isPlaying())
                 notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
@@ -330,7 +311,7 @@ public class MusicService extends Service {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (IOException e) {
-            return null;
+            return BitmapFactory.decodeResource(getResources(), R.drawable.music2);
         }
 
     }

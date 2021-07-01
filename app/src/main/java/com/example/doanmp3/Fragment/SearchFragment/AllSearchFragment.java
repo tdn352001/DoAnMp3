@@ -1,9 +1,12 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -130,28 +133,32 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void SearchBaiHat(String query) {
+        Log.e("BBB", "1");
         rvBaiHat.removeAllViews();
-        DataService dataService = APIService.getUserService();
+        DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetSearchBaiHat(query);
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(@NotNull Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHats = (ArrayList<BaiHat>) response.body();
+                Log.e("BBB", "2");
                 if (baiHats != null) {
                     if (baiHats.size() > 0) {
+                        Log.e("BBB", "3");
                         layoutBaihat.setVisibility(View.VISIBLE);
                         SetRecycleViewBaiHat();
                         CountResult(true);
                         return;
                     }
                 }
+                Log.e("BBB", "4");
                 CountResult(false);
                 layoutBaihat.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(@NotNull Call<List<BaiHat>> call, @NotNull Throwable t) {
-
+                Log.e("BBB", "5");
             }
         });
     }
@@ -244,6 +251,8 @@ public class AllSearchFragment extends Fragment {
         rvBaiHat.setAdapter(adapterSong);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        rvBaiHat.setLayoutAnimation(animlayout);
         rvBaiHat.setLayoutManager(linearLayoutManager);
     }
 

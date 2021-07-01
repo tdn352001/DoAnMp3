@@ -3,6 +3,8 @@ package com.example.doanmp3.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -123,6 +125,8 @@ public class DetailSingerActivity extends AppCompatActivity {
         recyclerViewBaiHat.setAdapter(Songadapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailSingerActivity.this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
+        recyclerViewBaiHat.setLayoutAnimation(animlayout);
         recyclerViewBaiHat.setLayoutManager(linearLayoutManager);
     }
 

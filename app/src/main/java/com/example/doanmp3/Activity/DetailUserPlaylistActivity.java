@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +90,6 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
-
     }
 
 
@@ -111,7 +113,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
 
                 if (arrayList == null) {
                     arrayList = new ArrayList<>();
-                }
+                } else if (arrayList.size() > 0)
+                    Picasso.with(DetailUserPlaylistActivity.this).load(arrayList.get(0).getHinhBaiHat()).into(imgPlaylist);
                 CheckArrayListEmpty();
                 setRV();
                 btnAddBaiHat.setClickable(true);
@@ -158,6 +161,8 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailUserPlaylistActivity.this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setAdapter(adapter);
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
+        recyclerView.setLayoutAnimation(animlayout);
         recyclerView.setLayoutManager(linearLayoutManager);
     }
 

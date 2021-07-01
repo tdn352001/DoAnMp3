@@ -26,9 +26,7 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ModelAudio;
 import com.example.doanmp3.R;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class LibraryFragment extends Fragment {
     public static final int PERMISSION_READ = 0;
@@ -36,7 +34,6 @@ public class LibraryFragment extends Fragment {
     AudioAdapter adapter;
     ArrayList<ModelAudio> audios;
     ArrayList<BaiHat> arrayList;
-    ArrayList<File> files;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -91,19 +88,9 @@ public class LibraryFragment extends Fragment {
             do {
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-
-
+                String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA));
                 ModelAudio modelAudio = new ModelAudio(title, artist, Uri.parse(url));
                 audios.add(modelAudio);
-
-                BaiHat baiHat = new BaiHat();
-                baiHat.setCaSi(Collections.singletonList(artist));
-                baiHat.setIdBaiHat("-1");
-                baiHat.setTenBaiHat(title);
-                baiHat.setLinkBaiHat(url);
-                baiHat.setHinhBaiHat("R.drawable.img_disknhac");
-                arrayList.add(baiHat);
 
             } while (cursor.moveToNext());
         }

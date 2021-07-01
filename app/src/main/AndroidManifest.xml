@@ -12,18 +12,21 @@
         android:allowBackup="true"
         android:icon="@mipmap/mppro"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/mppro"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3">
-        <activity android:name=".Activity.AddBaiHatActivity"></activity>
-        <activity android:name=".Activity.DetailUserPlaylistActivity" />
-        <activity android:name=".Activity.UserInfoActivity" />
-        <activity android:name=".Activity.LoginActivity">
+        <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.AddBaiHatActivity" />
+        <activity android:name=".Activity.DetailUserPlaylistActivity" />
+        <activity android:name=".Activity.UserInfoActivity" />
+        <activity android:name=".Activity.LoginActivity">
 
         </activity>
         <activity android:name=".Activity.DetailSingerActivity" />
@@ -35,7 +38,9 @@
         <activity android:name=".Activity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
         <activity android:name=".Activity.MainActivity" />
+
         <service android:name=".Service.MusicService" />
+
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 

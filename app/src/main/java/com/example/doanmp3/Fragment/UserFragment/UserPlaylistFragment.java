@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -84,6 +86,8 @@ public class UserPlaylistFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                     linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+                    recyclerView.setLayoutAnimation(animlayout);
                     recyclerView.setLayoutManager(linearLayoutManager);
                     handler.removeCallbacks(this);
                 }

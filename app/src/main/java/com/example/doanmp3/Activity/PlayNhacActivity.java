@@ -110,6 +110,7 @@ public class PlayNhacActivity extends AppCompatActivity {
                 break;
             case MusicService.ACTION_START_PLAY:
                 TimeSong();
+                ActionPlay();
                 break;
             case MusicService.ACTION_PLAY_FALIED:
                 ActionPlayFailed();

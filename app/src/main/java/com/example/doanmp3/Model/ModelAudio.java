@@ -46,9 +46,9 @@ public class ModelAudio {
 
     public BaiHat convertBaiHat(){
         BaiHat baiHat = new BaiHat();
-        baiHat.setCaSi(Collections.singletonList(audioArtist));
         baiHat.setIdBaiHat("-1");
         baiHat.setTenBaiHat(audioTitle);
+        baiHat.setCaSi(Collections.singletonList(audioArtist));
         baiHat.setLinkBaiHat(audioUri.toString());
         baiHat.setHinhBaiHat("R.drawable.img_disknhac");
 
