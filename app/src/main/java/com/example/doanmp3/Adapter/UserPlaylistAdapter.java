@@ -50,7 +50,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserPlaylistAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Playlist playlist = arrayList.get(position);
         holder.txtTenPlaylist.setText(playlist.getTen());
     }
@@ -69,42 +69,33 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTenPlaylist = itemView.findViewById(R.id.txt_ten_playlist_user);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(v -> {
+                if (addbaihat) {
+                    DataService dataService = APIService.getUserService();
+                    Call<String> callback = dataService.ThemBaiHatPlaylist(arrayList.get(getPosition()).getIdPlaylist(), IdBaiHat);
+                    callback.enqueue(new Callback<String>() {
                         @Override
-                        public void onClick(View v) {
-                            if (addbaihat) {
-                                DataService dataService = APIService.getUserService();
-                                Call<String> callback = dataService.ThemBaiHatPlaylist(arrayList.get(getPosition()).getIdPlaylist(), IdBaiHat);
-                                callback.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        String result = (String) response.body();
-                                        IsResponse = true;
-                                        if(result.equals("Thanh Cong"))
-                                            Toast.makeText(context, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
-                                        else
-                                            Toast.makeText(context, "Bài Hát Đã Được Thêm Trước Đó", Toast.LENGTH_SHORT).show();
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            String result = (String) response.body();
+                            IsResponse = true;
+                            if(result.equals("Thanh Cong"))
+                                Toast.makeText(context, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(context, "Bài Hát Đã Được Thêm Trước Đó", Toast.LENGTH_SHORT).show();
 
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(context, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                Intent intent = new Intent(context, DetailUserPlaylistActivity.class);
-                                intent.putExtra("idplaylist", arrayList.get(getPosition()).getIdPlaylist());
-                                intent.putExtra("tenplaylist", arrayList.get(getPosition()).getTen());
-                                context.startActivity(intent);
-                            }
 
                         }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(context, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                        }
                     });
+                } else {
+                    Intent intent = new Intent(context, DetailUserPlaylistActivity.class);
+                    intent.putExtra("idplaylist", arrayList.get(getPosition()).getIdPlaylist());
+                    intent.putExtra("tenplaylist", arrayList.get(getPosition()).getTen());
+                    context.startActivity(intent);
                 }
             });
         }

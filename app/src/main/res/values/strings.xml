@@ -84,4 +84,6 @@
     <string name="delete_playlist">Xóa Playlist</string>
     <string name="change_name">Đổi Tên</string>
     <string name="mpvp">Music Player Vip Pro</string>
+    <string name="cahnge_name_playlist">Đổi Tên Playlist</string>
+    <string name="update">Cập Nhật</string>
 </resources>

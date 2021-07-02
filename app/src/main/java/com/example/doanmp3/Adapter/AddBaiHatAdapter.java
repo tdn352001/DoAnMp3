@@ -72,14 +72,11 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
 
         if (isAddedFragment) {
             holder.Status.setImageResource(R.drawable.ic_delete);
-            holder.Status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Added_AddFragment.Remove(baiHat.getIdBaiHat());
-                    String query = AddBaiHatActivity.searchView.getQuery().toString();
-                    if (query != "") {
-                        AddBaiHatActivity.searchView.setQuery(query, true);
-                    }
+            holder.Status.setOnClickListener(v -> {
+                Added_AddFragment.Remove(baiHat.getIdBaiHat());
+                String query = AddBaiHatActivity.searchView.getQuery().toString();
+                if (query != "") {
+                    AddBaiHatActivity.searchView.setQuery(query, true);
                 }
             });
 
@@ -91,24 +88,21 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
                 holder.Status.setImageResource(R.drawable.icon_add);
             }
 
-            holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (Added_AddFragment.checkAddedBefore(baiHat.getIdBaiHat())) {
-                        Added_AddFragment.Remove(baiHat.getIdBaiHat());
-                        holder.Status.setImageResource(R.drawable.icon_add);
-                        String query = AddBaiHatActivity.searchView.getQuery().toString();
-                        if (query != "") {
-                            AddBaiHatActivity.searchView.setQuery(query, true);
-                        }
-                    } else {
-                        Added_AddFragment.Add(baiHat);
-                        Added_AddFragment.adapter.notifyDataSetChanged();
-                        holder.Status.setImageResource(R.drawable.ic_check);
-                        String query = AddBaiHatActivity.searchView.getQuery().toString();
-                        if (query != "") {
-                            AddBaiHatActivity.searchView.setQuery(query, true);
-                        }
+            holder.relativeLayout.setOnClickListener(v -> {
+                if (Added_AddFragment.checkAddedBefore(baiHat.getIdBaiHat())) {
+                    Added_AddFragment.Remove(baiHat.getIdBaiHat());
+                    holder.Status.setImageResource(R.drawable.icon_add);
+                    String query = AddBaiHatActivity.searchView.getQuery().toString();
+                    if (query != "") {
+                        AddBaiHatActivity.searchView.setQuery(query, true);
+                    }
+                } else {
+                    Added_AddFragment.Add(baiHat);
+                    Added_AddFragment.adapter.notifyDataSetChanged();
+                    holder.Status.setImageResource(R.drawable.ic_check);
+                    String query = AddBaiHatActivity.searchView.getQuery().toString();
+                    if (query != "") {
+                        AddBaiHatActivity.searchView.setQuery(query, true);
                     }
                 }
             });
@@ -150,7 +144,7 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
                 } else {
                     List<BaiHat> baiHats = new ArrayList<>();
                     for (BaiHat baiHat : mArrayList) {
-                        if (baiHat.getTenBaiHat().toString().toLowerCase().contains(query.toLowerCase())) {
+                        if (baiHat.getTenBaiHat().toLowerCase().contains(query.toLowerCase())) {
                             baiHats.add(baiHat);
                         }
                     }

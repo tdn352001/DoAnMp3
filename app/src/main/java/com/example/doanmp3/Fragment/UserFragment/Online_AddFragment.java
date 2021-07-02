@@ -19,6 +19,8 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,14 +58,14 @@ public class Online_AddFragment extends Fragment {
         Call<List<BaiHat>> callback = dataService.GetAllSong();
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+            public void onResponse(@NotNull Call<List<BaiHat>> call, @NotNull Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
                 SearchArrayList = arrayList;
                 SetRv();
             }
 
             @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<BaiHat>> call, @NotNull Throwable t) {
 
             }
         });

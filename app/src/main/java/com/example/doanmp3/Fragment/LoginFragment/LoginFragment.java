@@ -79,45 +79,32 @@ public class LoginFragment extends Fragment {
     private void EventClick() {
 
         // Đăng Ký
-        txtRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        txtRegister.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment));
 
         //Đăng Nhập
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnLogin.setClickable(false);
-                String email = edtEmail.getText().toString();
-                String password = edtPassword.getText().toString();
-                if (email.equals(""))
-                    edtEmail.setError("Email trống");
+        btnLogin.setOnClickListener(v -> {
+            btnLogin.setClickable(false);
+            String email = edtEmail.getText().toString();
+            String password = edtPassword.getText().toString();
+            if (email.equals(""))
+                edtEmail.setError("Email trống");
+            else {
+                if (password.equals(""))
+                    edtPassword.setError("Mật Khẩu Trống");
                 else {
-                    if (password.equals(""))
-                        edtPassword.setError("Mật Khẩu Trống");
-                    else {
-                        Login(email, password);
-                    }
+                    Login(email, password);
                 }
             }
         });
 
-        txtForget.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
-            }
-        });
+        txtForget.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment));
 
 
     }
 
     private void Login(String email, String password) {
-        mProgressDialog = ProgressDialog.show(getContext(), "Đang Đăng Nhập", "Vui Lòng Chờ...", false, false);
+        mProgressDialog = ProgressDialog.show(getContext(), "Đang Đăng Nhập", "Vui Lòng Chờ...", true, true);
         DataService dataService = APIService.getUserService();
         Call<User> callback = dataService.GetUser(email, password);
         callback.enqueue(new Callback<User>() {

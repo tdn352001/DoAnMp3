@@ -2,14 +2,15 @@ package com.example.doanmp3.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Adapter.AllSongAdapter;
+import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -23,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AllSongActivity extends AppCompatActivity {
+
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<BaiHat> arrayList;
@@ -38,12 +40,10 @@ public class AllSongActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("mangbaihat")) {
             arrayList = intent.getParcelableArrayListExtra("mangbaihat");
-            if(arrayList == null)
+            if (arrayList == null)
                 return;
             if (arrayList.size() > 0) {
-                AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
-                recyclerView.setAdapter(adapter);
+                SetRv();
             } else
                 GetData();
 
@@ -58,14 +58,12 @@ public class AllSongActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 arrayList = (ArrayList<BaiHat>) response.body();
-                if(arrayList == null)
+                if (arrayList == null)
                     return;
 
-                DanhSachBaiHatActivity.TenCategoty="Playlist";
-                DanhSachBaiHatActivity.TenCategoty = "Bài Hát Được Yêu Thích";
-                AllSongAdapter adapter = new AllSongAdapter(AllSongActivity.this, arrayList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
-                recyclerView.setAdapter(adapter);
+                DanhSachBaiHatActivity.TenCategoty = "Playlist";
+                DanhSachBaiHatActivity.TenCategoty = "Bảng Xếp Hạng Bài Hát Yêu Thích";
+                SetRv();
             }
 
             @Override
@@ -75,17 +73,23 @@ public class AllSongActivity extends AppCompatActivity {
         });
     }
 
+    private void SetRv() {
+        SongAdapter adapter = new SongAdapter(AllSongActivity.this, arrayList, true);
+        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
+        recyclerView.setLayoutAnimation(animlayout);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AllSongActivity.this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+
+    }
+
     private void init() {
+        toolbar.setTitleTextAppearance(getApplicationContext(), R.style.Toolbar_TitleText);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Bài hát được yêu thích");
+        getSupportActionBar().setTitle("Bài Hát Được Yêu Thích");
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void AnhXa() {

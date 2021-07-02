@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginHorizontal="5dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_toEndOf="@id/img_user_playlist"
         android:layout_toRightOf="@id/img_user_playlist"
         android:maxLines="1"

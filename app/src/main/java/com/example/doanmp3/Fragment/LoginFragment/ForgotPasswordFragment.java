@@ -52,56 +52,48 @@ public class ForgotPasswordFragment extends Fragment {
     }
 
     private void EventClick() {
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigateUp();
-            }
-        });
+        login.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
 
-        btnCofirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtEmail.getText().toString().trim().equals("")) {
-                    edtEmail.setError("Vui Lòng Nhập Email");
-                    Toast.makeText(getContext(), "Vui Lòng Nhập Email", Toast.LENGTH_SHORT).show();
-                } else {
-                    progressDialog = ProgressDialog.show(getContext(), "Đang Kiểm Tra", "Vui Lòng Chờ.....!", false, false);
-                    DataService dataService = APIService.getUserService();
-                    Call<String> callback = dataService.ForgotPassword(edtEmail.getText().toString());
-                    callback.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            String iduser = response.body();
-                            if (iduser == null) {
+        btnCofirm.setOnClickListener(v -> {
+            if (edtEmail.getText().toString().trim().equals("")) {
+                edtEmail.setError("Vui Lòng Nhập Email");
+                Toast.makeText(getContext(), "Vui Lòng Nhập Email", Toast.LENGTH_SHORT).show();
+            } else {
+                progressDialog = ProgressDialog.show(getContext(), "Đang Kiểm Tra", "Vui Lòng Chờ.....!", false, false);
+                DataService dataService = APIService.getUserService();
+                Call<String> callback = dataService.ForgotPassword(edtEmail.getText().toString());
+                callback.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String iduser = response.body();
+                        if (iduser == null) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Không Tìm Thấy Email Trên Hệ Thống", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Random random = new Random();
+                            int code = random.nextInt(99999 - 10000) + 10000;
+                            Email email = new Email();
+                            if (email.Sendto(edtEmail.getText().toString(), "Quên Mật Khẩu", "Mã Xác Nhận Của Bạn là:" + code)) {
                                 progressDialog.dismiss();
-                                Toast.makeText(getContext(), "Không Tìm Thấy Email Trên Hệ Thống", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Mã Xác Nhận Đã Được Gửi Đến Email Của Bạn", Toast.LENGTH_SHORT).show();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("iduser", iduser);
+                                bundle.putInt("code", code);
+                                Navigation.findNavController(view).navigate(R.id.action_forgotPasswordFragment_to_confirmCodeFragment, bundle);
                             } else {
-                                Random random = new Random();
-                                int code = random.nextInt(99999 - 10000) + 10000;
-                                Email email = new Email();
-                                if (email.Sendto(edtEmail.getText().toString(), "Quên Mật Khẩu", "Mã Xác Nhận Của Bạn là:" + code)) {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "Mã Xác Nhận Đã Được Gửi Đến Email Của Bạn", Toast.LENGTH_SHORT).show();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("iduser", iduser);
-                                    bundle.putInt("code", code);
-                                    Navigation.findNavController(view).navigate(R.id.action_forgotPasswordFragment_to_confirmCodeFragment, bundle);
-                                } else {
-                                    Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
-                                    progressDialog.dismiss();
-                                }
+                                Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+                                progressDialog.dismiss();
                             }
                         }
+                    }
 
-                        @Override
-                        public void onFailure(@NotNull Call<String> call, Throwable t) {
-                            Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
-                        }
-                    });
+                    @Override
+                    public void onFailure(@NotNull Call<String> call, Throwable t) {
+                        Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
+                });
 
-                }
             }
         });
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

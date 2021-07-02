@@ -42,21 +42,18 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
 
     @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(@NonNull PlaySongAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
         Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.audio).into(holder.imageView);
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
 
 
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                row_index = position;
-                context.changePos(position);
-                notifyDataSetChanged();
+        holder.relativeLayout.setOnClickListener(v -> {
+            row_index = position;
+            context.changePos(position);
+            notifyDataSetChanged();
 
-            }
         });
 
         if (row_index == position) {
@@ -85,17 +82,12 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
             TenBaiHat = itemView.findViewById(R.id.txt_song_bvs);
             TenCaSi = itemView.findViewById(R.id.txt_song_casi_bvs);
             relativeLayout = itemView.findViewById(R.id.relavtive_song_bvs);
-
-
         }
-
-
     }
 
     public void changeRowSelected(int newIndex) {
         row_index = newIndex;
         notifyDataSetChanged();
     }
-
 
 }

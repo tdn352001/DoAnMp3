@@ -19,6 +19,8 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,12 +45,9 @@ public class SingerFragment extends Fragment {
         GetData();
 
 
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AllSingerActivity.class);
-                startActivity(intent);
-            }
+        txt.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AllSingerActivity.class);
+            startActivity(intent);
         });
 
         return view;
@@ -59,7 +58,7 @@ public class SingerFragment extends Fragment {
         Call<List<CaSi>> callback = dataService.GetRanDomCaSi();
         callback.enqueue(new Callback<List<CaSi>>() {
             @Override
-            public void onResponse(Call<List<CaSi>> call, Response<List<CaSi>> response) {
+            public void onResponse(Call<List<CaSi>> call, @NotNull Response<List<CaSi>> response) {
                 ArrayList<CaSi> caSis = (ArrayList<CaSi>) response.body();
                 AllSingerAdapter adapter = new AllSingerAdapter(getActivity() ,caSis);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

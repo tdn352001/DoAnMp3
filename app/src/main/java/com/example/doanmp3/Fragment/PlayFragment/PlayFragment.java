@@ -28,7 +28,6 @@ public class PlayFragment extends Fragment {
     TextView titleBaiHat, titleCaSi;
     CircleImageView circleImageView;
     public static ObjectAnimator objectAnimator;
-    public static ObjectAnimator textViewTranslate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,12 +36,7 @@ public class PlayFragment extends Fragment {
 
         AnhXa();
         SetAnimation();
-        HideActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        HideActivity.setOnClickListener(v -> getActivity().finish());
 
         return view;
     }
@@ -68,7 +62,6 @@ public class PlayFragment extends Fragment {
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.translate_animation);
         textView.startAnimation(animation);
-
     }
 
 
@@ -80,8 +73,5 @@ public class PlayFragment extends Fragment {
         textView.setText(BaiHat + "  -  " + CaSi);
         titleBaiHat.setText(BaiHat);
         titleCaSi.setText(CaSi);
-
     }
-
-
 }

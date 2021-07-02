@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,12 +98,7 @@ public class UserPlaylistFragment extends Fragment {
     }
 
     private void EventClick() {
-        btnAddPlaylist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenCreateDialog();
-            }
-        });
+        btnAddPlaylist.setOnClickListener(v -> OpenCreateDialog());
     }
 
     private void OpenCreateDialog() {
@@ -188,13 +184,17 @@ public class UserPlaylistFragment extends Fragment {
         return false;
     }
 
-    public static void ChangeNamePlaylist(String idplaylist, String TenPlaylist) {
+    public static void ChangeNamePlaylist(String IdPlaylist, String TenPlaylist) {
+        Log.e("BBB", "1");
         for (int i = 0; i < userPlaylist.size(); i++) {
-            if (userPlaylist.get(i).getTen().equals(idplaylist)) {
+            if (userPlaylist.get(i).getIdPlaylist().equals(IdPlaylist)) {
+                Log.e("BBB", "2");
                 userPlaylist.get(i).setTen(TenPlaylist);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemChanged(i);
+                return;
             }
         }
+
     }
 
     public static void RemovePlaylist(String IdPlaylist) {

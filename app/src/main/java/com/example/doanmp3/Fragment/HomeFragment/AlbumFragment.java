@@ -19,6 +19,8 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,12 +43,9 @@ public class AlbumFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rv_album);
         GetData();
 
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AllAlbumActivity.class);
-                startActivity(intent);
-            }
+        txt.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AllAlbumActivity.class);
+            startActivity(intent);
         });
 
         return view;
@@ -57,7 +56,7 @@ public class AlbumFragment extends Fragment {
         Call<List<Album>> callback = dataService.GetRandomAlbum();
         callback.enqueue(new Callback<List<Album>>() {
             @Override
-            public void onResponse(Call<List<Album>> call, Response<List<Album>> response) {
+            public void onResponse(Call<List<Album>> call, @NotNull Response<List<Album>> response) {
                 ArrayList<Album> albums = (ArrayList<Album>) response.body();
                 AlbumAdapter adapter = new AlbumAdapter(getActivity(), albums);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

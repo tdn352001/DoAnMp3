@@ -30,6 +30,7 @@ import retrofit2.Response;
 public class SongFragment extends Fragment {
     View view;
     TextView txt;
+    ArrayList<BaiHat> arrayList;
     RecyclerView recyclerView;
     SongAdapter adapter;
 
@@ -45,7 +46,7 @@ public class SongFragment extends Fragment {
 
         txt.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AllSongActivity.class);
-            intent.putExtra("mangbaihat", adapter.getallarraylist());
+            intent.putExtra("mangbaihat", arrayList);
             startActivity(intent);
         });
         return view;
@@ -57,8 +58,8 @@ public class SongFragment extends Fragment {
         callback.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> songs = (ArrayList<BaiHat>) response.body();
-                adapter = new SongAdapter(getActivity(), songs);
+                arrayList = (ArrayList<BaiHat>) response.body();
+                adapter = new SongAdapter(getActivity(), arrayList);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(linearLayoutManager);

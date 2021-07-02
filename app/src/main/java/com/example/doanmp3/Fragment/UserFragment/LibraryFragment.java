@@ -44,8 +44,7 @@ public class LibraryFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         audios = new ArrayList<>();
         arrayList = new ArrayList<>();
-        if (checkPermission())
-            getAudioFiles();
+        getAudioFiles();
 
         return view;
     }

@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -100,27 +99,21 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             TenCaSi = itemView.findViewById(R.id.txt_song_casi_all);
             btnOptions = itemView.findViewById(R.id.btn_options_baihat);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, PlayNhacActivity.class);
-                    intent.putExtra("mangbaihat", arrayList);
-                    intent.putExtra("position", getPosition());
-                    if(isUserBaiHat){
-                        DanhSachBaiHatActivity.category = "Playlist";
-                        DanhSachBaiHatActivity.TenCategoty = "Bài Hát Yêu Thích";
-                    }
-                    context.startActivity(intent);
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, PlayNhacActivity.class);
+                intent.putExtra("mangbaihat", arrayList);
+                intent.putExtra("position", getPosition());
+                if(isUserBaiHat){
+                    DanhSachBaiHatActivity.category = "Playlist";
+                    DanhSachBaiHatActivity.TenCategoty = "Bài Hát Yêu Thích";
                 }
+                context.startActivity(intent);
             });
 
-            btnOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(context, btnOptions);
-                    setupPopupMenu(getPosition(), popupMenu);
-                    popupMenu.show();
-                }
+            btnOptions.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(context, btnOptions);
+                setupPopupMenu(getPosition(), popupMenu);
+                popupMenu.show();
             });
         }
 
@@ -138,21 +131,17 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                 popupMenu.getMenu().getItem(0).setTitle("Thích");
                 popupMenu.getMenu().getItem(0).setIcon(R.drawable.ic_hate);
             }
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @SuppressLint("NonConstantResourceId")
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getItemId() == R.id.baihat_like) {
-                        if (UserBaiHatFragment.checkLiked(arrayList.get(postion).getIdBaiHat())) {
-                            BoThich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
-                        } else
-                            Thich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
-                    } else {
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-                        setupBottomSheetMenu(bottomSheetDialog, getPosition());
-                    }
-                    return true;
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.baihat_like) {
+                    if (UserBaiHatFragment.checkLiked(arrayList.get(postion).getIdBaiHat())) {
+                        BoThich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
+                    } else
+                        Thich(MainActivity.user.getIdUser(), arrayList.get(postion).getIdBaiHat(), postion);
+                } else {
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+                    setupBottomSheetMenu(bottomSheetDialog, getPosition());
                 }
+                return true;
             });
 
         }
@@ -174,18 +163,24 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
 
             // Set Ảnh cộng tên
             Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).into(imgBaiHat);
-            txtBaiHat.setText(arrayList.get(position).getTenBaiHat());
-            txtCaSi.setText(arrayList.get(position).getTenAllCaSi());
+            if (txtBaiHat != null) {
+                txtBaiHat.setText(arrayList.get(position).getTenBaiHat());
+            }
+            if (txtCaSi != null) {
+                txtCaSi.setText(arrayList.get(position).getTenAllCaSi());
+            }
 
             // Set RV
             ArrayList<Playlist> playlists = MainActivity.userPlaylist;
             UserPlaylistAdapter adapter = new UserPlaylistAdapter(playlists, context);
             adapter.setAddbaihat(true);
             adapter.setIdBaiHat(arrayList.get(position).getIdBaiHat());
-            recyclerView.setAdapter(adapter);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            if (recyclerView != null) {
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(linearLayoutManager);
+            }
 
             // bat su kien click tren recycleview de tat dialog
 
@@ -195,20 +190,18 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                 public void run() {
                     if(adapter.isResponse()){
                         dialog.dismiss();
+                        handler.removeCallbacks(this);
                     }
-                    Log.e("BBB", "vandem");
                     handler.postDelayed(this, 200);
                 }
             };
             handler.postDelayed(runnable, 200);
 
             // taoplaylist moi
-            btnAddPlaylist.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    OpenCreateDialog(position);
-                    dialog.dismiss();
-                }
+            assert btnAddPlaylist != null;
+            btnAddPlaylist.setOnClickListener(v -> {
+                OpenCreateDialog(position);
+                dialog.dismiss();
             });
 
             // show dialog
@@ -238,80 +231,74 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             btnConfirm = dialog.findViewById(R.id.btnAdd);
 
 
-            btnCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-            btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String tenplaylist = edtTenPlaylist.getText().toString();
-                    if (tenplaylist.equals(""))
-                        edtTenPlaylist.setError("Tên Playlist Trống");
-                    else {
-                        int i = 0;
-                        if (MainActivity.userPlaylist != null) {
-                            for (i = 0; i < MainActivity.userPlaylist.size(); i++) {
-                                if (MainActivity.userPlaylist.get(i).getTen().equals(tenplaylist))
-                                    return;
-                            }
-                            if(i >= MainActivity.userPlaylist.size() || i ==0){
-                                ProgressDialog progressDialog;
-                                progressDialog = ProgressDialog.show(context,"Đang Tạo Playlist", "Loading...!", false, false);
-                                DataService dataService = APIService.getUserService();
-                                Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
-                                callback.enqueue(new Callback<String>() {
-                                    @Override
-                                    public void onResponse(Call<String> call, Response<String> response) {
-                                        String Idplaylist = (String) response.body();
-                                        if(Idplaylist.equals("That Bai"))
-                                            Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
-                                        else
-                                        {
-                                            // Thêm Playlist sau khi tạo
-                                            Playlist playlist = new Playlist();
-                                            playlist.setIdPlaylist(Idplaylist);
-                                            playlist.setTen(tenplaylist);
-                                            playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
-                                            UserPlaylistFragment.userPlaylist.add(playlist);
-
-                                            // Thêm Bài Hát Vào Playlist Mới tạo
-                                            Call<String> callBack = dataService.ThemBaiHatPlaylist(Idplaylist, arrayList.get(position).getIdBaiHat());
-                                            callBack.enqueue(new Callback<String>() {
-                                                @Override
-                                                public void onResponse(Call<String> call, Response<String> response) {
-                                                    String result = (String) response.body();
+            btnConfirm.setOnClickListener(v -> {
+                String tenplaylist = edtTenPlaylist.getText().toString().trim();
+                if (tenplaylist.equals(""))
+                    edtTenPlaylist.setError("Tên Playlist Trống");
+                else {
+                    int i = 0;
+                    if (MainActivity.userPlaylist != null) {
+                        for (i = 0; i < MainActivity.userPlaylist.size(); i++) {
+                            if (MainActivity.userPlaylist.get(i).getTen().equals(tenplaylist))
+                                return;
+                        }
+                        if(i >= MainActivity.userPlaylist.size() || i ==0){
+                            ProgressDialog progressDialog;
+                            progressDialog = ProgressDialog.show(context,"Đang Tạo Playlist", "Loading...!", false, false);
+                            DataService dataService = APIService.getUserService();
+                            Call<String> callback = dataService.TaoPlaylist(MainActivity.user.getIdUser(), tenplaylist);
+                            callback.enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                    String Idplaylist = (String) response.body();
+                                    if(Idplaylist.equals("That Bai"))
+                                        Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                                    else
+                                    {
+                                        // Thêm Playlist sau khi tạo
+                                        Playlist playlist = new Playlist();
+                                        playlist.setIdPlaylist(Idplaylist);
+                                        playlist.setTen(tenplaylist);
+                                        playlist.setHinhAnh("https://tiendung352001.000webhostapp.com/Client/image/ic_user_playlist.png");
+                                        UserPlaylistFragment.userPlaylist.add(playlist);
+                                        UserPlaylistFragment.CheckArrayListEmpty();
+                                        // Thêm Bài Hát Vào Playlist Mới tạo
+                                        Call<String> callBack = dataService.ThemBaiHatPlaylist(Idplaylist, arrayList.get(position).getIdBaiHat());
+                                        callBack.enqueue(new Callback<String>() {
+                                            @Override
+                                            public void onResponse(Call<String> call, Response<String> response) {
+                                                String result = (String) response.body();
+                                                if (result != null) {
                                                     if(result.equals("Thanh Cong"))
                                                         Toast.makeText(context, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
                                                     else
                                                         Toast.makeText(context, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                                                 }
+                                            }
 
-                                                @Override
-                                                public void onFailure(Call<String> call, Throwable t) {
+                                            @Override
+                                            public void onFailure(Call<String> call, Throwable t) {
 
-                                                }
-                                            });
-                                            UserPlaylistFragment.adapter.notifyDataSetChanged();
-                                            dialog.dismiss();
-                                        }
-                                        progressDialog.dismiss();
-
+                                            }
+                                        });
+                                        UserPlaylistFragment.adapter.notifyDataSetChanged();
+                                        dialog.dismiss();
                                     }
+                                    progressDialog.dismiss();
 
-                                    @Override
-                                    public void onFailure(Call<String> call, Throwable t) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(context, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                            else{
-                                edtTenPlaylist.setError("Playlist Đã Tồn tại");
-                            }
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(context, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                        else{
+                            edtTenPlaylist.setError("Playlist Đã Tồn tại");
                         }
                     }
                 }
@@ -336,15 +323,17 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = (String) response.body();
-                if (result.equals("Thanh Cong")) {
-                    Toast.makeText(context, "Đã Bỏ Thích", Toast.LENGTH_SHORT).show();
-                    Log.d("BBB", UserBaiHatFragment.arrayList.size() + "");
-                    UserBaiHatFragment.BoThichBaiHat(arrayList.get(position).getIdBaiHat());
-                    if (UserBaiHatFragment.arrayList.size() <= 0)
-                        UserBaiHatFragment.textView.setVisibility(View.VISIBLE);
+                if (result != null) {
+                    if (result.equals("Thanh Cong")) {
+                        Toast.makeText(context, "Đã Bỏ Thích", Toast.LENGTH_SHORT).show();
+                        Log.d("BBB", UserBaiHatFragment.arrayList.size() + "");
+                        UserBaiHatFragment.BoThichBaiHat(arrayList.get(position).getIdBaiHat());
+                        if (UserBaiHatFragment.arrayList.size() <= 0)
+                            UserBaiHatFragment.textView.setVisibility(View.VISIBLE);
 
-                } else
-                    Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                }
                 UserBaiHatFragment.adapter.notifyDataSetChanged();
             }
 
@@ -362,16 +351,18 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = (String) response.body();
-                if (result.equals("Thanh Cong")) {
-                    if (!UserBaiHatFragment.arrayList.contains(arrayList.get(position)))
-                        UserBaiHatFragment.arrayList.add(arrayList.get(position));
-                    if(UserBaiHatFragment.adapter.getItemCount() >= 0)
-                        UserBaiHatFragment.textView.setVisibility(View.GONE);
+                if (result != null) {
+                    if (result.equals("Thanh Cong")) {
+                        if (!UserBaiHatFragment.arrayList.contains(arrayList.get(position)))
+                            UserBaiHatFragment.arrayList.add(arrayList.get(position));
+                        if(UserBaiHatFragment.adapter.getItemCount() >= 0)
+                            UserBaiHatFragment.textView.setVisibility(View.GONE);
 
-                    UserBaiHatFragment.adapter.notifyDataSetChanged();
-                    Toast.makeText(context, "Đã Thích", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                        UserBaiHatFragment.adapter.notifyDataSetChanged();
+                        Toast.makeText(context, "Đã Thích", Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(context, "Lỗi Hệ Thống", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

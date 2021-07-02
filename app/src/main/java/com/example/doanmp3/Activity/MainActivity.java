@@ -286,29 +286,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void AppbarClick() {
-        layoutPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PlayNhacActivity.class);
-                intent.putExtra("notstart", 0);
-                startActivity(intent);
-                overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
-            }
+        layoutPlay.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PlayNhacActivity.class);
+            intent.putExtra("notstart", 0);
+            startActivity(intent);
+            overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
         });
 
-        btnStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendActionToService(MusicService.ACTION_PLAY);
-            }
-        });
+        btnStop.setOnClickListener(v -> SendActionToService(MusicService.ACTION_PLAY));
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendActionToService(MusicService.ACTION_NEXT);
-            }
-        });
+        btnNext.setOnClickListener(v -> SendActionToService(MusicService.ACTION_NEXT));
     }
 
     private void SendActionToService(int action) {

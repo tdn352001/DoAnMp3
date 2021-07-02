@@ -16,6 +16,8 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,23 +57,20 @@ public class BannerFragment extends Fragment {
         Call<List<QuangCao>> callback =  dataService.GetDataBanner();
         callback.enqueue(new Callback<List<QuangCao>>() {
             @Override
-            public void onResponse(Call<List<QuangCao>> call, Response<List<QuangCao>> response) {
+            public void onResponse(Call<List<QuangCao>> call, @NotNull Response<List<QuangCao>> response) {
                 ArrayList<QuangCao>  banners= (ArrayList<QuangCao>) response.body();
                 adapter = new BannerAdapter(getActivity(), banners);
                 viewPager.setAdapter(adapter);
                 indicator.setViewPager(viewPager);
                 handler = new Handler();
-                runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        CurrentItem = viewPager.getCurrentItem();
-                        CurrentItem++;
-                        if(CurrentItem >= viewPager.getAdapter().getCount())
-                            CurrentItem=0;
+                runnable = () -> {
+                    CurrentItem = viewPager.getCurrentItem();
+                    CurrentItem++;
+                    if(CurrentItem >= viewPager.getAdapter().getCount())
+                        CurrentItem=0;
 
-                        viewPager.setCurrentItem(CurrentItem);
-                        handler.postDelayed(runnable, 4000);
-                    }
+                    viewPager.setCurrentItem(CurrentItem);
+                    handler.postDelayed(runnable, 4000);
                 };
 
                 handler.postDelayed(runnable, 4000);

@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.doanmp3.Activity.LoginActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
@@ -29,7 +31,6 @@ import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -84,12 +85,15 @@ public class UserFragment extends Fragment {
 
     public void SetupInfoUser() {
         txtUserName.setText(MainActivity.user.getUserName());
-        Picasso.with(getContext()).load(MainActivity.user.getBanner().toString())
-                .skipMemoryCache()
+        Glide.with(this).load(MainActivity.user.getBanner().toString())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.banner).into(imgBanner);
-        Picasso.with(getContext()).load(MainActivity.user.getAvatar().toString())
-                .skipMemoryCache()
+        Glide.with(this).load(MainActivity.user.getAvatar().toString())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.person).into(imgAvatar);
+
     }
 
     public void SetupViewPager() {

@@ -2,7 +2,6 @@
 package com.example.doanmp3.Activity;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +29,8 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,18 +105,10 @@ public class AddBaiHatActivity extends AppCompatActivity {
                     dialog.setTitle(R.string.exit);
                     dialog.setIcon(R.drawable.ic_warning);
                     dialog.setMessage(R.string.save_result);
-                    dialog.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            SaveChange();
-                        }
-                    });
-                    dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Added_AddFragment.arrayList = null;
-                            AddBaiHatActivity.super.onBackPressed();
-                        }
+                    dialog.setNegativeButton(R.string.yes, (dialog1, which) -> SaveChange());
+                    dialog.setPositiveButton(R.string.cancel, (dialog12, which) -> {
+                        Added_AddFragment.arrayList = null;
+                        AddBaiHatActivity.super.onBackPressed();
                     });
                     dialog.show();
 
@@ -319,18 +312,10 @@ public class AddBaiHatActivity extends AppCompatActivity {
             dialog.setTitle(R.string.exit);
             dialog.setIcon(R.drawable.ic_warning);
             dialog.setMessage(R.string.save_result);
-            dialog.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    SaveChange();
-                }
-            });
-            dialog.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Added_AddFragment.arrayList = null;
-                    AddBaiHatActivity.super.onBackPressed();
-                }
+            dialog.setNegativeButton(R.string.yes, (dialog12, which) -> SaveChange());
+            dialog.setPositiveButton(R.string.cancel, (dialog1, which) -> {
+                Added_AddFragment.arrayList = null;
+                AddBaiHatActivity.super.onBackPressed();
             });
             dialog.show();
 
@@ -345,17 +330,17 @@ public class AddBaiHatActivity extends AppCompatActivity {
             Call<String> callUpdate = dataService.UpdateUserPlaylist(IdPlaylist);
             callUpdate.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call<String> call, Response<String> response) {
+                public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                     for (int i = 0; i < Added_AddFragment.arrayList.size(); i++) {
                         Call<String> callback = dataService.ThemBaiHatPlaylist(IdPlaylist, Added_AddFragment.arrayList.get(i).getIdBaiHat());
                         callback.enqueue(new Callback<String>() {
                             @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
+                            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
 
                             }
 
                             @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
 
                             }
                         });
@@ -388,6 +373,10 @@ public class AddBaiHatActivity extends AppCompatActivity {
         super.finish();
         searchView = null;
         baiHatsAdded = null;
+        addedFragment = null;
+        loveFragment = null;
+        recentFragment = null;
+        onlineFragment = null;
         overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 

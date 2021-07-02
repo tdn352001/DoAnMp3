@@ -59,13 +59,10 @@ public class SearchCaSiAdapter extends RecyclerView.Adapter<SearchCaSiAdapter.Vi
             super(itemView);
             TenCaSi = itemView.findViewById(R.id.txt_ten_playlist_user);
             imageView = itemView.findViewById(R.id.img_user_playlist);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailSingerActivity.class);
-                    intent.putExtra("CaSi",  arrayList.get(getPosition()));
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, DetailSingerActivity.class);
+                intent.putExtra("CaSi",  arrayList.get(getPosition()));
+                context.startActivity(intent);
             });
         }
     }

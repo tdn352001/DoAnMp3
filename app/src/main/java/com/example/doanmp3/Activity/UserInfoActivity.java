@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -33,10 +32,12 @@ import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -82,79 +83,40 @@ public class UserInfoActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void Setup() {
-        txtEmail.setText("Email: " + user.getEmail().toString());
+        txtEmail.setText("Email: " + user.getEmail());
         txtUserName.setText("Tên: " + user.getUserName());
 
 
-        Glide.with(this).load(MainActivity.user.getBanner().toString())
+        Glide.with(this).load(MainActivity.user.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.banner).into(imgBanner);
-        Picasso.with(this).load(MainActivity.user.getAvatar().toString())
-                .skipMemoryCache().error(R.drawable.person)
+        Glide.with(this).load(MainActivity.user.getAvatar())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.person).into(imgAvatar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Chỉnh Sửa Thông Tin");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
     }
 
     private void EventClick() {
-        btnAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImageUpload(RequestAvatar);
-            }
-        });
+        btnAvatar.setOnClickListener(v -> SelectImageUpload(RequestAvatar));
 
-        imgAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImageUpload(RequestAvatar);
-            }
-        });
+        imgAvatar.setOnClickListener(v -> SelectImageUpload(RequestAvatar));
 
-        btnBanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImageUpload(RequestBanner);
-            }
-        });
+        btnBanner.setOnClickListener(v -> SelectImageUpload(RequestBanner));
 
-        imgBanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImageUpload(RequestBanner);
-            }
-        });
+        imgBanner.setOnClickListener(v -> SelectImageUpload(RequestBanner));
 
-        txtUserName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenChangeUserNameDialog();
-            }
-        });
+        txtUserName.setOnClickListener(v -> OpenChangeUserNameDialog());
 
-        txtEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenChangeEmailDialog();
-            }
-        });
+        txtEmail.setOnClickListener(v -> OpenChangeEmailDialog());
 
-        txtPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OpenChangePassworDialog();
-            }
-        });
+        txtPassword.setOnClickListener(v -> OpenChangePassworDialog());
 
     }
 
@@ -204,8 +166,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Call<String> callback = dataService.UploadPhoto(encodedImage, user.getEmail() + Category);
         callback.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String result = (String) response.body();
+            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                 if (Category.equals("Avatar")) {
                     UserFragment.imgAvatar.setImageBitmap(bitmap);
                 } else {
@@ -215,7 +176,7 @@ public class UserInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
                 Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
             }
         });
@@ -248,62 +209,56 @@ public class UserInfoActivity extends AppCompatActivity {
         btnConfirm = dialog.findViewById(R.id.btn_cofirm_change_email);
         btnCancel = dialog.findViewById(R.id.btn_cancel_change_email);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = edtEmail.getText().toString();
-                String password = edtPassword.getText().toString();
-                if (email.equals("")) {
-                    edtEmail.setError("Email Trống");
+        btnConfirm.setOnClickListener(v -> {
+            String email = edtEmail.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
+            if (email.equals("")) {
+                edtEmail.setError("Email Trống");
+            } else {
+                if (!RegisterFragment.EmailIsValid(email)) {
+                    edtEmail.setError("Email không hợp lệ");
                 } else {
-                    if (!RegisterFragment.EmailIsValid(email)) {
-                        edtEmail.setError("Email không hợp lệ");
+                    if (email.equals(user.getEmail())) {
+                        edtEmail.setError("Email cũ");
                     } else {
-                        if (email.equals(user.getEmail())) {
-                            edtEmail.setError("Email cũ");
+                        if (password.equals("")) {
+                            edtPassword.setError("Vui lòng nhập mật khẩu");
                         } else {
-                            if (password.equals("")) {
-                                edtPassword.setError("Vui lòng nhập mật khẩu");
+                            if (!md5.endcode(password).equals(user.getPassword())) {
+                                edtPassword.setError("Mật khẩu không đúng");
                             } else {
-                                if (!md5.endcode(password).equals(user.getPassword())) {
-                                    edtPassword.setError("Mật khẩu không đúng");
-                                } else {
-                                    DataService dataService = APIService.getUserService();
-                                    Call<String> callback = dataService.ChangeEmail(email, user.getIdUser());
-                                    callback.enqueue(new Callback<String>() {
-                                        @Override
-                                        public void onResponse(Call<String> call, Response<String> response) {
-                                            String result = (String) response.body();
-                                            if (result.equals("Thanh Cong")) {
-                                                dialog.dismiss();
-                                                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                                                txtEmail.setText("Email: "+email);
-                                                MainActivity.user.setEmail(email);
-                                                user = MainActivity.user;
+                                DataService dataService = APIService.getUserService();
+                                Call<String> callback = dataService.ChangeEmail(email, user.getIdUser());
+                                callback.enqueue(new Callback<String>() {
+                                    @SuppressLint("SetTextI18n")
+                                    @Override
+                                    public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
+                                        String result = (String) response.body();
+                                        assert result != null;
+                                        if (result.equals("Thanh Cong")) {
+                                            dialog.dismiss();
+                                            Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                                            txtEmail.setText("Email: "+email);
+                                            MainActivity.user.setEmail(email);
+                                            user = MainActivity.user;
+                                        } else {
+                                            if (result.equals("Ton Tai")) {
+                                                Toast.makeText(UserInfoActivity.this, "Email Đã Tồn Tại", Toast.LENGTH_SHORT).show();
                                             } else {
-                                                if (result.equals("Ton Tai")) {
-                                                    Toast.makeText(UserInfoActivity.this, "Email Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    dialog.dismiss();
-                                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
-                                                }
+                                                dialog.dismiss();
+                                                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                                             }
                                         }
+                                    }
 
-                                        @Override
-                                        public void onFailure(Call<String> call, Throwable t) {
-                                            dialog.dismiss();
-                                            Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
+                                    @Override
+                                    public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
+                                        dialog.dismiss();
+                                        Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                     }
@@ -339,51 +294,45 @@ public class UserInfoActivity extends AppCompatActivity {
         btnConfirm = dialog.findViewById(R.id.btn_cofirm_change_username);
         btnCancel = dialog.findViewById(R.id.btn_cancel_change_username);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = edtUserName.getText().toString();
-                String password = edtPassword.getText().toString();
+        btnConfirm.setOnClickListener(v -> {
+            String username = edtUserName.getText().toString();
+            String password = edtPassword.getText().toString();
 
-                if (username.length() < 6) {
-                    edtUserName.setError("Username có ít nhất 6 kí tự");
+            if (username.length() < 6) {
+                edtUserName.setError("Username có ít nhất 6 kí tự");
+            } else {
+                if (!md5.endcode(password).equals(user.getPassword())) {
+                    edtPassword.setError("Mật Khẩu Không Đúng");
                 } else {
-                    if (!md5.endcode(password).equals(user.getPassword())) {
-                        edtPassword.setError("Mật Khẩu Không Đúng");
-                    } else {
-                        DataService dataService = APIService.getUserService();
-                        Call<String> callback = dataService.ChangeUserName(username, user.getIdUser());
-                        callback.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
-                                String result = (String) response.body();
-                                if (result.equals("Thanh Cong")) {
-                                    dialog.dismiss();
-                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                                    txtUserName.setText("Tên: " + username);
-                                    UserFragment.txtUserName.setText(username);
-                                    MainActivity.user.setUserName(username);
-                                    user = MainActivity.user;
-                                } else {
-                                    dialog.dismiss();
-                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                    DataService dataService = APIService.getUserService();
+                    Call<String> callback = dataService.ChangeUserName(username, user.getIdUser());
+                    callback.enqueue(new Callback<String>() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
+                            String result = (String) response.body();
+                            assert result != null;
+                            if (result.equals("Thanh Cong")) {
                                 dialog.dismiss();
-                                Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                                txtUserName.setText("Tên: " + username);
+                                UserFragment.txtUserName.setText(username);
+                                MainActivity.user.setUserName(username);
+                                user = MainActivity.user;
+                            } else {
+                                dialog.dismiss();
+                                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
+                            dialog.dismiss();
+                            Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -416,54 +365,47 @@ public class UserInfoActivity extends AppCompatActivity {
         btnConfirm = dialog.findViewById(R.id.btn_cofirm_change_password);
         btnCancel = dialog.findViewById(R.id.btn_cancel_change_password);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String password = edtPassword.getText().toString();
-                String npassword = edtNewPassword.getText().toString();
-                String cpassword = edtCPassword.getText().toString();
+        btnConfirm.setOnClickListener(v -> {
+            String password = edtPassword.getText().toString();
+            String npassword = edtNewPassword.getText().toString();
+            String cpassword = edtCPassword.getText().toString();
 
-                if (!md5.endcode(password).equals(user.getPassword())) {
-                    edtPassword.setError("Mật Khẩu Không Đúng");
-                } else {
-                    if (npassword.length() < 6)
-                        edtNewPassword.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự");
+            if (!md5.endcode(password).equals(user.getPassword())) {
+                edtPassword.setError("Mật Khẩu Không Đúng");
+            } else {
+                if (npassword.length() < 6)
+                    edtNewPassword.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự");
+                else {
+                    if (!npassword.equals(cpassword))
+                        edtCPassword.setError("Mật Khẩu Không Trùng Khớp");
                     else {
-                        if (!npassword.equals(cpassword))
-                            edtCPassword.setError("Mật Khẩu Không Trùng Khớp");
-                        else {
-                            DataService dataService = APIService.getUserService();
-                            Call<String> callback = dataService.ChangePassword(npassword, user.getIdUser());
-                            callback.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                    String result = (String) response.body();
-                                    if (result.equals("Thanh Cong")) {
-                                        dialog.dismiss();
-                                        Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                                        MainActivity.user.setPassword(md5.endcode(npassword));
-                                        user = MainActivity.user;
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
-                                    }
-                                    Log.d("BBB", result);
-                                }
-
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                        DataService dataService = APIService.getUserService();
+                        Call<String> callback = dataService.ChangePassword(npassword, user.getIdUser());
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
+                                String result = (String) response.body();
+                                assert result != null;
+                                if (result.equals("Thanh Cong")) {
                                     dialog.dismiss();
-                                    Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+                                    MainActivity.user.setPassword(md5.endcode(npassword));
+                                    user = MainActivity.user;
+                                } else {
+                                    dialog.dismiss();
+                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
                                 }
-                            });
-                        }
+                                Log.d("BBB", result);
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
+                                dialog.dismiss();
+                                Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             }

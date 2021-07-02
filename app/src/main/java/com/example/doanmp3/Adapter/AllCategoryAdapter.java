@@ -60,19 +60,16 @@ public class AllCategoryAdapter extends RecyclerView.Adapter<AllCategoryAdapter.
             imageView = itemView.findViewById(R.id.img_categoty_all);
             Ten = itemView.findViewById(R.id.txt_categoty_all);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DanhSachBaiHatActivity.class);
-                    if(Loai == 1 || (Loai == 3 && getPosition() < arrayList.size() - TongChuDe))
-                        intent.putExtra("ChuDe", arrayList.get(getPosition()));
-                    else
-                        intent.putExtra("TheLoai", arrayList.get(getPosition()));
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, DanhSachBaiHatActivity.class);
+                if(Loai == 1 || (Loai == 3 && getPosition() < arrayList.size() - TongChuDe))
+                    intent.putExtra("ChuDe", arrayList.get(getPosition()));
+                else
+                    intent.putExtra("TheLoai", arrayList.get(getPosition()));
 
 
-                    context.startActivity(intent);
+                context.startActivity(intent);
 
-                }
             });
         }
     }

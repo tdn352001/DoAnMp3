@@ -49,32 +49,24 @@ public class ConfirmCodeFragment extends Fragment {
     }
 
     private void EventClick() {
-        btnCf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String Vcode = edtCode.getText().toString();
-                if (Vcode.equals(Code + "")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("iduser", IdUser);
-                    Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_changePasswordFragment, bundle);
+        btnCf.setOnClickListener(v -> {
+            String Vcode = edtCode.getText().toString().trim();
+            if (Vcode.equals(Code + "")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("iduser", IdUser);
+                Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_changePasswordFragment, bundle);
+            } else {
+                if (Vcode.equals("")) {
+                    edtCode.setError("Vui Lòng Nhập Mã Xác Nhận");
+                    Toast.makeText(getContext(), "Vui Lòng Nhập Mã Xác Nhận", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Vcode.equals("")) {
-                        edtCode.setError("Vui Lòng Nhập Mã Xác Nhận");
-                        Toast.makeText(getContext(), "Vui Lòng Nhập Mã Xác Nhận", Toast.LENGTH_SHORT).show();
-                    } else {
-                        edtCode.setError("Mã Xác Nhận Không Chính Xác");
-                        Toast.makeText(getContext(), "Mã Xác Nhận Không Chính Xác", Toast.LENGTH_SHORT).show();
-                    }
+                    edtCode.setError("Mã Xác Nhận Không Chính Xác");
+                    Toast.makeText(getContext(), "Mã Xác Nhận Không Chính Xác", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_loginFragment);
-            }
-        });
+        btnLogin.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_confirmCodeFragment_to_loginFragment));
 
     }
 }

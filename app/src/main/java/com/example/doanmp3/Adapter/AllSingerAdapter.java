@@ -73,13 +73,10 @@ public class AllSingerAdapter extends  RecyclerView.Adapter<AllSingerAdapter.Vie
             TenCaSi = itemView.findViewById(R.id.txt_singer_all);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailSingerActivity.class);
-                    intent.putExtra("CaSi",  arrayList.get(getPosition()));
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, DetailSingerActivity.class);
+                intent.putExtra("CaSi",  arrayList.get(getPosition()));
+                context.startActivity(intent);
             });
 
         }

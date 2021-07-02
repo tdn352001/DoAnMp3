@@ -128,29 +128,23 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     }
 
     private void EventClick() {
-        btnAddBaiHat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
-                intent.putExtra("idplaylist", IdPlaylist);
-                intent.putExtra("tenplaylist", TenPlaylist);
-                intent.putExtra("mangbaihat", arrayList);
-                startActivity(intent);
-            }
+        btnAddBaiHat.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailUserPlaylistActivity.this, AddBaiHatActivity.class);
+            intent.putExtra("idplaylist", IdPlaylist);
+            intent.putExtra("tenplaylist", TenPlaylist);
+            intent.putExtra("mangbaihat", arrayList);
+            startActivity(intent);
         });
-        btnPlayAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (arrayList != null) {
-                    if (arrayList.size() > 0) {
-                        Intent intentt = new Intent(DetailUserPlaylistActivity.this, PlayNhacActivity.class);
-                        Random rd = new Random();
-                        DanhSachBaiHatActivity.category = "Playlist";
-                        DanhSachBaiHatActivity.TenCategoty = TenPlaylist;
-                        intentt.putExtra("mangbaihat", arrayList);
-                        intentt.putExtra("position", rd.nextInt(arrayList.size()));
-                        startActivity(intentt);
-                    }
+        btnPlayAll.setOnClickListener(v -> {
+            if (arrayList != null) {
+                if (arrayList.size() > 0) {
+                    Intent intentt = new Intent(DetailUserPlaylistActivity.this, PlayNhacActivity.class);
+                    Random rd = new Random();
+                    DanhSachBaiHatActivity.category = "Playlist";
+                    DanhSachBaiHatActivity.TenCategoty = TenPlaylist;
+                    intentt.putExtra("mangbaihat", arrayList);
+                    intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                    startActivity(intentt);
                 }
             }
         });
@@ -240,7 +234,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
     private void OpenCreateDialog() {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_add_playlist);
+        dialog.setContentView(R.layout.dialog_change_name_playlist);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         Window window = dialog.getWindow();
 
@@ -263,9 +257,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
         btnConfirm = dialog.findViewById(R.id.btnAdd);
 
 
-        title.setText("Đổi Tên Playlist");
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-
         btnConfirm.setOnClickListener(v -> {
             String tenplaylist = edtTenPlaylist.getText().toString();
             if (tenplaylist.equals(""))
@@ -280,8 +272,13 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 UserPlaylistFragment.ChangeNamePlaylist(IdPlaylist, tenplaylist);
-                                TenPlaylist = tenplaylist;
-                                getSupportActionBar().setTitle(tenplaylist);
+                                Intent intent = new Intent(DetailUserPlaylistActivity.this, DetailUserPlaylistActivity.class);
+                                intent.putExtra("idplaylist", IdPlaylist);
+                                intent.putExtra("tenplaylist", tenplaylist);
+                                finish();
+                                overridePendingTransition(0, 0);
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
                                 progressDialog.dismiss();
                                 dialog.dismiss();
                                 Toast.makeText(DetailUserPlaylistActivity.this, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();

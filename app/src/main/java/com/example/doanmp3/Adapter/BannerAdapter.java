@@ -1,5 +1,6 @@
 package com.example.doanmp3.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -42,8 +43,7 @@ public class BannerAdapter extends PagerAdapter {
         callbaihatquangcao.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> baiHats = (ArrayList<BaiHat>) response.body();
-                arrayListbaihat = baiHats;
+                arrayListbaihat = (ArrayList<BaiHat>) response.body();
             }
 
             @Override
@@ -68,6 +68,7 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
         LayoutInflater inflater =  LayoutInflater.from(context);
+        @SuppressLint("InflateParams")
         View view = LayoutInflater.from(context).inflate(R.layout.dong_banner, null);
         ImageView imgBanner = view.findViewById(R.id.imgBanner);
         ImageView imgSong = view.findViewById(R.id.imgBanner2);
@@ -82,16 +83,13 @@ public class BannerAdapter extends PagerAdapter {
 
 
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, PlayNhacActivity.class);
-                intent.putExtra("mangbaihat", arrayListbaihat);
-                intent.putExtra("position", position);
-                DanhSachBaiHatActivity.category="Playlist";
-                DanhSachBaiHatActivity.TenCategoty ="Bài hát mới";
-                context.startActivity(intent);
-            }
+        view.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PlayNhacActivity.class);
+            intent.putExtra("mangbaihat", arrayListbaihat);
+            intent.putExtra("position", position);
+            DanhSachBaiHatActivity.category="Playlist";
+            DanhSachBaiHatActivity.TenCategoty ="Bài hát mới";
+            context.startActivity(intent);
         });
 
         return view;

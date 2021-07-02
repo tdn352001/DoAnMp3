@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BaiHat implements Parcelable {
@@ -62,6 +63,8 @@ public class BaiHat implements Parcelable {
     }
 
     public String getTenBaiHat() {
+        if (tenBaiHat == null)
+            return "Unknown";
         return tenBaiHat;
     }
 
@@ -108,6 +111,10 @@ public class BaiHat implements Parcelable {
 
 
     public void setCaSi(List<String> caSi) {
+        if (caSi == null) {
+            caSi = new ArrayList<>();
+            caSi.add("Unknown");
+        }
         this.caSi = caSi;
     }
 

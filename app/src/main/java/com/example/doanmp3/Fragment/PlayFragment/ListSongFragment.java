@@ -69,7 +69,7 @@ public class ListSongFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void setDanhMuc(){
-        if(! (DanhSachBaiHatActivity.category ==""))
+        if(!(DanhSachBaiHatActivity.category.equals("")))
             txtDanhMuc.setText(DanhSachBaiHatActivity.category + ":  " + DanhSachBaiHatActivity.TenCategoty);
 
     }

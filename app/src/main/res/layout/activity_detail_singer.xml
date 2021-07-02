@@ -34,8 +34,8 @@
                 android:layout_height="250dp"
                 android:layout_marginBottom="100dp"
                 android:scaleType="fitXY"
-                app:riv_corner_radius_bottom_left="30dp"
-                app:riv_corner_radius_bottom_right="30dp" />
+                app:riv_corner_radius_bottom_left="15dp"
+                app:riv_corner_radius_bottom_right="15dp" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_detailsinger"

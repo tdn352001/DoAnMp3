@@ -36,8 +36,6 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
     ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     String IdPlaylist = "";
 
-
-
     public UserBaiHatPlaylistAdapter(Context context, ArrayList<BaiHat> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
@@ -62,39 +60,33 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.btnDelete.setOnClickListener(v -> {
 
-                DataService dataService = APIService.getUserService();
-                Call<String> callback = dataService.DeleteBaiHatPlaylist(IdPlaylist, baiHat.getIdBaiHat());
-                callback.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        String result = (String) response.body();
-                        if(result.equals("Thanh Cong")){
-                            arrayList.remove(position);
-                            notifyItemRemoved(position);
-                            Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                        }
+            DataService dataService = APIService.getUserService();
+            Call<String> callback = dataService.DeleteBaiHatPlaylist(IdPlaylist, baiHat.getIdBaiHat());
+            callback.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    String result = (String) response.body();
+                    if (result != null && result.equals("Thanh Cong")) {
+                        arrayList.remove(position);
+                        notifyItemRemoved(position);
+                        Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
 
-                    }
-                });
-            }
+                }
+            });
         });
 
-        holder.btnBaiHat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, PlayNhacActivity.class);
-                intent.putExtra("mangbaihat", arrayList);
-                intent.putExtra("position", position);
-                context.startActivity(intent);
-            }
+        holder.btnBaiHat.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PlayNhacActivity.class);
+            intent.putExtra("mangbaihat", arrayList);
+            intent.putExtra("position", position);
+            context.startActivity(intent);
         });
 
     }

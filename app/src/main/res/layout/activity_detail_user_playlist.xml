@@ -44,7 +44,7 @@
                 android:layout_marginBottom="20mm"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_user_playlist"
+                android:src="@drawable/playlist_viewholder"
                 app:riv_corner_radius="12dp"
                 tools:ignore="InOrMmUsage"
                 tools:targetApi="lollipop" />

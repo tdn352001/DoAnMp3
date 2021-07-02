@@ -55,55 +55,47 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     private void EventClick() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment);
-            }
-        });
+        btnLogin.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment));
 
-        btnCf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String password = edtPW.getText().toString();
-                String cpassword = edtCF.getText().toString();
-                if (password.equals("")) {
-                    {
-                        edtPW.setError("Vui Lòng Nhập Mật Khẩu Mới!");
-                        Toast.makeText(getContext(), "Vui Lòng Nhập Mật Khẩu Mới!", Toast.LENGTH_SHORT).show();
-                    }
+        btnCf.setOnClickListener(v -> {
+            String password = edtPW.getText().toString();
+            String cpassword = edtCF.getText().toString();
+            if (password.equals("")) {
+                {
+                    edtPW.setError("Vui Lòng Nhập Mật Khẩu Mới!");
+                    Toast.makeText(getContext(), "Vui Lòng Nhập Mật Khẩu Mới!", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (password.length() < 6) {
+                    edtPW.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự!");
+                    Toast.makeText(getContext(), "Mật Khẩu Có Tối Thiểu 6 Kí Tự!", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (password.length() < 6) {
-                        edtPW.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự!");
-                        Toast.makeText(getContext(), "Mật Khẩu Có Tối Thiểu 6 Kí Tự!", Toast.LENGTH_SHORT).show();
+                    if (password.equals(cpassword)) {
+                        ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ....!!!", false, false);
+                        DataService dataService = APIService.getUserService();
+                        Call<String> callback = dataService.ChangePassword(password, IdUser);
+                        callback.enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                String result = (String) response.body();
+                                if (result.equals("Thanh Cong"))
+                                    Toast.makeText(getContext(), "Thay Đổi Mật Khẩu Thành Công", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                                Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment);
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                progressDialog.dismiss();
+                                Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment);
+                                Toast.makeText(getContext(), "Lỗi Mạng! Vui Lòng Thử Lại", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     } else {
-                        if (password.equals(cpassword)) {
-                            ProgressDialog progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ....!!!", false, false);
-                            DataService dataService = APIService.getUserService();
-                            Call<String> callback = dataService.ChangePassword(password, IdUser);
-                            callback.enqueue(new Callback<String>() {
-                                @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                    String result = (String) response.body();
-                                    if (result.equals("Thanh Cong"))
-                                        Toast.makeText(getContext(), "Thay Đổi Mật Khẩu Thành Công", Toast.LENGTH_SHORT).show();
-                                    progressDialog.dismiss();
-                                    Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment);
-                                }
-
-                                @Override
-                                public void onFailure(Call<String> call, Throwable t) {
-                                    progressDialog.dismiss();
-                                    Navigation.findNavController(view).navigate(R.id.action_changePasswordFragment_to_loginFragment);
-                                    Toast.makeText(getContext(), "Lỗi Mạng! Vui Lòng Thử Lại", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                        } else {
-                            edtCF.setText("");
-                            edtCF.setError("Mật Khẩu Không Trùng Khớp");
-                            Toast.makeText(getContext(), "Mật Khẩu Không Trùng Khớp", Toast.LENGTH_SHORT).show();
-                        }
+                        edtCF.setText("");
+                        edtCF.setError("Mật Khẩu Không Trùng Khớp");
+                        Toast.makeText(getContext(), "Mật Khẩu Không Trùng Khớp", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

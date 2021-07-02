@@ -51,7 +51,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
         Album album = arrayList.get(position);
         holder.TenAlbum.setText(album.getTenAlbum());
         holder.TenCaSi.setText(album.getTenCaSi());
-        Picasso.with(context).load(album.getHinhAlbum().toString()).error(R.drawable.song).into(holder.imageView);
+        Picasso.with(context).load(album.getHinhAlbum()).error(R.drawable.song).into(holder.imageView);
     }
 
     @Override
@@ -77,13 +77,10 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder> 
             TenCaSi = itemView.findViewById(R.id.txt_album_casi_all);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, DanhSachBaiHatActivity.class);
-                    intent.putExtra("album", arrayList.get(getPosition()));
-                    context.startActivity(intent);
-                }
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, DanhSachBaiHatActivity.class);
+                intent.putExtra("album", arrayList.get(getPosition()));
+                context.startActivity(intent);
             });
         }
     }

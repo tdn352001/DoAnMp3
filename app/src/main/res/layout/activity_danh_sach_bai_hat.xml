@@ -67,7 +67,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/custom_imageview"
         android:src="@drawable/icon_random"
         app:elevation="30dp"
         app:fabSize="auto"

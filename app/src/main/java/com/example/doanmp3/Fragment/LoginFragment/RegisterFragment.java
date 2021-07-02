@@ -3,6 +3,7 @@ package com.example.doanmp3.Fragment.LoginFragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,6 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,31 +61,23 @@ RegisterFragment extends Fragment {
     }
 
     private void EventClick() {
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnRegister.setClickable(false);
-                String email = edtEmail.getText().toString().trim();
-                String username = edtUsername.getText().toString().trim();
-                String password = edtPassword.getText().toString();
+        btnRegister.setOnClickListener(v -> {
+            btnRegister.setClickable(false);
+            String email = edtEmail.getText().toString().trim();
+            String username = edtUsername.getText().toString().trim();
+            String password = edtPassword.getText().toString();
 
-                if (isValid()) {
-                    mProgressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", false, false);
-                    Register(email, username, password);
-                } else {
-                    Log.e("BBB", " Form không hợp lệ");
-                    btnRegister.setClickable(true);
+            if (isValid()) {
+                mProgressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", true, true);
+                Register(email, username, password);
+            } else {
+                Log.e("BBB", " Form không hợp lệ");
+                btnRegister.setClickable(true);
 
-                }
             }
         });
 
-        txtlogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigateUp();
-            }
-        });
+        txtlogin.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
     }
 
 
@@ -145,15 +136,16 @@ RegisterFragment extends Fragment {
     }
 
     public static boolean EmailIsValid(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-                "[a-zA-Z0-9_+&*-]+)*@" +
-                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-                "A-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
+//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+//                "[a-zA-Z0-9_+&*-]+)*@" +
+//                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+//                "A-Z]{2,7}$";
+//
+//        Pattern pat = Pattern.compile(emailRegex);
         if (email == null)
             return false;
-        return pat.matcher(email).matches();
+
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public void Register(String email, String username, String password) {
@@ -183,7 +175,7 @@ RegisterFragment extends Fragment {
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getActivity(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
                 btnRegister.setClickable(true);
-
+                mProgressDialog.dismiss();
             }
         });
 
