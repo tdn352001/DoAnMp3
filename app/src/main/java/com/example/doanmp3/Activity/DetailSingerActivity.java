@@ -170,7 +170,7 @@ public class DetailSingerActivity extends AppCompatActivity {
     }
 
     private void setInfoCaSi() {
-        Picasso.with(this).load(caSi.getHinhCaSi()).into(imageView);
+        Glide.with(this).load(caSi.getHinhCaSi()).error(R.drawable.karaoke_mic).into(imageView);
         toolbar.setTitle(caSi.getTenCaSi());
     }
 

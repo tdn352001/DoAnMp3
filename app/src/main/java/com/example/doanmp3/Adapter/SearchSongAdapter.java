@@ -52,7 +52,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
     }

@@ -114,7 +114,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                 if (arrayList == null) {
                     arrayList = new ArrayList<>();
                 } else if (arrayList.size() > 0)
-                    Picasso.with(DetailUserPlaylistActivity.this).load(arrayList.get(0).getHinhBaiHat()).into(imgPlaylist);
+                    Glide.with(DetailUserPlaylistActivity.this).load(arrayList.get(0).getHinhBaiHat()).error(R.drawable.song).into(imgPlaylist);
                 CheckArrayListEmpty();
                 setRV();
                 btnAddBaiHat.setClickable(true);

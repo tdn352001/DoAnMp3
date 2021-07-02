@@ -66,7 +66,7 @@ public class PlayFragment extends Fragment {
 
 
     public void setHinh(String link, boolean isAudio) {
-        Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
+        Glide.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
     }
 
     public void setContent(String BaiHat, String CaSi) {

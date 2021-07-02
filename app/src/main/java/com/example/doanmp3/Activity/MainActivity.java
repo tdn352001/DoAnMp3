@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.HomeFragment.HomeFragment;
 import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
@@ -38,7 +39,6 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void AppBarSetVisibility() {
         layoutPlay.setVisibility(View.VISIBLE);
-        Picasso.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
+        Glide.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
         txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
         txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
         btnStop.setImageResource(R.drawable.ic_pause);
@@ -342,10 +342,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ActionPlay() {
-        if (MusicService.mediaPlayer.isPlaying())
+        if (MusicService.mediaPlayer.isPlaying()) {
             btnStop.setImageResource(R.drawable.ic_pause);
-        else
+            if (layoutPlay.getVisibility() != View.VISIBLE)
+                AppBarSetVisibility();
+        } else {
             btnStop.setImageResource(R.drawable.icon_play);
+        }
     }
 
 

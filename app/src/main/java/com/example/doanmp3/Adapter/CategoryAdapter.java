@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Model.ChuDeTheLoai;
 import com.example.doanmp3.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         ChuDeTheLoai categorys = arrayList.get(position);
         holder.txtCategory.setText(categorys.getTen());
-        Picasso.with(context).load(categorys.getHinh().toString()).error(R.drawable.song).into(holder.imageView);
+        Glide.with(context).load(categorys.getHinh()).error(R.drawable.song).into(holder.imageView);
     }
 
     @Override

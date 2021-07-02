@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
 import com.example.doanmp3.Model.BaiHat;
@@ -19,7 +20,6 @@ import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +75,8 @@ public class BannerAdapter extends PagerAdapter {
         TextView titleSongBanner = view.findViewById(R.id.titleBannerBaiHat);
         TextView contentBanner = view.findViewById(R.id.contentBanner);
 
-        Picasso.with(context).load(arrayList.get(position).getHinhAnh()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBanner);
-        Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).error(R.drawable.song).into(imgSong);
+        Glide.with(context).load(arrayList.get(position).getHinhAnh()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBanner);
+        Glide.with(context).load(arrayList.get(position).getHinhBaiHat()).error(R.drawable.song).into(imgSong);
         titleSongBanner.setText(arrayList.get(position).getTenBaiHat());
         contentBanner.setText(arrayList.get(position).getNoiDung());
         container.addView(view);

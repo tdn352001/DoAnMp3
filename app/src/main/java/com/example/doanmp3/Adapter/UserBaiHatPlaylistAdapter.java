@@ -56,7 +56,7 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
             return;
 
         viewBinderHelper.bind(holder.swipeRevealLayout, baiHat.getIdBaiHat());
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imgBaiHat);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imgBaiHat);
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
 

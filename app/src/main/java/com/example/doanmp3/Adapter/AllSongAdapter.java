@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.PlayNhacActivity;
@@ -40,7 +41,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -71,7 +71,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
 
@@ -162,7 +162,7 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             recyclerView = dialog.findViewById(R.id.rv_bottomsheet_add);
 
             // Set Ảnh cộng tên
-            Picasso.with(context).load(arrayList.get(position).getHinhBaiHat()).into(imgBaiHat);
+            Glide.with(context).load(arrayList.get(position).getHinhBaiHat()).error(R.drawable.song).into(imgBaiHat);
             if (txtBaiHat != null) {
                 txtBaiHat.setText(arrayList.get(position).getTenBaiHat());
             }

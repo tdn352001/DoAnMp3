@@ -56,7 +56,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginBottom="15dp"
                 android:elevation="35dp"
-                app:titleTextAppearance="@style/Toolbar_TitleText"
                 app:layout_collapseMode="pin"
                 app:titleMarginBottom="5dp"
                 tools:targetApi="lollipop" />

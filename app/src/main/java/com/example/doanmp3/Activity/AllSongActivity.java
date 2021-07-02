@@ -83,7 +83,6 @@ public class AllSongActivity extends AppCompatActivity {
     }
 
     private void init() {
-        toolbar.setTitleTextAppearance(getApplicationContext(), R.style.Toolbar_TitleText);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Bài Hát Được Yêu Thích");

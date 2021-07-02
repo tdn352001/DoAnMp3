@@ -105,7 +105,6 @@
             app:tabMinWidth="15mm"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="#000"
-            app:tabTextAppearance="@style/Custom_TabLayout"
             app:tabTextColor="#E67E7E7D"
             tools:ignore="InOrMmUsage" />
     </com.google.android.material.appbar.AppBarLayout>

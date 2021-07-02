@@ -13,12 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.AddBaiHatActivity;
 import com.example.doanmp3.Fragment.UserFragment.Added_AddFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +66,7 @@ public class AddBaiHatAdapter extends RecyclerView.Adapter<AddBaiHatAdapter.View
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         BaiHat baiHat = arrayList.get(position);
-        Picasso.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.Avatar);
+        Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.Avatar);
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
 

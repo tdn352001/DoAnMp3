@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DetailSingerActivity;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class AllSingerAdapter extends  RecyclerView.Adapter<AllSingerAdapter.Vie
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CaSi casi = arrayList.get(position);
-        Picasso.with(context).load(casi.getHinhCaSi()).error(R.drawable.song).into(holder.imageView);
+        Glide.with(context).load(casi.getHinhCaSi()).error(R.drawable.karaoke_mic).into(holder.imageView);
         holder.TenCaSi.setText(casi.getTenCaSi());
     }
 

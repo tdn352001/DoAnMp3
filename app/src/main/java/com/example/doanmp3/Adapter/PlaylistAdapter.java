@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DanhSachBaiHatActivity;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull PlaylistAdapter.ViewHolder holder, int position) {
         Playlist playlist = arrayList.get(position);
-        Picasso.with(context).load(playlist.getHinhAnh()).error(R.drawable.song).into(holder.imageView);
+        Glide.with(context).load(playlist.getHinhAnh()).error(R.drawable.karaoke_mic).into(holder.imageView);
         holder.txtTenPlaylist.setText(playlist.getTen());
     }
 

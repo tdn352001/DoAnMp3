@@ -147,7 +147,7 @@ public class DanhSachBaiHatActivity extends AppCompatActivity {
 
     private void SetValueView(String Ten, String Hinh) {
         collapsingToolbarLayout.setTitle(Ten);
-        Picasso.with(DanhSachBaiHatActivity.this).load(Hinh).into(imageView);
+        Glide.with(DanhSachBaiHatActivity.this).load(Hinh).into(imageView);
     }
 
     private void GetDataAlbum(String id) {
