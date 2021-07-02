@@ -13,7 +13,7 @@
             android:id="@+id/viewpager_banner"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@color/design_default_color_primary" />
+            android:background="#8F8F8F" />
 
         <me.relex.circleindicator.CircleIndicator
             android:id="@+id/CircleIndicator"

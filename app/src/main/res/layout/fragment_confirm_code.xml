@@ -80,6 +80,7 @@
                 android:hint="@string/confirm_code"
                 android:inputType="textEmailAddress"
                 android:padding="18dp"
+                android:maxLength="10"
                 android:textColorHint="#000"
                 android:textSize="22sp" />
 

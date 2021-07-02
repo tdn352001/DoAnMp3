@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/new_username"
             android:inputType="textEmailAddress"
+            android:maxLength="50"
             android:textColorHint="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/mat_khau"
             android:inputType="textPassword"
+            android:maxLength="12"
             android:padding="15dp"
             android:textColorHint="#000"
             android:textSize="22sp" />
