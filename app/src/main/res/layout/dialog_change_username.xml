@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="15dp"
-    android:background="@drawable/custom_diaglog_background"
-    android:paddingVertical="20dp">
+    android:background="@drawable/custom_diaglog_background">
 
     <TextView
         android:id="@+id/txt_title_dialog_username"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginVertical="15dp"
-        android:text="@string/change_username"
-        android:textColor="#f12"
-        android:textSize="42sp" />
-
+        android:gravity="center_horizontal"
+        android:background="@drawable/background_rounded_top"
+        android:text="@string/change_name"
+        android:textAlignment="center"
+        android:textColor="#FD0012"
+        android:paddingVertical="10dp"
+        android:textSize="45sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinput_username_change"
@@ -54,15 +54,15 @@
         android:layout_marginHorizontal="25dp"
         android:layout_marginTop="10dp"
         android:padding="5dp"
+        app:boxStrokeColor="@color/black"
         app:helperText="@string/enter_password"
-        tool:boxCornerRadiusBottomEnd="10dp"
-        tool:boxCornerRadiusBottomStart="10dp"
-        tool:boxCornerRadiusTopEnd="10dp"
-        tool:boxCornerRadiusTopStart="10dp"
-        tool:boxStrokeColor="@color/boxInputFields"
-        tool:endIconMode="password_toggle"
-        tool:hintTextColor="@color/boxInputFields"
-        tool:placeholderText="Password">
+        app:hintTextColor="@color/black"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:endIconMode="password_toggle"
+        app:placeholderText="Password">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_username_change_checkpass"

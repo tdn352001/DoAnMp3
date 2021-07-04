@@ -12,15 +12,15 @@
 
     <TextView
         android:id="@+id/txt_title_themplaylist"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed-light"
+        android:gravity="center_horizontal"
+        android:background="@drawable/background_rounded_top"
         android:text="@string/add_playlist"
+        android:textAlignment="center"
         android:textColor="#FD0012"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:paddingVertical="10dp"
+        android:textSize="35sp" />
 
     <TextView
         android:id="@+id/txt_themplaylist"
