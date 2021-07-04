@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,10 +184,8 @@ public class UserPlaylistFragment extends Fragment {
     }
 
     public static void ChangeNamePlaylist(String IdPlaylist, String TenPlaylist) {
-        Log.e("BBB", "1");
         for (int i = 0; i < userPlaylist.size(); i++) {
             if (userPlaylist.get(i).getIdPlaylist().equals(IdPlaylist)) {
-                Log.e("BBB", "2");
                 userPlaylist.get(i).setTen(TenPlaylist);
                 adapter.notifyItemChanged(i);
                 return;

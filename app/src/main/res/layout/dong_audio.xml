@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxWidth="60mm"
+                android:maxWidth="50mm"
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -64,6 +64,18 @@
                 tools:ignore="InOrMmUsage" />
 
         </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_options_baihat"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:backgroundTint="@color/noname"
+            app:icon="@drawable/ic_options"
+            app:iconTint="@color/black"
+            app:strokeColor="@color/noname"
+            app:strokeWidth="0dp" />
 
     </RelativeLayout>
 

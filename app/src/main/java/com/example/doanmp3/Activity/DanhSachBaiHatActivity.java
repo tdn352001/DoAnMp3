@@ -15,6 +15,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Adapter.AllSongAdapter;
 import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
@@ -26,7 +27,6 @@ import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -51,7 +51,6 @@ public class PlayNhacActivity extends AppCompatActivity {
     public boolean isAudio = false;
 
 
-
     // Action From Service
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -120,7 +119,7 @@ public class PlayNhacActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void ActionPlay() {
-        if(ServiceIsClear){
+        if (ServiceIsClear) {
             StartService();
             ActionPlay();
             return;
@@ -209,21 +208,21 @@ public class PlayNhacActivity extends AppCompatActivity {
                 SetConTent();
             }
 
-            if (MusicService.mediaPlayer != null) {
-                if (MusicService.mediaPlayer.isPlaying()) {
-                    btnPlay.setImageResource(R.drawable.ic_pause);
-                    PlayFragment.objectAnimator.start();
-                } else {
-                    btnPlay.setImageResource(R.drawable.icon_play);
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            PlayFragment.objectAnimator.pause();
-                        }
-                    }, 300);
+            try {
+                if (MusicService.mediaPlayer != null) {
+                    if (MusicService.mediaPlayer.isPlaying()) {
+                        btnPlay.setImageResource(R.drawable.ic_pause);
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> PlayFragment.objectAnimator.start(), 300);
+                    } else {
+                        btnPlay.setImageResource(R.drawable.icon_play);
+                        Handler handler = new Handler();
+                        handler.postDelayed(() -> PlayFragment.objectAnimator.pause(), 300);
 
+                    }
                 }
+            } catch (Exception e) {
+                GetIntent();
             }
         }
     }

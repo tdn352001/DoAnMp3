@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void AppBarSetVisibility() {
         layoutPlay.setVisibility(View.VISIBLE);
-        Glide.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
+        Glide.with(getApplicationContext()).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
         txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
         txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
         btnStop.setImageResource(R.drawable.ic_pause);

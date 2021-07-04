@@ -19,7 +19,7 @@
     <string name="mat_khau">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
-    <string name="change_password">Đổi Password</string>
+    <string name="change_password">Đổi Mật Khẩu</string>
     <string name="enter_password">Nhập Mật Khẩu</string>
     <string name="change_email">Đổi Email</string>
     <string name="new_email">New Email</string>
@@ -86,4 +86,8 @@
     <string name="mpvp">Music Player Vip Pro</string>
     <string name="cahnge_name_playlist">Đổi Tên Playlist</string>
     <string name="update">Cập Nhật</string>
+    <string name="love">Thích</string>
+    <string name="add_to_playlist">Thêm Vào Playlist</string>
+    <string name="add_to_queue">Thêm vào hàng chờ</string>
+    <string name="download">Tải Xuống</string>
 </resources>

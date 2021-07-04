@@ -15,9 +15,9 @@ public class APIRetrofitClient {
     private static Retrofit retrofit = null;
 
     public static Retrofit getclient(String base_url){
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().readTimeout(15000, TimeUnit.MILLISECONDS)
-                                                                .writeTimeout(15000, TimeUnit.MILLISECONDS)
-                                                                .connectTimeout(15000, TimeUnit.MILLISECONDS)
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().readTimeout(10000, TimeUnit.MILLISECONDS)
+                                                                .writeTimeout(10000, TimeUnit.MILLISECONDS)
+                                                                .connectTimeout(10000, TimeUnit.MILLISECONDS)
                                                                 .retryOnConnectionFailure(true)
                                                                  .protocols(Arrays.asList(Protocol.HTTP_1_1)).build();
         Gson gson = new GsonBuilder().setLenient().create();

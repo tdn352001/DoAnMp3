@@ -133,7 +133,6 @@ public class AllSearchFragment extends Fragment {
     }
 
     private void SearchBaiHat(String query) {
-        Log.e("BBB", "1");
         rvBaiHat.removeAllViews();
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetSearchBaiHat(query);
@@ -141,24 +140,20 @@ public class AllSearchFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 baiHats = (ArrayList<BaiHat>) response.body();
-                Log.e("BBB", "2");
                 if (baiHats != null) {
                     if (baiHats.size() > 0) {
-                        Log.e("BBB", "3");
                         layoutBaihat.setVisibility(View.VISIBLE);
                         SetRecycleViewBaiHat();
                         CountResult(true);
                         return;
                     }
                 }
-                Log.e("BBB", "4");
                 CountResult(false);
                 layoutBaihat.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(@NotNull Call<List<BaiHat>> call, @NotNull Throwable t) {
-                Log.e("BBB", "5");
             }
         });
     }

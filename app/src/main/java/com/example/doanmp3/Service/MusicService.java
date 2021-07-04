@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.StrictMode;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -131,22 +132,14 @@ public class MusicService extends Service {
             mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
             mediaPlayer.setOnCompletionListener(null);
             mediaPlayer.prepareAsync();
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                    UploadToPlayRecent();
-                    MusicControlNotification();
-                    if (mp.isPlaying()) {
-                        SendActionToActivity(ACTION_START_PLAY);
-                        SendActionToMain(ACTION_START_PLAY);
-                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                ActionPlayComplete();
-                            }
-                        });
-                    }
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                UploadToPlayRecent();
+                MusicControlNotification();
+                if (mp.isPlaying()) {
+                    SendActionToActivity(ACTION_START_PLAY);
+                    SendActionToMain(ACTION_START_PLAY);
+                    mp.setOnCompletionListener(mp1 -> ActionPlayComplete());
                 }
             });
 
@@ -308,8 +301,7 @@ public class MusicService extends Service {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             return BitmapFactory.decodeResource(getResources(), R.drawable.music2);
         }
@@ -341,7 +333,6 @@ public class MusicService extends Service {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     String result = (String) response.body();
-                    Log.e("BBB", result);
                     if (result.equals("S")) {
                         SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
                     }
@@ -355,9 +346,40 @@ public class MusicService extends Service {
         }
     }
 
+    public static void AddtoPlaylist(Context context, BaiHat baiHat){
+        if(CheckExist(baiHat)){
+            Toast.makeText(context, "Đã Tồn Tại", Toast.LENGTH_SHORT).show();
+        }else{
+            arrayList.add(baiHat);
+            Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
+        }
+        Log.e("BBBB", baiHat.getTenBaiHat());
+    }
+
+
+    public static boolean CheckExist(BaiHat baiHat){
+        if(baiHat.getIdBaiHat().equals("-1")){
+            for(int i = 0; i < arrayList.size(); i++){
+                if(arrayList.get(i).getIdBaiHat().equals("-1")){
+                    if(arrayList.get(i).getLinkBaiHat().equals(baiHat.getLinkBaiHat()))
+                        return true;
+                }
+            }
+        }else{
+            for(int i = 0; i < arrayList.size(); i++)
+                if(arrayList.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat()))
+                    return true;
+        }
+
+        return false;
+    }
+
+
+
 
     @Override
     public void onDestroy() {
+        arrayList = null;
         mediaPlayer.seekTo(0);
         mediaPlayer.stop();
         super.onDestroy();

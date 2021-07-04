@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.AllSongAdapter;
 import com.example.doanmp3.Model.Album;
@@ -26,7 +27,6 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +77,7 @@ public class DetailSingerActivity extends AppCompatActivity {
 
         if (intent.hasExtra("CaSi")) {
             caSi = (CaSi) intent.getSerializableExtra("CaSi");
+            btn.setClickable(false);
             getBaiHatCaSi(caSi.getIdCaSi());
             getAlbumCaSi(caSi.getIdCaSi());
             setInfoCaSi();
@@ -94,6 +95,7 @@ public class DetailSingerActivity extends AppCompatActivity {
                 baiHatArrayList = (ArrayList<BaiHat>) response.body();
                 if(baiHatArrayList == null)
                     return;
+                btn.setClickable(true);
                 ViewMore();
                 setDataBaiHat();
             }
@@ -146,7 +148,7 @@ public class DetailSingerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Album>> call, Throwable t) {
-                Toast.makeText(DetailSingerActivity.this, "ola", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailSingerActivity.this, "Lấy Danh Sách Album Thất Bại", Toast.LENGTH_SHORT).show();
             }
         });
         progressBar.setVisibility(View.INVISIBLE);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.example.doanmp3.Activity.PlayNhacActivity;
@@ -21,7 +22,6 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

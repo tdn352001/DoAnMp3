@@ -12,7 +12,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarlayout_user_playlist"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="405dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@android:color/transparent"
         android:fitsSystemWindows="true"
@@ -37,15 +37,15 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/img_tieudedanhsach_userplaylist"
-                android:layout_width="match_parent"
+                android:layout_width="40mm"
                 android:layout_height="40mm"
-                android:layout_gravity="start"
-                android:layout_marginBottom="10mm"
+                android:layout_gravity="center"
+                android:layout_marginTop="20mm"
+                android:layout_marginBottom="20mm"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/playlist_viewholder"
-                app:riv_corner_radius_bottom_left="10dp"
-                app:riv_corner_radius_bottom_right="10dp"
+                android:src="@drawable/bxh"
+                app:riv_corner_radius="12dp"
                 tools:ignore="InOrMmUsage"
                 tools:targetApi="lollipop" />
 
@@ -89,6 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
@@ -102,8 +103,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:paddingHorizontal="10dp" />
-
-
         </RelativeLayout>
 
 

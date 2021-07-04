@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/baihat_like"
         android:icon="@drawable/ic_love"
-        android:title="Thích" />
+        android:title="@string/love" />
     <item
         android:id="@+id/baihat_add"
         android:icon="@drawable/ic_song"
         android:iconTint="@color/teal_700"
-        android:title="Thêm Vào Playlist" />
+        android:title="@string/add_to_playlist"
+        tools:targetApi="o" />
+
+    <item android:id="@+id/add_to_queue"
+        android:title="@string/add_to_queue"
+        android:icon="@drawable/ic_add_queue"/>
+
+    <item android:id="@+id/download"
+        android:title="@string/download"
+        android:icon="@drawable/ic_download"/>
+
 
 </menu>

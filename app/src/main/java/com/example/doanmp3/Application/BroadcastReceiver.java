@@ -11,7 +11,6 @@ public class BroadcastReceiver extends android.content.BroadcastReceiver {
         int action = intent.getIntExtra("action_notification", 2);
         Intent intentService = new Intent(context, MusicService.class);
         intentService.putExtra("action_notification", action);
-
         context.startService(intentService);
     }
 }

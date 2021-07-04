@@ -10,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.DetailSingerActivity;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.R;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 

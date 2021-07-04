@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.doanmp3.Adapter.UserBaiHatPlaylistAdapter;
 import com.example.doanmp3.Fragment.UserFragment.UserPlaylistFragment;
 import com.example.doanmp3.Model.BaiHat;
@@ -37,7 +38,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;

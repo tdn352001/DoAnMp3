@@ -85,8 +85,8 @@ public class LoginFragment extends Fragment {
 
         btnLogin.setOnClickListener(v -> {
             btnLogin.setClickable(false);
-            String email = edtEmail.getText().toString();
-            String password = edtPassword.getText().toString();
+            String email = edtEmail.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
             if (email.equals(""))
                 edtEmail.setError("Email trống");
             else {
@@ -94,12 +94,12 @@ public class LoginFragment extends Fragment {
                     edtPassword.setError("Mật Khẩu Trống");
                 else {
                     Login(email, password);
+                    btnLogin.setClickable(true);
                 }
             }
         });
 
         txtForget.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_forgotPasswordFragment));
-
 
     }
 
@@ -111,9 +111,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 user = (User) response.body();
-                btnLogin.setClickable(true);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                if (user.getIdUser().toString().equals("-1")) {
+                if (user.getIdUser().equals("-1")) {
                     mProgressDialog.dismiss();
                     edtPassword.setError("Tài khoản hoặc mật khẩu không đúng");
                     Toast.makeText(getContext(), "Tài Khoản Hoặc Mật Khẩu Không Đúng", Toast.LENGTH_SHORT).show();
@@ -121,7 +120,7 @@ public class LoginFragment extends Fragment {
                     view.setVisibility(View.VISIBLE);
                     editor.remove("username");
                     editor.remove("password");
-                    editor.commit();
+                    editor.apply();
 
                 } else {
                     mProgressDialog.dismiss();
@@ -139,6 +138,9 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 view.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                mProgressDialog.dismiss();
+
             }
         });
     }

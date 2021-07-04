@@ -2,7 +2,6 @@ package com.example.doanmp3.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +70,6 @@ RegisterFragment extends Fragment {
                 mProgressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", true, true);
                 Register(email, username, password);
             } else {
-                Log.e("BBB", " Form không hợp lệ");
                 btnRegister.setClickable(true);
 
             }
