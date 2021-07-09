@@ -87,8 +87,10 @@ public class UserBaiHatFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
-        recyclerView.setLayoutAnimation(animlayout);
+        try{
+            LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+            recyclerView.setLayoutAnimation(animlayout);
+        }catch (Exception e){}
 
         recyclerView.setLayoutManager(linearLayoutManager);
     }

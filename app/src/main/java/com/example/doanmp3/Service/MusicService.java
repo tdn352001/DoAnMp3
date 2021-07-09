@@ -143,7 +143,6 @@ public class MusicService extends Service {
                 }
             });
 
-
         } catch (IOException e) {
             e.printStackTrace();
             SendActionToActivity(ACTION_PLAY_FALIED);

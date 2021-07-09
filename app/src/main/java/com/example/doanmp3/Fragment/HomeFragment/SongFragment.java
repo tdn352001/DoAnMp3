@@ -53,6 +53,7 @@ public class SongFragment extends Fragment {
     }
 
     private void GetData() {
+
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetAllSong();
         callback.enqueue(new Callback<List<BaiHat>>() {

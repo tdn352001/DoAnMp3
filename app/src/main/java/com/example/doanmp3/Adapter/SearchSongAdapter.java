@@ -206,10 +206,10 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
                     dialog.dismiss();
                     handler.removeCallbacks(this);
                 }
-                handler.postDelayed(this, 200);
+                handler.postDelayed(this, 100);
             }
         };
-        handler.postDelayed(runnable, 200);
+        handler.postDelayed(runnable, 100);
 
         // taoplaylist moi
         assert btnAddPlaylist != null;
@@ -383,6 +383,8 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
             intent.putExtra("audio", false);
             intent.putExtra("pos", 0);
             intent.putExtra("recent", false);
+            DanhSachBaiHatActivity.category ="Playlist";
+            DanhSachBaiHatActivity.TenCategoty="Ngẫu Nhiên";
             context.startService(intent);
             Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
         } else {

@@ -89,5 +89,6 @@
     <string name="love">Thích</string>
     <string name="add_to_playlist">Thêm Vào Playlist</string>
     <string name="add_to_queue">Thêm vào hàng chờ</string>
-    <string name="download">Tải Xuống</string>
+    <string name="download">Tải Về</string>
+    <string name="confirm_email">Xác Nhận Email</string>
 </resources>

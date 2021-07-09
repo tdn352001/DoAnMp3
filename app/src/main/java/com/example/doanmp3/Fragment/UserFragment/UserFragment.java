@@ -26,6 +26,7 @@ import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Fragment.LoginFragment.LoginFragment;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.button.MaterialButton;
@@ -136,6 +137,7 @@ public class UserFragment extends Fragment {
             dialog.setMessage("Bạn có chắc muốn đăng suất?");
             dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
 
+
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
                 editor.remove("username");
@@ -144,6 +146,14 @@ public class UserFragment extends Fragment {
                 startActivity(intent);
                 Intent servivce = new Intent(getContext(), MusicService.class);
                 getActivity().stopService(servivce);
+                MainActivity.progress= 0;
+                MainActivity.success = false;
+                MainActivity.userPlaylist = null;
+                MainActivity.user = null;
+                UserBaiHatFragment.arrayList= null;
+                UserPlaylistFragment.userPlaylist= null;
+                SearchFragment.baihatrecents = null;
+                SearchFragment.keyWordArrayList = null;
                 getActivity().finish();
             });
 

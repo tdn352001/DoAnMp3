@@ -236,12 +236,7 @@ public class SearchFragment extends Fragment {
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundResource(R.drawable.custom_item_search_recent);
         textView.setTextColor(getResources().getColor(R.color.purple_500));
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setQuery(keyWord.getKeyWord(), true);
-            }
-        });
+        textView.setOnClickListener(v -> searchView.setQuery(keyWord.getKeyWord(), true));
         flowLayout.addView(textView);
     }
 
@@ -303,6 +298,7 @@ public class SearchFragment extends Fragment {
 
     // lấy Bài Hát Nghe Gần Đây
     public void GetBaiHatRecent() {
+        SongRecentLayout.setVisibility(View.GONE);
         DataService dataService = APIService.getService();
         Call<List<BaiHat>> callback = dataService.GetBaiHatRecent(MainActivity.user.getIdUser());
         callback.enqueue(new Callback<List<BaiHat>>() {
@@ -325,6 +321,8 @@ public class SearchFragment extends Fragment {
     // Thêm Bài Hát Gần Đây
     public static void AddBaiHatRecent(BaiHat baiHat) {
         int i = 0;
+        if(SongRecentLayout.getVisibility() == View.GONE)
+            SongRecentLayout.setVisibility(View.VISIBLE);
         while (i < baihatrecents.size()) {
             if (baihatrecents.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat())) {
                 baihatrecents.remove(i);
@@ -407,17 +405,14 @@ public class SearchFragment extends Fragment {
             dialog.show();
         });
 
-        btnViewMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (searchSongAdapter != null) {
-                    if (searchSongAdapter.isViewMore()) {
-                        searchSongAdapter.setViewMore(false);
-                        btnViewMore.setText("Hiển Thị Ít");
-                    } else {
-                        searchSongAdapter.setViewMore(true);
-                        btnViewMore.setText("Xem Thêm");
-                    }
+        btnViewMore.setOnClickListener(v -> {
+            if (searchSongAdapter != null) {
+                if (searchSongAdapter.isViewMore()) {
+                    searchSongAdapter.setViewMore(false);
+                    btnViewMore.setText("Hiển Thị Ít");
+                } else {
+                    searchSongAdapter.setViewMore(true);
+                    btnViewMore.setText("Xem Thêm");
                 }
             }
         });

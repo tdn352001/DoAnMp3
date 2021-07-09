@@ -8,18 +8,22 @@
         android:title="@string/love" />
     <item
         android:id="@+id/baihat_add"
-        android:icon="@drawable/ic_song"
-        android:iconTint="@color/teal_700"
+        android:icon="@drawable/ic_add_queue"
         android:title="@string/add_to_playlist"
+        android:iconTint="@color/black"
         tools:targetApi="o" />
 
     <item android:id="@+id/add_to_queue"
         android:title="@string/add_to_queue"
-        android:icon="@drawable/ic_add_queue"/>
+        android:icon="@drawable/ic_queue"
+        android:iconTint="@color/black"
+        tools:targetApi="o" />
 
     <item android:id="@+id/download"
         android:title="@string/download"
-        android:icon="@drawable/ic_download"/>
+        android:icon="@drawable/ic_download"
+        android:iconTint="@color/black"
+        tools:targetApi="o" />
 
 
 </menu>

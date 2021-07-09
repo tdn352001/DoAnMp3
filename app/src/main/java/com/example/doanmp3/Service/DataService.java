@@ -104,6 +104,10 @@ public interface DataService {
     Call<User> GetUser(@Field("Email") String email, @Field("Password") String Password);
 
     @FormUrlEncoded
+    @POST("checkemailexists.php")
+    Call<String> CheckEmailExist(@Field("email") String email);
+
+    @FormUrlEncoded
     @POST("register.php")
     Call<User> RegisterUser(@Field("email") String email, @Field("username") String username, @Field("password") String password);
 

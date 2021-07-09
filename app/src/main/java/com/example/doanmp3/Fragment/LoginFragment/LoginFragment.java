@@ -137,9 +137,12 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                view.setVisibility(View.VISIBLE);
-                Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                mProgressDialog.dismiss();
+                try {
+                    view.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+                    mProgressDialog.dismiss();
+                } catch (Exception ignored){}
+
 
             }
         });

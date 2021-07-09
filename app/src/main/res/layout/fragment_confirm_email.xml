@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_login"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitXY"
+            android:src="@drawable/music2" />
+
+        <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_login"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:text="@string/confirm_email"
+            android:textColor="#0d6e6a"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/newaccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/welcome"
+            android:layout_centerHorizontal="true"
+            android:text="@string/music_player_vip_pro"
+            android:textColor="#0d6e6a"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/newaccount"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/enter_confirm_code"
+            android:textColor="#000"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edt_input_code_cf"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="18dp"
+            tool:boxCornerRadiusBottomEnd="10dp"
+            tool:boxCornerRadiusBottomStart="10dp"
+            tool:boxCornerRadiusTopEnd="10dp"
+            tool:boxCornerRadiusTopStart="10dp"
+            tool:boxStrokeColor="@color/boxInputFields"
+            tool:endIconMode="clear_text"
+            tool:helperText="Kiểm tra Email của bạn và nhập mã xác nhận"
+            tool:helperTextTextColor="#f21"
+            tool:hintTextColor="@color/boxInputFields"
+            tool:placeholderText="@string/confirm_code">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_code_cf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_code"
+                android:inputType="textEmailAddress"
+                android:padding="18dp"
+                android:maxLength="10"
+                android:textColorHint="#000"
+                android:textSize="22sp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cf_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edt_input_code_cf"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#099A94"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            tool:cornerRadius="45dp"
+            tool:elevation="35dp"
+            tools:targetApi="lollipop" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_cf_code"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"
+                android:textColor="#0d6e6a"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_cf_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/login"
+                android:textColor="#070707"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

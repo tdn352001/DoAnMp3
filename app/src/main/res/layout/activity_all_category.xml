@@ -16,6 +16,7 @@
             android:id="@+id/toolbar_allcategory"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/background_info_user"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/Theme.AppCompat.Light" />
 
@@ -26,22 +27,26 @@
             android:layout_below="@id/toolbar_allcategory"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="@string/chu_de"
             android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_allchude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt1"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/txt2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rv_allchude"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:text="@string/the_loai"
@@ -53,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt2"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="5dp" />
 
     </RelativeLayout>
 

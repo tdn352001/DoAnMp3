@@ -27,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> {
@@ -68,14 +69,13 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
             context.startActivity(intent);
         });
 
-        holder.btnOptions.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(context, holder.btnOptions);
+        holder.btnOptions.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(context, holder.btnOptions);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 SetupPopUpMenu(position, popupMenu);
                 popupMenu.show();
             }
+
         });
     }
 
@@ -106,6 +106,8 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
             intent.putExtra("audio", false);
             intent.putExtra("pos", 0);
             intent.putExtra("recent", false);
+            DanhSachBaiHatActivity.category = "Playlist";
+            DanhSachBaiHatActivity.TenCategoty = "Ngẫu Nhiên";
             context.startService(intent);
             Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
         } else {
@@ -140,6 +142,14 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
         Uri uri = audios.get(position).getaudioUri();
         File file = new File(uri.getPath());
         if (file.exists()) {
+            try {
+                file.getCanonicalFile().delete();
+                if (file.exists()) {
+                    context.deleteFile(file.getName());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (file.delete()) {
                 Toast.makeText(context, "Đã Xóa Thành Công", Toast.LENGTH_SHORT).show();
                 if (MusicService.arrayList != null)
@@ -168,8 +178,8 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            artist = (TextView) itemView.findViewById(R.id.artist);
+            title = itemView.findViewById(R.id.title);
+            artist = itemView.findViewById(R.id.artist);
             imageView = itemView.findViewById(R.id.image);
             btnOptions = itemView.findViewById(R.id.btn_options_baihat);
         }

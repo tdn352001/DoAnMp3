@@ -83,7 +83,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
         Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
         holder.TenCaSi.setText(baiHat.getTenAllCaSi());
         holder.TenBaiHat.setText(baiHat.getTenBaiHat());
-
     }
 
     @Override
@@ -212,10 +211,10 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
                         dialog.dismiss();
                         handler.removeCallbacks(this);
                     }
-                    handler.postDelayed(this, 200);
+                    handler.postDelayed(this, 100);
                 }
             };
-            handler.postDelayed(runnable, 200);
+            handler.postDelayed(runnable, 100);
 
             // taoplaylist moi
             assert btnAddPlaylist != null;
@@ -340,6 +339,8 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
             intent.putExtra("audio", false);
             intent.putExtra("pos", 0);
             intent.putExtra("recent", false);
+            DanhSachBaiHatActivity.category ="Playlist";
+            DanhSachBaiHatActivity.TenCategoty="Ngẫu Nhiên";
             context.startService(intent);
             Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
         } else {

@@ -15,9 +15,12 @@ import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.MusicService;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +31,7 @@ public class AllSongActivity extends AppCompatActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     ArrayList<BaiHat> arrayList;
+    MaterialButton btnPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,21 @@ public class AllSongActivity extends AppCompatActivity {
 
         } else
             GetData();
+
+        btnPlay.setOnClickListener(v -> {
+            if(arrayList != null){
+                if(arrayList.size() > 0){
+                    Intent intentt = new Intent(this, PlayNhacActivity.class);
+                    Random rd = new Random();
+                    intentt.putExtra("mangbaihat", arrayList);
+                    intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                    MusicService.random = true;
+                    DanhSachBaiHatActivity.category = "playlist";
+                    DanhSachBaiHatActivity.TenCategoty="Ca Khúc Được Yêu Thích Nhiều Nhất";
+                    startActivity(intentt);
+                }
+            }
+        });
     }
 
     private void GetData() {
@@ -94,6 +113,7 @@ public class AllSongActivity extends AppCompatActivity {
     private void AnhXa() {
         toolbar = findViewById(R.id.toolbar_allsong);
         recyclerView = findViewById(R.id.rv_allsong);
+        btnPlay = findViewById(R.id.btn_action_userplaylist);
     }
 
     @Override

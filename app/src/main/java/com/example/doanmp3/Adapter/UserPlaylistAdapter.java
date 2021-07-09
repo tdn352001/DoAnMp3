@@ -32,7 +32,6 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
     boolean IsResponse;
 
 
-
     public UserPlaylistAdapter(ArrayList<Playlist> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
@@ -71,19 +70,17 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
             txtTenPlaylist = itemView.findViewById(R.id.txt_ten_playlist_user);
             itemView.setOnClickListener(v -> {
                 if (addbaihat) {
+                    IsResponse = true;
                     DataService dataService = APIService.getUserService();
                     Call<String> callback = dataService.ThemBaiHatPlaylist(arrayList.get(getPosition()).getIdPlaylist(), IdBaiHat);
                     callback.enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             String result = (String) response.body();
-                            IsResponse = true;
-                            if(result.equals("Thanh Cong"))
+                            if (result.equals("Thanh Cong"))
                                 Toast.makeText(context, "Đã Cập Nhật Playlist", Toast.LENGTH_SHORT).show();
                             else
                                 Toast.makeText(context, "Bài Hát Đã Được Thêm Trước Đó", Toast.LENGTH_SHORT).show();
-
-
                         }
 
                         @Override

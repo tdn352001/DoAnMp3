@@ -8,7 +8,11 @@
         android:id="@+id/registerFragment"
         android:name="com.example.doanmp3.Fragment.LoginFragment.RegisterFragment"
         android:label="fragment_register2"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_confirmEmailFragment"
+            app:destination="@id/confirmEmailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.doanmp3.Fragment.LoginFragment.LoginFragment"
@@ -77,5 +81,16 @@
             app:destination="@id/loginFragment"
             app:enterAnim="@anim/from_left"
             app:exitAnim="@anim/to_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmEmailFragment"
+        android:name="com.example.doanmp3.Fragment.LoginFragment.ConfirmEmailFragment"
+        android:label="fragment_confirm_email"
+        tools:layout="@layout/fragment_confirm_email">
+        <action
+            android:id="@+id/action_confirmEmailFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
     </fragment>
 </navigation>

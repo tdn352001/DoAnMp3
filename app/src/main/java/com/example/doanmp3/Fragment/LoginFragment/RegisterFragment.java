@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.LoginFragment;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +13,28 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.example.doanmp3.Model.User;
+import com.example.doanmp3.Model.Email;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Random;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class
-RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 
-    ProgressDialog mProgressDialog;
+    ProgressDialog progressDialog;
     View view;
     TextInputEditText edtEmail, edtUsername, edtPassword, edtCpassword;
     MaterialButton btnRegister;
     TextView txtlogin;
-    TextView a;
+    TextView haveacount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_register, container, false);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         AnhXa();
         EventClick();
         return view;
@@ -56,7 +60,7 @@ RegisterFragment extends Fragment {
         edtCpassword = view.findViewById(R.id.edt_cpassword_register);
         btnRegister = view.findViewById(R.id.btn_register);
         txtlogin = view.findViewById(R.id.txt_register_login);
-        a = view.findViewById(R.id.txt_haveac);
+        haveacount = view.findViewById(R.id.txt_haveac);
     }
 
     private void EventClick() {
@@ -67,8 +71,8 @@ RegisterFragment extends Fragment {
             String password = edtPassword.getText().toString();
 
             if (isValid()) {
-                mProgressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", true, true);
-                Register(email, username, password);
+                progressDialog = ProgressDialog.show(getContext(), "Đang Thực Hiện", "Vui Lòng Chờ...", true, true);
+                CheckExisit(email, username, password);
             } else {
                 btnRegister.setClickable(true);
 
@@ -134,48 +138,56 @@ RegisterFragment extends Fragment {
     }
 
     public static boolean EmailIsValid(String email) {
-//        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
-//                "[a-zA-Z0-9_+&*-]+)*@" +
-//                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
-//                "A-Z]{2,7}$";
-//
-//        Pattern pat = Pattern.compile(emailRegex);
         if (email == null)
             return false;
 
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public void Register(String email, String username, String password) {
+    public void CheckExisit(String email, String username, String password) {
         DataService dataService = APIService.getUserService();
-        Call<User> callback = dataService.RegisterUser(email, username, password);
-
-        callback.enqueue(new Callback<User>() {
+        Call<String> callback = dataService.CheckEmailExist(email);
+        callback.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User user = (User) response.body();
+            public void onResponse(Call<String> call, Response<String> response) {
                 btnRegister.setClickable(true);
-                mProgressDialog.dismiss();
-                if (user.getIdUser().equals("-1")) {
-                    {
-                        edtEmail.setError("Email đã tồn tại");
-                        Toast.makeText(getContext(), "Email đã tồn tại", Toast.LENGTH_SHORT).show();
-                    }
+                progressDialog.dismiss();
+                String exist = response.body();
+                if (exist.equals("F")) {
+                    CreateCode(email, username, password);
                 } else {
-                    Toast.makeText(getActivity(), "Đăng Ký Thành Công", Toast.LENGTH_LONG).show();
-                    Navigation.findNavController(view).navigateUp();
+                    edtEmail.setError("Email đã tồn tại");
+                    Toast.makeText(getContext(), "Email đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
-                btnRegister.setClickable(true);
 
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(getActivity(), "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
                 btnRegister.setClickable(true);
-                mProgressDialog.dismiss();
+                progressDialog.dismiss();
             }
         });
-
     }
+
+    private void CreateCode(String email, String username, String password) {
+        Random random = new Random();
+        int code = random.nextInt(99999 - 10000) + 10000;
+        Email mEmail = new Email();
+        if (mEmail.Sendto(edtEmail.getText().toString(), "Hoàn Tất Đăng Ký", "Mã Xác Nhận Tài Khản MP Của Bạn là:" + code)) {
+            progressDialog.dismiss();
+            Toast.makeText(getContext(), "Mã Xác Nhận Đã Được Gửi Đến Email Của Bạn", Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putInt("code", code);
+            bundle.putString("email", email);
+            bundle.putString("username", username);
+            bundle.putString("password", password);
+            Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_confirmEmailFragment, bundle);
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(getContext(), "Hệ Thống Lỗi! Vui Lòng Thử Lại Sau", Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
