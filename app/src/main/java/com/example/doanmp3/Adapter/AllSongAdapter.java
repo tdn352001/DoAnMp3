@@ -60,7 +60,6 @@ public class AllSongAdapter extends RecyclerView.Adapter<AllSongAdapter.ViewHold
     Context context;
     ArrayList<BaiHat> arrayList;
     boolean isUserBaiHat;
-    long downloadid;
 
 
     public AllSongAdapter(Context context, ArrayList<BaiHat> arrayList) {

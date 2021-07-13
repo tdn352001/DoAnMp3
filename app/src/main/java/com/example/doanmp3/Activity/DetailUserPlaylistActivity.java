@@ -34,6 +34,7 @@ import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -144,6 +145,7 @@ public class DetailUserPlaylistActivity extends AppCompatActivity {
                     DanhSachBaiHatActivity.TenCategoty = TenPlaylist;
                     intentt.putExtra("mangbaihat", arrayList);
                     intentt.putExtra("position", rd.nextInt(arrayList.size()));
+                    MusicService.random = true;
                     startActivity(intentt);
                 }
             }

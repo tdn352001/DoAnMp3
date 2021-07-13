@@ -7,9 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
     <application
         android:name=".Application.Notification"
@@ -19,7 +16,9 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/mppro"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DoAnMp3">
+        android:theme="@style/Theme.DoAnMp3"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
         <activity android:name=".Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +43,6 @@
         <activity android:name=".Activity.MainActivity" />
 
         <service android:name=".Service.MusicService" />
-
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 

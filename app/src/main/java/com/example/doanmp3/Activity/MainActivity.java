@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     ViewPagerAdapter adapter;
     UserFragment userFragment;
+    @SuppressLint("StaticFieldLeak")
     public static ProgressBar progressBar;
     public static int progress;
     private long backtime;
@@ -63,14 +64,15 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
 
     // AppBar Play
+
+    // AppBar Play
     @SuppressLint("StaticFieldLeak")
     public static RelativeLayout layoutPlay;
     public static CircleImageView imgBaiHat;
     @SuppressLint("StaticFieldLeak")
     public static TextView txtBaiHat, txtCaSi;
     @SuppressLint("StaticFieldLeak")
-    public static ImageView btnStop, btnNext;
-
+    public static MaterialButton btnStop, btnNext;
 
 
     @Override
@@ -308,10 +310,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void AppBarSetVisibility() {
         layoutPlay.setVisibility(View.VISIBLE);
-        Glide.with(getApplicationContext()).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
+        if (MusicService.isAudio)
+            imgBaiHat.setImageResource(R.drawable.song);
+        else
+            Glide.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
         txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
         txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
-        btnStop.setImageResource(R.drawable.ic_pause);
+        btnStop.setIconResource(R.drawable.ic_pause);
     }
 
 
@@ -345,13 +350,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void ActionPlay() {
         if (MusicService.mediaPlayer.isPlaying()) {
-            btnStop.setImageResource(R.drawable.ic_pause);
+            btnStop.setIconResource(R.drawable.ic_pause);
             if (layoutPlay.getVisibility() != View.VISIBLE)
                 AppBarSetVisibility();
         } else {
-            btnStop.setImageResource(R.drawable.icon_play);
+            btnStop.setIconResource(R.drawable.icon_play);
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
 }

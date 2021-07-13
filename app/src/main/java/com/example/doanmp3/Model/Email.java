@@ -12,8 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Email  {
-    String username = "dungvoyeu03@gmail.com";
-    String password = "dung0305";
+    String username = "musicplayersieucapvippro@gmail.com";
+    String password = "simond352001";
     Properties prop;
     Session session;
 

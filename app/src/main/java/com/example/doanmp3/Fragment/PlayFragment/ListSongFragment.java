@@ -26,7 +26,7 @@ public class ListSongFragment extends Fragment {
     ArrayList<BaiHat> arrayList;
     TextView txtCaSi, txtBaiHat, txtDanhMuc;
 
-    public ListSongFragment(ArrayList<BaiHat> arrayList ) {
+    public ListSongFragment(ArrayList<BaiHat> arrayList) {
         this.arrayList = arrayList;
 
     }
@@ -43,38 +43,35 @@ public class ListSongFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_song, container, false);
 
-        txtBaiHat=view.findViewById(R.id.txt_info_song);
-        txtCaSi =view.findViewById(R.id.txt_info_casi);
+        txtBaiHat = view.findViewById(R.id.txt_info_song);
+        txtCaSi = view.findViewById(R.id.txt_info_casi);
         txtDanhMuc = view.findViewById(R.id.txt_info_danhmuc);
-        recyclerView= view.findViewById(R.id.rv_listsong_fragment);
-        playSongAdapter = new PlaySongAdapter( getContext(), arrayList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView = view.findViewById(R.id.rv_listsong_fragment);
+        playSongAdapter = new PlaySongAdapter(getActivity(), arrayList);
         recyclerView.setAdapter(playSongAdapter);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        try{
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        try {
             setDanhMuc();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             txtDanhMuc.setVisibility(View.INVISIBLE);
         }
         return view;
     }
 
     @SuppressLint("SetTextI18n")
-    public void setInfoBaiHat(String BaiHat, String CaSi){
+    public void setInfoBaiHat(String BaiHat, String CaSi) {
         txtBaiHat.setText("Bài Hát:  " + BaiHat);
         txtCaSi.setText("Ca Sĩ:  " + CaSi);
     }
 
     @SuppressLint("SetTextI18n")
-    public void setDanhMuc(){
-        if(!(DanhSachBaiHatActivity.category.equals("")))
+    public void setDanhMuc() {
+        if (!(DanhSachBaiHatActivity.category.equals("")))
             txtDanhMuc.setText(DanhSachBaiHatActivity.category + ":  " + DanhSachBaiHatActivity.TenCategoty);
 
     }
 
-    public void ChuyenBai(int index){
+    public void ChuyenBai(int index) {
         playSongAdapter.changeRowSelected(index);
     }
 

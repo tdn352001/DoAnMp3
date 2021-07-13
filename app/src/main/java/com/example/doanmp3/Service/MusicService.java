@@ -67,12 +67,9 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         mediaPlayer = new MediaPlayer();
-        stack = new Stack<>();
-        playedlist = new ArrayList<>();
         Progress = 0;
         repeat = true;
         random = false;
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -97,8 +94,11 @@ public class MusicService extends Service {
     private void GetDataBaiHat(Intent intent) {
 
         if (intent != null) { // Lấy Dữ Liệu Bài Hát
-            if (intent.hasExtra("mangbaihat"))
+            if (intent.hasExtra("mangbaihat")) {
                 arrayList = intent.getParcelableArrayListExtra("mangbaihat");
+                stack = new Stack<>();
+                playedlist = new ArrayList<>();
+            }
             if (intent.hasExtra("audio"))
                 isAudio = intent.getBooleanExtra("audio", false);
             if (intent.hasExtra("pos")) {
@@ -163,19 +163,22 @@ public class MusicService extends Service {
                 break;
             case ACTION_PLAY:
                 ActionPlay();
+                SendActionToActivity(action);
+                SendActionToMain(action);
                 break;
             case ACTION_NEXT:
                 ActionNext();
                 break;
             case ACTION_CLEAR:
                 stopSelf();
+                SendActionToActivity(action);
+                SendActionToMain(action);
                 break;
             case ACTION_CHANGE_POS:
                 PlayNhac();
                 break;
         }
-        SendActionToActivity(action);
-        SendActionToMain(action);
+
     }
 
 
@@ -313,7 +316,6 @@ public class MusicService extends Service {
         Intent intent = new Intent("action_activity");
         intent.putExtra("action", action);
         intent.putExtra("pos", Pos);
-        intent.putExtra("isPlaying", mediaPlayer.isPlaying());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -345,35 +347,32 @@ public class MusicService extends Service {
         }
     }
 
-    public static void AddtoPlaylist(Context context, BaiHat baiHat){
-        if(CheckExist(baiHat)){
+    public static void AddtoPlaylist(Context context, BaiHat baiHat) {
+        if (CheckExist(baiHat)) {
             Toast.makeText(context, "Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             arrayList.add(baiHat);
             Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
         }
         Log.e("BBBB", baiHat.getTenBaiHat());
     }
 
-
-    public static boolean CheckExist(BaiHat baiHat){
-        if(baiHat.getIdBaiHat().equals("-1")){
-            for(int i = 0; i < arrayList.size(); i++){
-                if(arrayList.get(i).getIdBaiHat().equals("-1")){
-                    if(arrayList.get(i).getLinkBaiHat().equals(baiHat.getLinkBaiHat()))
+    public static boolean CheckExist(BaiHat baiHat) {
+        if (baiHat.getIdBaiHat().equals("-1")) {
+            for (int i = 0; i < arrayList.size(); i++) {
+                if (arrayList.get(i).getIdBaiHat().equals("-1")) {
+                    if (arrayList.get(i).getLinkBaiHat().equals(baiHat.getLinkBaiHat()))
                         return true;
                 }
             }
-        }else{
-            for(int i = 0; i < arrayList.size(); i++)
-                if(arrayList.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat()))
+        } else {
+            for (int i = 0; i < arrayList.size(); i++)
+                if (arrayList.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat()))
                     return true;
         }
 
         return false;
     }
-
-
 
 
     @Override

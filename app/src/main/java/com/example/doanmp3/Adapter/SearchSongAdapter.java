@@ -408,7 +408,6 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
         }catch (Exception e){
             Toast.makeText(context, "Tải Xuống Thất Bại", Toast.LENGTH_SHORT).show();
         }
-
     }
 
 

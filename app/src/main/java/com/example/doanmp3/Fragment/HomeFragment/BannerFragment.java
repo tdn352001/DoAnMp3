@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.HomeFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class BannerFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<QuangCao>> call, Throwable t) {
-
+                Log.e("BBBB", t.getMessage());
             }
         });
 

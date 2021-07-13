@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.PlayFragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.example.doanmp3.R;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,9 +67,13 @@ public class PlayFragment extends Fragment {
 
 
     public void setHinh(String link, boolean isAudio) {
-        Glide.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
+        if (isAudio)
+            circleImageView.setImageResource(R.drawable.img_disknhac);
+        else
+            Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
     }
 
+    @SuppressLint("SetTextI18n")
     public void setContent(String BaiHat, String CaSi) {
         textView.setText(BaiHat + "  -  " + CaSi);
         titleBaiHat.setText(BaiHat);

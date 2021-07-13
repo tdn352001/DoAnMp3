@@ -50,9 +50,11 @@ public class PlaySongAdapter extends RecyclerView.Adapter<PlaySongAdapter.ViewHo
 
 
         holder.relativeLayout.setOnClickListener(v -> {
+            int i = row_index;
             row_index = position;
             context.changePos(position);
-            notifyDataSetChanged();
+            notifyItemChanged(i);
+            notifyItemChanged(position);
 
         });
 

@@ -114,10 +114,9 @@ public class UserInfoActivity extends AppCompatActivity {
 
         txtUserName.setOnClickListener(v -> OpenChangeUserNameDialog());
 
-        txtEmail.setOnClickListener(v -> OpenChangeEmailDialog());
+//        txtEmail.setOnClickListener(v -> OpenChangeEmailDialog());
 
         txtPassword.setOnClickListener(v -> OpenChangePassworDialog());
-
     }
 
     private void SelectImageUpload(int code) {
@@ -138,11 +137,11 @@ public class UserInfoActivity extends AppCompatActivity {
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), path);
                 if (requestCode == RequestAvatar) {
-                    imgAvatar.setImageBitmap(bitmap);
-                    uploadimage("Avatar");
+                    Glide.with(this).load(path).into(imgAvatar);
+                    uploadimage("Avatar", path);
                 } else {
-                    imgBanner.setImageBitmap(bitmap);
-                    uploadimage("Banner");
+                    Glide.with(this).load(path).into(imgBanner);
+                    uploadimage("Banner", path);
                 }
 
 
@@ -153,7 +152,7 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
 
-    private void uploadimage(String Category) {
+    private void uploadimage(String Category, Uri path) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream);
@@ -168,9 +167,9 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                 if (Category.equals("Avatar")) {
-                    UserFragment.imgAvatar.setImageBitmap(bitmap);
+                    Glide.with(getApplicationContext()).load(path).into(UserFragment.imgAvatar);
                 } else {
-                    UserFragment.imgBanner.setImageBitmap(bitmap);
+                    Glide.with(getApplicationContext()).load(path).into(UserFragment.imgBanner);
                 }
                 Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
             }

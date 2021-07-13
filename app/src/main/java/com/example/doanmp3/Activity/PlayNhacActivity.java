@@ -127,12 +127,10 @@ public class PlayNhacActivity extends AppCompatActivity {
         if (!MusicService.mediaPlayer.isPlaying()) {
             btnPlay.setImageResource(R.drawable.icon_play);
             PlayFragment.objectAnimator.pause();
-            MainActivity.btnStop.setImageResource(R.drawable.icon_play);
 
         } else {
             btnPlay.setImageResource(R.drawable.ic_pause);
             PlayFragment.objectAnimator.resume();
-            MainActivity.btnStop.setImageResource(R.drawable.icon_play);
         }
     }
 

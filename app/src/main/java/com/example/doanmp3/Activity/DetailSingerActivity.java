@@ -57,6 +57,8 @@ public class DetailSingerActivity extends AppCompatActivity {
         GetIntent();
         eventClick();
         setupToolBar();
+        DanhSachBaiHatActivity.category="Ca Sĩ";
+        DanhSachBaiHatActivity.TenCategoty = caSi.getTenCaSi();
     }
 
 

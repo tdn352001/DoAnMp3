@@ -61,7 +61,10 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
         holder.txtCaSi.setText(baiHat.getTenAllCaSi());
 
         holder.btnDelete.setOnClickListener(v -> {
-
+            arrayList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, arrayList.size());
+            Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
             DataService dataService = APIService.getUserService();
             Call<String> callback = dataService.DeleteBaiHatPlaylist(IdPlaylist, baiHat.getIdBaiHat());
             callback.enqueue(new Callback<String>() {
@@ -69,9 +72,7 @@ public class UserBaiHatPlaylistAdapter extends RecyclerView.Adapter<UserBaiHatPl
                 public void onResponse(Call<String> call, Response<String> response) {
                     String result = (String) response.body();
                     if (result != null && result.equals("Thanh Cong")) {
-                        arrayList.remove(position);
-                        notifyItemRemoved(position);
-                        Toast.makeText(context, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
