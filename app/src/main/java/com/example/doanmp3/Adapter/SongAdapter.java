@@ -50,7 +50,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         BaiHat baiHat = arrayList.get(position);
         holder.txtStt.setText(position + 1 + "");
         holder.txtBaiHat.setText(baiHat.getTenBaiHat());
-        holder.txtCaSi.setText("Son tung mtp");
+        holder.txtCaSi.setText(baiHat.getTenAllCaSi());
         Glide.with(context).load(baiHat.getHinhBaiHat()).error(R.drawable.song).into(holder.imageView);
     }
 
