@@ -91,4 +91,7 @@
     <string name="add_to_queue">Thêm vào hàng chờ</string>
     <string name="download">Tải Về</string>
     <string name="confirm_email">Xác Nhận Email</string>
+    <string name="search">Search....</string>
+    <string name="delete_history_search_title">Xóa lịch sử tìm kiếm?</string>
+    <string name="are_you_sure">Bạn có chắc chắn?</string>
 </resources>

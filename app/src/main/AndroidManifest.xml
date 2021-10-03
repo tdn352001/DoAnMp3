@@ -19,19 +19,22 @@
         android:theme="@style/Theme.DoAnMp3"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".Activity.SplashActivity">
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.SplashActivity">
+
+        </activity>
         <activity android:name=".Activity.AddBaiHatActivity" />
         <activity android:name=".Activity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
-        <activity android:name=".Activity.LoginActivity">
-
-        </activity>
+        <activity android:name=".Activity.LoginActivity"/>
         <activity android:name=".Activity.DetailSingerActivity" />
         <activity android:name=".Activity.DanhSachBaiHatActivity" />
         <activity android:name=".Activity.AllCategoryActivity" />
@@ -41,8 +44,8 @@
         <activity android:name=".Activity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
         <activity android:name=".Activity.MainActivity" />
-
         <service android:name=".Service.MusicService" />
+
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 

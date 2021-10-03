@@ -27,5 +27,5 @@
     <color name="boxInPutFields">#0d6e6a</color>
     <color name="banner">#2F2F30</color>
     <color name="boder_line">#5C5C5C</color>
-
+    <color name="search_background">#DADAD8</color>
 </resources>

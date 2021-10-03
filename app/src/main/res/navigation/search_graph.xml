@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_graph"
-    app:startDestination="@id/recentSearchFragment">
+    app:startDestination="@id/searchRecentFragment">
 
     <fragment
-        android:id="@+id/recentSearchFragment"
-        android:name="com.example.doanmp3.Fragment.SearchFragment.RecentFragment"
-        android:label="RecentSearchFragment" >
+        android:id="@+id/searchRecentFragment"
+        android:name="com.example.doanmp3.Fragment.NewSearchFragment.SearchRecentFragment"
+        android:label="SearchRecentFragment" >
         <action
-            android:id="@+id/action_recentSearchFragment_to_resultSearchFragment"
-            app:destination="@id/resultSearchFragment" />
+            android:id="@+id/action_searchRecentFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
     </fragment>
     <fragment
-        android:id="@+id/resultSearchFragment"
-        android:name="com.example.doanmp3.Fragment.SearchFragment.ResultSearchFragment"
-        android:label="fragment_result_search"
-        tools:layout="@layout/fragment_result_search" />
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.doanmp3.Fragment.NewSearchFragment.SearchResultFragment"
+        android:label="SearchResultFragment" />
 </navigation>
