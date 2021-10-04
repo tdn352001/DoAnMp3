@@ -8,6 +8,7 @@ import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.Model.User;
+import com.example.doanmp3.NewModel.Genre;
 
 import java.util.List;
 
@@ -46,9 +47,14 @@ public interface DataService {
     @GET("getallsinger.php")
     Call<List<CaSi>> GetAllSinger();
 
+    @GET("getAllGenreAndTheme.php")
+    Call<List<Genre>> getAllGenreAndTheme();
+
 
     @GET("getalltheloai.php")
     Call<List<ChuDeTheLoai>> GetAllTheLoai();
+
+
 
     @GET("getallchude.php")
     Call<List<ChuDeTheLoai>> GetAllChuDe();

@@ -8,12 +8,15 @@
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/drawable/vertical_border.xml" value="0.16041666666666668" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/activity_all_singer.xml" value="0.1921875" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/activity_search.xml" value="0.1921875" />
+        <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/dong_baihat_user_playlist.xml" value="0.1" />
+        <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/dong_category.xml" value="0.15942028985507245" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_change_password.xml" value="0.11005434782608696" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_recent.xml" value="0.1921875" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_result_search.xml" value="0.1408514492753623" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_search.xml" value="0.1921875" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_search_recent.xml" value="0.25" />
         <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/fragment_search_result.xml" value="0.15989583333333332" />
+        <entry key="..\:/Users/NguyenTienDung/AndroidStudioProjects/DoAnMp3/app/src/main/res/layout/item_category.xml" value="0.15989583333333332" />
       </map>
     </option>
   </component>

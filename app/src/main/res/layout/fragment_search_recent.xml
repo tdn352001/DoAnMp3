@@ -16,76 +16,82 @@
             android:background="#f1f1f1"
             tools:ignore="UnusedAttribute" />
 
-
         <LinearLayout
-            android:id="@+id/layout_recent_search"
+            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:padding="8dp"
-            tools:ignore="UselessParent">
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/layout_recent_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
                 tools:ignore="UselessParent">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="UselessParent">
+
+
+                    <TextView
+                        android:id="@+id/txt_history_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:gravity="center_vertical"
+                        android:text="@string/search_recent"
+                        android:textColor="@color/black"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btn_delete_history_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:gravity="bottom"
+                        android:padding="8dp"
+                        android:text="@string/delete"
+                        android:textColor="#024560"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+                </RelativeLayout>
+
+                <com.wefika.flowlayout.FlowLayout
+                    android:id="@+id/layout_key_word_recent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_category_search_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_history_search"
+                    android:id="@+id/txt_category_recent_fragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:gravity="center_vertical"
-                    android:text="@string/search_recent"
+                    android:text="@string/category"
                     android:textColor="@color/black"
                     android:textSize="21sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/btn_delete_history_search"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_category_recent_fragment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:gravity="bottom"
-                    android:padding="8dp"
-                    android:text="@string/delete"
-                    android:textColor="#024560"
-                    android:textSize="16sp"
-                    tools:ignore="RelativeOverlap" />
-            </RelativeLayout>
-
-            <com.wefika.flowlayout.FlowLayout
-                android:id="@+id/layout_key_word_recent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                    android:paddingHorizontal="-10dp"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_category_search_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/txt_category_recent_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/category"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_category_recent_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
-        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

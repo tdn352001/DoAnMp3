@@ -19,6 +19,7 @@ public class SearchActivity extends AppCompatActivity {
     TextInputEditText edtSearch;
     NavController navController;
     NavHostFragment navHostFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class SearchActivity extends AppCompatActivity {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 String keyWord = Objects.requireNonNull(edtSearch.getText()).toString().trim();
                 if (!keyWord.equals("")) {
-                    DisplayResult(keyWord);
+                    NavigateToResult(keyWord);
                 }
             }
             return false;
@@ -68,10 +69,11 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    private void DisplayResult(String keyWord) {
+    private void NavigateToResult(String keyWord) {
         Bundle bundle = new Bundle();
         bundle.putString("keyword", keyWord);
         navController.navigate(R.id.action_searchRecentFragment_to_searchResultFragment, bundle);
     }
+
 }
 

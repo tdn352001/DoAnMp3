@@ -16,12 +16,13 @@
         app:elevation="4000dp">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout_result"
+            android:id="@+id/tab_layout_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
             android:fitsSystemWindows="true"
+            app:tabTextAppearance="@style/TabLayoutTextAppearance"
             app:layout_collapseMode="pin"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorAnimationMode="elastic"
@@ -38,12 +39,12 @@
             android:background="#f1f1f1" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager_search"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="12dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </androidx.viewpager.widget.ViewPager>
+    </androidx.viewpager2.widget.ViewPager2>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

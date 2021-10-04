@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.NewSearchFragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Adapter.AllCategoryAdapter;
-import com.example.doanmp3.Model.ChuDeTheLoai;
+import com.example.doanmp3.NewAdapter.GenreAdapter;
+import com.example.doanmp3.NewModel.Genre;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.NewDataService;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -39,8 +40,8 @@ public class SearchRecentFragment extends Fragment {
 
 
    /*==== Data ====*/
-    ArrayList<ChuDeTheLoai> categoryArrayList;
-    AllCategoryAdapter categoryAdapter;
+    ArrayList<Genre> genres;
+    GenreAdapter genreAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,25 +60,25 @@ public class SearchRecentFragment extends Fragment {
     }
 
     private void GetData() {
-        DataService dataService = APIService.getService();
-        Call<List<ChuDeTheLoai>> callback = dataService.GetAllTheLoai();
-        callback.enqueue(new Callback<List<ChuDeTheLoai>>() {
+        NewDataService dataService = APIService.newService();
+        Call<List<Genre>> callback = dataService.getAllGenreAndTheme();
+        callback.enqueue(new Callback<List<Genre>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Response<List<ChuDeTheLoai>> response) {
-                categoryArrayList = (ArrayList<ChuDeTheLoai>) response.body();
+            public void onResponse(@NonNull Call<List<Genre>> call, @NonNull Response<List<Genre>> response) {
+                genres = (ArrayList<Genre>) response.body();
                 InitRecyclerView();
             }
-
             @Override
-            public void onFailure(@NonNull Call<List<ChuDeTheLoai>> call, @NonNull Throwable t) {
-
+            public void onFailure(@NonNull Call<List<Genre>> call, @NonNull Throwable t) {
+                Log.e("EEE", "getAllGenreAndTheme Failed: " + t.getMessage());
             }
         });
     }
 
     private void InitRecyclerView() {
-        categoryAdapter = new AllCategoryAdapter(getActivity(), categoryArrayList, 1);
-        rvCategory.setAdapter(categoryAdapter);
+        genreAdapter = new GenreAdapter(getContext(), genres,
+                position -> Log.e("EEE", position + ""));
+        rvCategory.setAdapter(genreAdapter);
         rvCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }
 
@@ -93,7 +94,7 @@ public class SearchRecentFragment extends Fragment {
         dialog.setIcon(R.drawable.error);
         dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
         dialog.setPositiveButton(R.string.cancel, (dialog1, which) -> dialog1.dismiss());
-        dialog.setNegativeButton("Thực Hiện", (dialog12, which) -> DeleteHistory());
+        dialog.setNegativeButton(R.string.done, (dialog12, which) -> DeleteHistory());
         dialog.show();
     }
 

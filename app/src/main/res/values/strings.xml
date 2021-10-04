@@ -59,8 +59,8 @@
     <string name="stt">stt</string>
     <string name="no_info">Không Có Dữ Liệu :(</string>
     <string name="album_hot">ALBUM HOT</string>
-    <string name="song">Bài Hát</string>
-    <string name="singer">Ca Sĩ</string>
+    <string name="song">Bài hát</string>
+    <string name="singer">Ca sĩ</string>
     <string name="playlists">Playlists</string>
     <string name="loading">Đang Lấy Dữ Liệu</string>
     <string name="category"><![CDATA[Chủ Đề & Thể Loại]]></string>
@@ -94,4 +94,7 @@
     <string name="search">Search....</string>
     <string name="delete_history_search_title">Xóa lịch sử tìm kiếm?</string>
     <string name="are_you_sure">Bạn có chắc chắn?</string>
+    <string name="done">Thực hiện</string>
+    <string name="all">Tất cả</string>
+    <string name="playlist">Playlist</string>
 </resources>
