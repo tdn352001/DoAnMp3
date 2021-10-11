@@ -24,6 +24,8 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
         this.titles = titles;
     }
 
+
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -49,5 +51,24 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
 
     public void setTitles(ArrayList<String> titles) {
         this.titles = titles;
+    }
+
+    public int getFragmentsIdFromPosition(int position){
+        if(fragments == null || fragments.size() > position)
+            return 0;
+
+        return fragments.get(position).getId();
+    }
+
+    public int getPositionFromId(int id){
+        if(fragments == null)
+            return 0;
+
+        for(int i = 0; i < fragments.size(); i++){
+            if(fragments.get(i).getId() == id)
+                return i;
+        }
+
+        return 0;
     }
 }

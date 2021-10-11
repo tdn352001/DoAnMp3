@@ -93,20 +93,20 @@ public class BaiHat implements Parcelable {
     }
 
     public String getTenAllCaSi() {
-        String TenCaSi = "";
+        StringBuilder TenCaSi = new StringBuilder();
         if (caSi != null) {
             if (caSi.size() > 0) {
                 for (int i = 0; i < caSi.size(); i++) {
                     if (i != 0)
-                        TenCaSi = TenCaSi + ", ";
+                        TenCaSi.append(", ");
 
-                    TenCaSi = TenCaSi + getCaSi().get(i);
+                    TenCaSi.append(getCaSi().get(i));
                 }
-                return TenCaSi;
+                return TenCaSi.toString();
             }
         }
-        TenCaSi = "Unknown";
-        return TenCaSi;
+        TenCaSi = new StringBuilder("Unknown");
+        return TenCaSi.toString();
     }
 
 

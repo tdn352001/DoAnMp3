@@ -1,65 +1,86 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewAdapter.SongAdapter;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SongResultFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class SongResultFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SongResultFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SongResultFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SongResultFragment newInstance(String param1, String param2) {
-        SongResultFragment fragment = new SongResultFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    View view;
+    RecyclerView rvSong;
+    ArrayList<Song> songs;
+    SongAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_song_result, container, false);
+        view = inflater.inflate(R.layout.fragment_song_result, container, false);
+        InitControls();
+        InitData();
+        SetUpRecycleView();
+        return view;
+    }
+
+    private void InitControls() {
+        rvSong = view.findViewById(R.id.rv_search_result_song);
+    }
+
+    private void InitData() {
+        songs = new ArrayList<>();
+        adapter = new SongAdapter(getActivity(), songs, new SongAdapter.ItemClick() {
+            @Override
+            public void itemClick(int position) {
+                Log.e("EEE", "Item Click");
+            }
+
+            @Override
+            public void optionClick(int position) {
+                Log.e("EEE", "option Click");
+            }
+        }, (itemView, position) -> {
+            LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);
+            int paddingSize = (int) getResources().getDimensionPixelSize(R.dimen._12dp);
+            itemSong.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
+            if(position % 2 == 0){
+                itemView.setBackgroundResource(R.color.alabaster);
+            }else{
+                itemView.setBackgroundResource(R.color.white);
+            }
+
+        });
+
+    }
+
+    private void SetUpRecycleView() {
+        LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        rvSong.setAdapter(adapter);
+        rvSong.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        rvSong.setLayoutAnimation(layoutAnimation);
+    }
+
+    public void DisplayResult(List<Song> songsResult){
+        if(songsResult == null){
+            Log.e("EEE", "Result Null");
+            return;
+        }
+        songs.clear();
+        songs = (ArrayList<Song>) songsResult;
+        adapter.setSongs(songs);
     }
 }

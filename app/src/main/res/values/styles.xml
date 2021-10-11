@@ -4,5 +4,7 @@
     <style name="TabLayoutTextAppearance"
         parent="TextAppearance.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
+        <item name="android:textSize"> 15sp</item>
     </style>
+
 </resources>

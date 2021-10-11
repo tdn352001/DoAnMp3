@@ -117,4 +117,5 @@ public class SearchRecentFragment extends Fragment {
 //            }
 //        });
     }
+
 }

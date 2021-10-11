@@ -14,7 +14,7 @@ public class Playlist implements Serializable {
     private String name;
     @SerializedName("thumbnail")
     @Expose
-    private String image;
+    private String thumbnail;
 
     public String getId() {
         return id;
@@ -32,11 +32,15 @@ public class Playlist implements Serializable {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public Object convertToObject(){
+        return new Object(this.name, this.thumbnail);
     }
 }

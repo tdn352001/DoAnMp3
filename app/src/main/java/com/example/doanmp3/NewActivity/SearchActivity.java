@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.NewActivity;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,14 +24,20 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        initUI();
+        InitControls();
+        InitUI();
+
         handleEvent();
     }
 
-    private void initUI() {
+    private void InitControls() {
         edtSearch = findViewById(R.id.edt_search);
         navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.search_container);
         navController = Objects.requireNonNull(navHostFragment).getNavController();
+    }
+
+    private void InitUI() {
+        edtSearch.requestFocus();
     }
 
     private void handleEvent() {
@@ -59,8 +65,8 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String keyWord = s.toString();
-                if(keyWord.equals("")){
-                    if(Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.searchResultFragment){
+                if (keyWord.equals("")) {
+                    if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.searchResultFragment) {
                         navController.navigateUp();
                     }
                 }
@@ -71,7 +77,10 @@ public class SearchActivity extends AppCompatActivity {
 
     private void NavigateToResult(String keyWord) {
         Bundle bundle = new Bundle();
-        bundle.putString("keyword", keyWord);
+        bundle.putString("keyWord", keyWord);
+        if (navController.getCurrentDestination().getId() == R.id.searchResultFragment) {
+            navController.navigateUp();
+        }
         navController.navigate(R.id.action_searchRecentFragment_to_searchResultFragment, bundle);
     }
 

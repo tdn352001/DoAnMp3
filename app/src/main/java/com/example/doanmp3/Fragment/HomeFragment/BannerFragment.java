@@ -7,93 +7,84 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.Adapter.BannerAdapter;
-import com.example.doanmp3.Model.QuangCao;
+import com.example.doanmp3.NewAdapter.SlideAdapter;
+import com.example.doanmp3.NewModel.Slide;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
-
-import org.jetbrains.annotations.NotNull;
+import com.example.doanmp3.Service.NewDataService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.relex.circleindicator.CircleIndicator;
+import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BannerFragment extends Fragment {
     View view;
-    ViewPager viewPager;
-    CircleIndicator indicator;
-    BannerAdapter adapter;
+    ViewPager2 sliderViewPager;
+    CircleIndicator3 circleIndicatorSlider;
+    SlideAdapter slideAdapter;
+    ArrayList<Slide> slides;
     Handler handler;
     Runnable runnable;
-    int CurrentItem;
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_banner, container, false);
-        AnhXa();
-        GetData();
+        InitControls();
+        InitRunnable();
+        GetDataSlide();
+        HandleEvent();
         return view;
     }
 
-    private void AnhXa() {
-        viewPager = view.findViewById(R.id.viewpager_banner);
-        indicator = view.findViewById(R.id.CircleIndicator);
+    private void InitControls() {
+        sliderViewPager = view.findViewById(R.id.viewpager_banner);
+        circleIndicatorSlider = view.findViewById(R.id.CircleIndicator);
     }
 
-    private void GetData() {
-        DataService dataService= APIService.getService();
-        Call<List<QuangCao>> callback =  dataService.GetDataBanner();
-        callback.enqueue(new Callback<List<QuangCao>>() {
+    private void InitRunnable() {
+
+    }
+
+    private void GetDataSlide() {
+        NewDataService dataService = APIService.newService();
+        Call<List<Slide>> callback = dataService.getSlides();
+        callback.enqueue(new Callback<List<Slide>>() {
             @Override
-            public void onResponse(Call<List<QuangCao>> call, @NotNull Response<List<QuangCao>> response) {
-                ArrayList<QuangCao>  banners= (ArrayList<QuangCao>) response.body();
-                adapter = new BannerAdapter(getActivity(), banners);
-                viewPager.setAdapter(adapter);
-                indicator.setViewPager(viewPager);
-                handler = new Handler();
-                runnable = () -> {
-                    CurrentItem = viewPager.getCurrentItem();
-                    CurrentItem++;
-                    if(CurrentItem >= viewPager.getAdapter().getCount())
-                        CurrentItem=0;
-
-                    viewPager.setCurrentItem(CurrentItem);
-                    handler.postDelayed(runnable, 4000);
-                };
-
-                handler.postDelayed(runnable, 4000);
+            public void onResponse(@NonNull Call<List<Slide>> call, @NonNull Response<List<Slide>> response) {
+                slides = (ArrayList<Slide>) response.body();
+                if (slides == null) {
+                    slides = new ArrayList<>();
+                    Log.e("EEE", "slide null");
+                }
+                SetSlider();
+                Log.e("EEE", slides.get(0).getSong().getName());
             }
-
             @Override
-            public void onFailure(Call<List<QuangCao>> call, Throwable t) {
-                Log.e("BBBB", t.getMessage());
+            public void onFailure(@NonNull Call<List<Slide>> call, @NonNull Throwable t) {
+
             }
         });
+    }
 
+    private void SetSlider() {
+        slideAdapter = new SlideAdapter(getContext(), slides, position -> Log.e("EEE", position + ""));
+        sliderViewPager.setAdapter(slideAdapter);
+        circleIndicatorSlider.setViewPager(sliderViewPager);
+    }
 
-
-        MainActivity.LoadingComplete();
+    private void HandleEvent() {
 
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-    }
 
 
 

@@ -1,0 +1,171 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_slider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:paddingTop="50dp">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_slider"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/circle_indicator3"
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_alignBottom="@id/view_pager_slider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_pager_slider"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessParent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_image_with_background_blue"
+                android:paddingVertical="6dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:src="@drawable/ic_melody"
+                tools:ignore="RtlSymmetry,UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/new_song"
+                android:textColor="@color/dark_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessParent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_image_with_background_orange"
+                android:src="@drawable/ic_genre"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/genre"
+                android:textColor="@color/dark_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessParent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_image_with_background_purple"
+                android:paddingHorizontal="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/ic_start"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/top_100"
+                android:textColor="@color/dark_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessParent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_image_with_background_royal_blue"
+                android:padding="6dp"
+                android:src="@drawable/ic_camera"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/top_mv"
+                android:textColor="@color/dark_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessParent">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded_image_with_background_yellow_sea"
+                android:padding="4dp"
+                android:src="@drawable/ic_vip"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/VIP"
+                android:textColor="@color/dark_gray" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

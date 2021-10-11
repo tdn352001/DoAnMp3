@@ -97,4 +97,13 @@
     <string name="done">Thực hiện</string>
     <string name="all">Tất cả</string>
     <string name="playlist">Playlist</string>
+    <string name="search_failed">Tìm kiếm thất bại!! 😢😢</string>
+    <string name="personal">Cá nhân</string>
+    <string name="home">Trang chủ</string>
+    <string name="news">Bảng tin</string>
+    <string name="new_song">Nhạc mới</string>
+    <string name="genre">Thể loại</string>
+    <string name="top_100">Top 100</string>
+    <string name="top_mv">Top Mv</string>
+    <string name="VIP">VIP</string>
 </resources>

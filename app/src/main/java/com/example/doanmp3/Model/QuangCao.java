@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName;
 
 public class QuangCao {
 
-    @SerializedName("IdQuangCao")
+    @SerializedName("id")
     @Expose
     private String idQuangCao;
-    @SerializedName("HinhAnh")
+    @SerializedName("Thumbnail")
     @Expose
     private String hinhAnh;
-    @SerializedName("NoiDung")
+    @SerializedName("content")
     @Expose
     private String noiDung;
-    @SerializedName("IdBaiHat")
+    @SerializedName("idBaiHat")
     @Expose
     private String idBaiHat;
     @SerializedName("TenBaiHat")
