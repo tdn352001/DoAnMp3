@@ -3,9 +3,11 @@ package com.example.doanmp3.NewAdapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,20 +129,35 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.ViewHolder>{
                     colorArraylist.add(swatch5.getRgb());
                 }
 
-                int[] colorsSlide = colorArraylist.stream().mapToInt(i -> i).toArray();
-                for(int i = 0; i < colorsSlide.length; i++){
-                    colorsSlide[i] = ColorUtils.setAlphaComponent(colorsSlide[i], 100);
+                Palette.Swatch swatch6 = palette.getDarkVibrantSwatch();
+                if(swatch6 != null){
+                    colorArraylist.add(swatch6.getRgb());
                 }
 
-                GradientDrawable gradientDrawableSlide = new GradientDrawable(GradientDrawable.Orientation.TR_BL, colorsSlide);
+                ArrayList<Integer> colorSlides = new ArrayList<>();
+                colorSlides.addAll(colorArraylist);
+                colorSlides.addAll(colorArraylist);
+                colorArraylist.clear();
+                Log.e("EEE", "" + colorSlides.size());
 
-                color = ColorUtils.blendARGB(color, context.getColor(R.color.white), 0.8f);
+                int[] colorsSlide = colorSlides.stream().mapToInt(i -> i).toArray();
+                for(int i = 0; i < colorsSlide.length; i++){
+                    colorsSlide[i] = ColorUtils.blendARGB(colorsSlide[i], context.getColor(R.color.tutu), 0.3f);
+                    colorsSlide[i] = brighter( colorsSlide[i], 0.1f);
+                }
+
+                GradientDrawable gradientDrawableSlide = new GradientDrawable(GradientDrawable.Orientation.TL_BR, colorsSlide);
+
+                color = ColorUtils.blendARGB(color, context.getColor(R.color.tutu), 0.5f);
                 color = ColorUtils.setAlphaComponent(color, 36);
                 backgroundDrawables.add( gradientDrawableSlide);
                 colorNav.add(color);
             }
         });
     }
+
+
+    //#E8DDE4
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         RoundedImageView thumbnail;
@@ -154,4 +171,13 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.ViewHolder>{
         void itemClick(int position);
     }
 
+    private int  brighter(int color, float factor) {
+        float[] hsv = new float[3];
+        color = ColorUtils.setAlphaComponent(color, 100);
+        Color.colorToHSV(color, hsv);
+        hsv[1] *= (1f + factor);
+        hsv[2] *= (1f + factor);
+        color = Color.HSVToColor(hsv);
+        return color;
+    }
 }

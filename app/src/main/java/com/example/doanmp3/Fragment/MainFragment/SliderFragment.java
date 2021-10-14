@@ -41,6 +41,7 @@ public class SliderFragment extends Fragment {
 
     Handler handler;
     Runnable runnable;
+    int connectAgainst;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +55,7 @@ public class SliderFragment extends Fragment {
     }
 
     private void InitControls() {
+        connectAgainst = 0;
         sliderViewPager = view.findViewById(R.id.view_pager_slider);
         circleIndicatorSlider = view.findViewById(R.id.circle_indicator3);
         layoutSlider = view.findViewById(R.id.layout_slider);
@@ -92,7 +94,10 @@ public class SliderFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Slide>> call, @NonNull Throwable t) {
-
+                if(connectAgainst < 3){
+                    GetDataSlide();
+                    connectAgainst++;
+                }
             }
         });
     }
@@ -102,6 +107,7 @@ public class SliderFragment extends Fragment {
         sliderViewPager.setAdapter(slideAdapter);
         circleIndicatorSlider.setViewPager(sliderViewPager);
         sliderViewPager.setPageTransformer(new ZoomOutPageTransformer());
+        sliderViewPager.requestDisallowInterceptTouchEvent(true);
     }
 
     private void HandleEvent() {

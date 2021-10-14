@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/like_object"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_hate"
+        android:iconTint="@color/dark_gray"
+        android:title="@string/like"
+        tools:ignore="UnusedAttribute" />
+    <item
+        android:id="@+id/comment_object"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_message"
+        android:iconTint="@color/dark_gray"
+        android:title="@string/comment"
+        tools:ignore="UnusedAttribute" />
+
+    <item
+        android:id="@+id/options_object"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_options"
+        android:iconTint="@color/dark_gray"
+        android:title="@string/options"
+        tools:ignore="UnusedAttribute" />
+
+
+</menu>

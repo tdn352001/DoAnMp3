@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.doanmp3.NewAdapter.ViewPager2Adapter;
+import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
 import com.example.doanmp3.NewModel.ResultSearch;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -47,7 +47,7 @@ public class SearchResultFragment extends Fragment {
     PlaylistResultFragment playlistResultFragment;
 
     // ViewPagerData
-    ViewPager2Adapter adapter;
+    ViewPager2StateAdapter adapter;
     ArrayList<Fragment> fragments;
     ArrayList<String> titleTab;
     int trySearchAgain = 0;
@@ -98,7 +98,7 @@ public class SearchResultFragment extends Fragment {
 
     private void SetUpViewPagerAndTab() {
         // Setup ViewPager
-        adapter = new ViewPager2Adapter(this, fragments, titleTab);
+        adapter = new ViewPager2StateAdapter(this, fragments, titleTab);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
         viewPager.setCurrentItem(1);

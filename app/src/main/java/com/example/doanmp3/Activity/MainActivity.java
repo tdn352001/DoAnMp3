@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -120,26 +119,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void setupBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
-                switch (item.getItemId()) {
-                    case R.id.searchFragment:
-                        viewPager.setCurrentItem(2);
-                        break;
-                    case R.id.homeFragment:
-                        viewPager.setCurrentItem(1);
-                        break;
-                    case R.id.userFragment:
-                        viewPager.setCurrentItem(0);
-                        break;
-                }
-
-                return true;
+            switch (item.getItemId()) {
+                case R.id.searchFragment:
+                    viewPager.setCurrentItem(2);
+                    break;
+                case R.id.homeFragment:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.userFragment:
+                    viewPager.setCurrentItem(0);
+                    break;
             }
+
+            return true;
         });
     }
 
@@ -210,14 +206,14 @@ public class MainActivity extends AppCompatActivity {
         Call<List<Playlist>> callback = dataService.GetUserPlaylist(MainActivity.user.getIdUser());
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
-            public void onResponse(Call<List<Playlist>> call, Response<List<Playlist>> response) {
+            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
                 userPlaylist = (ArrayList<Playlist>) response.body();
                 if (userPlaylist == null)
                     userPlaylist = new ArrayList<>();
             }
 
             @Override
-            public void onFailure(Call<List<Playlist>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
 
             }
         });

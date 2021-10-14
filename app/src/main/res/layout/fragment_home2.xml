@@ -17,6 +17,24 @@
             android:name="com.example.doanmp3.Fragment.MainFragment.SliderFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_album"
+            android:name="com.example.doanmp3.Fragment.MainFragment.AlbumFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_playlist"
+            android:name="com.example.doanmp3.Fragment.MainFragment.PlaylistFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_singer"
+            android:name="com.example.doanmp3.Fragment.MainFragment.SingerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

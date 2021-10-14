@@ -1,14 +1,12 @@
 package com.example.doanmp3.NewModel;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Album implements Parcelable {
+public class Song implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -21,24 +19,17 @@ public class Album implements Parcelable {
     @SerializedName("thumbnail")
     @Expose
     private String thumbnail;
+    @SerializedName("link")
+    @Expose
+    private String link;
+    @SerializedName("liked")
+    @Expose
+    private String liked;
 
-    protected Album(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        thumbnail = in.readString();
+    public Song() {
+        liked = "0";
     }
 
-    public static final Creator<Album> CREATOR = new Creator<Album>() {
-        @Override
-        public Album createFromParcel(Parcel in) {
-            return new Album(in);
-        }
-
-        @Override
-        public Album[] newArray(int size) {
-            return new Album[size];
-        }
-    };
 
     public String getId() {
         return id;
@@ -50,6 +41,10 @@ public class Album implements Parcelable {
 
     public List<Singer> getSingers() {
         return singers;
+    }
+
+    public void setSingers(List<Singer> singers) {
+        this.singers = singers;
     }
 
     public String getName() {
@@ -66,6 +61,22 @@ public class Album implements Parcelable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getLiked() {
+        return liked;
+    }
+
+    public void setLiked(String liked) {
+        this.liked = liked;
     }
 
     public String getAllSingerNames() {
@@ -85,17 +96,5 @@ public class Album implements Parcelable {
 
     public Object convertToObject(){
         return new Object(this.name, this.thumbnail);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(thumbnail);
     }
 }

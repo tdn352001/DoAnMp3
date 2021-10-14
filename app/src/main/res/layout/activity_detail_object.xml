@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_detail_object"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_app_bar_detail_object"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:elevation="40dp"
+
+        tools:targetApi="lollipop">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/layout_collapsing_tool_bar_detail_object"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:paddingBottom="5dp"
+            app:titleCollapseMode="fade"
+            android:scrollbarStyle="insideOverlay"
+            app:expandedTitleGravity="center|bottom"
+            app:expandedTitleMarginBottom="40dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/thumbnail_detail_object"
+                android:layout_width="45mm"
+                android:layout_height="45mm"
+                android:layout_gravity="center"
+                android:layout_marginTop="8mm"
+                android:layout_marginBottom="8mm"
+                android:elevation="15dp"
+                app:layout_scrollFlags="noScroll"
+                android:scaleType="fitXY"
+                app:riv_corner_radius="12dp"
+                tools:ignore="InOrMmUsage"
+                tools:targetApi="lollipop" />
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_detail_object"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="35dp"
+                app:layout_collapseMode="pin"
+                app:collapseContentDescription="@string/subtitle"
+                app:titleMargin="12dp"
+                tools:targetApi="lollipop" />
+
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_anchor="@id/layout_app_bar_detail_object"
+        app:layout_anchorGravity="center|bottom"
+        app:elevation="12dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_action_play_random"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#8946AD"
+            android:paddingHorizontal="25dp"
+            android:src="@drawable/icon_random"
+            android:text="@string/play_random"
+            android:textColor="@color/white"
+            app:cornerRadius="15dp"
+            app:elevation="12dp"
+            app:fabSize="auto"
+            tools:targetApi="lollipop" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_detail_object"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/layout_more_info_object"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contributing_artists"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_singer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:nestedScrollingEnabled="true"
+                    tools:targetApi="lollipop" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">MP Pro</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -58,7 +58,7 @@
     <string name="delete">Xóa</string>
     <string name="stt">stt</string>
     <string name="no_info">Không Có Dữ Liệu :(</string>
-    <string name="album_hot">ALBUM HOT</string>
+    <string name="album_hot">Album hot</string>
     <string name="song">Bài hát</string>
     <string name="singer">Ca sĩ</string>
     <string name="playlists">Playlists</string>
@@ -70,7 +70,7 @@
     <string name="no_data">Không Có Dữ Liệu</string>
     <string name="dang_tai">Loading....!</string>
     <string name="you_may_like">Có Thể Bạn Sẽ Thích</string>
-    <string name="search_recent">Tìm Kiếm Gần Đây...</string>
+    <string name="search_recent" tools:ignore="TypographyEllipsis">Tìm Kiếm Gần Đây...</string>
     <string name="play_recent">Nghe Gần Gần Đây</string>
     <string name="no_result">Không Tìm Thấy Kết Quả</string>
     <string name="singer_goi_y">Nghệ Sĩ Nổi Bật</string>
@@ -106,4 +106,10 @@
     <string name="top_100">Top 100</string>
     <string name="top_mv">Top Mv</string>
     <string name="VIP">VIP</string>
+    <string name="featured_singer">Ca sĩ nổi bật</string>
+    <string name="contributing_artists">Nghệ sĩ đóng góp</string>
+    <string name="like">Yêu thích</string>
+    <string name="comment">Bình luận</string>
+    <string name="options">Tùy chọn</string>
+    <string name="subtitle">Subtitle</string>
 </resources>

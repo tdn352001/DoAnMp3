@@ -2,19 +2,20 @@ package com.example.doanmp3.NewActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Fragment.MainFragment.HomeFragment;
 import com.example.doanmp3.Fragment.MainFragment.NewsFragment;
 import com.example.doanmp3.Fragment.MainFragment.UserFragment;
-import com.example.doanmp3.NewAdapter.ViewPager2Adapter;
+import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
 import com.example.doanmp3.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -24,17 +25,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    ViewPager2 viewPager;
+    ViewPager viewPager;
     LinearLayout searchLayout;
     CircleImageView userThumbnail;
     TextInputEditText edtSearch;
-    MaterialButton btnOptions;
+    ImageView btnOptions;
 
     //Fragments
     UserFragment userFragment;
     HomeFragment homeFragment;
     NewsFragment newsFragment;
-    ViewPager2Adapter adapter;
+    ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
     private void SetUpBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.userFragment:
-                    viewPager.setCurrentItem(0);
-                    break;
                 case R.id.newsFragment:
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.userFragment:
                     viewPager.setCurrentItem(2);
                     break;
                 default:
-                    viewPager.setCurrentItem(1);
+                    viewPager.setCurrentItem(0);
             }
             return true;
         });
@@ -81,28 +82,27 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void SetUpViewPager() {
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(userFragment);
         fragments.add(homeFragment);
         fragments.add(newsFragment);
-        adapter = new ViewPager2Adapter(this, fragments, null);
+        fragments.add(userFragment);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
-        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
                 int id;
                 switch (position) {
-                    case 0:
-                        id = R.id.userFragment;
+                    case 1:
+                        id = R.id.newsFragment;
                         break;
                     case 2:
-                        id = R.id.newsFragment;
+                        id = R.id.userFragment;
                         break;
                     default:
                         id = R.id.homeFragment;
@@ -112,11 +112,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
+
             }
         });
-        viewPager.setCurrentItem(1);
-
     }
 
 }
