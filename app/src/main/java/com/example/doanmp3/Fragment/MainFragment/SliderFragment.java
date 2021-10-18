@@ -107,7 +107,7 @@ public class SliderFragment extends Fragment {
         sliderViewPager.setAdapter(slideAdapter);
         circleIndicatorSlider.setViewPager(sliderViewPager);
         sliderViewPager.setPageTransformer(new ZoomOutPageTransformer());
-        sliderViewPager.requestDisallowInterceptTouchEvent(true);
+//        sliderViewPager.requestDisallowInterceptTouchEvent(true);
     }
 
     private void HandleEvent() {

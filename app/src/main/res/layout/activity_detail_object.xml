@@ -14,7 +14,6 @@
         android:backgroundTint="@android:color/transparent"
         android:fitsSystemWindows="true"
         app:elevation="40dp"
-
         tools:targetApi="lollipop">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -23,22 +22,23 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:paddingBottom="5dp"
-            app:titleCollapseMode="fade"
             android:scrollbarStyle="insideOverlay"
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="40dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleCollapseMode="fade">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/thumbnail_detail_object"
                 android:layout_width="45mm"
                 android:layout_height="45mm"
                 android:layout_gravity="center"
-                android:layout_marginTop="8mm"
+                android:layout_marginTop="10mm"
                 android:layout_marginBottom="8mm"
                 android:elevation="15dp"
-                app:layout_scrollFlags="noScroll"
+                android:fitsSystemWindows="true"
                 android:scaleType="fitXY"
+                app:layout_scrollFlags="enterAlways"
                 app:riv_corner_radius="12dp"
                 tools:ignore="InOrMmUsage"
                 tools:targetApi="lollipop" />
@@ -49,11 +49,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="35dp"
-                app:layout_collapseMode="pin"
                 app:collapseContentDescription="@string/subtitle"
+                app:layout_collapseMode="pin"
                 app:titleMargin="12dp"
                 tools:targetApi="lollipop" />
-
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -65,9 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        app:elevation="12dp"
         app:layout_anchor="@id/layout_app_bar_detail_object"
         app:layout_anchorGravity="center|bottom"
-        app:elevation="12dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <com.google.android.material.button.MaterialButton
@@ -102,7 +101,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail_object"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
 
             <LinearLayout
                 android:id="@+id/layout_more_info_object"

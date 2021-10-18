@@ -68,9 +68,9 @@ public class PlayFragment extends Fragment {
 
     public void setHinh(String link, boolean isAudio) {
         if (isAudio)
-            circleImageView.setImageResource(R.drawable.img_disknhac);
+            circleImageView.setImageResource(R.drawable.img_disk);
         else
-            Picasso.with(getContext()).load(link).error(R.drawable.img_disknhac).error(R.drawable.img_disknhac).into(circleImageView);
+            Picasso.with(getContext()).load(link).error(R.drawable.img_disk).error(R.drawable.img_disk).into(circleImageView);
     }
 
     @SuppressLint("SetTextI18n")

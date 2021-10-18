@@ -61,9 +61,8 @@ public class SongsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_object);
-        GetDataObject();
         InitControls();
-        SetupToolBar();
+        GetDataObject();
     }
 
     private void InitControls() {
@@ -77,10 +76,10 @@ public class SongsListActivity extends AppCompatActivity {
         connectAgainst = 0;
     }
 
-    private void SetupToolBar() {
+    private void SetupToolBar(String title) {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        toolbar.setSubtitle(R.string.subtitle);
+        toolbar.setTitle(title);
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
@@ -92,21 +91,23 @@ public class SongsListActivity extends AppCompatActivity {
             return;
         }
 
+        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
+        GetSongsFromPlaylist(myPlaylist.getId());
+        SetUpUi(myPlaylist.getThumbnail());
+        SetupToolBar(myPlaylist.getName());
 
         if(intent.hasExtra("album")){
             Album album = intent.getParcelableExtra("album");
             GetSongsFromAlbum(album.getId());
+            SetupToolBar(album.getName());
             SetUpUi(album.getThumbnail());
             return;
         }
 
-        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
-        GetSongsFromPlaylist(myPlaylist.getId());
-        SetUpUi(myPlaylist.getThumbnail());
-
         if(intent.hasExtra("playlist")){
             Playlist playlist = intent.getParcelableExtra("playlist");
             GetSongsFromPlaylist(playlist.getId());
+            SetupToolBar(playlist.getName());
             SetUpUi(playlist.getThumbnail());
         }
     }
