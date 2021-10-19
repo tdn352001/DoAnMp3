@@ -1,12 +1,14 @@
 package com.example.doanmp3.NewModel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class Song implements Serializable {
+public class Song implements Parcelable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -30,6 +32,42 @@ public class Song implements Serializable {
         liked = "0";
     }
 
+
+    protected Song(Parcel in) {
+        id = in.readString();
+        singers = in.createTypedArrayList(Singer.CREATOR);
+        name = in.readString();
+        thumbnail = in.readString();
+        link = in.readString();
+        liked = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeTypedList(singers);
+        dest.writeString(name);
+        dest.writeString(thumbnail);
+        dest.writeString(link);
+        dest.writeString(liked);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -67,17 +105,11 @@ public class Song implements Serializable {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
 
     public String getLiked() {
         return liked;
     }
 
-    public void setLiked(String liked) {
-        this.liked = liked;
-    }
 
     public String getAllSingerNames() {
         if (singers == null || singers.size() == 0) {
@@ -97,4 +129,6 @@ public class Song implements Serializable {
     public Object convertToObject(){
         return new Object(this.name, this.thumbnail);
     }
+
+
 }

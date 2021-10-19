@@ -54,7 +54,7 @@
         <activity android:name=".Activity.MainActivity" />
 
         <service android:name=".Service.MusicService" />
-
+        <service android:name=".Service.MusicForegroundService"/>
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 

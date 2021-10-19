@@ -70,4 +70,8 @@ public class ListSongPlayingFragment extends Fragment {
         }
         return  songAdapter.getBackgroundDrawables().get(position);
     }
+
+    public ArrayList<Bitmap> getBitmaps() {
+        return songAdapter.getBackgroundDrawables();
+    }
 }
