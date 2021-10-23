@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:gravity="center"
     android:layout_marginVertical="10dp"
-    android:paddingHorizontal="10dp"
-    android:orientation="horizontal">
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/thumbnail_item_song_selected"
@@ -22,30 +22,31 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
 
         <TextView
             android:id="@+id/tv_name_song_item_song"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginEnd="3dp"
-            android:layout_marginRight="3dp"
             android:ellipsize="end"
+            android:lineHeight="20dp"
             android:maxLines="1"
-            android:textSize="16sp" />
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/tv_name_singers_item_song_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
+            android:lineHeight="18dp"
             android:maxLines="1"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:ignore="UnusedAttribute" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

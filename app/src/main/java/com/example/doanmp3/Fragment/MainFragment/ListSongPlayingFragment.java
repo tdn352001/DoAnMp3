@@ -71,7 +71,23 @@ public class ListSongPlayingFragment extends Fragment {
         return  songAdapter.getBackgroundDrawables().get(position);
     }
 
+    @SuppressLint("SetTextI18n")
+    public void SetGenre(String category, String genreName){
+        tvGenres.setText(category + genreName);
+    }
+
+    public void SetSongInfo(String songName, String singersName){
+        String SongName = getString(R.string.song_name) +songName;
+        String SingersName = getString(R.string.singers_name) + singersName;
+        tvSongName.setText(SongName);
+        tvSingersName.setText(SingersName);
+    }
+
     public ArrayList<Bitmap> getBitmaps() {
         return songAdapter.getBackgroundDrawables();
+    }
+
+    public void ChangeItemSelected(int position){
+        songAdapter.changeItemSelected(position);
     }
 }

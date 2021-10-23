@@ -134,8 +134,10 @@ public class SongSelectedAdapter extends RecyclerView.Adapter<SongSelectedAdapte
 
     @SuppressLint("NotifyDataSetChanged")
     public void changeItemSelected(int newIndex) {
+        int oldSelectedIndex = itemSelected;
         itemSelected = newIndex;
-        notifyDataSetChanged();
+        notifyItemChanged(oldSelectedIndex);
+        notifyItemChanged(itemSelected);
     }
 
 

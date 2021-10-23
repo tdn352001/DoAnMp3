@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,6 +34,12 @@ public class SongPlayingFragment extends Fragment {
     private void InitControls() {
         songThumbnail = view.findViewById(R.id.thumbnail_song_playing);
         songInfo = view.findViewById(R.id.tv_info_song_playing);
+    }
+
+
+    public void SetSongInfo(Song song){
+        SetThumbnailDiskByBitmap(null, song.getThumbnail());
+        SetSongInfo(song.getName(), song.getAllSingerNames());
     }
 
     public void SetThumbnailDiskByBitmap(Bitmap bitmap, String link) {

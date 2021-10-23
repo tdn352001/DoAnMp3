@@ -30,11 +30,11 @@
         </activity>
         <activity
             android:name=".NewActivity.SongsListActivity"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity
             android:name=".NewActivity.MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".NewActivity.SearchActivity"
             android:exported="true" />
@@ -54,7 +54,9 @@
         <activity android:name=".Activity.MainActivity" />
 
         <service android:name=".Service.MusicService" />
-        <service android:name=".Service.MusicForegroundService"/>
+        <service
+            android:name=".Service.MusicForegroundService" />
+
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>
 
