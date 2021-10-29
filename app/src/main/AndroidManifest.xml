@@ -18,31 +18,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAnMp3"
         android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".NewActivity.PlaySongsActivity"
-            android:exported="true">
+            android:name=".NewActivity.ChangeInfoUserActivity"
+            android:exported="true" />
+        <activity android:name=".NewActivity.MainActivity"></activity>
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".NewActivity.SongsListActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".NewActivity.MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".NewActivity.SearchActivity"
-            android:exported="true" />
+        <activity android:name=".NewActivity.PlaySongsActivity" />
+        <activity android:name=".NewActivity.SongsListActivity" />
+        <activity android:name=".NewActivity.SearchActivity" />
         <activity android:name=".Activity.SplashActivity" />
         <activity android:name=".Activity.AddBaiHatActivity" />
         <activity android:name=".Activity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
-        <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.DetailSingerActivity" />
         <activity android:name=".Activity.DanhSachBaiHatActivity" />
         <activity android:name=".Activity.AllCategoryActivity" />
@@ -54,8 +49,7 @@
         <activity android:name=".Activity.MainActivity" />
 
         <service android:name=".Service.MusicService" />
-        <service
-            android:name=".Service.MusicForegroundService" />
+        <service android:name=".Service.MusicForegroundService" />
 
         <receiver android:name=".Application.BroadcastReceiver" />
     </application>

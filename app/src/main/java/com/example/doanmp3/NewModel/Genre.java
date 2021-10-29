@@ -42,6 +42,7 @@ public class Genre implements Serializable {
     }
 
     public Object convertToObject(){
-        return new Object(this.name, this.thumbnail);
+        return new Object(this.id, this.name, this.thumbnail);
     }
+
 }

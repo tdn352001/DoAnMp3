@@ -10,35 +10,37 @@ import androidx.navigation.Navigation;
 
 import com.example.doanmp3.R;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
-
-    private long backtime;
+    private long backTime;
     NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        navController = Navigation.findNavController(this, R.id.fragment);
 
-
+        navController = Navigation.findNavController(this, R.id.fragmentContainerLogin);
     }
 
     @SuppressLint("ResourceType")
     @Override
     public void onBackPressed() {
-        if (navController.getCurrentDestination().getId() != R.id.loginFragment)
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() != R.id.loginFragment2)
             navController.navigateUp();
         else {
-            if (backtime + 2000 > System.currentTimeMillis()) {
+            if (backTime + 2000 > System.currentTimeMillis()) {
                 super.onBackPressed();
                 return;
             } else {
-                Toast.makeText(this, "Nhấn Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show();
             }
 
-            backtime = System.currentTimeMillis();
+            backTime = System.currentTimeMillis();
         }
     }
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.doanmp3.Service;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,12 +15,18 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.doanmp3.NewModel.Object;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class Tools {
 
@@ -193,4 +201,30 @@ public class Tools {
         }
         return hashText.toString();
     }
+
+    public static void hideSoftKeyBoard(FragmentActivity context) {
+        if(context == null) return;
+
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        if (imm.isAcceptingText()) {
+            View view = context.getCurrentFocus();
+            if(view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
+
+    public static boolean isObjectInObjects(Object object, ArrayList<Object> objects){
+        if(objects == null || object == null)
+            return false;
+
+        for(int i = 0; i < objects.size(); i++){
+            if(objects.get(i).getId().equals(object.getId()))
+                return true;
+        }
+
+        return false;
+    }
+
 }

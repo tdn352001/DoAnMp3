@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadata;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
@@ -156,40 +158,35 @@ public class MusicForegroundService extends Service {
     /*
      *  Push Notification
      */
+    @SuppressLint("InlinedApi")
     private void MusicControlNotification() {
 
 
         MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
-        mediaSessionCompat.setActive(true);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            MediaMetadata mediaMetadata = new MediaMetadata.Builder()
-//                    .putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration())
-//                    .build();
-//            mediaSessionCompat.setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetadata));
-//        }
-//
-//        mediaSessionCompat.setPlaybackState(new PlaybackStateCompat.Builder()
-//                .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
-//                .build());
-//
 
-        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder();
-        stateBuilder.setActions(
-                PlaybackStateCompat.ACTION_PLAY|
-                PlaybackStateCompat.ACTION_PAUSE|
-                PlaybackStateCompat.ACTION_SEEK_TO|
-                PlaybackStateCompat.ACTION_SKIP_TO_NEXT|
-                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+        mediaSessionCompat.setActive(true);
+        mediaSessionCompat.setMetadata(
+                new MediaMetadataCompat.Builder()
+                .putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration())
+                .build()
         );
-        mediaSessionCompat.setMediaButtonReceiver(null);
-        mediaSessionCompat.setPlaybackState(stateBuilder.build());
+        mediaSessionCompat.setPlaybackState(
+                new PlaybackStateCompat.Builder()
+                .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1)
+                .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                .build()
+        );
         mediaSessionCompat.setCallback(new MediaSessionCompat.Callback() {
             @Override
             public void onSeekTo(long pos) {
                 super.onSeekTo(pos);
-                Log.e("EEE", "Hello seek to");
+                Log.e("EEE", "Hello");
             }
         });
+
+        androidx.media.app.NotificationCompat.MediaStyle mediaStyle = new androidx.media.app.NotificationCompat.MediaStyle();
+        mediaStyle.setShowActionsInCompactView(1, 3);
+        mediaStyle.setMediaSession(mediaSessionCompat.getSessionToken());
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_song)
@@ -197,13 +194,11 @@ public class MusicForegroundService extends Service {
                 .setSubText(songs.get(currentSong).getName())
                 .setContentTitle(songs.get(currentSong).getName())
                 .setContentText(songs.get(currentSong).getAllSingerNames())
+                .setStyle(mediaStyle)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setSilent(true)
-                .addAction(R.drawable.ic_prev, "Previous", getPendingIntent(this, ACTION_PREVIOUS_SONG))
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1, 3)
-                        .setMediaSession(mediaSessionCompat.getSessionToken()))
-                .setProgress(10000, mediaPlayer.getCurrentPosition(), true);
+                .addAction(R.drawable.ic_prev, "Previous", getPendingIntent(this, ACTION_PREVIOUS_SONG));
+
 
         if (mediaPlayer.isPlaying())
             notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY_OR_PAUSE));

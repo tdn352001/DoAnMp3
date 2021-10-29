@@ -1,11 +1,13 @@
 package com.example.doanmp3.NewActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -16,7 +18,6 @@ import com.example.doanmp3.Fragment.MainFragment.UserFragment;
 import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
 import com.example.doanmp3.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     LinearLayout searchLayout;
     CircleImageView userThumbnail;
-    TextInputEditText edtSearch;
+    CardView searchView;
     ImageView btnOptions;
 
     //Fragments
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         InitFragment();
         SetUpBottomNavigation();
         SetUpViewPager();
+        HandleEvents();
     }
 
     private void InitControls() {
@@ -52,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager_main_activity);
         searchLayout = findViewById(R.id.layout_search_main_activity);
         userThumbnail = findViewById(R.id.thumbnail_user);
-        edtSearch = findViewById(R.id.edt_search_main_activity);
         btnOptions = findViewById(R.id.btn_options_main_activity);
+        searchView = findViewById(R.id.search_view);
     }
 
     private void InitFragment() {
@@ -114,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
 
             }
+        });
+    }
+
+    private void HandleEvents() {
+        searchView.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
         });
     }
 

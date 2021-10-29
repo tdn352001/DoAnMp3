@@ -32,6 +32,7 @@ import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -83,6 +84,7 @@ public class SongsListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+
     private void GetDataObject() {
         singerObjects = new ArrayList<>();
 
@@ -91,24 +93,24 @@ public class SongsListActivity extends AppCompatActivity {
             return;
         }
 
-        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
-        GetSongsFromPlaylist(myPlaylist.getId());
-        SetUpUi(myPlaylist.getThumbnail());
-        SetupToolBar(myPlaylist.getName());
+//        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
+//        GetSongsFromPlaylist(myPlaylist.getId());
+//        SetUpUi(myPlaylist.getThumbnail());
+//        SetupToolBar(myPlaylist.getName());
 
         if(intent.hasExtra("album")){
             Album album = intent.getParcelableExtra("album");
             GetSongsFromAlbum(album.getId());
-            SetupToolBar(album.getName());
             SetUpUi(album.getThumbnail());
+            SetupToolBar(album.getName());
             return;
         }
 
         if(intent.hasExtra("playlist")){
             Playlist playlist = intent.getParcelableExtra("playlist");
             GetSongsFromPlaylist(playlist.getId());
-            SetupToolBar(playlist.getName());
             SetUpUi(playlist.getThumbnail());
+            SetupToolBar(playlist.getName());
         }
     }
 
@@ -184,11 +186,12 @@ public class SongsListActivity extends AppCompatActivity {
         for(Song song : songs){
             for(Singer singer : song.getSingers()){
                 Object singerObject = singer.convertToObject();
-                if(!singerObjects.contains(singerObject)){
+                if(!Tools.isObjectInObjects(singerObject, singerObjects)){
                     singerObjects.add(singerObject);
                 }
             }
         }
+
         if(singerObjects.size() > 1){
             layoutMoreInfo.setVisibility(View.VISIBLE);
             SetUpRecycleViewSinger();

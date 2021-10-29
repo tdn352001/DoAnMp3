@@ -188,7 +188,7 @@
                 android:id="@+id/txt_haveac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/have_accout"
+                android:text="@string/have_account"
                 android:textColor="#0d6e6a"
                 android:textSize="16sp"
                 android:textStyle="bold" />

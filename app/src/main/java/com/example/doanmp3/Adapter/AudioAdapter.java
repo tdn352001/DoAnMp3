@@ -1,5 +1,6 @@
 package com.example.doanmp3.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -75,10 +76,10 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
                 SetupPopUpMenu(position, popupMenu);
                 popupMenu.show();
             }
-
         });
     }
 
+    @SuppressLint("RtlHardcoded")
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void SetupPopUpMenu(int position, PopupMenu popupMenu) {
         popupMenu.getMenuInflater().inflate(R.menu.menu_option_audio, popupMenu.getMenu());

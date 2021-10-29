@@ -37,40 +37,48 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:padding="4dp"
+            android:tint="@color/black"
             android:src="@drawable/ic_person"
             app:civ_circle_background_color="@color/white" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginHorizontal="12dp"
             android:layout_weight="1"
-            android:padding="0dp"
-            app:boxBackgroundColor="@color/alabaster"
-            app:boxCornerRadiusBottomEnd="20dp"
-            app:boxCornerRadiusBottomStart="20dp"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="@android:color/transparent"
-            app:boxStrokeWidth="0dp"
-            app:endIconCheckable="true"
-            app:endIconDrawable="@drawable/ic_mic"
-            app:endIconMode="custom"
-            app:hintEnabled="false"
-            app:startIconDrawable="@drawable/ic_search"
-            tools:targetApi="o">
+            app:cardBackgroundColor="#F1F3F0"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="20dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_search_main_activity"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/search"
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:paddingVertical="4dp"
-                android:textSize="12sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_search"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/search" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_mic"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/btn_options_main_activity"
@@ -78,8 +86,8 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:src="@drawable/ic_settings"
             android:padding="4dp"
+            android:src="@drawable/ic_settings"
             app:backgroundTint="@android:color/transparent"
             tools:ignore="ContentDescription" />
     </LinearLayout>

@@ -198,7 +198,7 @@
                 android:layout_marginHorizontal="9dp"
                 android:layout_marginTop="20dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/person"
+                android:src="@color/banner"
                 app:riv_corner_radius="22dp" />
         </RelativeLayout>
 
