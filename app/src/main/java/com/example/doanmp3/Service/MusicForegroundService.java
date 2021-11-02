@@ -18,6 +18,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,8 +49,20 @@ public class MusicForegroundService extends Service {
     ArrayList<Integer> playedList;
     Stack<Integer> playedStack;
     MediaPlayer.OnCompletionListener onCompletionListener = mp -> {
-        ActionNext();
-        SendActionToActivity(ACTION_PLAY_COMPLETED);
+
+        switch (loopState){
+            case ONE:
+                PlaySong();
+                break;
+            case DISABLED:
+                if(playedStack.size() < songs.size()){
+                    ActionNext();
+                }
+                break;
+            default:
+                ActionNext();
+        }
+
     };
 
     final public static int ACTION_PREVIOUS_SONG = 1;
@@ -113,6 +126,10 @@ public class MusicForegroundService extends Service {
             PlaySong();
         }
 
+        if (intent.hasExtra("random")) {
+            random = true;
+        }
+
         // Get Action from Activity
         if (intent.hasExtra("action_from_activity")) {
             int action = intent.getIntExtra("action_from_activity", 0);
@@ -167,14 +184,14 @@ public class MusicForegroundService extends Service {
         mediaSessionCompat.setActive(true);
         mediaSessionCompat.setMetadata(
                 new MediaMetadataCompat.Builder()
-                .putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration())
-                .build()
+                        .putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration())
+                        .build()
         );
         mediaSessionCompat.setPlaybackState(
                 new PlaybackStateCompat.Builder()
-                .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1)
-                .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
-                .build()
+                        .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1)
+                        .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                        .build()
         );
         mediaSessionCompat.setCallback(new MediaSessionCompat.Callback() {
             @Override
@@ -345,8 +362,13 @@ public class MusicForegroundService extends Service {
          */
 
         try {
+            String linkSong = songs.get(currentSong).getLink();
+            if (linkSong == null) {
+                ActionNext();
+                return;
+            }
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(songs.get(currentSong).getLink());
+            mediaPlayer.setDataSource(linkSong);
             mediaPlayer.setOnCompletionListener(null);
             mediaPlayer.prepareAsync();
             mediaPlayer.setOnPreparedListener(mp -> {
@@ -355,8 +377,12 @@ public class MusicForegroundService extends Service {
                 HandleActionControlMusic(ACTION_START_PLAY);    // Send Action Play To Activity
                 mp.setOnCompletionListener(onCompletionListener);
             });
+            mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+                Toast.makeText(getApplicationContext(), "Lỗi mạng", Toast.LENGTH_SHORT).show();
+                return false;
+            });
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("EEEE", "MEDIA PLAYER ERROR:  " + e.getMessage());
             SendActionToActivity(ACTION_PLAY_FAILED);
         }
     }

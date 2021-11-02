@@ -145,4 +145,6 @@
     <string name="on_device">Trên thiết bị</string>
     <string name="please_enter_username">Vui lòng nhập tên người dùng</string>
     <string name="update_failed">Cập nhật thất bại! Vui lòng thử lại</string>
+    <string name="play_song">Phát Nhạc</string>
+    <string name="follow">Quan Tâm</string>
 </resources>

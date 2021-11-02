@@ -20,7 +20,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,24 +30,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.doanmp3.Fragment.MainFragment.ListSongPlayingFragment;
 import com.example.doanmp3.Fragment.MainFragment.SongPlayingFragment;
 import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
-import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.ItemClick;
 import com.example.doanmp3.Service.MusicForegroundService;
-import com.example.doanmp3.Service.NewDataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import me.relex.circleindicator.CircleIndicator3;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
@@ -72,6 +64,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     SimpleDateFormat simpleDateFormat;
     ArrayList<Song> songs;
     int currentSong;
+    boolean isRandom;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -90,6 +83,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     MusicForegroundService musicService;
     boolean isBoundServiceConnected;
     boolean isMusicServiceRunning;
+
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -191,7 +185,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         viewPager.setOffscreenPageLimit(2);
     }
 
-
+    /* ========= Hide Layout Like and Comment ===========*/
     private void HideLayoutInteractive(float positionOffset){
         float marginBottom = layoutInteractive.getHeight() * (positionOffset - 1);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -201,35 +195,21 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
     /* ========= GetDataSongs =========*/
     private void GetDataSongs() {
-        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
-        currentSong = 0;
-        NewDataService dataService = APIService.newService();
-        Call<List<Song>> callback = dataService.getSongsFromPlaylistId(myPlaylist.getId());
-        callback.enqueue(new Callback<List<Song>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-                GetDataSongFromApi(response);
-                StartForegroundService();
-                StartBoundService();
-                isMusicServiceRunning = true;
-                listFragment.SetGenre("Thể loại: ", "List PlackPink Songs");
+        Intent intent = getIntent();
+        if(intent != null){
+            if(intent.hasExtra("songs")){
+                songs = intent.getParcelableArrayListExtra("songs");
+                if(songs == null) songs = new ArrayList<>();
             }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
-                GetDataSongs();
-            }
-        });
-    }
-
-    /* ========= GetDataSongFromApi =========*/
-    private void GetDataSongFromApi(Response<List<Song>> response) {
-        songs = (ArrayList<Song>) response.body();
-        if (songs == null) {
-            songs = new ArrayList<>();
+            currentSong = intent.getIntExtra("position", 0);
+            isRandom = intent.getBooleanExtra("random", false);
+            StartForegroundService();
+            StartBoundService();
+            listFragment.SetUpRecycleView(songs);
+            isMusicServiceRunning = true;
         }
-        listFragment.SetUpRecycleView(songs);
     }
+
 
     /* ========= HandleEvent =========*/
     private void HandleEvent() {
@@ -324,6 +304,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         Intent MusicService = new Intent(getApplicationContext(), MusicForegroundService.class);
         MusicService.putExtra("songs", songs);
         MusicService.putExtra("currentSong", currentSong);
+        if(isRandom)
+            MusicService.putExtra("random", isRandom);
         startService(MusicService);
     }
 
@@ -368,11 +350,13 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     private void HandleActionEventPlayOrPauseMusic() {
         int resId = musicService.isMediaPlaying();
         btnPlay.setImageResource(resId);
+        songFragment.StartOrPauseAnimation(resId);
     }
 
     private void HandleActionStopService() {
         isMusicServiceRunning = false;
         btnPlay.setImageResource(R.drawable.ic_play_circle_outline);
+        songFragment.StartOrPauseAnimation(1);
     }
 
     private void HandleActionPlayMusicFailed() {

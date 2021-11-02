@@ -1,9 +1,9 @@
 package com.example.doanmp3.Fragment.MainFragment;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.doanmp3.Animation.ZoomOutPageTransformer;
+import com.example.doanmp3.NewActivity.PlaySongsActivity;
 import com.example.doanmp3.NewAdapter.SlideAdapter;
 import com.example.doanmp3.NewModel.Slide;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.NewDataService;
@@ -38,7 +40,7 @@ public class SliderFragment extends Fragment {
     CircleIndicator3 circleIndicatorSlider;
     SlideAdapter slideAdapter;
     ArrayList<Slide> slides;
-
+    ArrayList<Song> songs;
     Handler handler;
     Runnable runnable;
     int connectAgainst;
@@ -60,6 +62,7 @@ public class SliderFragment extends Fragment {
         circleIndicatorSlider = view.findViewById(R.id.circle_indicator3);
         layoutSlider = view.findViewById(R.id.layout_slider);
         layoutNavigation = view.findViewById(R.id.layout_nav);
+        songs = new ArrayList<>();
     }
 
     private void InitRunnable() {
@@ -89,6 +92,7 @@ public class SliderFragment extends Fragment {
                 if (slides == null) {
                     slides = new ArrayList<>();
                 }
+                GetSongFromSlider();
                 SetSlider();
             }
 
@@ -102,12 +106,18 @@ public class SliderFragment extends Fragment {
         });
     }
 
+    private void GetSongFromSlider() {
+        for(int i = 0; i < slides.size(); i++){
+            songs.add(slides.get(i).getSong());
+
+        }
+    }
+
     private void SetSlider() {
-        slideAdapter = new SlideAdapter(getContext(), slides, position -> Log.e("EEE", position + ""));
+        slideAdapter = new SlideAdapter(getContext(), slides, this::NavigateToPlayActivity);
         sliderViewPager.setAdapter(slideAdapter);
         circleIndicatorSlider.setViewPager(sliderViewPager);
         sliderViewPager.setPageTransformer(new ZoomOutPageTransformer());
-//        sliderViewPager.requestDisallowInterceptTouchEvent(true);
     }
 
     private void HandleEvent() {
@@ -120,6 +130,14 @@ public class SliderFragment extends Fragment {
             }
         });
     }
+
+    private void NavigateToPlayActivity(int position) {
+        Intent intent = new Intent(getActivity(), PlaySongsActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("songs", songs);
+        startActivity(intent);
+    }
+
 
     private void SetLayoutBackground(int position) {
         GradientDrawable backgroundDrawables = slideAdapter.getBackgroundDrawables(position);

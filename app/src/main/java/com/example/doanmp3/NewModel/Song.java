@@ -131,5 +131,15 @@ public class Song implements Parcelable {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id='" + id + '\'' +
+                ", singers=" + singers +
+                ", name='" + name + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", link='" + link + '\'' +
+                ", liked='" + liked + '\'' +
+                '}';
+    }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,12 +51,27 @@ public class ListSongPlayingFragment extends Fragment {
     }
 
     public void SetUpRecycleView(ArrayList<Song> songArrayList) {
-        songs = songArrayList;
-        songAdapter = new SongSelectedAdapter(getContext(), songs, itemClick, position -> {
+        // wait Binding View
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if( view != null){
+                    handler.removeCallbacks(this);
+                    songs = songArrayList;
+                    songAdapter = new SongSelectedAdapter(getContext(), songs, itemClick, position -> {
 
-        });
-        rvSong.setAdapter(songAdapter);
-        rvSong.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                    });
+                    if(rvSong == null){
+                        InitControls();
+                    }
+                    rvSong.setAdapter(songAdapter);
+                    rvSong.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                }else{
+                    handler.postDelayed(this, 100);
+                }
+            }
+        }, 100);
 
     }
 

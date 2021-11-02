@@ -21,16 +21,18 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".NewActivity.ChangeInfoUserActivity"
-            android:exported="true" />
-        <activity android:name=".NewActivity.MainActivity"></activity>
-        <activity android:name=".Activity.LoginActivity">
+            android:name=".NewActivity.SingerActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".NewActivity.ChangeInfoUserActivity"/>
+        <activity android:name=".NewActivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activity.LoginActivity"/>
         <activity android:name=".NewActivity.PlaySongsActivity" />
         <activity android:name=".NewActivity.SongsListActivity" />
         <activity android:name=".NewActivity.SearchActivity" />

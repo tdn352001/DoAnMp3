@@ -52,7 +52,6 @@
             tool:boxCornerRadiusBottomStart="10dp"
             tool:boxCornerRadiusTopEnd="10dp"
             tool:boxCornerRadiusTopStart="10dp"
-            tool:boxStrokeColor="@color/boxInputFields"
             tool:endIconMode="clear_text"
             tool:hintTextColor="@color/boxInputFields"
             tool:placeholderText="Email">

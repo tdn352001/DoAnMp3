@@ -77,7 +77,6 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="#8946AD"
             android:paddingHorizontal="25dp"
-            android:src="@drawable/icon_random"
             android:text="@string/play_random"
             android:textColor="@color/white"
             app:cornerRadius="15dp"

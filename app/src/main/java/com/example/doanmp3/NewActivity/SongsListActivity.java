@@ -39,6 +39,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,12 +59,15 @@ public class SongsListActivity extends AppCompatActivity {
     SongAdapter songAdapter;
     ObjectCircleAdapter objectCircleAdapter;
     int connectAgainst;
+    boolean isRandom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_object);
         InitControls();
         GetDataObject();
+        HandleEvents();
     }
 
     private void InitControls() {
@@ -84,6 +88,15 @@ public class SongsListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    private void HandleEvents() {
+        btnPlayRandom.setOnClickListener(v -> {
+            Random random = new Random();
+            int position = random.nextInt(songs.size());
+            isRandom = true;
+            NavigateToPlaySongActivity(position);
+        });
+    }
+
 
     private void GetDataObject() {
         singerObjects = new ArrayList<>();
@@ -93,10 +106,6 @@ public class SongsListActivity extends AppCompatActivity {
             return;
         }
 
-//        Playlist myPlaylist = new Playlist("1", "BlackPink in your area", "https://filenhacmp3.000webhostapp.com/file/6PlaylistBlackPink in your area.jpg");
-//        GetSongsFromPlaylist(myPlaylist.getId());
-//        SetUpUi(myPlaylist.getThumbnail());
-//        SetupToolBar(myPlaylist.getName());
 
         if(intent.hasExtra("album")){
             Album album = intent.getParcelableExtra("album");
@@ -165,7 +174,8 @@ public class SongsListActivity extends AppCompatActivity {
         songAdapter = new SongAdapter(this, songs, new SongAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-
+                NavigateToPlaySongActivity(position);
+                isRandom = false;
             }
 
             @Override
@@ -220,6 +230,16 @@ public class SongsListActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void NavigateToPlaySongActivity(int position){
+        Intent intent = new Intent(this, PlaySongsActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("songs", songs);
+        if(isRandom)
+            intent.putExtra("random", isRandom);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
