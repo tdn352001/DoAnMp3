@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -151,10 +152,8 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
 
     private void UploadPhoto() {
         avatarStoRef.child(user.getUid()).putFile(avatarUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    avatarStoRef.child(user.getUid()).getDownloadUrl().
-                            addOnCompleteListener(task -> UploadUserProfile(task.getResult()));
-                })
+                .addOnSuccessListener(taskSnapshot -> avatarStoRef.child(user.getUid()).getDownloadUrl().
+                        addOnCompleteListener(task -> UploadUserProfile(task.getResult())))
                 .addOnFailureListener(e -> {
                     progressDialog.dismiss();
                     Toast.makeText(ChangeInfoUserActivity.this, getString(R.string.update_failed), Toast.LENGTH_SHORT).show();
@@ -216,6 +215,10 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 OpenGallery();
+            }else{
+                Snackbar.make(imgAvatar, getString(R.string.request_perrmission), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.ok, v -> {})
+                        .show();
             }
         }
     }

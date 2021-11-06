@@ -3,8 +3,7 @@
     android:id="@+id/layout_slider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:paddingTop="50dp">
+    android:background="@android:color/transparent">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_slider"

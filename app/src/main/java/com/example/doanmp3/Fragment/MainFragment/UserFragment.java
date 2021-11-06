@@ -1,9 +1,12 @@
 package com.example.doanmp3.Fragment.MainFragment;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.doanmp3.Service.Tools.SetTextStyle;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +21,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.NewActivity.ChangeInfoUserActivity;
+import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +47,11 @@ public class UserFragment extends Fragment {
     CardView btnSong, btnAlbum, btnSinger, btnDevice;
     TabLayout tabLayout;
     ViewPager2 viewPager;
+    ViewPager2StateAdapter adapter;
+    UserPlaylistFragment userPlaylistFragment;
+    UserLoveSongFragment userLoveSongFragment;
+
+
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase database;
@@ -61,6 +74,7 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user2, container, false);
         InitComponents();
+        InitTabLayout();
         GetUserInfo();
         HandleEvents();
         return view;
@@ -80,6 +94,37 @@ public class UserFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager_user);
     }
 
+    private void InitTabLayout() {
+        // Init fragments list
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        userPlaylistFragment = new UserPlaylistFragment();
+        userLoveSongFragment = new UserLoveSongFragment();
+        fragments.add(userPlaylistFragment);
+        fragments.add(userLoveSongFragment);
+
+        // Init tilte list
+        ArrayList<String> titleTab = new ArrayList<>();
+        titleTab.add(getString(R.string.playlist));
+        titleTab.add(getString(R.string.favourite));
+
+        // init adapter
+        adapter = new ViewPager2StateAdapter(this, fragments, titleTab);
+        viewPager.setAdapter(adapter);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (adapter.getTitles() != null && position < adapter.getTitles().size()) {
+                tab.setText(adapter.getTitles().get(position));
+            }
+        }).attach();
+
+        int SelectedTabPosition = tabLayout.getSelectedTabPosition();
+        TabLayout.Tab tabSelected = tabLayout.getTabAt(SelectedTabPosition);
+        if (tabSelected != null) {
+            String tabSelectedTitle = Objects.requireNonNull(tabSelected.getText()).toString();
+            tabSelected.setText(SetTextStyle(tabSelectedTitle, Typeface.BOLD));
+        }
+    }
+
     private void GetUserInfo() {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -96,6 +141,28 @@ public class UserFragment extends Fragment {
         btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChangeInfoUserActivity.class);
             changeInfoUser.launch(intent);
+        });
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String tabTitle = Objects.requireNonNull(tab.getText()).toString();
+                SpannableStringBuilder tabBoldTitle = SetTextStyle(tabTitle, Typeface.BOLD);
+                tab.setText(tabBoldTitle);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                String tabTitle = Objects.requireNonNull(tab.getText()).toString();
+                SpannableStringBuilder tabBoldTitle = SetTextStyle(tabTitle, Typeface.NORMAL);
+                tab.setText(tabBoldTitle);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
         });
     }
 

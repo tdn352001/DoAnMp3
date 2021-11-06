@@ -1,10 +1,10 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
+import static com.example.doanmp3.Service.Tools.SetTextStyle;
+
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -184,10 +184,5 @@ public class SearchResultFragment extends Fragment {
         });
     }
 
-    SpannableStringBuilder SetTextStyle(String text, int Style) {
-        SpannableStringBuilder textStyle = new SpannableStringBuilder(text);
-        textStyle.setSpan(new StyleSpan(Style), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return textStyle;
-    }
 
 }

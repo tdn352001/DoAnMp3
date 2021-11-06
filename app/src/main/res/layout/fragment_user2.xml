@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fffeff"
-    android:paddingTop="50dp"
     android:scrollbars="none">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -282,20 +281,30 @@
             android:layout_gravity="bottom|end"
             android:layout_marginTop="5dp"
             app:layout_collapseMode="pin"
+            app:tabIndicatorAnimationMode="elastic"
             app:tabIndicatorColor="#AF05ED"
             app:tabIndicatorFullWidth="false"
             app:tabMinWidth="15mm"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="#000"
+            app:tabTextAppearance="@style/TabLayoutTextAppearance"
             app:tabTextColor="#E67E7E7D"
-            tools:ignore="InOrMmUsage" />
+            tools:ignore="InOrMmUsage,SpeakableTextPresentCheck" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager_user"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:paddingHorizontal="@dimen/_12dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_user"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

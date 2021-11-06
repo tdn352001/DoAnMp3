@@ -1,5 +1,7 @@
 package com.example.doanmp3.Service;
 
+import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -22,7 +24,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Application.BroadcastReceiver;
-import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.R;
 
@@ -37,8 +38,6 @@ import java.util.Stack;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
 
 public class MusicService extends Service {
     public static ArrayList<BaiHat> arrayList;
@@ -334,9 +333,7 @@ public class MusicService extends Service {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     String result = (String) response.body();
-                    if (result.equals("S")) {
-                        SearchFragment.AddBaiHatRecent(arrayList.get(Pos));
-                    }
+
                 }
 
                 @Override

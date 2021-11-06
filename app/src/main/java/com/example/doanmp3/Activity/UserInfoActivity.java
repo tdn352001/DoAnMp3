@@ -22,7 +22,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.doanmp3.Fragment.LoginFragment.RegisterFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.Md5;
 import com.example.doanmp3.Model.User;
@@ -209,64 +208,7 @@ public class UserInfoActivity extends AppCompatActivity {
         btnCancel = dialog.findViewById(R.id.btn_cancel_change_email);
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnConfirm.setOnClickListener(v -> {
-            String email = edtEmail.getText().toString().trim();
-            String password = edtPassword.getText().toString().trim();
-            if (email.equals("")) {
-                edtEmail.setError("Email Trống");
-            } else {
-                if (!RegisterFragment.EmailIsValid(email)) {
-                    edtEmail.setError("Email không hợp lệ");
-                } else {
-                    if (email.equals(user.getEmail())) {
-                        edtEmail.setError("Email cũ");
-                    } else {
-                        if (password.equals("")) {
-                            edtPassword.setError("Vui lòng nhập mật khẩu");
-                        } else {
-                            if (!md5.endcode(password).equals(user.getPassword())) {
-                                edtPassword.setError("Mật khẩu không đúng");
-                            } else {
-                                DataService dataService = APIService.getUserService();
-                                Call<String> callback = dataService.ChangeEmail(email, user.getIdUser());
-                                callback.enqueue(new Callback<String>() {
-                                    @SuppressLint("SetTextI18n")
-                                    @Override
-                                    public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
-                                        String result = (String) response.body();
-                                        assert result != null;
-                                        if (result.equals("Thanh Cong")) {
-                                            dialog.dismiss();
-                                            Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                                            txtEmail.setText("Email: "+email);
-                                            MainActivity.user.setEmail(email);
-                                            user = MainActivity.user;
-                                        } else {
-                                            if (result.equals("Ton Tai")) {
-                                                Toast.makeText(UserInfoActivity.this, "Email Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                dialog.dismiss();
-                                                Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
-                                        dialog.dismiss();
-                                        Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
         dialog.show();
-
     }
 
     //ĐỔi USERNAME

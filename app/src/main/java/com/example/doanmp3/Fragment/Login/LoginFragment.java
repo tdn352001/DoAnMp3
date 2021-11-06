@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login3, container, false);
+        view = inflater.inflate(R.layout.fragment_login, container, false);
         InitComponents();
         InitDialog();
         ConfigSignInMethod();
@@ -81,11 +81,6 @@ public class LoginFragment extends Fragment {
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
-
-        FirebaseUser user = auth.getCurrentUser();
-        if(user != null){
-            NavigateToMainActivity();
-        }
     }
 
     private void HandleEvents() {
@@ -160,17 +155,23 @@ public class LoginFragment extends Fragment {
 
 
     private void HandleErrorLogin(String email) {
-        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
-            if (Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getSignInMethods()).size() != 0) {
-                edtEmail.requestFocus();
-                edtEmail.setError(getString(R.string.email_already_used));
-                Toast.makeText(getContext(), getString(R.string.user_doesnt_have_password), Toast.LENGTH_SHORT).show();
+        edtPassword.requestFocus();
+        edtPassword.setError(getString(R.string.email_password_invalid));
+        Toast.makeText(getContext(), getString(R.string.email_password_invalid), Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
 
-            } else {
-                Toast.makeText(getContext(), getString(R.string.email_password_invalid), Toast.LENGTH_SHORT).show();
-            }
-            progressDialog.dismiss();
-        }).addOnFailureListener(e -> progressDialog.dismiss());
+//        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener(task -> {
+//            if (Objects.requireNonNull(Objects.requireNonNull(task.getResult()).getSignInMethods()).size() != 0) {
+//
+//
+//                edtEmail.setError(getString(R.string.email_already_used));
+//                Toast.makeText(getContext(), getString(R.string.user_doesnt_have_password), Toast.LENGTH_SHORT).show();
+//
+//            } else {
+//                Toast.makeText(getContext(), getString(R.string.email_password_invalid), Toast.LENGTH_SHORT).show();
+//            }
+//            progressDialog.dismiss();
+//        }).addOnFailureListener(e -> progressDialog.dismiss());
     }
 
     private final ActivityResultLauncher<Intent> LoginGoogleResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

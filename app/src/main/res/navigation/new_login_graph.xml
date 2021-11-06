@@ -11,9 +11,17 @@
         android:label="LoginFragment">
         <action
             android:id="@+id/action_loginFragment2_to_registerFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/registerFragment2" />
         <action
             android:id="@+id/action_loginFragment2_to_forgotPasswordFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/forgotPasswordFragment2" />
     </fragment>
 
@@ -23,6 +31,10 @@
         android:label="LoginFragment">
         <action
             android:id="@+id/action_registerFragment2_to_registerSuccessfullyFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/registerSuccessfullyFragment" />
     </fragment>
     <fragment
@@ -31,6 +43,10 @@
         android:label="ForgotPasswordFragment">
         <action
             android:id="@+id/action_forgotPasswordFragment2_to_changePasswordSuccessfullyFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/changePasswordSuccessfullyFragment" />
     </fragment>
     <fragment
@@ -40,6 +56,10 @@
         tools:layout="@layout/fragment_register_successfully">
         <action
             android:id="@+id/action_registerSuccessfullyFragment_to_loginFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/loginFragment2" />
     </fragment>
     <fragment
@@ -49,6 +69,10 @@
         tools:layout="@layout/fragment_change_password_successfully">
         <action
             android:id="@+id/action_changePasswordSuccessfullyFragment_to_loginFragment2"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/loginFragment2" />
     </fragment>
 

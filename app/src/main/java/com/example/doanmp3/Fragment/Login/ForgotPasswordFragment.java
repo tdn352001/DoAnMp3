@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,7 @@ public class ForgotPasswordFragment extends Fragment {
             Navigation.findNavController(view).navigateUp();
             Navigation.findNavController(view).navigate(R.id.action_loginFragment2_to_registerFragment2);
         });
+        view.setOnClickListener(v -> Tools.hideSoftKeyBoard(getActivity()));
     }
 
     private void HandleSendPassword() {

@@ -15,6 +15,9 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -227,4 +230,9 @@ public class Tools {
         return false;
     }
 
+    public static SpannableStringBuilder SetTextStyle(String text, int Style) {
+        SpannableStringBuilder textStyle = new SpannableStringBuilder(text);
+        textStyle.setSpan(new StyleSpan(Style), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return textStyle;
+    }
 }

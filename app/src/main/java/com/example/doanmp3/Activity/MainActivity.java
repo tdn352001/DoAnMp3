@@ -16,20 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
-import com.example.doanmp3.Fragment.HomeFragment.HomeFragment;
-import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserBaiHatFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.ChuDeTheLoai;
-import com.example.doanmp3.Model.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.User;
 import com.example.doanmp3.R;
@@ -84,12 +79,8 @@ public class MainActivity extends AppCompatActivity {
         progress = 0;
         AnhXa();
         getUser();
-        SetUpViewPager();
-        setupBottomNavigation();
         GetUserPlaylist();
         GetBaiHatYeuThich();
-        GetKeyWordRecent();
-        GetCategory();
         AppbarClick();
         if (MusicService.mediaPlayer != null) {
             if (MusicService.mediaPlayer.isPlaying())
@@ -119,67 +110,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("NonConstantResourceId")
-    private void setupBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
 
-            switch (item.getItemId()) {
-                case R.id.searchFragment:
-                    viewPager.setCurrentItem(2);
-                    break;
-                case R.id.homeFragment:
-                    viewPager.setCurrentItem(1);
-                    break;
-                case R.id.userFragment:
-                    viewPager.setCurrentItem(0);
-                    break;
-            }
 
-            return true;
-        });
-    }
 
-    private void SetUpViewPager() {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        List<Fragment> arraylist = new ArrayList<>();
-        userFragment = new UserFragment();
-        HomeFragment homeFragment = new HomeFragment();
-        SearchFragment searchFragment = new SearchFragment();
-        arraylist.add(userFragment);
-        arraylist.add(homeFragment);
-        arraylist.add(searchFragment);
-        adapter.setList(arraylist);
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        bottomNavigationView.getMenu().findItem(R.id.userFragment).setChecked(true);
-                        break;
-                    case 1:
-                        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
-                        break;
-                    case 2:
-                        bottomNavigationView.getMenu().findItem(R.id.searchFragment).setChecked(true);
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-    }
 
     public static void LoadingComplete() {
         progress++;
@@ -237,54 +170,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void GetKeyWordRecent() {
-        DataService dataService = APIService.getUserService();
-        Call<List<KeyWord>> callback = dataService.GetKeyWordRecent(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<KeyWord>>() {
-            @Override
-            public void onResponse(Call<List<KeyWord>> call, Response<List<KeyWord>> response) {
-                SearchFragment.keyWordArrayList = (ArrayList<KeyWord>) response.body();
-                if (SearchFragment.keyWordArrayList == null)
-                    SearchFragment.keyWordArrayList = new ArrayList<>();
-            }
 
-            @Override
-            public void onFailure(Call<List<KeyWord>> call, Throwable t) {
-            }
-        });
-    }
 
-    public void GetCategory() {
-        DataService dataService = APIService.getService();
-        Call<List<ChuDeTheLoai>> callChuDe = dataService.GetAllChuDe();
-        Call<List<ChuDeTheLoai>> callTheLoai = dataService.GetAllTheLoai();
-        callChuDe.enqueue(new Callback<List<ChuDeTheLoai>>() {
-            @Override
-            public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                chudelist = (ArrayList<ChuDeTheLoai>) response.body();
-
-                callTheLoai.enqueue(new Callback<List<ChuDeTheLoai>>() {
-                    @Override
-                    public void onResponse(Call<List<ChuDeTheLoai>> call, Response<List<ChuDeTheLoai>> response) {
-                        theloailist = (ArrayList<ChuDeTheLoai>) response.body();
-                        SearchFragment.categoryList = chudelist;
-                        SearchFragment.categoryList.addAll(theloailist);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailure(Call<List<ChuDeTheLoai>> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void AppbarClick() {
         layoutPlay.setOnClickListener(v -> {

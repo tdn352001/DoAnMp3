@@ -15,7 +15,8 @@
     <color name="selected">#7B18DD</color>
     <color name="noname">#00DF1D1D</color>
     <color name="darkTextColor">#020000</color>
-
+    <color name="Aqua">#C8D1D2</color>
+    <color name="primaryColor">#2F9088</color>
 
     <!--colors for light mode-->
     <color name="contentTextColor">#020000</color>

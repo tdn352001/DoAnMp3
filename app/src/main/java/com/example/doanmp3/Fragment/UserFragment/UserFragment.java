@@ -3,7 +3,6 @@ package com.example.doanmp3.Fragment.UserFragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,8 +24,6 @@ import com.example.doanmp3.Activity.LoginActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;
-import com.example.doanmp3.Fragment.LoginFragment.LoginFragment;
-import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.button.MaterialButton;
@@ -139,10 +136,6 @@ public class UserFragment extends Fragment {
 
 
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                SharedPreferences.Editor editor = LoginFragment.sharedPreferences.edit();
-                editor.remove("username");
-                editor.remove("password");
-                editor.apply();
                 startActivity(intent);
                 Intent servivce = new Intent(getContext(), MusicService.class);
                 getActivity().stopService(servivce);
@@ -152,8 +145,6 @@ public class UserFragment extends Fragment {
                 MainActivity.user = null;
                 UserBaiHatFragment.arrayList= null;
                 UserPlaylistFragment.userPlaylist= null;
-                SearchFragment.baihatrecents = null;
-                SearchFragment.keyWordArrayList = null;
                 getActivity().finish();
             });
 

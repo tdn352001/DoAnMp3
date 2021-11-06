@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     NewsFragment newsFragment;
     ViewPagerAdapter adapter;
 
+    private long backTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.newsFragment:
+                    newsFragment.ClearKeyWord();
                     viewPager.setCurrentItem(1);
                     break;
                 case R.id.userFragment:
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 1:
                         id = R.id.newsFragment;
+                        newsFragment.ClearKeyWord();
                         break;
                     case 2:
                         id = R.id.userFragment;
@@ -124,6 +129,19 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (backTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show();
+        }
+
+        backTime = System.currentTimeMillis();
     }
 
 }

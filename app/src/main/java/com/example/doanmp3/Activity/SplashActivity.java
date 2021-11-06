@@ -9,7 +9,10 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.doanmp3.NewActivity.MainActivity;
 import com.example.doanmp3.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -22,19 +25,24 @@ public class SplashActivity extends AppCompatActivity {
 
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_splash_screen);
         imageView.startAnimation(animation);
-        final int[] i = {0};
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                handler.postDelayed(this, 500);
-                if(i[0] > 3){
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                    handler.removeCallbacks(this);
-                }
-                i[0]++;
+                Navigate();
+                handler.removeCallbacks(this);
             }
-        }, 500);
+        }, 2000);
+    }
+
+    private void Navigate(){
+        Intent intent;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null)
+            intent = new Intent(this, LoginActivity.class);
+        else
+            intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

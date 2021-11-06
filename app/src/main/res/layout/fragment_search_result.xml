@@ -23,12 +23,12 @@
             android:layout_marginRight="7dp"
             android:fitsSystemWindows="true"
             app:layout_collapseMode="pin"
-            app:tabIndicatorAnimationMode="elastic"
             app:tabIndicatorAnimationDuration="200"
+            app:tabIndicatorAnimationMode="elastic"
             app:tabIndicatorFullWidth="false"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabLayoutTextAppearance"
-            tools:ignore="InOrMmUsage" />
+            tools:ignore="InOrMmUsage,SpeakableTextPresentCheck" />
 
         <View
             android:layout_width="match_parent"
@@ -37,10 +37,15 @@
             android:background="#f1f1f1" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager_result"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.core.widget.NestedScrollView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

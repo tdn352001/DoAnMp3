@@ -46,6 +46,7 @@ public class SearchRecentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("EEE", "onCreateView");
         view = inflater.inflate(R.layout.fragment_search_recent, container, false);
         InitControls();
         GetData();

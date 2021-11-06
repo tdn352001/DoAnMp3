@@ -147,4 +147,7 @@
     <string name="update_failed">Cập nhật thất bại! Vui lòng thử lại</string>
     <string name="play_song">Phát Nhạc</string>
     <string name="follow">Quan Tâm</string>
+    <string name="search_text">Tìm kiếm</string>
+    <string name="favourite">Yêu thích</string>
+    <string name="request_perrmission">Bạn cần cấp quyền để thực hiện tính năng này</string>
 </resources>
