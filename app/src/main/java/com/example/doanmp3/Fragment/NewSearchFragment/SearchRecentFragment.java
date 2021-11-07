@@ -46,7 +46,6 @@ public class SearchRecentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e("EEE", "onCreateView");
         view = inflater.inflate(R.layout.fragment_search_recent, container, false);
         InitControls();
         GetData();
@@ -71,7 +70,7 @@ public class SearchRecentFragment extends Fragment {
             }
             @Override
             public void onFailure(@NonNull Call<List<Genre>> call, @NonNull Throwable t) {
-                Log.e("EEE", "getAllGenreAndTheme Failed: " + t.getMessage());
+                Log.e("ERROR", "getAllGenreAndTheme Failed: " + t.getMessage());
             }
         });
     }

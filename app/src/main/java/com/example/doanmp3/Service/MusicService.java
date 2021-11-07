@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.StrictMode;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -351,7 +350,7 @@ public class MusicService extends Service {
             arrayList.add(baiHat);
             Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
         }
-        Log.e("BBBB", baiHat.getTenBaiHat());
+
     }
 
     public static boolean CheckExist(BaiHat baiHat) {

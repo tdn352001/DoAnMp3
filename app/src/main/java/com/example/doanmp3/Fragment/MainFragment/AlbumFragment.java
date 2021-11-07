@@ -72,7 +72,7 @@ public class AlbumFragment extends Fragment {
                 if(connectAgainst < 3){
                     GetDataAlbum();
                     connectAgainst++;
-                    Log.e("EEE", t.getMessage());
+                    Log.e("ERROR","GetDataAlbum: " + t.getMessage());
                 }
             }
         });

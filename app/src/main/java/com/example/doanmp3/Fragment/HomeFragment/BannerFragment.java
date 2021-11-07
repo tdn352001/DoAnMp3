@@ -63,10 +63,8 @@ public class BannerFragment extends Fragment {
                 slides = (ArrayList<Slide>) response.body();
                 if (slides == null) {
                     slides = new ArrayList<>();
-                    Log.e("EEE", "slide null");
                 }
                 SetSlider();
-                Log.e("EEE", slides.get(0).getSong().getName());
             }
             @Override
             public void onFailure(@NonNull Call<List<Slide>> call, @NonNull Throwable t) {

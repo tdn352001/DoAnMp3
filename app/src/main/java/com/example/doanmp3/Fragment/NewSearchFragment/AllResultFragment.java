@@ -107,12 +107,12 @@ public class AllResultFragment extends Fragment {
         albumAdapter = new AlbumAdapter(getContext(), albums, new AlbumAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+
             }
 
             @Override
             public void optionClick(int position) {
-                Log.e("EEE", "option Click");
+
             }
         });
     }
@@ -122,12 +122,12 @@ public class AllResultFragment extends Fragment {
         singerAdapter = new SingerAdapter(getActivity(), singers, new SingerAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+
             }
 
             @Override
             public void optionClick(int position) {
-                Log.e("EEE", "option Click");
+
             }
         });
     }
@@ -137,12 +137,12 @@ public class AllResultFragment extends Fragment {
         playlistAdapter = new PlaylistAdapter(getActivity(), playlists, new PlaylistAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+
             }
 
             @Override
             public void optionClick(int position) {
-                Log.e("EEE", "option Click");
+
             }
         });
     }

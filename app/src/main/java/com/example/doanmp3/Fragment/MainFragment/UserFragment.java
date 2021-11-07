@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -22,14 +23,18 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.NewActivity.ChangeInfoUserActivity;
 import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
+import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
@@ -54,13 +59,12 @@ public class UserFragment extends Fragment {
 
     FirebaseAuth auth;
     FirebaseUser user;
+    User dataUser;
     FirebaseDatabase database;
     DatabaseReference userReference;
 
     private final ActivityResultLauncher<Intent> changeInfoUser = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Log.e("EEE", "GET RESULT");
         if (result.getResultCode() == RESULT_OK) {
-            Log.e("EEE", "GET RESULT_OK");
             user = auth.getCurrentUser();
             if(user != null) {
                 Glide.with(requireContext()).load(user.getPhotoUrl()).into(userAvatar);
@@ -129,12 +133,31 @@ public class UserFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        userReference = database.getReference("users");
+        userReference = database.getReference("users").child(user.getUid());
 
         if(user != null) {
             Glide.with(requireContext()).load(user.getPhotoUrl()).into(userAvatar);
             tvUsername.setText(user.getDisplayName());
         }
+
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataUser = snapshot.getValue(User.class);
+                if(dataUser != null){
+                    tvUserDescription.setText(dataUser.getDescription());
+                    Glide.with(requireContext())
+                            .load(dataUser.getBannerUri())
+                            .error(R.drawable.banner)
+                            .into(userBanner);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void HandleEvents() {

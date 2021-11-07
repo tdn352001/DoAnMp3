@@ -278,9 +278,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_logout"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="start|bottom|end"
             android:layout_marginTop="5dp"
             app:layout_collapseMode="pin"
+            app:tabGravity="start"
             app:tabIndicatorAnimationMode="elastic"
             app:tabIndicatorColor="#AF05ED"
             app:tabIndicatorFullWidth="false"
@@ -298,13 +299,13 @@
         android:layout_marginTop="15dp"
         android:paddingHorizontal="@dimen/_12dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager_user"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
     </androidx.core.widget.NestedScrollView>
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

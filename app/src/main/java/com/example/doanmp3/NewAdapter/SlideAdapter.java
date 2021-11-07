@@ -138,7 +138,6 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.ViewHolder>{
                 colorSlides.addAll(colorArraylist);
                 colorSlides.addAll(colorArraylist);
                 colorArraylist.clear();
-                Log.e("EEE", "" + colorSlides.size());
 
                 int[] colorsSlide = colorSlides.stream().mapToInt(i -> i).toArray();
                 for(int i = 0; i < colorsSlide.length; i++){

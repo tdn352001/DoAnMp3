@@ -1,65 +1,99 @@
 package com.example.doanmp3.Fragment.MainFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewAdapter.UserPlaylistAdapter;
+import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.OptionItemClick;
+import com.example.doanmp3.Service.NewDataService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserPlaylistFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class UserPlaylistFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public UserPlaylistFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserPlaylistFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UserPlaylistFragment newInstance(String param1, String param2) {
-        UserPlaylistFragment fragment = new UserPlaylistFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    View view;
+    RelativeLayout btnAdd;
+    RecyclerView rvPlaylist;
+    ArrayList<Playlist> playlists;
+    UserPlaylistAdapter adapter;
+    private int connectAgainst;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_playlist2, container, false);
+        view = inflater.inflate(R.layout.fragment_user_playlist2, container, false);
+        InitComponents();
+        HandleEvents();
+        GetDataPlaylist();
+        return view;
+    }
+
+    private void InitComponents() {
+        btnAdd = view.findViewById(R.id.btn_add_playlist);
+        rvPlaylist = view.findViewById(R.id.rv_user_playlist);
+        connectAgainst = 0;
+    }
+
+    private void HandleEvents() {
+        btnAdd.setOnClickListener(v -> {
+
+        });
+    }
+
+    private void GetDataPlaylist() {
+        NewDataService dataService = APIService.newService();
+        Call<List<Playlist>> callback = dataService.getRandomPlaylists();
+        callback.enqueue(new Callback<List<Playlist>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
+                playlists = (ArrayList<Playlist>) response.body();
+                if(playlists == null)
+                    playlists = new ArrayList<>();
+                SetUpRecycleView();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
+                if(connectAgainst < 3){
+                    GetDataPlaylist();
+                    connectAgainst++;
+                    Log.e("ERROR","GetDataPlaylist " +  t.getMessage());
+                }
+            }
+        });
+    }
+
+    private void SetUpRecycleView() {
+        adapter = new UserPlaylistAdapter(getContext(), playlists, new OptionItemClick() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+
+            @Override
+            public void onOptionClick(int position) {
+
+            }
+        });
+        rvPlaylist.setAdapter(adapter);
+        rvPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 }

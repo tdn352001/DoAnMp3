@@ -5,15 +5,14 @@
     android:id="@+id/layout_item_playlist"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="12dp"
-    android:paddingVertical="8dp"
+    android:layout_marginTop="@dimen/_12dp"
     android:orientation="horizontal">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/thumbnail_item_playlist"
+        android:id="@+id/thumbnail_user_playlist_name"
         android:scaleType="fitXY"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         app:riv_corner_radius="4dp" />
 
     <LinearLayout
@@ -25,18 +24,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name_playlist_item_playlist"
+            android:id="@+id/tv_user_playlist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="18sp" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/options_item_playlist"
+        android:id="@+id/options_user_playlist_name"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="50dp"
         android:layout_height="60dp"

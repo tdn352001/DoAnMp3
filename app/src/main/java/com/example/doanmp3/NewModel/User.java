@@ -4,15 +4,27 @@ public class User {
     private String id;
     private String name;
     private String email;
-    private String password;
+    private String avatarUri;
+    private String bannerUri;
+    private String description;
 
-    public User(){}
+    public User(){
 
-    public User(String id, String name, String email, String password) {
+    }
+
+    public User(String id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+    }
+
+    public User(String id, String name, String email, String avatarUri, String bannerUri, String description) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.avatarUri = avatarUri;
+        this.bannerUri = bannerUri;
+        this.description = description;
     }
 
     public String getId() {
@@ -39,11 +51,39 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAvatarUri() {
+        return avatarUri;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAvatarUri(String avatarUri) {
+        this.avatarUri = avatarUri;
+    }
+
+    public String getBannerUri() {
+        return bannerUri;
+    }
+
+    public void setBannerUri(String bannerUri) {
+        this.bannerUri = bannerUri;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", avatarUri='" + avatarUri + '\'' +
+                ", bannerUri='" + bannerUri + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

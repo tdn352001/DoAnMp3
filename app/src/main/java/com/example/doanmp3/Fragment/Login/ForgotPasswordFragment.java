@@ -61,7 +61,7 @@ public class ForgotPasswordFragment extends Fragment {
                 edtEmail.requestFocus();
                 edtEmail.setError(getString(R.string.email_not_found));
             }
-        }).addOnFailureListener(e -> Log.e("EEE", "ForgotPassword Failed: " + e.getMessage()));
+        }).addOnFailureListener(e -> Log.e("ERROR", "ForgotPassword Failed: " + e.getMessage()));
     }
 
     private void SendResetPasswordMail(String email) {
@@ -69,7 +69,7 @@ public class ForgotPasswordFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     Navigation.findNavController(view).navigate(R.id.action_forgotPasswordFragment2_to_changePasswordSuccessfullyFragment);
                 }).addOnFailureListener(e -> {
-                    Log.e("EEE", e.getMessage());
+                    Log.e("ERROR","SendResetPasswordMail:" + e.getMessage());
                 });
     }
 

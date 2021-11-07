@@ -145,7 +145,7 @@ public class LoginFragment extends Fragment {
                                     Toast.makeText(getContext(), getString(R.string.verify_email_to_login), Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("EEE", e.getMessage());
+                                Log.e("ERROR","sendEmailVerification: " + e.getMessage());
                                 Toast.makeText(getContext(), R.string.cant_send_verify_email, Toast.LENGTH_SHORT).show();
                             }));
             dialog.setPositiveButton(R.string.ok, (dialog12, which) -> dialog12.dismiss());
@@ -203,7 +203,7 @@ public class LoginFragment extends Fragment {
                 NavigateToMainActivity();
             } else {
                 Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                Log.e("EEE", "gg failed: " + Objects.requireNonNull(task.getException()).getMessage());
+                Log.e("ERROR", "firebaseAuthWithGoogle: " + Objects.requireNonNull(task.getException()).getMessage());
             }
         });
     }

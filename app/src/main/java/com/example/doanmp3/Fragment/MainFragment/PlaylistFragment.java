@@ -73,7 +73,7 @@ public class PlaylistFragment extends Fragment {
                 if(connectAgainst < 3){
                     GetDataPlaylist();
                     connectAgainst++;
-                    Log.e("EEE", t.getMessage());
+                    Log.e("ERROR","GetDataPlaylist "+  t.getMessage());
                 }
             }
         });

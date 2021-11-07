@@ -1,7 +1,6 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +45,12 @@ public class SongResultFragment extends Fragment {
         adapter = new SongAdapter(getActivity(), songs, new SongAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+
             }
 
             @Override
             public void optionClick(int position) {
-                Log.e("EEE", "option Click");
+
             }
         }, (itemView, position) -> {
             LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);
@@ -76,7 +75,7 @@ public class SongResultFragment extends Fragment {
 
     public void DisplayResult(List<Song> songsResult){
         if(songsResult == null){
-            Log.e("EEE", "Result Null");
+
             return;
         }
         songs.clear();

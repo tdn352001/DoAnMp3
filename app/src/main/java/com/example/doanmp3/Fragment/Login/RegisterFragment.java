@@ -164,22 +164,22 @@ public class RegisterFragment extends Fragment {
                             user.updateProfile(profileUpdates);
                             user.sendEmailVerification().addOnCompleteListener(task1 -> {
                                 Navigation.findNavController(view).navigate(R.id.action_registerFragment2_to_registerSuccessfullyFragment);
-                                SaveUserToDatabase(password);
+                                SaveUserToDatabase();
                             }).addOnFailureListener(e -> Toast.makeText(getContext(), getString(R.string.cant_send_verify_email), Toast.LENGTH_SHORT).show());
                         }
                         auth.signOut();
                     } else {
                         Toast.makeText(getContext(), getString(R.string.register_failure), Toast.LENGTH_SHORT).show();
-                        Log.e("EEE", "Register ERROR: " + task.getException());
+                        Log.e("ERROR", "Register ERROR: " + task.getException());
                     }
                     progressDialog.dismiss();
                 });
     }
 
-    private void SaveUserToDatabase(String password) {
+    private void SaveUserToDatabase() {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return;
-        User newUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), Tools.encodeStringToMd5(password));
+        User newUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), Objects.requireNonNull(user.getPhotoUrl()).toString(), "", "");
         userReference.child(user.getUid()).setValue(newUser);
     }
 }

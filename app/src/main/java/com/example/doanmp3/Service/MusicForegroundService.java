@@ -197,7 +197,6 @@ public class MusicForegroundService extends Service {
             @Override
             public void onSeekTo(long pos) {
                 super.onSeekTo(pos);
-                Log.e("EEE", "Hello");
             }
         });
 
@@ -266,9 +265,7 @@ public class MusicForegroundService extends Service {
             case ACTION_START_PLAY:
                 SendActionToActivity(action);
                 break;
-            case ABC:
-                Log.e("EEE", "ABC");
-                break;
+
         }
     }
 
@@ -382,7 +379,7 @@ public class MusicForegroundService extends Service {
                 return false;
             });
         } catch (IOException e) {
-            Log.e("EEEE", "MEDIA PLAYER ERROR:  " + e.getMessage());
+            Log.e("ERROR", "MEDIA PLAYER ERROR:  " + e.getMessage());
             SendActionToActivity(ACTION_PLAY_FAILED);
         }
     }
@@ -453,7 +450,7 @@ public class MusicForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
-        Log.e("EEE", "onDestroy");
+
     }
 
     public class MusicBinder extends Binder {

@@ -137,7 +137,7 @@ public class SongsListActivity extends AppCompatActivity {
                 if(connectAgainst < 3){
                     GetSongsFromAlbum(id);
                     connectAgainst++;
-                    Log.e("EEE", t.getMessage());
+                    Log.e("ERROR","GetSongsFromAlbum " + t.getMessage());
                 }
             }
         });
@@ -157,7 +157,7 @@ public class SongsListActivity extends AppCompatActivity {
                 if(connectAgainst < 3){
                     GetSongsFromAlbum(id);
                     connectAgainst++;
-                    Log.e("EEE", t.getMessage());
+                    Log.e("ERROR","GetSongsFromPlaylist " + t.getMessage());
                 }
             }
         });

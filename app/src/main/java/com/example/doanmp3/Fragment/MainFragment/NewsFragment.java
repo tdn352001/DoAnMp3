@@ -3,7 +3,6 @@ package com.example.doanmp3.Fragment.MainFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +33,12 @@ public class NewsFragment extends Fragment {
         handleEvent();
         return view;
     }
+
     private void InitControls() {
         edtSearch = view.findViewById(R.id.edt_search);
         navHostFragment = (NavHostFragment) getChildFragmentManager().findFragmentById(R.id.search_container);
-        if(navHostFragment == null)
-            Log.e("eee", "navHostFragment");
-        navController =  navHostFragment.getNavController();
+        if (navHostFragment != null)
+            navController = navHostFragment.getNavController();
 
     }
 
@@ -82,7 +81,7 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    public void ClearKeyWord(){
+    public void ClearKeyWord() {
         edtSearch.setText("");
     }
 

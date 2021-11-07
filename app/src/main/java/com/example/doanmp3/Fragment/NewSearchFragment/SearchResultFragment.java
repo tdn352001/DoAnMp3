@@ -152,7 +152,7 @@ public class SearchResultFragment extends Fragment {
 
     private void Search(String keyWord) {
         if(keyWord == null){
-            Log.e("EEE", "can't get key word");
+            Log.e("ERROR", "can't get key word");
         }
         NewDataService dataService = APIService.newService();
         Call<List<ResultSearch>> callback = dataService.search(keyWord);
@@ -172,7 +172,7 @@ public class SearchResultFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<ResultSearch>> call, @NonNull Throwable t) {
-                Log.e("EEE", "Search Failed:" + t.getMessage());
+                Log.e("ERROR", "Search Failed:" + t.getMessage());
                 if(trySearchAgain > 3){
                     trySearchAgain = 0;
                     Toast.makeText(getActivity(), getString(R.string.search_failed), Toast.LENGTH_SHORT).show();

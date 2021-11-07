@@ -71,7 +71,7 @@ public class SingerFragment extends Fragment {
                 if(connectAgainst < 3){
                     GetDataSinger();
                     connectAgainst++;
-                    Log.e("EEE", t.getMessage());
+                    Log.e("ERROR","GetDataSinger:" + t.getMessage());
                 }
             }
         });
