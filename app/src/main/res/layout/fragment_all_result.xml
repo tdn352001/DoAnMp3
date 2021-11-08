@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".Fragment.NewSearchFragment.AllResultFragment">
 
     <LinearLayout
@@ -14,7 +14,9 @@
             android:id="@+id/layout_all_result_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:visibility="gone"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:id="@+id/layout_song_result_of_all"
@@ -31,7 +33,8 @@
                     android:layout_marginLeft="15dp"
                     android:text="@string/song"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:textStyle="bold"
+                    android:textSize="22sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_song_result_of_all"
@@ -42,18 +45,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_view_more_song_result_of_all"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/BtnViewMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/xem_them"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    app:cornerRadius="25dp"
-                    app:elevation="25dp"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="0.5dp" />
+                    android:text="@string/xem_them" />
             </LinearLayout>
 
             <LinearLayout
@@ -71,7 +67,8 @@
                     android:layout_marginLeft="15dp"
                     android:text="@string/album"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:textStyle="bold"
+                    android:textSize="22sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_album_result_of_all"
@@ -82,18 +79,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_view_more_album_result_of_all"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/BtnViewMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/xem_them"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    app:cornerRadius="25dp"
-                    app:elevation="25dp"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="0.5dp" />
+                    android:text="@string/xem_them" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,7 +101,8 @@
                     android:layout_marginLeft="15dp"
                     android:text="@string/singer"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:textStyle="bold"
+                    android:textSize="22sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_singer_result_of_all"
@@ -122,18 +113,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_view_more_singer_result_of_all"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/BtnViewMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/xem_them"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    app:cornerRadius="25dp"
-                    app:elevation="25dp"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="0.5dp" />
+                    android:text="@string/xem_them" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,7 +135,8 @@
                     android:layout_marginLeft="15dp"
                     android:text="@string/playlist"
                     android:textColor="@color/black"
-                    android:textSize="30sp" />
+                    android:textStyle="bold"
+                    android:textSize="22sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_playlist_result_of_all"
@@ -162,19 +147,41 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_view_more_playlist_result_of_all"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    style="@style/BtnViewMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/xem_them"
-                    android:textAllCaps="false"
-                    android:textSize="14sp"
-                    app:cornerRadius="25dp"
-                    app:elevation="25dp"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="0.5dp" />
+                    android:text="@string/xem_them" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_no_result_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25mm"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:ignore="InOrMmUsage">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_sorry"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/no_info"
+                android:textColor="@color/black"
+                android:textFontWeight="400"
+                android:textSize="18sp"
+                tools:ignore="UnusedAttribute" />
         </LinearLayout>
     </LinearLayout>
 

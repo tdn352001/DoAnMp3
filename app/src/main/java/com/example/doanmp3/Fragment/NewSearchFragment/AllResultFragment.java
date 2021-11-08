@@ -36,7 +36,7 @@ public class AllResultFragment extends Fragment {
     View view;
     RecyclerView rvSong, rvAlbum, rvSinger, rvPlaylist;
     MaterialButton btnViewMoreSong, btnViewMoreAlbum, btnViewMoreSinger, btnViewMorePlaylist;
-    LinearLayout layoutContainer, layoutSong, layoutAlbum, layoutSinger, layoutPlaylist;
+    LinearLayout layoutContainer, layoutSong, layoutAlbum, layoutSinger, layoutPlaylist, layoutNoResult;
     TabLayout tabLayout;
 
     SongAdapter songAdapter;
@@ -81,6 +81,7 @@ public class AllResultFragment extends Fragment {
         layoutAlbum = view.findViewById(R.id.layout_album_result_of_all);
         layoutSinger = view.findViewById(R.id.layout_singer_result_of_all);
         layoutPlaylist = view.findViewById(R.id.layout_playlist_result_of_all);
+        layoutNoResult = view.findViewById(R.id.layout_no_result_container);
     }
 
     private void InitSongData() {
@@ -99,10 +100,6 @@ public class AllResultFragment extends Fragment {
     }
 
     private void InitAlbumData() {
-    }
-
-    {
-
         albums = new ArrayList<>();
         albumAdapter = new AlbumAdapter(getContext(), albums, new AlbumAdapter.ItemClick() {
             @Override
@@ -173,14 +170,16 @@ public class AllResultFragment extends Fragment {
         rvPlaylist.setAdapter(playlistAdapter);
         rvPlaylist.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         rvPlaylist.setLayoutAnimation(layoutAnimation);
-
     }
 
     public void DisplayResult(ResultSearch resultSearch, TabLayout tab) {
         tabLayout = tab;
-        if (resultSearch == null) {
+        if (resultSearch == null || resultSearch.isEmpty()) {
+            layoutContainer.setVisibility(View.GONE);
+            layoutNoResult.setVisibility(View.VISIBLE);
             return;
         }
+        layoutContainer.setVisibility(View.VISIBLE);
         DisplaySongResult(resultSearch.getSongs());
         DisplayAlbumResult(resultSearch.getAlbums());
         DisplaySingerResult(resultSearch.getSingers());
@@ -190,7 +189,7 @@ public class AllResultFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void DisplaySongResult(List<Song> songsResult) {
-        if (songsResult == null) {
+        if (songsResult == null || songsResult.size() == 0) {
             layoutSong.setVisibility(View.GONE);
             return;
         }
@@ -207,7 +206,7 @@ public class AllResultFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void DisplayAlbumResult(List<Album> albumsResult) {
-        if (albumsResult == null) {
+        if (albumsResult == null || albumsResult.size() == 0) {
             layoutAlbum.setVisibility(View.GONE);
             return;
         }
@@ -224,7 +223,7 @@ public class AllResultFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void DisplaySingerResult(List<Singer> singersResult) {
-        if (singersResult == null) {
+        if (singersResult == null || singersResult.size() == 0) {
             layoutSinger.setVisibility(View.GONE);
             return;
         }
@@ -241,7 +240,7 @@ public class AllResultFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void DisplayPlaylistResult(List<Playlist> playlistsResult) {
-        if (playlistsResult == null) {
+        if (playlistsResult == null || playlistsResult.size() == 0) {
             layoutPlaylist.setVisibility(View.GONE);
             return;
         }

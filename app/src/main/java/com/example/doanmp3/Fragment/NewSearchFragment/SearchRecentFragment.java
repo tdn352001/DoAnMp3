@@ -40,7 +40,7 @@ public class SearchRecentFragment extends Fragment {
 
 
    /*==== Data ====*/
-    ArrayList<Genre> genres;
+    static ArrayList<Genre> genres;
     GenreAdapter genreAdapter;
 
     @Override
@@ -60,6 +60,10 @@ public class SearchRecentFragment extends Fragment {
     }
 
     private void GetData() {
+        if(genres != null){
+            InitRecyclerView();
+            return;
+        }
         NewDataService dataService = APIService.newService();
         Call<List<Genre>> callback = dataService.getAllGenreAndTheme();
         callback.enqueue(new Callback<List<Genre>>() {

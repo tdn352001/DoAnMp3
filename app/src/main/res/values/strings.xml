@@ -150,4 +150,8 @@
     <string name="search_text">Tìm kiếm</string>
     <string name="favourite">Yêu thích</string>
     <string name="request_perrmission">Bạn cần cấp quyền để thực hiện tính năng này</string>
+    <string name="change_not_save">Thay đổi chưa được lưu, bạn có muốn thoát?</string>
+    <string name="no">Không</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="login_failed">Đăng nhập thất bại</string>
 </resources>

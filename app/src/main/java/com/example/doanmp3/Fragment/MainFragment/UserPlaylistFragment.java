@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -16,8 +18,8 @@ import com.example.doanmp3.NewAdapter.UserPlaylistAdapter;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.OptionItemClick;
 import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.OptionItemClick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,5 +97,7 @@ public class UserPlaylistFragment extends Fragment {
         });
         rvPlaylist.setAdapter(adapter);
         rvPlaylist.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
+        rvPlaylist.setLayoutAnimation(layoutAnimation);
     }
 }

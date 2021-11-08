@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     //Bla bla
     implementation 'me.relex:circleindicator:2.1.6'
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.android.support:multidex:1.0.3'

@@ -25,7 +25,7 @@ public class SongResultFragment extends Fragment {
     RecyclerView rvSong;
     ArrayList<Song> songs;
     SongAdapter adapter;
-
+    LinearLayout layoutNoResult;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class SongResultFragment extends Fragment {
 
     private void InitControls() {
         rvSong = view.findViewById(R.id.rv_search_result_song);
+        layoutNoResult = view.findViewById(R.id.layout_no_result_container);
     }
 
     private void InitData() {
@@ -54,7 +55,7 @@ public class SongResultFragment extends Fragment {
             }
         }, (itemView, position) -> {
             LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);
-            int paddingSize = (int) getResources().getDimensionPixelSize(R.dimen._12dp);
+            int paddingSize = getResources().getDimensionPixelSize(R.dimen._12dp);
             itemSong.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             if(position % 2 == 0){
                 itemView.setBackgroundResource(R.color.alabaster);
@@ -74,8 +75,8 @@ public class SongResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Song> songsResult){
-        if(songsResult == null){
-
+        if(songsResult == null || songsResult.size() == 0){
+            layoutNoResult.setVisibility(View.VISIBLE);
             return;
         }
         songs.clear();

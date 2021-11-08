@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,14 +67,23 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_info_user);
+        overridePendingTransition(R.anim.from_right, R.anim.to_left);
+
         InitComponents();
         InitFirebase();
         InitDialog();
         GetDataUser();
+        SetToolBar();
         SetupInfoUser();
         HandleEvents();
     }
 
+    private void SetToolBar() {
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.edit_info_user));
+        toolbar.setNavigationOnClickListener(v -> finish());
+    }
 
 
     private void InitComponents() {
@@ -109,7 +119,8 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataUser = snapshot.getValue(User.class);
                 if (dataUser == null){
-                    dataUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), Objects.requireNonNull(user.getPhotoUrl()).toString(), "", "");
+                    String photoUrl = user.getPhotoUrl() == null ? " " : user.getPhotoUrl().toString();
+                    dataUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), photoUrl, " ", "");
                 }
                 edtDescription.setText(dataUser.getDescription());
                 Glide.with(getApplicationContext())
@@ -135,7 +146,9 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
             return;
         }
         edtDisplayName.setText(user.getDisplayName());
-        Glide.with(this).load(user.getPhotoUrl()).into(imgAvatar);
+        Glide.with(this).load(user.getPhotoUrl())
+                .error(R.drawable.person)
+                .into(imgAvatar);
 
     }
 
@@ -145,6 +158,7 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
         btnBanner.setOnClickListener(v -> HandleSelectBanner());
         imgBanner.setOnClickListener(v -> HandleSelectBanner());
         btnSave.setOnClickListener(v -> HandleSaveChanges());
+        btnCancel.setOnClickListener(v -> CancelEdit());
     }
 
     private void HandleSelectAvatar() {
@@ -244,11 +258,14 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
     private void UpdateUserTable(Uri result) {
         String displayName = Objects.requireNonNull(edtDisplayName.getText()).toString().trim();
         String description = Objects.requireNonNull(edtDescription.getText()).toString().trim();
+        String avatarUrl = user.getPhotoUrl() == null ? dataUser.getAvatarUri() : user.getPhotoUrl().toString();
+
         if(result != null)
             dataUser.setBannerUri(result.toString());
 
         dataUser.setName(displayName);
         dataUser.setDescription(description);
+        dataUser.setAvatarUri(avatarUrl);
         userReference.setValue(dataUser);
         CheckProgress();
     }
@@ -258,8 +275,13 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
         countProcess++;
         if (countProcess >= 2) {
             countProcess = 0;
-            progressDialog.dismiss();
             setResult(Activity.RESULT_OK);
+            //Update User Avatar In Database
+            String avatarUrl = user.getPhotoUrl() == null ? dataUser.getAvatarUri() : user.getPhotoUrl().toString();
+            userReference.child("avatarUri").setValue(avatarUrl);
+
+            // Finish Progress
+            progressDialog.dismiss();
             finish();
         }
     }
@@ -329,9 +351,20 @@ public class ChangeInfoUserActivity extends AppCompatActivity {
         bannerPicResult.launch(Intent.createChooser(intent, "SELECT A PICTURE"));
     }
 
+    private void CancelEdit(){
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
+        dialogBuilder.setTitle(getString(R.string.confirm));
+        dialogBuilder.setMessage(R.string.change_not_save);
+        dialogBuilder.setIcon(R.drawable.ic_warning);
+        dialogBuilder.setPositiveButton(R.string.no, (dialog, which) -> {});
+        dialogBuilder.setNegativeButton(R.string.yes, (dialog, which) -> finish());
+        dialogBuilder.show();
+    }
+
     @Override
     public void finish() {
         super.finish();
         userReference.removeEventListener(valueEventListener);
+        overridePendingTransition(R.anim.from_left, R.anim.to_right);
     }
 }

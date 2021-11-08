@@ -38,4 +38,14 @@ public class ResultSearch implements Serializable {
     public List<Playlist> getPlaylists() {
         return playlists;
     }
+
+    public boolean isEmpty(){
+        int i = 0;
+        if(songs == null || songs.size() == 0) i++;
+        if(albums == null || albums.size() == 0) i++;
+        if(singers == null || singers.size() == 0) i++;
+        if(playlists == null || playlists.size() == 0) i++;
+
+        return i == 4;
+    }
 }

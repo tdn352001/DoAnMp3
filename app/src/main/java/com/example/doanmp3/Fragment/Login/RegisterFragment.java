@@ -1,6 +1,10 @@
 package com.example.doanmp3.Fragment.Login;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -9,16 +13,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.doanmp3.NewActivity.MainActivity;
 import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,6 +49,7 @@ public class RegisterFragment extends Fragment {
     FirebaseAuth auth;
     FirebaseDatabase database;
     DatabaseReference userReference;
+    GoogleSignInClient googleSignInClient;
     ProgressDialog progressDialog;
 
     @Override
@@ -43,6 +59,7 @@ public class RegisterFragment extends Fragment {
         InitComponents();
         InitDialog();
         InitFirebase();
+        ConfigSignInMethod();
         HandleEvents();
         return view;
     }
@@ -68,10 +85,21 @@ public class RegisterFragment extends Fragment {
         progressDialog.setMessage(getString(R.string.please_wait));
     }
 
+    private void ConfigSignInMethod() {
+        auth = FirebaseAuth.getInstance();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
+    }
+
     private void HandleEvents() {
         view.setOnClickListener(v -> Tools.hideSoftKeyBoard(getActivity()));
         btnRegister.setOnClickListener(v -> HandleRegisterEvent());
         btnLogin.setOnClickListener(v -> Navigation.findNavController(view).navigateUp());
+        btnLoginGg.setOnClickListener(v -> LoginWithGoogle());
     }
 
     private void HandleRegisterEvent() {
@@ -162,24 +190,86 @@ public class RegisterFragment extends Fragment {
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(username).build();
                             user.updateProfile(profileUpdates);
-                            user.sendEmailVerification().addOnCompleteListener(task1 -> {
-                                Navigation.findNavController(view).navigate(R.id.action_registerFragment2_to_registerSuccessfullyFragment);
-                                SaveUserToDatabase();
-                            }).addOnFailureListener(e -> Toast.makeText(getContext(), getString(R.string.cant_send_verify_email), Toast.LENGTH_SHORT).show());
+                            user.sendEmailVerification().addOnCompleteListener(task1 -> SaveUserToDatabase()).addOnFailureListener(e -> Toast.makeText(getContext(), getString(R.string.cant_send_verify_email), Toast.LENGTH_SHORT).show());
                         }
-                        auth.signOut();
                     } else {
+                        progressDialog.dismiss();
                         Toast.makeText(getContext(), getString(R.string.register_failure), Toast.LENGTH_SHORT).show();
                         Log.e("ERROR", "Register ERROR: " + task.getException());
                     }
-                    progressDialog.dismiss();
+
                 });
     }
 
     private void SaveUserToDatabase() {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return;
-        User newUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), Objects.requireNonNull(user.getPhotoUrl()).toString(), "", "");
+        String photoUrl = user.getPhotoUrl() == null ? " " : user.getPhotoUrl().toString();
+        User newUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), photoUrl, " ", "");
         userReference.child(user.getUid()).setValue(newUser);
+        Navigate();
+    }
+
+    private void Navigate(){
+        Tools.hideSoftKeyBoard(getActivity());
+        Navigation.findNavController(view).navigate(R.id.action_registerFragment2_to_registerSuccessfullyFragment);
+        auth.signOut();
+        progressDialog.dismiss();
+    }
+    private void LoginWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        LoginGoogleResult.launch(signInIntent);
+    }
+
+    private final ActivityResultLauncher<Intent> LoginGoogleResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        firebaseAuthWithGoogle(account.getIdToken());
+                    } catch (ApiException e) {
+                        Log.e("EEE", "Google sign in failed ", e);
+                    }
+                }
+            });
+
+    @SuppressLint("ShowToast")
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        auth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                CheckUserExistInDatabase();
+            } else {
+                Toast.makeText(getContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
+                Log.e("ERROR", "firebaseAuthWithGoogle: " + Objects.requireNonNull(task.getException()).getMessage());
+            }
+        });
+    }
+
+
+    private void CheckUserExistInDatabase(){
+        progressDialog.show();
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) return;
+
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        userReference.get().addOnCompleteListener(task -> {
+            User dataUser = task.getResult().getValue(User.class);
+            if(dataUser == null){
+                String photoUrl = user.getPhotoUrl() == null ? " " : user.getPhotoUrl().toString();
+                dataUser = new User(user.getUid(), user.getDisplayName(), user.getEmail(), photoUrl, " ", "");
+                userReference.setValue(dataUser);
+            }
+            NavigateToMainActivity();
+
+        });
+    }
+
+    private void NavigateToMainActivity(){
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+        progressDialog.dismiss();
+        Toast.makeText(getContext(), R.string.login_success, Toast.LENGTH_SHORT).show();
     }
 }

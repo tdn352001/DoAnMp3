@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class SearchResultFragment extends Fragment {
     View view;
     TabLayout tabLayout;
     ViewPager2 viewPager;
+    ProgressBar progressBar;
 
     //Fragment Results
     AllResultFragment allSearchFragment;
@@ -69,6 +71,7 @@ public class SearchResultFragment extends Fragment {
     private void InitControls() {
         tabLayout = view.findViewById(R.id.tab_layout_result);
         viewPager = view.findViewById(R.id.viewpager_result);
+        progressBar = view.findViewById(R.id.progress_bar_load_result);
     }
 
     private void InitFragmentResults() {
@@ -84,7 +87,6 @@ public class SearchResultFragment extends Fragment {
         fragments.add(albumResultFragment);
         fragments.add(singerResultFragment);
         fragments.add(playlistResultFragment);
-
     }
 
     private void SetTitleForTab() {
@@ -101,7 +103,6 @@ public class SearchResultFragment extends Fragment {
         adapter = new ViewPager2StateAdapter(this, fragments, titleTab);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
-        viewPager.setCurrentItem(1);
         // Set up ViewPager With TabLayout
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (adapter.getTitles() != null && position < adapter.getTitles().size()) {
@@ -161,6 +162,7 @@ public class SearchResultFragment extends Fragment {
             public void onResponse(@NonNull Call<List<ResultSearch>> call, @NonNull Response<List<ResultSearch>> response) {
                 List<ResultSearch> result = response.body();
                 if (result != null) {
+                    progressBar.setVisibility(View.GONE);
                     ResultSearch resultSearch = result.get(0);
                     allSearchFragment.DisplayResult(resultSearch, tabLayout);
                     songResultFragment.DisplayResult(resultSearch.getSongs());
@@ -175,6 +177,7 @@ public class SearchResultFragment extends Fragment {
                 Log.e("ERROR", "Search Failed:" + t.getMessage());
                 if(trySearchAgain > 3){
                     trySearchAgain = 0;
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), getString(R.string.search_failed), Toast.LENGTH_SHORT).show();
                 }else{
                     Search(keyWord);

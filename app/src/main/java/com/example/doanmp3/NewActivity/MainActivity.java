@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(userFragment);
         adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (backTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
+            finishAffinity();
             return;
         } else {
             Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show();

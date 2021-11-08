@@ -27,7 +27,7 @@ public class AlbumResultFragment extends Fragment {
     RecyclerView rvAlbum;
     ArrayList<Album> albums;
     AlbumAdapter adapter;
-
+    LinearLayout layoutNoResult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +41,7 @@ public class AlbumResultFragment extends Fragment {
 
     private void InitControls() {
         rvAlbum = view.findViewById(R.id.rv_search_result_album);
+        layoutNoResult = view.findViewById(R.id.layout_no_result_container);
     }
 
     private void InitData() {
@@ -57,7 +58,7 @@ public class AlbumResultFragment extends Fragment {
             }
         }, (itemView, position) -> {
             LinearLayout itemAlbum = itemView.findViewById(R.id.layout_item_album);
-            int paddingSize = (int) getResources().getDimensionPixelSize(R.dimen._12dp);
+            int paddingSize = getResources().getDimensionPixelSize(R.dimen._12dp);
             itemAlbum.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             if(position % 2 != 0){
                 itemView.setBackgroundResource(R.color.alabaster);
@@ -77,8 +78,8 @@ public class AlbumResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Album> albumsResult){
-        if(albumsResult == null){
-            Log.e("EEE", "Result Null");
+        if(albumsResult == null || albumsResult.size() == 0){
+            layoutNoResult.setVisibility(View.VISIBLE);
             return;
         }
         albums.clear();

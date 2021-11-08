@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -186,6 +188,8 @@ public class SongsListActivity extends AppCompatActivity {
 
         rvSong.setAdapter(songAdapter);
         rvSong.setLayoutManager( new LinearLayoutManager(this, VERTICAL, false));
+        LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(SongsListActivity.this, R.anim.layout_anim_left_to_right);
+        rvSong.setLayoutAnimation(layoutAnimation);
     }
 
     private void GetInfoSinger() {

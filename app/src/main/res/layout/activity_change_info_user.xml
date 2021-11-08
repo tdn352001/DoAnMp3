@@ -13,8 +13,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_edit_info_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="Chỉnh Sửa Thông Tin" />
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_width="match_parent"

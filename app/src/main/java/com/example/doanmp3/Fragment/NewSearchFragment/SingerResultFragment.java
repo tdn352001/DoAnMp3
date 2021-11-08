@@ -25,6 +25,7 @@ public class SingerResultFragment extends Fragment {
     RecyclerView rvSinger;
     ArrayList<Singer> singers;
     SingerAdapter adapter;
+    LinearLayout layoutNoResult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +38,7 @@ public class SingerResultFragment extends Fragment {
     }
     private void InitControls() {
         rvSinger = view.findViewById(R.id.rv_search_result_singer);
+        layoutNoResult = view.findViewById(R.id.layout_no_result_container);
     }
 
     private void InitData() {
@@ -53,7 +55,7 @@ public class SingerResultFragment extends Fragment {
             }
         }, (itemView, position) -> {
             LinearLayout itemSinger = itemView.findViewById(R.id.layout_item_singer);
-            int paddingSize = (int) getResources().getDimensionPixelSize(R.dimen._12dp);
+            int paddingSize = getResources().getDimensionPixelSize(R.dimen._12dp);
             itemSinger.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             if(position % 2 == 0){
                 itemView.setBackgroundResource(R.color.alabaster);
@@ -72,7 +74,8 @@ public class SingerResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Singer> singersResult){
-        if(singersResult == null){
+        if(singersResult == null || singersResult.size() == 0){
+            layoutNoResult.setVisibility(View.VISIBLE);
             return;
         }
         singers.clear();
