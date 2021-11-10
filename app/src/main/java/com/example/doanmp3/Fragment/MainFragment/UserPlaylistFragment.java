@@ -19,7 +19,7 @@ import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.NewDataService;
-import com.example.doanmp3.Service.OptionItemClick;
+import com.example.doanmp3.Interface.OptionItemClick;
 
 import java.util.ArrayList;
 import java.util.List;

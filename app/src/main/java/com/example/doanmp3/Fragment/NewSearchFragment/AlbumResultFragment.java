@@ -1,6 +1,8 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +11,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewActivity.SongsListActivity;
 import com.example.doanmp3.NewAdapter.AlbumAdapter;
 import com.example.doanmp3.NewModel.Album;
 import com.example.doanmp3.R;
@@ -24,11 +28,11 @@ public class AlbumResultFragment extends Fragment {
 
 
     View view;
-    RecyclerView rvAlbum;
     ArrayList<Album> albums;
     AlbumAdapter adapter;
     LinearLayout layoutNoResult;
-
+    RecyclerView rvAlbum;
+    public NestedScrollView nestedScrollView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class AlbumResultFragment extends Fragment {
     private void InitControls() {
         rvAlbum = view.findViewById(R.id.rv_search_result_album);
         layoutNoResult = view.findViewById(R.id.layout_no_result_container);
+        nestedScrollView = view.findViewById(R.id.album_result_scroll_view);
     }
 
     private void InitData() {
@@ -49,7 +54,9 @@ public class AlbumResultFragment extends Fragment {
         adapter = new AlbumAdapter(getActivity(), albums, new AlbumAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+                Intent intent = new Intent(getContext(), SongsListActivity.class);
+                intent.putExtra("album", albums.get(position));
+                startActivity(intent);
             }
 
             @Override
@@ -78,12 +85,22 @@ public class AlbumResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Album> albumsResult){
-        if(albumsResult == null || albumsResult.size() == 0){
-            layoutNoResult.setVisibility(View.VISIBLE);
-            return;
-        }
-        albums.clear();
-        albums = (ArrayList<Album>) albumsResult;
-        adapter.setAlbums(albums);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(view != null){
+                    if(albumsResult == null || albumsResult.size() == 0){
+                        layoutNoResult.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    albums.clear();
+                    albums = (ArrayList<Album>) albumsResult;
+                    adapter.setAlbums(albums);
+                }else
+                    handler.postDelayed(this, 50);
+            }
+        }, 50);
+
     }
 }

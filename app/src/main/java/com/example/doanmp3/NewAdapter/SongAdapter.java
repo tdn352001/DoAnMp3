@@ -26,11 +26,17 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     Boolean haveConfig;
     ConfigItem configure;
 
+    // Cài đặt có muốn ẩn bớt phần từ không
+    boolean isViewMore;
+    int quantityItemDisplay;
+
     public SongAdapter(Context context, ArrayList<Song> songs, ItemClick itemClick) {
         this.context = context;
         this.songs = songs;
         this.itemClick = itemClick;
         haveConfig = false;
+        isViewMore = false;
+        quantityItemDisplay = 0;
     }
 
     public SongAdapter(Context context, ArrayList<Song> songs, ItemClick itemClick, ConfigItem configure) {
@@ -39,6 +45,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         this.itemClick = itemClick;
         this.haveConfig = true;
         this.configure = configure;
+        isViewMore = false;
+        quantityItemDisplay = 0;
     }
 
     @NonNull
@@ -68,6 +76,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
+
+        // Display Item less
+        if(isViewMore){
+            return CountDisplayItem();
+        }
+
+        // Default
         if(songs != null)
             return  songs.size();
         return 0;
@@ -77,6 +92,34 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     public void setSongs(ArrayList<Song> songs) {
         this.songs = songs;
         notifyDataSetChanged();
+    }
+
+    public boolean isViewMore() {
+        return isViewMore;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setViewMore(boolean viewMore) {
+        notifyDataSetChanged();
+        isViewMore = viewMore;
+    }
+
+    public int getQuantityItemDisplay() {
+        return quantityItemDisplay;
+    }
+
+    public void setQuantityItemDisplay(int quantityItemDisplay) {
+        this.quantityItemDisplay = quantityItemDisplay;
+    }
+
+    private int CountDisplayItem(){
+        if(songs == null)
+            return 0;
+
+        if(songs.size() < quantityItemDisplay)
+            return  songs.size();
+
+        return quantityItemDisplay;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{

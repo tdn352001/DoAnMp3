@@ -78,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
     private void NavigateToResult(String keyWord) {
         Bundle bundle = new Bundle();
         bundle.putString("keyWord", keyWord);
-        if (navController.getCurrentDestination().getId() == R.id.searchResultFragment) {
+        if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.searchResultFragment) {
             navController.navigateUp();
         }
         navController.navigate(R.id.action_searchRecentFragment_to_searchResultFragment, bundle);

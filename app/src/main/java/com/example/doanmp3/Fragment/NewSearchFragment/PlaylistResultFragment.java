@@ -1,6 +1,8 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +10,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewActivity.SongsListActivity;
 import com.example.doanmp3.NewAdapter.PlaylistAdapter;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
@@ -22,10 +26,11 @@ import java.util.List;
 public class PlaylistResultFragment extends Fragment {
 
     View view;
-    RecyclerView rvPlaylist;
     ArrayList<Playlist> playlists;
     PlaylistAdapter adapter;
     LinearLayout layoutNoResult;
+    RecyclerView rvPlaylist;
+    NestedScrollView nestedScrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +45,7 @@ public class PlaylistResultFragment extends Fragment {
     private void InitControls() {
         rvPlaylist = view.findViewById(R.id.rv_search_result_playlist);
         layoutNoResult = view.findViewById(R.id.layout_no_result_container);
+        nestedScrollView = view.findViewById(R.id.playlist_result_scroll_view);
     }
 
     private void InitData() {
@@ -47,7 +53,9 @@ public class PlaylistResultFragment extends Fragment {
         adapter = new PlaylistAdapter(getActivity(), playlists, new PlaylistAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-
+                Intent intent = new Intent(getContext(), SongsListActivity.class);
+                intent.putExtra("playlist", playlists.get(position));
+                startActivity(intent);
             }
 
             @Override
@@ -75,12 +83,22 @@ public class PlaylistResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Playlist> playlistsResult){
-        if(playlistsResult == null || playlistsResult.size() == 0){
-            layoutNoResult.setVisibility(View.VISIBLE);
-            return;
-        }
-        playlists.clear();
-        playlists = (ArrayList<Playlist>) playlistsResult;
-        adapter.setPlaylists(playlists);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(view != null){
+                    if(playlistsResult == null || playlistsResult.size() == 0){
+                        layoutNoResult.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    playlists.clear();
+                    playlists = (ArrayList<Playlist>) playlistsResult;
+                    adapter.setPlaylists(playlists);
+                }else
+                    handler.postDelayed(this, 50);
+            }
+        }, 50);
+
     }
 }

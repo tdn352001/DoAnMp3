@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doanmp3.NewAdapter.SongSelectedAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.ItemClick;
+import com.example.doanmp3.Interface.ItemClick;
 
 import java.util.ArrayList;
 

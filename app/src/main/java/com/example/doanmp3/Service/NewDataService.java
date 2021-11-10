@@ -1,6 +1,7 @@
 package com.example.doanmp3.Service;
 
 import com.example.doanmp3.NewModel.Album;
+import com.example.doanmp3.NewModel.DetailSinger;
 import com.example.doanmp3.NewModel.Genre;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.NewModel.ResultSearch;
@@ -44,4 +45,10 @@ public interface NewDataService {
     @FormUrlEncoded
     @POST("getSongsFromPlaylistId.php")
     Call<List<Song>> getSongsFromPlaylistId(@Field("id") String id);
+
+     @FormUrlEncoded
+    @POST("getDetailsSinger.php")
+    Call<DetailSinger> getDetailsSinger(@Field("id") String id);
+
+
 }

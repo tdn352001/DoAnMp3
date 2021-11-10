@@ -154,4 +154,13 @@
     <string name="no">Không</string>
     <string name="login_success">Đăng nhập thành công</string>
     <string name="login_failed">Đăng nhập thất bại</string>
+    <string name="delete_successfully">Xóa thành công</string>
+    <string name="network_error">Lỗi mạng</string>
+    <string name="view_less">Hiển thị ít</string>
+    <string name="post_comment">Đăng bình luận</string>
+    <string name="minute_ago">" phút trước"</string>
+    <string name="hour_ago">" giờ trước"</string>
+    <string name="day_ago">" ngày trước"</string>
+    <string name="month_ago">" Tháng trước"</string>
+    <string name="comment_min_length">Bình luận phải có tối thiếu 5 ký tự</string>
 </resources>

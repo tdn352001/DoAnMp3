@@ -29,10 +29,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.doanmp3.Fragment.MainFragment.ListSongPlayingFragment;
 import com.example.doanmp3.Fragment.MainFragment.SongPlayingFragment;
+import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.ItemClick;
 import com.example.doanmp3.Service.MusicForegroundService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
@@ -186,7 +186,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     }
 
     /* ========= Hide Layout Like and Comment ===========*/
-    private void HideLayoutInteractive(float positionOffset){
+    private void HideLayoutInteractive(float positionOffset) {
         float marginBottom = layoutInteractive.getHeight() * (positionOffset - 1);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) marginBottom);
@@ -196,10 +196,10 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     /* ========= GetDataSongs =========*/
     private void GetDataSongs() {
         Intent intent = getIntent();
-        if(intent != null){
-            if(intent.hasExtra("songs")){
+        if (intent != null) {
+            if (intent.hasExtra("songs")) {
                 songs = intent.getParcelableArrayListExtra("songs");
-                if(songs == null) songs = new ArrayList<>();
+                if (songs == null) songs = new ArrayList<>();
             }
             currentSong = intent.getIntExtra("position", 0);
             isRandom = intent.getBooleanExtra("random", false);
@@ -255,6 +255,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
                     musicService.setSongProgress(seekBar.getProgress());
             }
         });
+
+        btnComments.setOnClickListener(v -> NavigateToCommentActivity());
     }
 
 
@@ -281,6 +283,14 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         layoutPlay.setBackground(backgroundDrawables);
     }
 
+    private void NavigateToCommentActivity() {
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("type", "songs");
+        intent.putExtra("idObject", songs.get(currentSong).getId());
+        intent.putExtra("nameObject", songs.get(currentSong).getName());
+        startActivity(intent);
+    }
+
 
     /*
      *
@@ -304,7 +314,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         Intent MusicService = new Intent(getApplicationContext(), MusicForegroundService.class);
         MusicService.putExtra("songs", songs);
         MusicService.putExtra("currentSong", currentSong);
-        if(isRandom)
+        if (isRandom)
             MusicService.putExtra("random", isRandom);
         startService(MusicService);
     }

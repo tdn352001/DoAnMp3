@@ -4,7 +4,7 @@ import com.example.doanmp3.Model.Album;
 import com.example.doanmp3.Model.BaiHat;
 import com.example.doanmp3.Model.CaSi;
 import com.example.doanmp3.Model.ChuDeTheLoai;
-import com.example.doanmp3.Model.KeyWord;
+import com.example.doanmp3.NewModel.KeyWord;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.Model.QuangCao;
 import com.example.doanmp3.Model.User;

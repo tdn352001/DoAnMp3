@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,13 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewActivity.PlaySongsActivity;
+import com.example.doanmp3.NewActivity.SongsListActivity;
 import com.example.doanmp3.NewAdapter.AlbumAdapter;
 import com.example.doanmp3.NewAdapter.PlaylistAdapter;
 import com.example.doanmp3.NewAdapter.SingerAdapter;
@@ -38,6 +42,7 @@ public class AllResultFragment extends Fragment {
     MaterialButton btnViewMoreSong, btnViewMoreAlbum, btnViewMoreSinger, btnViewMorePlaylist;
     LinearLayout layoutContainer, layoutSong, layoutAlbum, layoutSinger, layoutPlaylist, layoutNoResult;
     TabLayout tabLayout;
+    public NestedScrollView nestedScrollView;
 
     SongAdapter songAdapter;
     AlbumAdapter albumAdapter;
@@ -82,6 +87,7 @@ public class AllResultFragment extends Fragment {
         layoutSinger = view.findViewById(R.id.layout_singer_result_of_all);
         layoutPlaylist = view.findViewById(R.id.layout_playlist_result_of_all);
         layoutNoResult = view.findViewById(R.id.layout_no_result_container);
+        nestedScrollView = view.findViewById(R.id.all_result_scroll_view);
     }
 
     private void InitSongData() {
@@ -89,7 +95,11 @@ public class AllResultFragment extends Fragment {
         songAdapter = new SongAdapter(getActivity(), songs, new SongAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-                Log.e("EEE", "Item Click");
+                ArrayList<Song> songArrayList = new ArrayList<>();
+                songArrayList.add(songs.get(position));
+                Intent intent = new Intent(getContext(), PlaySongsActivity.class);
+                intent.putExtra("songs", songArrayList);
+                startActivity(intent);
             }
 
             @Override
@@ -104,7 +114,9 @@ public class AllResultFragment extends Fragment {
         albumAdapter = new AlbumAdapter(getContext(), albums, new AlbumAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-
+                Intent intent = new Intent(getContext(), SongsListActivity.class);
+                intent.putExtra("album", albums.get(position));
+                startActivity(intent);
             }
 
             @Override
@@ -134,7 +146,9 @@ public class AllResultFragment extends Fragment {
         playlistAdapter = new PlaylistAdapter(getActivity(), playlists, new PlaylistAdapter.ItemClick() {
             @Override
             public void itemClick(int position) {
-
+                Intent intent = new Intent(getContext(), SongsListActivity.class);
+                intent.putExtra("playlist", playlists.get(position));
+                startActivity(intent);
             }
 
             @Override

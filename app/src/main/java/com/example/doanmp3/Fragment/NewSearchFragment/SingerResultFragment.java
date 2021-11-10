@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment.NewSearchFragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,10 +24,11 @@ import java.util.List;
 public class SingerResultFragment extends Fragment {
 
     View view;
-    RecyclerView rvSinger;
     ArrayList<Singer> singers;
     SingerAdapter adapter;
     LinearLayout layoutNoResult;
+    RecyclerView rvSinger;
+    NestedScrollView nestedScrollView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +42,7 @@ public class SingerResultFragment extends Fragment {
     private void InitControls() {
         rvSinger = view.findViewById(R.id.rv_search_result_singer);
         layoutNoResult = view.findViewById(R.id.layout_no_result_container);
+        nestedScrollView = view.findViewById(R.id.singer_result_scroll_view);
     }
 
     private void InitData() {
@@ -74,13 +78,23 @@ public class SingerResultFragment extends Fragment {
     }
 
     public void DisplayResult(List<Singer> singersResult){
-        if(singersResult == null || singersResult.size() == 0){
-            layoutNoResult.setVisibility(View.VISIBLE);
-            return;
-        }
-        singers.clear();
-        singers = (ArrayList<Singer>) singersResult;
-        adapter.setSingers(singers);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(view != null){
+                    if(singersResult == null || singersResult.size() == 0){
+                        layoutNoResult.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    singers.clear();
+                    singers = (ArrayList<Singer>) singersResult;
+                    adapter.setSingers(singers);
+                }else
+                    handler.postDelayed(this, 50);
+            }
+        }, 50);
+
     }
 
 }

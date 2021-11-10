@@ -3,4 +3,5 @@
     <string name="song_name">"Tên bài hát: "</string>
     <string name="singers_name">"Tên ca sĩ: "</string>
     <string name="search_text">Tìm kiếm</string>
+    <string name="comment_min_length">Bình luận phải có tối thiếu 5 ký tự</string>
 </resources>

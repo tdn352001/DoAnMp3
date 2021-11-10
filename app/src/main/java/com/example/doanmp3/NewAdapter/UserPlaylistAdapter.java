@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.ItemConfig;
-import com.example.doanmp3.Service.OptionItemClick;
+import com.example.doanmp3.Interface.ItemConfig;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 

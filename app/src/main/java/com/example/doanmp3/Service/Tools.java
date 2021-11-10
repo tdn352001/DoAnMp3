@@ -18,6 +18,7 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -25,11 +26,14 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.doanmp3.NewModel.Object;
+import com.example.doanmp3.R;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Tools {
 
@@ -234,5 +238,36 @@ public class Tools {
         SpannableStringBuilder textStyle = new SpannableStringBuilder(text);
         textStyle.setSpan(new StyleSpan(Style), 0, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return textStyle;
+    }
+
+    public static int ConvertDpToPx(float dp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
+
+    public static int ConvertSpToPx(float sp, Context context) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
+    }
+
+    public static String CalculateTimeAgo(Context context, Date past){
+        Date now = new Date();
+        long milliSecondAgo = now.getTime() - past.getTime();
+        long minuteAgo = TimeUnit.MILLISECONDS.toMinutes(milliSecondAgo);
+
+        if(minuteAgo < 60){
+            return minuteAgo + context.getApplicationContext().getString(R.string.minute_ago);
+        }
+
+        long hourAgo = TimeUnit.MINUTES.toHours(minuteAgo);
+        if(hourAgo < 24){
+            return hourAgo + context.getApplicationContext().getString(R.string.hour_ago);
+        }
+
+        long dayAgo = TimeUnit.MINUTES.toDays(minuteAgo);
+        if(dayAgo < 30){
+            return dayAgo +  context.getApplicationContext().getString(R.string.day_ago);
+        }
+
+        long monthAgo = dayAgo / 30;
+        return monthAgo + context.getApplicationContext().getString(R.string.month_ago);
     }
 }

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     //Fragments
     UserFragment userFragment;
     HomeFragment homeFragment;
-    NewsFragment newsFragment;
+    public NewsFragment newsFragment;
     ViewPagerAdapter adapter;
 
     private long backTime;

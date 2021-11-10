@@ -8,10 +8,9 @@
     android:background="@drawable/custom_background_rounded_top">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/noname"
+        android:background="@android:color/transparent"
         android:fitsSystemWindows="true"
         app:elevation="4000dp">
 
@@ -37,16 +36,11 @@
             android:background="#f1f1f1" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_result"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager_result"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.core.widget.NestedScrollView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ProgressBar
         android:id="@+id/progress_bar_load_result"

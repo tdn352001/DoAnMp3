@@ -18,9 +18,9 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.ItemClick;
-import com.example.doanmp3.Service.ItemConfig;
-import com.example.doanmp3.Service.OptionClick;
+import com.example.doanmp3.Interface.ItemClick;
+import com.example.doanmp3.Interface.ItemConfig;
+import com.example.doanmp3.Interface.OptionClick;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 

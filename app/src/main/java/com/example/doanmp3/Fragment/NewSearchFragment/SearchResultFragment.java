@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,6 +23,7 @@ import com.example.doanmp3.NewModel.ResultSearch;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -40,6 +43,7 @@ public class SearchResultFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager2 viewPager;
     ProgressBar progressBar;
+    CoordinatorLayout layoutContainer;
 
     //Fragment Results
     AllResultFragment allSearchFragment;
@@ -72,6 +76,7 @@ public class SearchResultFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout_result);
         viewPager = view.findViewById(R.id.viewpager_result);
         progressBar = view.findViewById(R.id.progress_bar_load_result);
+        layoutContainer = view.findViewById(R.id.result_layout);
     }
 
     private void InitFragmentResults() {
@@ -141,6 +146,31 @@ public class SearchResultFragment extends Fragment {
             }
 
         });
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                switch (position){
+                    case 1:
+                        songResultFragment.nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
+                        break;
+                    case 2:
+                        albumResultFragment.nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
+                        break;
+                    case 3:
+                        singerResultFragment.nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
+                        break;
+                    case 4:
+                        playlistResultFragment.nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
+                        break;
+                    default:
+                        allSearchFragment.nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
+                }
+            }
+        });
+
+        layoutContainer.setOnClickListener(v -> Tools.hideSoftKeyBoard(getActivity()));
     }
 
     private void GetKeyWord() {

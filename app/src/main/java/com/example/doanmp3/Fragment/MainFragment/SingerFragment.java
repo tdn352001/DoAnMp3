@@ -1,6 +1,8 @@
 package com.example.doanmp3.Fragment.MainFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doanmp3.NewActivity.SingerActivity;
 import com.example.doanmp3.NewAdapter.ObjectCircleAdapter;
 import com.example.doanmp3.NewModel.Object;
 import com.example.doanmp3.NewModel.Singer;
@@ -79,7 +82,9 @@ public class SingerFragment extends Fragment {
 
     private void SetUpRecycleView() {
         objectAdapter = new ObjectCircleAdapter(requireContext(), objects, position -> {
-
+            Intent intent = new Intent(getContext(), SingerActivity.class);
+            intent.putExtra("singer", (Parcelable) singers.get(position));
+            startActivity(intent);
         });
         recyclerView.setAdapter(objectAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
