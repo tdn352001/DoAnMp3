@@ -4,6 +4,7 @@ import static android.graphics.Typeface.BOLD;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,6 +55,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -61,21 +64,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         String content = comment.getContent();
         String timeAgo = Tools.CalculateTimeAgo(context, comment.getCreatedAt());
         List<String> likes = comment.getLiked();
-
+        String textLike;
+        int textLikeColor;
         if (likes != null && likes.size() > 0) {
-            String liked = likes.size() + " " + context.getApplicationContext().getString(R.string.like);
-            holder.tvLike.setText(liked);
+            textLike = likes.size() + " " + context.getApplicationContext().getString(R.string.luot_thich);
             if (likes.contains(user.getUid())) {
-                holder.tvLike.setTextColor(R.color.love);
+                textLikeColor=  context.getApplicationContext().getColor(R.color.love);
             } else {
-                holder.tvLike.setTextColor(R.color.pharlap);
+                textLikeColor=  context.getApplicationContext().getColor(R.color.blue);
             }
+        }else{
+            textLike = context.getApplicationContext().getString(R.string.like);
+            textLikeColor=  context.getApplicationContext().getColor(R.color.pharlap);
         }
 
 
         holder.tvContent.setText(username);
         holder.tvContent.append("  " + content);
         holder.tvTimeAgo.setText(timeAgo);
+        holder.tvLike.setTextColor(textLikeColor);
+        holder.tvLike.setText(textLike);
         Glide.with(context).load(comment.getThumbnailUser())
                 .error(R.drawable.person)
                 .into(holder.imgUser);

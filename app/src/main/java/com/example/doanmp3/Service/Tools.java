@@ -10,6 +10,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.doanmp3.NewModel.Object;
@@ -221,6 +223,18 @@ public class Tools {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void CreateAndShowForeground(View view, int alpha){
+        Drawable drawableDim = view.getForeground();
+        if(drawableDim == null){
+            drawableDim = ResourcesCompat.getDrawable(view.getResources(), R.drawable.foreground_dim, null);
+            view.setForeground(drawableDim);
+        }
+
+        if (drawableDim != null) {
+            drawableDim.setAlpha(alpha);
+        }
+    }
 
     public static boolean isObjectInObjects(Object object, ArrayList<Object> objects){
         if(objects == null || object == null)

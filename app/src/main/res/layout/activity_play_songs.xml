@@ -209,18 +209,22 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="8dp">
 
-                    <ImageButton
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_like_song"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/press_effects"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_hate"
-                        android:tint="@android:color/black"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/like"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/black"
+                        app:icon="@drawable/ic_hate"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"
+                        app:iconTint="@null"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription,UseAppTint" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_comments_song"

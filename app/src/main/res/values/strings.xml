@@ -108,7 +108,8 @@
     <string name="VIP">VIP</string>
     <string name="featured_singer">Ca sĩ nổi bật</string>
     <string name="contributing_artists">Nghệ sĩ đóng góp</string>
-    <string name="like">Yêu thích</string>
+    <string name="like">Thích</string>
+    <string name="luot_thich">Lượt thích</string>
     <string name="comment">Bình luận</string>
     <string name="options">Tùy chọn</string>
     <string name="subtitle">Subtitle</string>

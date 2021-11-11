@@ -14,12 +14,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -36,6 +39,13 @@ import com.example.doanmp3.R;
 import com.example.doanmp3.Service.MusicForegroundService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,8 +63,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     TextView tvCurrentTime, tvTotalTime;
     ImageButton btnRandom, btnPrev, btnPlay, btnNext, btnLoop;
     LinearLayout layoutInteractive;
-    ImageButton btnLove;
-    MaterialButton btnComments;
+    MaterialButton btnComments, btnLove;
 
 
     ListSongPlayingFragment listFragment;
@@ -64,8 +73,10 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     SimpleDateFormat simpleDateFormat;
     ArrayList<Song> songs;
     int currentSong;
+    int prevSong;
     boolean isRandom;
 
+    // listen from foreground service
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
@@ -84,6 +95,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     boolean isBoundServiceConnected;
     boolean isMusicServiceRunning;
 
+    // Bind Service
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -100,6 +112,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     };
 
 
+    // Update Time In Seekbar
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -111,6 +124,12 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         }
     };
 
+    // Firebase
+    FirebaseUser user;
+    DatabaseReference likeRef;
+    ValueEventListener valueEventListener;
+    ArrayList<String> likes;
+
     /* ========= ON CREATE =========*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +138,14 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_from_service"));
         InitControls();
         InitViewPagerAdapter();
+        InitFirebase();
         SetUpViewPager();
         GetDataSongs();
         HandleEvent();
     }
 
     /* ========= InitControls =========*/
+
     @SuppressLint("SimpleDateFormat")
     private void InitControls() {
         layoutPlay = findViewById(R.id.layout_play_activity);
@@ -148,8 +169,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         handler = new Handler();
         simpleDateFormat = new SimpleDateFormat("mm:ss");
     }
-
     /* ========= InitViewPagerAdapter =========*/
+
     private void InitViewPagerAdapter() {
         listFragment = new ListSongPlayingFragment();
         songFragment = new SongPlayingFragment();
@@ -158,8 +179,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         fragments.add(songFragment);
         viewPagerAdapter = new ViewPager2StateAdapter(this, fragments, null);
     }
-
     /* ========= SetUpViewPager =========*/
+
     private void SetUpViewPager() {
         viewPager.setAdapter(viewPagerAdapter);
         circleIndicator3.setViewPager(viewPager);
@@ -184,16 +205,16 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         viewPager.setCurrentItem(1);
         viewPager.setOffscreenPageLimit(2);
     }
-
     /* ========= Hide Layout Like and Comment ===========*/
+
     private void HideLayoutInteractive(float positionOffset) {
         float marginBottom = layoutInteractive.getHeight() * (positionOffset - 1);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, 0, 0, (int) marginBottom);
         layoutInteractive.setLayoutParams(layoutParams);
     }
-
     /* ========= GetDataSongs =========*/
+
     private void GetDataSongs() {
         Intent intent = getIntent();
         if (intent != null) {
@@ -208,6 +229,13 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
             listFragment.SetUpRecycleView(songs);
             isMusicServiceRunning = true;
         }
+    }
+
+    private void InitFirebase() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        likeRef = FirebaseDatabase.getInstance().getReference("likes").child("songs");
+        likes = new ArrayList<>();
+        prevSong = -1;
     }
 
 
@@ -256,6 +284,13 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
             }
         });
 
+        btnLove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HandleEventLoveSong();
+            }
+        });
+
         btnComments.setOnClickListener(v -> NavigateToCommentActivity());
     }
 
@@ -289,6 +324,55 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         intent.putExtra("idObject", songs.get(currentSong).getId());
         intent.putExtra("nameObject", songs.get(currentSong).getName());
         startActivity(intent);
+    }
+
+
+    private void ListenLikeEvent() {
+        Log.e("EEEEEE", "Call Event");
+        if (prevSong != -1) {
+            likeRef.child(songs.get(prevSong).getId()).removeEventListener(valueEventListener);
+            valueEventListener = null;
+            btnLove.setIconResource(R.drawable.ic_hate);
+            btnLove.setText(R.string.like);
+        }
+        prevSong = currentSong;
+        valueEventListener = new ValueEventListener() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("EEEE", "alo alo");
+                if (likes == null)
+                    likes = new ArrayList<>();
+                else
+                    likes.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    likes.add(dataSnapshot.getValue(String.class));
+                }
+                int resDrawableIcon = likes.contains(user.getUid()) ? R.drawable.ic_love : R.drawable.ic_hate;
+                btnLove.setIconResource(resDrawableIcon);
+                String countLike = likes.size() > 0 ? likes.size() + "" : getString(R.string.like);
+                btnLove.setText(countLike);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        likeRef.child(songs.get(currentSong).getId()).addValueEventListener(valueEventListener);
+    }
+
+    private void HandleEventLoveSong() {
+        if (likes == null) {
+            likes = new ArrayList<>();
+        }
+
+        if(likes.contains(user.getUid())){
+            likes.remove(user.getUid());
+        }else
+            likes.add(user.getUid());
+        likeRef.child(songs.get(currentSong).getId()).setValue(likes);
     }
 
 
@@ -355,6 +439,9 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         btnPlay.setImageResource(R.drawable.ic_pause_circle_outline);
         timeBar.setProgress(0);
         handler.postDelayed(runnable, 1000);
+
+        // Listen Like Change();
+        ListenLikeEvent();
     }
 
     private void HandleActionEventPlayOrPauseMusic() {
