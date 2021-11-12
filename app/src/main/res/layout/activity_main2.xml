@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:nestedScrollingEnabled="true"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_main_activity"
+        app:layout_constraintBottom_toTopOf="@id/appbar_control_music"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,8 +38,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:padding="4dp"
-            android:tint="@color/black"
             android:src="@drawable/ic_person"
+            android:tint="@color/black"
             app:civ_circle_background_color="@color/white" />
 
 
@@ -50,8 +50,8 @@
             android:layout_marginHorizontal="12dp"
             android:layout_weight="1"
             app:cardBackgroundColor="#F1F3F0"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,6 +92,98 @@
             app:backgroundTint="@android:color/transparent"
             tools:ignore="ContentDescription" />
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/appbar_control_music"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_appbar_play"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_main_activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_song_playing"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/music2" />
+
+        <LinearLayout
+            android:id="@+id/txt_info_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/btn_pause_appbar"
+            android:layout_toEndOf="@id/img_song_playing"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name_song_playing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="40mm"
+                android:maxLines="1"
+                android:text="@string/name_song"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="InOrMmUsage" />
+
+            <TextView
+                android:id="@+id/tv_name_singer_playing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="30mm"
+                android:maxLines="1"
+                android:text="@string/name_song"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                tools:ignore="InOrMmUsage" />
+
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next_appbar"
+            style="@style/Widget.MaterialComponents.TimePicker.ImageButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            app:icon="@drawable/ic_next"
+            app:iconSize="35dp"
+            app:iconTint="@color/black"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pause_appbar"
+            style="@style/Widget.MaterialComponents.TimePicker.ImageButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_toStartOf="@id/btn_next_appbar"
+            android:layout_toLeftOf="@id/btn_next_appbar"
+            android:background="@android:color/transparent"
+            android:gravity="left"
+            android:padding="0dp"
+            android:scaleType="fitXY"
+            app:icon="@drawable/ic_pause"
+            app:iconSize="35dp"
+            app:iconTint="@color/black"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+    </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_main_activity"

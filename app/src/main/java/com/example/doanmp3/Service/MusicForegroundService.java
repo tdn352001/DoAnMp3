@@ -231,7 +231,7 @@ public class MusicForegroundService extends Service {
     /*
      *   Get Bitmap from thumbnail of current song
      * */
-    private Bitmap GetBitmapOfCurrentSong() {
+    public Bitmap GetBitmapOfCurrentSong() {
         if (bitmaps == null || bitmaps.size() <= currentSong) {
             return BitmapFactory.decodeResource(getResources(), R.drawable.music2);
         }
@@ -406,6 +406,10 @@ public class MusicForegroundService extends Service {
             return R.drawable.ic_pause_circle_outline;
         }
         return R.drawable.ic_play_circle_outline;
+    }
+
+    public Song getCurrentSong(){
+        return songs.get(currentSong);
     }
 
     public int ChangeRandomState() {

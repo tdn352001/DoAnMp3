@@ -38,6 +38,9 @@ public interface NewDataService {
     @GET("getRandomPlaylists.php")
     Call<List<Playlist>> getRandomPlaylists();
 
+    @GET("getNewSongs.php")
+    Call<List<Song>> getNewSongs();
+
     @FormUrlEncoded
     @POST("getSongsFromAlbumId.php")
     Call<List<Song>> getSongsFromAlbumId(@Field("id") String id);
@@ -46,9 +49,11 @@ public interface NewDataService {
     @POST("getSongsFromPlaylistId.php")
     Call<List<Song>> getSongsFromPlaylistId(@Field("id") String id);
 
-     @FormUrlEncoded
+    @FormUrlEncoded
     @POST("getDetailsSinger.php")
     Call<DetailSinger> getDetailsSinger(@Field("id") String id);
 
-
+    @FormUrlEncoded
+    @POST("loveSong.php")
+    Call<Void> loveSong(@Field("idUser") String idUser, @Field("idSong") String idSong);
 }

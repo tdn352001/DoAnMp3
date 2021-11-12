@@ -1,5 +1,6 @@
 package com.example.doanmp3.NewModel;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,8 +29,11 @@ public class Song implements Parcelable {
     @Expose
     private String liked;
 
+    private boolean isAudio;
+
     public Song() {
         liked = "0";
+        isAudio = false;
     }
 
 
@@ -40,6 +44,9 @@ public class Song implements Parcelable {
         thumbnail = in.readString();
         link = in.readString();
         liked = in.readString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            isAudio= in.readBoolean();
+        }
     }
 
     @Override
@@ -50,6 +57,9 @@ public class Song implements Parcelable {
         dest.writeString(thumbnail);
         dest.writeString(link);
         dest.writeString(liked);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            dest.writeBoolean(isAudio);
+        }
     }
 
     @Override
@@ -105,11 +115,13 @@ public class Song implements Parcelable {
         return link;
     }
 
-
-    public String getLiked() {
-        return liked;
+    public boolean isAudio() {
+        return isAudio;
     }
 
+    public void setAudio(boolean audio) {
+        isAudio = audio;
+    }
 
     public String getAllSingerNames() {
         if (singers == null || singers.size() == 0) {

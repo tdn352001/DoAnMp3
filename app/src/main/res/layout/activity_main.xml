@@ -36,8 +36,7 @@
         android:layout_above="@id/bottom_navigation"
         android:background="@drawable/custom_appbar_play"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="10dp"
-        android:visibility="gone">
+        android:paddingVertical="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_appbar_play"

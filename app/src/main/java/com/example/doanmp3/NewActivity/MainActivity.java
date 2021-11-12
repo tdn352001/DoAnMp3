@@ -2,26 +2,41 @@ package com.example.doanmp3.NewActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.doanmp3.Fragment.MainFragment.HomeFragment;
 import com.example.doanmp3.Fragment.MainFragment.NewsFragment;
 import com.example.doanmp3.Fragment.MainFragment.UserFragment;
 import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.MusicForegroundService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -36,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
     CardView searchView;
     ImageView btnOptions;
 
+    // Layout Control Music
+    RelativeLayout layoutControlMusic;
+    CircleImageView imgSong;
+    TextView tvSong, tvSinger;
+    MaterialButton btnPlay, btnNext;
+    boolean isLayoutControlVisible;
+
     //Fragments
     UserFragment userFragment;
     HomeFragment homeFragment;
@@ -48,10 +70,12 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     boolean isShowDialog;
     boolean isInternetAvailable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_from_service"));
         InitControls();
         InitFragment();
         SetUpBottomNavigation();
@@ -59,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         HandleEvents();
         InitCheckConnectionDialog();
         CheckInternetConnection();
-
-
+        StartBoundService();
     }
 
     private void InitControls() {
@@ -70,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
         userThumbnail = findViewById(R.id.thumbnail_user);
         btnOptions = findViewById(R.id.btn_options_main_activity);
         searchView = findViewById(R.id.search_view);
+        layoutControlMusic = findViewById(R.id.appbar_control_music);
+        imgSong = findViewById(R.id.img_song_playing);
+        tvSong = findViewById(R.id.tv_name_song_playing);
+        tvSinger = findViewById(R.id.tv_name_singer_playing);
+        btnPlay = findViewById(R.id.btn_pause_appbar);
+        btnNext = findViewById(R.id.btn_next_appbar);
     }
 
     private void InitFragment() {
@@ -140,6 +169,19 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         });
+
+        btnPlay.setOnClickListener(v -> {
+            if(isBoundServiceConnected) {
+                musicService.ActionPlayOrPause();
+                btnPlay.setIconResource(musicService.isMediaPlaying());
+            }
+        });
+
+        btnNext.setOnClickListener(v -> {
+            if(isBoundServiceConnected) {
+                musicService.ActionNext();
+            }
+        });
     }
 
     private void InitCheckConnectionDialog() {
@@ -172,6 +214,83 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+    // Listen From Service
+
+    MusicForegroundService musicService;
+    boolean isBoundServiceConnected;
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            isBoundServiceConnected = true;
+            MusicForegroundService.MusicBinder musicBinder = (MusicForegroundService.MusicBinder) service;
+            musicService = musicBinder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBoundServiceConnected = false;
+        }
+    };
+
+    private void StartBoundService() {
+        Intent intent = new Intent(getApplicationContext(), MusicForegroundService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra("action")) {
+                int action = intent.getIntExtra("action", 0);
+                HandleActionFromService(action);
+            }
+        }
+    };
+
+
+
+    private void HandleActionFromService(int action) {
+        if(!isBoundServiceConnected) return;
+
+        switch (action) {
+            case MusicForegroundService.ACTION_START_PLAY:
+                HandleActionStartPlayMusic();
+                break;
+            case MusicForegroundService.ACTION_PLAY_OR_PAUSE:
+                HandleActionEventPlayOrPauseMusic();
+                break;
+            case MusicForegroundService.ACTION_CLEAR:
+                HandleActionStopService();
+                break;
+        }
+    }
+
+    private void HandleActionStartPlayMusic() {
+        if(!isLayoutControlVisible){
+            isLayoutControlVisible = true;
+            layoutControlMusic.setVisibility(View.VISIBLE);
+        }
+        HandleActionEventPlayOrPauseMusic();
+        Song currentSong = musicService.getCurrentSong();
+        tvSong.setText(currentSong.getName());
+        tvSinger.setText(currentSong.getAllSingerNames());
+        imgSong.setImageBitmap(musicService.GetBitmapOfCurrentSong());
+    }
+
+    private void HandleActionEventPlayOrPauseMusic() {
+        btnPlay.setIconResource(musicService.isMediaPlaying());
+    }
+
+    private void HandleActionStopService() {
+        isLayoutControlVisible = false;
+        layoutControlMusic.setVisibility(View.GONE);
+    }
+
+
     @Override
     public void onBackPressed() {
         if (backTime + 2000 > System.currentTimeMillis()) {
@@ -188,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         handler.removeCallbacks(runnable);
     }
 

@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -33,7 +32,9 @@ import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.MusicForegroundService;
+import com.example.doanmp3.Service.NewDataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,6 +49,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator3;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
@@ -314,6 +318,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
 
     private void ListenLikeEvent() {
+        if(user == null) return;
+
         if (prevSong != -1) {
             likeRef.child(songs.get(prevSong).getId()).removeEventListener(valueEventListener);
             valueEventListener = null;
@@ -325,7 +331,6 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
             @SuppressLint("ResourceType")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e("EEEE", "alo alo");
                 if (likes == null)
                     likes = new ArrayList<>();
                 else
@@ -349,6 +354,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     }
 
     private void HandleEventLoveSong() {
+        if(user == null) return;
         if (likes == null) {
             likes = new ArrayList<>();
         }
@@ -358,7 +364,25 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         }else
             likes.add(user.getUid());
         likeRef.child(songs.get(currentSong).getId()).setValue(likes);
+        SaveLoveSongInDatabase();
     }
+
+    private void SaveLoveSongInDatabase() {
+        NewDataService dataService = APIService.newService();
+        Call<Void> callback = dataService.loveSong(user.getUid(), songs.get(currentSong).getId());
+        callback.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
 
 
     /*
