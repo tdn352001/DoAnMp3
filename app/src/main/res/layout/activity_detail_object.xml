@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/karaoke_mic"
         android:tintMode="multiply"
-        app:brightness="1.5"
+        app:brightness="1.4"
         app:imageZoom="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

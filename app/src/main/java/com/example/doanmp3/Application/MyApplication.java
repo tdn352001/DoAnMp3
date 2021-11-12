@@ -7,14 +7,16 @@ import android.os.Build;
 
 import com.example.doanmp3.R;
 
-public class Notification extends Application {
-    final public static String CHANNEL_ID = "CONTROL_MEDIAPLAYER";
+public class MyApplication extends Application {
+    final public static String CHANNEL_ID = "CONTROL_MEDIA_PLAYER";
+
 
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
     }
+
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -29,4 +31,7 @@ public class Notification extends Application {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+
+
 }

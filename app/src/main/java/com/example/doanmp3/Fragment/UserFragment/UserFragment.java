@@ -20,7 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.doanmp3.Activity.LoginActivity;
+import com.example.doanmp3.NewActivity.LoginActivity;
 import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.Activity.UserInfoActivity;
 import com.example.doanmp3.Adapter.ViewPagerAdapter;

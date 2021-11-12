@@ -108,6 +108,7 @@ public class RegisterFragment extends Fragment {
         String password = Objects.requireNonNull(edtPassword.getText()).toString();
         String verifyPassword = Objects.requireNonNull(edtVerifyPassword.getText()).toString();
 
+
         if (validateNewAccount(email, username, password, verifyPassword)) {
             CheckUserExists(email, password, username);
         }

@@ -1,6 +1,6 @@
 package com.example.doanmp3.Service;
 
-import static com.example.doanmp3.Application.Notification.CHANNEL_ID;
+import static com.example.doanmp3.Application.MyApplication.CHANNEL_ID;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;

@@ -1,8 +1,10 @@
 package com.example.doanmp3.NewActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import com.example.doanmp3.Fragment.MainFragment.NewsFragment;
 import com.example.doanmp3.Fragment.MainFragment.UserFragment;
 import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -40,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerAdapter adapter;
 
     private long backTime;
-
+    Handler handler;
+    Runnable runnable;
+    ProgressDialog progressDialog;
+    boolean isShowDialog;
+    boolean isInternetAvailable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         SetUpBottomNavigation();
         SetUpViewPager();
         HandleEvents();
+        InitCheckConnectionDialog();
+        CheckInternetConnection();
+
+
     }
 
     private void InitControls() {
@@ -131,6 +142,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void InitCheckConnectionDialog() {
+        progressDialog= new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage(getResources().getString(R.string.connecting_internet));
+        progressDialog.setCancelable(false);
+        isShowDialog = false;
+    }
+
+    private void CheckInternetConnection() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                isInternetAvailable = Tools.isInternetAvailable(MainActivity.this);
+                if(isInternetAvailable && isShowDialog){
+                    progressDialog.dismiss();
+                    isShowDialog = false;
+                }else{
+                    if(!isInternetAvailable && !isShowDialog){
+                        progressDialog.show();
+                        isShowDialog = true;
+                    }
+                }
+                handler.postDelayed(this, 1000);
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -143,6 +183,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         backTime = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
     }
 
 }

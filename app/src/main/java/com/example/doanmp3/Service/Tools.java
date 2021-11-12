@@ -11,6 +11,8 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -283,5 +285,12 @@ public class Tools {
 
         long monthAgo = dayAgo / 30;
         return monthAgo + context.getApplicationContext().getString(R.string.month_ago);
+    }
+
+
+    public static boolean isInternetAvailable(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
     }
 }
