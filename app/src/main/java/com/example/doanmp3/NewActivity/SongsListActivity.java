@@ -3,21 +3,25 @@ package com.example.doanmp3.NewActivity;
 import static androidx.recyclerview.widget.RecyclerView.HORIZONTAL;
 import static androidx.recyclerview.widget.RecyclerView.VERTICAL;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,11 +40,15 @@ import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.NewDataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import retrofit2.Call;
@@ -50,12 +58,16 @@ import retrofit2.Response;
 public class SongsListActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    ImageFilterView imgBackground;
     RoundedImageView imgThumbnail;
     MaterialButton btnPlayRandom;
     RecyclerView rvSong;
     LinearLayout layoutMoreInfo;
     RecyclerView rvSinger;
 
+    String typeObject;
+    String idObject;
+    String nameObject;
     ArrayList<Song> songs;
     ArrayList<Object> singerObjects;
     SongAdapter songAdapter;
@@ -63,6 +75,11 @@ public class SongsListActivity extends AppCompatActivity {
     int connectAgainst;
     boolean isRandom;
 
+    // Firebase
+    FirebaseUser user;
+    DatabaseReference likeRef;
+    ValueEventListener valueEventListener;
+    ArrayList<String> likes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +87,14 @@ public class SongsListActivity extends AppCompatActivity {
         InitControls();
         GetDataObject();
         HandleEvents();
+        InitFirebase();
+
     }
 
     private void InitControls() {
         toolbar = findViewById(R.id.toolbar_detail_object);
         imgThumbnail = findViewById(R.id.thumbnail_detail_object);
+        imgBackground = findViewById(R.id.img_background);
         btnPlayRandom = findViewById(R.id.btn_action_play_random);
         rvSong = findViewById(R.id.rv_detail_object);
         rvSong = findViewById(R.id.rv_detail_object);
@@ -83,11 +103,14 @@ public class SongsListActivity extends AppCompatActivity {
         connectAgainst = 0;
     }
 
+    @SuppressLint("ResourceAsColor")
     private void SetupToolBar(String title) {
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(title);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void HandleEvents() {
@@ -114,6 +137,9 @@ public class SongsListActivity extends AppCompatActivity {
             GetSongsFromAlbum(album.getId());
             SetUpUi(album.getThumbnail());
             SetupToolBar(album.getName());
+            typeObject= "albums";
+            idObject = album.getId();
+            nameObject = album.getName();
             return;
         }
 
@@ -122,6 +148,9 @@ public class SongsListActivity extends AppCompatActivity {
             GetSongsFromPlaylist(playlist.getId());
             SetUpUi(playlist.getThumbnail());
             SetupToolBar(playlist.getName());
+            typeObject= "playlists";
+            idObject = playlist.getId();
+            nameObject = playlist.getName();
         }
     }
 
@@ -226,6 +255,8 @@ public class SongsListActivity extends AppCompatActivity {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 imgThumbnail.setImageBitmap(resource);
+                Bitmap blurBitmap = Tools.blurBitmap(SongsListActivity.this, resource, 25);
+                imgBackground.setImageBitmap(blurBitmap);
             }
 
             @Override
@@ -244,10 +275,45 @@ public class SongsListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void InitFirebase() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        likeRef = FirebaseDatabase.getInstance().getReference("likes").child("songs");
+        likes = new ArrayList<>();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.list_song_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.like_object:
+                HandleLoveObject(item);
+                break;
+            case R.id.comment_object:
+                NavigateToCommentActivity();
+                break;
+            case R.id.options_object:
+                Toast.makeText(SongsListActivity.this, "options_object", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void HandleLoveObject(MenuItem item) {
+        item.setIcon(R.drawable.ic_love);
+    }
+
+    private void NavigateToCommentActivity() {
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("type", typeObject);
+        intent.putExtra("idObject", idObject);
+        intent.putExtra("nameObject", nameObject);
+        startActivity(intent);
     }
 }

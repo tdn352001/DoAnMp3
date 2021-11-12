@@ -11,7 +11,7 @@
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/noname"
+        android:background="@color/transparent"
         android:fitsSystemWindows="true"
         app:elevation="4000dp">
 

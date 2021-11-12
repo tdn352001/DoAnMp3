@@ -70,10 +70,10 @@
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        app:backgroundTint="@color/noname"
+        app:backgroundTint="@color/transparent"
         app:icon="@drawable/ic_options"
         app:iconTint="@color/teal_700"
-        app:strokeColor="@color/noname"
+        app:strokeColor="@color/transparent"
         app:strokeWidth="0dp" />
 
 </RelativeLayout>

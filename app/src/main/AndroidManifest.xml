@@ -21,16 +21,19 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".NewActivity.CommentActivity"
+            android:name=".Activity.MainActivity2"
             android:exported="true">
 
         </activity>
         <activity
+            android:name=".NewActivity.CommentActivity"
+            android:exported="true" />
+        <activity
             android:name=".NewActivity.SingerActivity"
             android:exported="true" />
         <activity android:name=".NewActivity.ChangeInfoUserActivity" />
-        <activity android:name=".NewActivity.MainActivity"/>
-        <activity android:name=".Activity.LoginActivity"/>
+        <activity android:name=".NewActivity.MainActivity" />
+        <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".NewActivity.PlaySongsActivity" />
         <activity android:name=".NewActivity.SongsListActivity" />
         <activity android:name=".NewActivity.SearchActivity" />

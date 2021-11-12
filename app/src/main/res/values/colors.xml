@@ -13,7 +13,7 @@
     <color name="background">#3B232325</color>
     <color name="gray">#808080</color>
     <color name="selected">#7B18DD</color>
-    <color name="noname">#00DF1D1D</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="darkTextColor">#020000</color>
     <color name="Aqua">#C8D1D2</color>
     <color name="primaryColor">#2F9088</color>

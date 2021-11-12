@@ -119,7 +119,7 @@
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_centerInParent="true"
-                            android:background="@color/noname"
+                            android:background="@color/transparent"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_add"
                             tools:ignore="ContentDescription" />

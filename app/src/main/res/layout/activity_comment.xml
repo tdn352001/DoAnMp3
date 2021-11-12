@@ -12,12 +12,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_comment"
-        android:paddingHorizontal="@dimen/_12dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comment"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_12dp" />
+
+        <LinearLayout
+            android:id="@+id/layout_no_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_have_comment"
+                android:textColor="@color/pharlap"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/be_the_first_to_comment"
+                android:textColor="@color/pharlap"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,6 +88,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_send_comment"
                 style="@style/Widget.MaterialComponents.Button"

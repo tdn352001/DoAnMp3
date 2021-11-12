@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ public class CommentActivity extends AppCompatActivity {
     CircleImageView imgUser;
     TextInputEditText edtComment;
     MaterialButton btnSend;
+    LinearLayout layoutNoComment;
 
     String typeComment;
     String idObject;
@@ -51,6 +54,7 @@ public class CommentActivity extends AppCompatActivity {
     ChildEventListener childEventListener;
     ArrayList<Comment> comments;
     CommentAdapter adapter;
+    boolean isCommentEmpty;
 
     Handler handler;
     Runnable runnable;
@@ -75,6 +79,7 @@ public class CommentActivity extends AppCompatActivity {
         imgUser = findViewById(R.id.img_user);
         edtComment = findViewById(R.id.edt_comment);
         btnSend = findViewById(R.id.btn_send_comment);
+        layoutNoComment = findViewById(R.id.layout_no_comment);
     }
 
     private void GetIntent() {
@@ -121,6 +126,7 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void ListenEventFromFirebase() {
+        isCommentEmpty = true;
         childEventListener = new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -129,6 +135,11 @@ public class CommentActivity extends AppCompatActivity {
                 if (comment == null) return;
                 comments.add(0, comment);
                 adapter.notifyDataSetChanged();
+                if(isCommentEmpty){
+                    rvComment.setVisibility(View.VISIBLE);
+                    layoutNoComment.setVisibility(View.GONE);
+                    isCommentEmpty = false;
+                }
             }
 
             @Override
@@ -216,5 +227,6 @@ public class CommentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+        commentRef.removeEventListener(childEventListener);
     }
 }

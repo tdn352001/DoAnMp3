@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -25,7 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -54,7 +51,7 @@ import me.relex.circleindicator.CircleIndicator3;
 
 public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
-    ConstraintLayout layoutPlay;
+    ImageFilterView imgBackground;
     ImageButton btnExit, btnOptions;
     TextView tvSongName, tvSingersName;
     CircleIndicator3 circleIndicator3;
@@ -148,7 +145,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
     @SuppressLint("SimpleDateFormat")
     private void InitControls() {
-        layoutPlay = findViewById(R.id.layout_play_activity);
+        imgBackground = findViewById(R.id.img_background);
         btnExit = findViewById(R.id.btn_finish_activity_play);
         btnOptions = findViewById(R.id.btn_options_activity_play);
         tvSongName = findViewById(R.id.tv_name_song);
@@ -284,13 +281,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
             }
         });
 
-        btnLove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HandleEventLoveSong();
-            }
-        });
-
+        btnLove.setOnClickListener(v -> HandleEventLoveSong());
         btnComments.setOnClickListener(v -> NavigateToCommentActivity());
     }
 
@@ -307,15 +298,10 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     }
 
     /* ========= SetBackground =========*/
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private void SetBackground(Song song, int position) {
+    private void SetBackground(int position) {
         Bitmap bitmapThumbnail = listFragment.getBitmap(position);
-        Bitmap bitmapCropped = Tools.cropBitmap(bitmapThumbnail, 25);
-        Bitmap bitmapSaturationChange = Tools.updateHSV(bitmapCropped, 10f, 1f, 0);
-        Bitmap bitmapContrastChange = Tools.changeBitmapContrastBrightness(bitmapSaturationChange, 2, -50);
-        Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, bitmapContrastChange, 25f);
-        Drawable backgroundDrawables = new BitmapDrawable(getResources(), bitmapBlurred);
-        layoutPlay.setBackground(backgroundDrawables);
+        Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, bitmapThumbnail, 25f);
+        imgBackground.setImageBitmap(bitmapBlurred);
     }
 
     private void NavigateToCommentActivity() {
@@ -328,7 +314,6 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
 
     private void ListenLikeEvent() {
-        Log.e("EEEEEE", "Call Event");
         if (prevSong != -1) {
             likeRef.child(songs.get(prevSong).getId()).removeEventListener(valueEventListener);
             valueEventListener = null;
@@ -442,6 +427,10 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
         // Listen Like Change();
         ListenLikeEvent();
+
+        // SetBackgroundColor
+        SetBackground(currentSong);
+
     }
 
     private void HandleActionEventPlayOrPauseMusic() {
@@ -494,6 +483,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        likeRef.child(songs.get(currentSong).getId()).removeEventListener(valueEventListener);
     }
 
 

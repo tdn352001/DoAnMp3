@@ -164,4 +164,6 @@
     <string name="day_ago">" ngày trước"</string>
     <string name="month_ago">" Tháng trước"</string>
     <string name="comment_min_length">Bình luận phải có tối thiếu 5 ký tự</string>
+    <string name="not_have_comment">Chưa có bình luận</string>
+    <string name="be_the_first_to_comment">Trở thành người đầu tiên bình luận.</string>
 </resources>

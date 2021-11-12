@@ -7,6 +7,23 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient">
 
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/img_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baihat"
+        android:tintMode="multiply"
+        app:brightness="1.5"
+        app:imageZoom="10"
+        android:alpha="0.9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:saturation="1.2"
+        tools:ignore="UnusedAttribute" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -247,13 +264,6 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/view_blur"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

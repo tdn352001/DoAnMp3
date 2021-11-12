@@ -10,20 +10,20 @@
         android:id="@+id/appbarlayout_playfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/noname"
+        android:background="@color/transparent"
         android:paddingBottom="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/noname">
+            android:background="@color/transparent">
 
             <ImageButton
                 android:id="@+id/img_finish_play"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="15dp"
-                android:background="@color/noname"
+                android:background="@color/transparent"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_under"
                 tools:ignore="ContentDescription" />
