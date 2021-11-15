@@ -167,4 +167,6 @@
     <string name="settings">Settings</string>
     <string name="language">Language</string>
     <string name="choose_language">Choose Language</string>
+    <string name="save_settings">Save change</string>
+    <string name="restart_to_apply_change">Restart app to apply change?</string>
 </resources>

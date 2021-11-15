@@ -6,12 +6,12 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
@@ -19,6 +19,9 @@ import java.util.Locale;
 public class SettingsActivity extends AppCompatActivity {
     Toolbar toolbar;
     MaterialButton btnLanguage, btnLogout;
+    final String[] languages = {"vn", "en"};
+    int oldLanguage;
+    int checkedItem = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         InitControls();
         SetUpToolBar();
+        LoadLocale();
         HandleEvents();
     }
 
@@ -35,17 +39,6 @@ public class SettingsActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btn_logout);
     }
 
-    private void HandleEvents() {
-        btnLanguage.setOnClickListener(v -> ShowChangeLanguageDialog());
-        btnLogout.setOnClickListener(v -> Logout());
-    }
-
-    private void Logout() {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finishAffinity();
-    }
 
     private void SetUpToolBar() {
         setSupportActionBar(toolbar);
@@ -55,31 +48,57 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+    private void LoadLocale(){
+        @SuppressLint("CommitPrefEdits")
+        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
+        String language = preferences.getString("language", "vn");
+        checkedItem = GetLocale(language);
+        oldLanguage = checkedItem;
+    }
+
+    private int GetLocale(String language){
+        for(int i = 0; i < languages.length; i++){
+            if(language.equals(languages[i]))
+                return i;
+        }
+        return  0;
+    }
+
+    private void HandleEvents() {
+        btnLanguage.setOnClickListener(v -> ShowChangeLanguageDialog());
+        btnLogout.setOnClickListener(v -> ShowDialogLogout());
+    }
+
 
     private void ShowChangeLanguageDialog() {
         final String[] listLanguages = {"Tiếng Việt", "English"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
-        builder.setTitle(R.string.choose_language);
-        builder.setSingleChoiceItems(listLanguages, 0, (dialog, which) -> {
-            switch (which) {
-                case 1:
-                    SetLocale("en");
-                    break;
-                default:
-                    SetLocale("vn");
-            }
-        }).setPositiveButton(R.string.ok, (dialog, which) -> {
-            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-            startActivity(intent);
-            finishAffinity();
-            dialog.dismiss();
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SettingsActivity.this);
+        dialog.setTitle(getResources().getString(R.string.choose_language));
+        dialog.setSingleChoiceItems(listLanguages, checkedItem, (dialog1, which) -> checkedItem = which);
+        dialog.setPositiveButton(R.string.ok, (dialog12, which) -> {
+            if(checkedItem != oldLanguage)
+                ShowDialogApplyChange();
+            dialog12.dismiss();
         });
-
-        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    private void SetLocale(String language) {
+    private void ShowDialogApplyChange(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SettingsActivity.this);
+        dialog.setTitle(R.string.save_settings);
+        dialog.setMessage(R.string.restart_to_apply_change);
+        dialog.setNegativeButton(R.string.ok, (dialog1, which) -> {
+            SetLocale(checkedItem);
+            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finishAffinity();
+        });
+        dialog.setPositiveButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
+        dialog.show();
+    }
+
+    private void SetLocale(int position) {
+        String language = languages[position];
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration configuration = new Configuration();
@@ -91,11 +110,19 @@ public class SettingsActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void LoadLocale(){
-        @SuppressLint("CommitPrefEdits")
-        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
-        String language = preferences.getString("language", "vn");
-        SetLocale(language);
+    private void ShowDialogLogout(){
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(SettingsActivity.this);
+        dialog.setTitle(R.string.logout);
+        dialog.setMessage(R.string.are_you_sure);
+        dialog.setNegativeButton(R.string.ok, (dialog1, which) -> Logout());
+        dialog.setPositiveButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
+        dialog.show();
+    }
+    private void Logout() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finishAffinity();
     }
 }
 
