@@ -74,13 +74,30 @@
                     android:textSize="16sp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_edit_user_info"
+                    android:id="@+id/btn_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/user_description"
                     android:layout_centerHorizontal="true"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginTop="8dp"
+                    android:backgroundTint="#1E6FD8"
+                    android:paddingVertical="4dp"
+                    android:text="@string/settings"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:icon="@drawable/ic_settings"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_edit_user_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn_settings"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginHorizontal="24dp"
                     android:backgroundTint="#1E6FD8"
                     android:paddingVertical="4dp"
                     android:text="@string/edit_info_user"

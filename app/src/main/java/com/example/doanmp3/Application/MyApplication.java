@@ -1,20 +1,32 @@
 package com.example.doanmp3.Application;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.os.Build;
+import android.os.Handler;
 
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 
 public class MyApplication extends Application {
     final public static String CHANNEL_ID = "CONTROL_MEDIA_PLAYER";
-
+    private Activity currentActivity = null;
+    Handler handler;
+    Runnable runnable;
+    ProgressDialog progressDialog;
+    boolean isShowDialog;
+    boolean isInternetAvailable;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        isShowDialog = false;
+        isInternetAvailable = true;
         createNotificationChannel();
+        CheckInternetConnection();
     }
 
 
@@ -32,6 +44,40 @@ public class MyApplication extends Application {
         }
     }
 
+    private void ShowInternetConnectionFailedDialog() {
+        progressDialog = new ProgressDialog(currentActivity);
+        progressDialog.setMessage(getResources().getString(R.string.connecting_internet));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        isShowDialog = true;
+    }
 
+    private void CheckInternetConnection() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                isInternetAvailable = Tools.isInternetAvailable(getApplicationContext());
+                if (isInternetAvailable && isShowDialog) {
+                    progressDialog.dismiss();
+                    isShowDialog = false;
+                } else {
+                    if (!isInternetAvailable && !isShowDialog && currentActivity != null) {
+                        ShowInternetConnectionFailedDialog();
+                    }
+                }
 
+                handler.postDelayed(this, 1000);
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity mCurrentActivity) {
+        this.currentActivity = mCurrentActivity;
+    }
 }

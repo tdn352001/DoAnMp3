@@ -47,6 +47,17 @@
         <item name="android:paddingVertical" tools:ignore="NewApi">8dp</item>
     </style>
 
+    <style name="SettingsButton" parent="IconButton">
+        <item name="android:textColor">#403F40</item>
+        <item name="iconTint">#403F40</item>
+        <item name="iconGravity">start</item>
+        <item name="iconPadding">8dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">14sp</item>
+        <item name="iconSize">18dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+    </style>
+
     <style name="LoginGoogle" parent="@style/Widget.MaterialComponents.Button.OutlinedButton">
         <item name="backgroundTint">@color/white</item>
         <item name="android:gravity">center</item>

@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.NewActivity.ChangeInfoUserActivity;
+import com.example.doanmp3.NewActivity.SettingsActivity;
 import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
 import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
@@ -47,7 +48,7 @@ public class UserFragment extends Fragment {
     RoundedImageView userBanner;
     CircleImageView userAvatar;
     TextView tvUsername, tvUserDescription;
-    MaterialButton btnEdit;
+    MaterialButton btnEdit, btnSettings;
     CardView btnSong, btnAlbum, btnSinger, btnDevice;
     TabLayout tabLayout;
     ViewPager2 viewPager;
@@ -89,6 +90,7 @@ public class UserFragment extends Fragment {
         tvUsername = view.findViewById(R.id.txt_username);
         tvUserDescription = view.findViewById(R.id.user_description);
         btnEdit = view.findViewById(R.id.btn_edit_user_info);
+        btnSettings = view.findViewById(R.id.btn_settings);
         btnSong = view.findViewById(R.id.btn_song);
         btnAlbum = view.findViewById(R.id.btn_album);
         btnSinger = view.findViewById(R.id.btn_singer);
@@ -166,6 +168,10 @@ public class UserFragment extends Fragment {
         btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChangeInfoUserActivity.class);
             changeInfoUser.launch(intent);
+        });
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
         });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

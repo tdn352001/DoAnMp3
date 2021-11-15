@@ -50,12 +50,12 @@ public class MusicForegroundService extends Service {
     Stack<Integer> playedStack;
     MediaPlayer.OnCompletionListener onCompletionListener = mp -> {
 
-        switch (loopState){
+        switch (loopState) {
             case ONE:
                 PlaySong();
                 break;
             case DISABLED:
-                if(playedStack.size() < songs.size()){
+                if (playedStack.size() < songs.size()) {
                     ActionNext();
                 }
                 break;
@@ -408,8 +408,16 @@ public class MusicForegroundService extends Service {
         return R.drawable.ic_play_circle_outline;
     }
 
-    public Song getCurrentSong(){
+    public Song getCurrentSong() {
         return songs.get(currentSong);
+    }
+
+    public int getCurrentPosition() {
+        return currentSong;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
     }
 
     public int ChangeRandomState() {

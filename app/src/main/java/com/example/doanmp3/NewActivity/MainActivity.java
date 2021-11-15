@@ -1,7 +1,6 @@
 package com.example.doanmp3.NewActivity;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -34,7 +31,6 @@ import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.MusicForegroundService;
-import com.example.doanmp3.Service.Tools;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
@@ -42,7 +38,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
@@ -65,11 +61,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPagerAdapter adapter;
 
     private long backTime;
-    Handler handler;
-    Runnable runnable;
-    ProgressDialog progressDialog;
-    boolean isShowDialog;
-    boolean isInternetAvailable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
         SetUpBottomNavigation();
         SetUpViewPager();
         HandleEvents();
-        InitCheckConnectionDialog();
-        CheckInternetConnection();
         StartBoundService();
     }
 
@@ -182,35 +172,15 @@ public class MainActivity extends AppCompatActivity {
                 musicService.ActionNext();
             }
         });
+
+        layoutControlMusic.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PlaySongsActivity.class);
+            intent.putExtra("not_start_foreground", true);
+            startActivity(intent);
+        });
     }
 
-    private void InitCheckConnectionDialog() {
-        progressDialog= new ProgressDialog(MainActivity.this);
-        progressDialog.setMessage(getResources().getString(R.string.connecting_internet));
-        progressDialog.setCancelable(false);
-        isShowDialog = false;
-    }
 
-    private void CheckInternetConnection() {
-        handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                isInternetAvailable = Tools.isInternetAvailable(MainActivity.this);
-                if(isInternetAvailable && isShowDialog){
-                    progressDialog.dismiss();
-                    isShowDialog = false;
-                }else{
-                    if(!isInternetAvailable && !isShowDialog){
-                        progressDialog.show();
-                        isShowDialog = true;
-                    }
-                }
-                handler.postDelayed(this, 1000);
-            }
-        };
-        handler.postDelayed(runnable, 1000);
-    }
 
 
 
@@ -308,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        handler.removeCallbacks(runnable);
     }
 
 }

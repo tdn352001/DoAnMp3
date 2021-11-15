@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.doanmp3.NewModel.Song;
-import com.example.doanmp3.R;
 import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.Interface.ItemConfig;
 import com.example.doanmp3.Interface.OptionClick;
+import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -87,7 +88,8 @@ public class SongSelectedAdapter extends RecyclerView.Adapter<SongSelectedAdapte
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 holder.thumbnail.setImageBitmap(resource);
-                bitmaps.add(resource);
+                Bitmap bitmapBlurred = Tools.blurBitmap(context, resource, 25f);
+                bitmaps.add(bitmapBlurred);
             }
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {

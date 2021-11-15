@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,20 @@ public class SongPlayingFragment extends Fragment {
     public void SetSongInfo(Song song) {
         SetThumbnailDiskByBitmap(null, song.getThumbnail());
         SetSongInfo(song.getName(), song.getAllSingerNames());
+    }
+
+    public void SetSongInfoSafety(Song song){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(view != null){
+                    SetSongInfo(song);
+                    handler.removeCallbacks(this);
+                }else
+                    handler.postDelayed(this, 100);
+            }
+        }, 10);
     }
 
     public void SetThumbnailDiskByBitmap(Bitmap bitmap, String link) {

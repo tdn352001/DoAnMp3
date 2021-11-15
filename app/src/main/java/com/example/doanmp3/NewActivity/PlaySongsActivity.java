@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -53,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
+public class PlaySongsActivity extends BaseActivity implements ItemClick {
 
     ImageFilterView imgBackground;
     ImageButton btnExit, btnOptions;
@@ -92,9 +91,10 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         }
     };
 
+
     MusicForegroundService musicService;
+    boolean isNotStartForeground;
     boolean isBoundServiceConnected;
-    boolean isMusicServiceRunning;
 
     // Bind Service
     ServiceConnection serviceConnection = new ServiceConnection() {
@@ -104,6 +104,17 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
             MusicForegroundService.MusicBinder musicBinder = (MusicForegroundService.MusicBinder) service;
             musicService = musicBinder.getService();
             GetRandomAndLoopState();
+
+            // If you open this screen by clicking on Control Layout
+            if (isNotStartForeground) {
+                songs = musicService.getSongs();
+                currentSong = musicService.getCurrentPosition();
+                btnPlay.setImageResource(musicService.isMediaPlaying());
+                btnLoop.setImageResource(musicService.getLoopState());
+                btnRandom.setImageResource(musicService.getRandomState());
+                GetCurrentDataFromService();
+
+            }
         }
 
         @Override
@@ -223,12 +234,15 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
                 songs = intent.getParcelableArrayListExtra("songs");
                 if (songs == null) songs = new ArrayList<>();
             }
-            currentSong = intent.getIntExtra("position", 0);
-            isRandom = intent.getBooleanExtra("random", false);
-            StartForegroundService();
+            isNotStartForeground = intent.getBooleanExtra("not_start_foreground", false);
+
+            if (!isNotStartForeground) {
+                currentSong = intent.getIntExtra("position", 0);
+                isRandom = intent.getBooleanExtra("random", false);
+                StartForegroundService();
+                listFragment.SetUpRecycleViewSafety(songs);
+            }
             StartBoundService();
-            listFragment.SetUpRecycleView(songs);
-            isMusicServiceRunning = true;
         }
     }
 
@@ -304,8 +318,7 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     /* ========= SetBackground =========*/
     private void SetBackground(int position) {
         Bitmap bitmapThumbnail = listFragment.getBitmap(position);
-        Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, bitmapThumbnail, 25f);
-        imgBackground.setImageBitmap(bitmapBlurred);
+        imgBackground.setImageBitmap(bitmapThumbnail);
     }
 
     private void NavigateToCommentActivity() {
@@ -316,9 +329,8 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         startActivity(intent);
     }
 
-
     private void ListenLikeEvent() {
-        if(user == null) return;
+        if (user == null) return;
 
         if (prevSong != -1) {
             likeRef.child(songs.get(prevSong).getId()).removeEventListener(valueEventListener);
@@ -354,14 +366,14 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     }
 
     private void HandleEventLoveSong() {
-        if(user == null) return;
+        if (user == null) return;
         if (likes == null) {
             likes = new ArrayList<>();
         }
 
-        if(likes.contains(user.getUid())){
+        if (likes.contains(user.getUid())) {
             likes.remove(user.getUid());
-        }else
+        } else
             likes.add(user.getUid());
         likeRef.child(songs.get(currentSong).getId()).setValue(likes);
         SaveLoveSongInDatabase();
@@ -454,7 +466,6 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
 
         // SetBackgroundColor
         SetBackground(currentSong);
-
     }
 
     private void HandleActionEventPlayOrPauseMusic() {
@@ -464,7 +475,6 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
     }
 
     private void HandleActionStopService() {
-        isMusicServiceRunning = false;
         btnPlay.setImageResource(R.drawable.ic_play_circle_outline);
         songFragment.StartOrPauseAnimation(1);
     }
@@ -502,6 +512,21 @@ public class PlaySongsActivity extends AppCompatActivity implements ItemClick {
         tvSingersName.setText(songs.get(currentSong).getAllSingerNames());
     }
 
+    private void GetCurrentDataFromService(){
+        // SET SELECTED SONG, SELECTED ITEM, AND INFO SONG, SET UP RECYCLE VIEW
+        listFragment.ChangeInfoSongSelected(songs, currentSong);
+        // SET DISK
+        songFragment.SetSongInfoSafety(songs.get(currentSong));
+        // SET TITLE FOR TOOLBAR
+        SetTitleForToolbar();
+
+        setSongDuration();
+        btnPlay.setImageResource(musicService.isMediaPlaying());
+        handler.postDelayed(runnable, 0);
+        ListenLikeEvent();
+        Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, musicService.GetBitmapOfCurrentSong(), 25f);
+        imgBackground.setImageBitmap(bitmapBlurred);
+    }
 
     @Override
     protected void onDestroy() {

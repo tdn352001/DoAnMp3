@@ -22,16 +22,17 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".Activity.MainActivity2"
+            android:name=".NewActivity.SettingsActivity"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".NewActivity.CommentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".NewActivity.SingerActivity"
-            android:exported="true" />
+            android:name=".NewActivity.BaseActivity"
+            android:exported="false"
+            android:label="@string/title_activity_base"
+            android:theme="@style/Theme.DoAnMp3.NoActionBar" />
+        <activity android:name=".NewActivity.CommentActivity" />
+        <activity android:name=".NewActivity.SingerActivity" />
         <activity android:name=".NewActivity.ChangeInfoUserActivity" />
         <activity android:name=".NewActivity.MainActivity" />
         <activity android:name=".NewActivity.LoginActivity" />

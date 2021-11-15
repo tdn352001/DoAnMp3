@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -41,7 +40,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChangeInfoUserActivity extends AppCompatActivity {
+public class ChangeInfoUserActivity extends BaseActivity {
 
     public static final int REQUEST_CODE = 12345;
     Toolbar toolbar;

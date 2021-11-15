@@ -31,7 +31,7 @@ public class ListSongPlayingFragment extends Fragment {
     ArrayList<Song> songs;
 
     ItemClick itemClick;
-
+    boolean isSetUpCompleted;
 
 
     @Override
@@ -48,31 +48,36 @@ public class ListSongPlayingFragment extends Fragment {
         tvGenres = view.findViewById(R.id.txt_genre_of_song);
         rvSong = view.findViewById(R.id.rv_list_song);
         itemClick = (ItemClick) getActivity();
+        isSetUpCompleted = true;
     }
 
-    public void SetUpRecycleView(ArrayList<Song> songArrayList) {
+    private void SetUpRecycleView(ArrayList<Song> songArrayList){
+        songs = songArrayList;
+        songAdapter = new SongSelectedAdapter(getContext(), songs, itemClick, position -> {
+
+        });
+        if(rvSong == null){
+            InitControls();
+        }
+        rvSong.setAdapter(songAdapter);
+        rvSong.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+
+    }
+
+    public void SetUpRecycleViewSafety(ArrayList<Song> songArrayList) {
         // wait Binding View
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if( view != null){
+                if( isSetUpCompleted){
                     handler.removeCallbacks(this);
-                    songs = songArrayList;
-                    songAdapter = new SongSelectedAdapter(getContext(), songs, itemClick, position -> {
-
-                    });
-                    if(rvSong == null){
-                        InitControls();
-                    }
-                    rvSong.setAdapter(songAdapter);
-                    rvSong.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                    SetUpRecycleView(songArrayList);
                 }else{
                     handler.postDelayed(this, 100);
                 }
             }
-        }, 100);
-
+        }, 0);
     }
 
     public ArrayList<Song> getSongs() {
@@ -105,5 +110,21 @@ public class ListSongPlayingFragment extends Fragment {
 
     public void ChangeItemSelected(int position){
         songAdapter.changeItemSelected(position);
+    }
+
+    public void ChangeInfoSongSelected(ArrayList<Song> songArrayList, int position){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(isSetUpCompleted){
+                    SetUpRecycleView(songArrayList);
+                    SetSongInfo(songArrayList.get(position).getName(), songArrayList.get(position).getAllSingerNames());
+                    ChangeItemSelected(position);
+                    handler.removeCallbacks(this);
+                }else
+                    handler.postDelayed(this, 100);
+            }
+        }, 10);
     }
 }
