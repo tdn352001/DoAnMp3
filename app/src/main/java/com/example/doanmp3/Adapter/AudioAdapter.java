@@ -123,7 +123,7 @@ public class AudioAdapter extends RecyclerView.Adapter<AudioAdapter.ViewHolder> 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void OpenDiaLogDelete(int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-        dialog.setBackground(context.getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setBackground(context.getDrawable(R.drawable.rounded_background));
         dialog.setTitle("Xóa");
         dialog.setIcon(R.drawable.ic_logout);
         dialog.setMessage("Bạn có chắc muốn xóa mục này?");

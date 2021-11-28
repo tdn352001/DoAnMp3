@@ -4,12 +4,18 @@
         android:duration="300"
         android:fromYDelta="0%"
         android:toYDelta="-100%" />
+
+    <alpha
+        android:duration="300"
+        android:fromAlpha="1"
+        android:toAlpha="0.3"/>
+
     <scale
         android:duration="300"
         android:fromXScale="1"
         android:fromYScale="1"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toXScale="0.7"
-        android:toYScale="0.7" />
+        android:toXScale="0"
+        android:toYScale="0" />
 </set>

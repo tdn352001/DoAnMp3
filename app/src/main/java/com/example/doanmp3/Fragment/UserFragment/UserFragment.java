@@ -128,7 +128,7 @@ public class UserFragment extends Fragment {
         btnLogout.setOnClickListener(v -> {
 
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-            dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setBackground(getResources().getDrawable(R.drawable.rounded_background));
             dialog.setTitle("Đăng Xuất");
             dialog.setIcon(R.drawable.ic_logout);
             dialog.setMessage("Bạn có chắc muốn đăng suất?");

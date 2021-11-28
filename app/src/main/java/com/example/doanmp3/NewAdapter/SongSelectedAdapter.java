@@ -69,6 +69,7 @@ public class SongSelectedAdapter extends RecyclerView.Adapter<SongSelectedAdapte
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Song song = songs.get(position);
@@ -108,9 +109,8 @@ public class SongSelectedAdapter extends RecyclerView.Adapter<SongSelectedAdapte
         if (itemSelected == position) {
             holder.itemView.setBackgroundResource(R.drawable.custom_selected_item_recycleview);
         } else {
-            holder.itemView.setBackgroundResource(R.drawable.custom_none_background);
+            holder.itemView.setBackgroundResource(R.color.transparent);
         }
-
     }
 
     @Override

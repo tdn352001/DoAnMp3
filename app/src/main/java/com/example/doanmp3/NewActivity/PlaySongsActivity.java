@@ -147,6 +147,7 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_songs);
+        overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_from_service"));
         InitControls();
         InitViewPagerAdapter();
@@ -256,6 +257,7 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
 
     /* ========= HandleEvent =========*/
     private void HandleEvent() {
+        btnExit.setOnClickListener(v -> finish());
         btnPlay.setOnClickListener(v -> {
             if (musicService != null) {
                 musicService.ActionPlayOrPause();
@@ -526,6 +528,13 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
         ListenLikeEvent();
         Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, musicService.GetBitmapOfCurrentSong(), 25f);
         imgBackground.setImageBitmap(bitmapBlurred);
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.from_top, R.anim.to_bottom);
     }
 
     @Override

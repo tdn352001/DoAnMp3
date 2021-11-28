@@ -137,7 +137,7 @@ public class SearchRecentFragment extends Fragment {
         dialog.setTitle(R.string.delete_history_search_title);
         dialog.setMessage(R.string.are_you_sure);
         dialog.setIcon(R.drawable.error);
-        dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+        dialog.setBackground(getResources().getDrawable(R.drawable.rounded_background));
         dialog.setPositiveButton(R.string.cancel, (dialog1, which) -> dialog1.dismiss());
         dialog.setNegativeButton(R.string.done, (dialog12, which) -> DeleteHistory());
         dialog.show();

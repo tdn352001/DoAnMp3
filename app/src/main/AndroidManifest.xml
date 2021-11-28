@@ -22,15 +22,13 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".NewActivity.SettingsActivity"
-            android:exported="true">
-
-        </activity>
-        <activity
             android:name=".NewActivity.BaseActivity"
             android:exported="false"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.DoAnMp3.NoActionBar" />
+        <activity android:name=".TestApiActivity" />
+        <activity android:name=".NewActivity.AddSongUserPlaylistActivity" />
+        <activity android:name=".NewActivity.SettingsActivity" />
         <activity android:name=".NewActivity.CommentActivity" />
         <activity android:name=".NewActivity.SingerActivity" />
         <activity android:name=".NewActivity.ChangeInfoUserActivity" />
@@ -47,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.AddBaiHatActivity" />
-        <activity android:name=".Activity.DetailUserPlaylistActivity" />
+        <activity android:name=".NewActivity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.DetailSingerActivity" />
         <activity android:name=".Activity.DanhSachBaiHatActivity" />

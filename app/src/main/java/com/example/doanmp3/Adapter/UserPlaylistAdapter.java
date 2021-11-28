@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Activity.DetailUserPlaylistActivity;
+import com.example.doanmp3.NewActivity.DetailUserPlaylistActivity;
 import com.example.doanmp3.Model.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;

@@ -15,7 +15,7 @@
     <string name="name_song">Tên Bài Hát</string>
     <string name="create_new_playlist">Tạo Playlist Mới</string>
     <string name="new_username">New Username</string>
-    <string name="change_username">Đổi Username</string>
+    <string name="change_username">Đổi tên hiển thị</string>
     <string name="mat_khau">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
@@ -176,4 +176,11 @@
     <string name="choose_language">Chọn ngôn ngữ</string>
     <string name="save_settings">Lưu cài đặt</string>
     <string name="restart_to_apply_change">Khởi động lại để lưu cài đặt?</string>
+    <string name="please_enter_name">Vui lòng nhập tên</string>
+    <string name="the_name_already_exist">Tên này đã tồn tại</string>
+    <string name="no_song_in_your_playlist">Không có bài hát trong playlist của bạn</string>
+    <string name="playlist_empty">Danh sách trống</string>
+    <string name="added">Đã thêm</string>
+    <string name="online" translatable="false">Online</string>
+    <string name="complete">Xong</string>
 </resources>

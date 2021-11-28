@@ -81,7 +81,7 @@
     <string name="save_result">Do you want to save the results</string>
     <string name="yes">Yes</string>
     <string name="delete_playlist">Delete playlist</string>
-    <string name="change_name">Change your name</string>
+    <string name="change_name">Change this name</string>
     <string name="mpvp">Music Player Vip Pro</string>
     <string name="cahnge_name_playlist">Change name of your playlist</string>
     <string name="update">Update</string>
@@ -156,10 +156,10 @@
     <string name="network_error">Network error</string>
     <string name="view_less">Show less</string>
     <string name="post_comment">Post a comment</string>
-    <string name="minute_ago">minute ago</string>
-    <string name="hour_ago">hours ago</string>
-    <string name="day_ago">days ago</string>
-    <string name="month_ago">month ago</string>
+    <string name="minute_ago">" minute ago"</string>
+    <string name="hour_ago">" hours ago"</string>
+    <string name="day_ago">" days ago"</string>
+    <string name="month_ago">" month ago"</string>
     <string name="comment_min_length">Comments must be at least 5 characters</string>
     <string name="not_have_comment">There are no comments yet</string>
     <string name="be_the_first_to_comment">Be the first to comment.</string>
@@ -169,4 +169,10 @@
     <string name="choose_language">Choose Language</string>
     <string name="save_settings">Save change</string>
     <string name="restart_to_apply_change">Restart app to apply change?</string>
+    <string name="please_enter_name">Please enter the name</string>
+    <string name="the_name_already_exist">Name already exists</string>
+    <string name="no_song_in_your_playlist">There are no songs in playlists</string>
+    <string name="playlist_empty">Playlist is empty</string>
+    <string name="added">Added</string>
+    <string name="complete">Complete</string>
 </resources>

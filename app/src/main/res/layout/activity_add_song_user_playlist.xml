@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp"
+        tools:targetApi="lollipop">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar_add_song"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleMarginEnd="18dp">
+
+            <TextView
+                android:id="@+id/btn_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/complete"
+                android:textColor="@color/black" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="@dimen/_12dp"
+            android:padding="0dp"
+            app:boxBackgroundColor="@color/alabaster"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxStrokeColor="@android:color/transparent"
+            app:boxStrokeWidth="0dp"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
+            app:startIconDrawable="@drawable/ic_search"
+            tools:targetApi="o">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingVertical="4dp"
+                android:textSize="12sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="@dimen/_12dp"
+            android:layout_marginRight="7dp"
+            android:fitsSystemWindows="true"
+            app:layout_collapseMode="pin"
+            app:tabIndicatorAnimationDuration="200"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/TabLayoutTextAppearance"
+            tools:ignore="InOrMmUsage,SpeakableTextPresentCheck" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="7dp"
+            android:background="#f1f1f1" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_load_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/primaryColor"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

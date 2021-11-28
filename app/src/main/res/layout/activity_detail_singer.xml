@@ -11,7 +11,6 @@
     tools:context=".Activity.DanhSachBaiHatActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbarlayout_detailsinger"
         android:layout_width="match_parent"
         android:layout_height="380dp"
         android:backgroundTint="@color/transparent"

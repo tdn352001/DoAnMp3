@@ -15,7 +15,7 @@
     <string name="name_song">Tên Bài Hát</string>
     <string name="create_new_playlist">Tạo Playlist Mới</string>
     <string name="new_username">New Username</string>
-    <string name="change_username">Đổi Username</string>
+    <string name="change_username">Đổi tên hiển thị</string>
     <string name="mat_khau">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
@@ -167,13 +167,16 @@
     <string name="not_have_comment">Chưa có bình luận</string>
     <string name="be_the_first_to_comment">Trở thành người đầu tiên bình luận.</string>
     <string name="connecting_internet">Vui lòng kiểm tra kết nối Internet</string>
-    <string name="title_activity_base" translatable="false">BaseActivity</string>
 
-    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
-    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
     <string name="settings">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
     <string name="choose_language">Chọn ngôn ngữ</string>
     <string name="save_settings">Lưu cài đặt</string>
     <string name="restart_to_apply_change">Khởi động lại để lưu cài đặt?</string>
+    <string name="please_enter_name">Vui lòng nhập tên</string>
+    <string name="the_name_already_exist">Tên này đã tồn tại</string>
+    <string name="no_song_in_your_playlist">Không có bài hát trong playlist của bạn</string>
+    <string name="playlist_empty">Danh sách trống</string>
+    <string name="added">Đã thêm</string>
+    <string name="complete">Xong</string>
 </resources>

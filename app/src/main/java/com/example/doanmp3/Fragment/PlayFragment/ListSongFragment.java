@@ -28,7 +28,6 @@ public class ListSongFragment extends Fragment {
 
     public ListSongFragment(ArrayList<BaiHat> arrayList) {
         this.arrayList = arrayList;
-
     }
 
 

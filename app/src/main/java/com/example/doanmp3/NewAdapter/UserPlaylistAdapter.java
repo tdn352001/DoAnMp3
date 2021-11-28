@@ -61,7 +61,7 @@ public class UserPlaylistAdapter extends RecyclerView.Adapter<UserPlaylistAdapte
             itemConfig.CustomItem(holder.itemView, position);
         }
         holder.tvPlaylistName.setText(playlist.getName());
-        Glide.with(context).load(playlist.getThumbnail()).into(holder.thumbnail);
+        Glide.with(context).load(playlist.getThumbnail()).error(R.drawable.playlist_viewholder).into(holder.thumbnail);
         holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
         holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
     }

@@ -30,14 +30,17 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.doanmp3.NewModel.Object;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Tools {
 
@@ -117,14 +120,15 @@ public class Tools {
     /*
      * Hue (0 .. 360) Saturation (0...1) Value (0...1)
      */
+
     /**
-     * @param src bitmap
+     * @param src        bitmap
      * @param settingHue (0 .. 360)
      * @param settingSat Saturation (0...1)
      * @param settingVal (0...1)
      * @return new bitmap
      */
-    public static Bitmap updateHSV(Bitmap src, float settingHue, float settingSat,float settingVal) {
+    public static Bitmap updateHSV(Bitmap src, float settingHue, float settingSat, float settingVal) {
 
         int w = src.getWidth();
         int h = src.getHeight();
@@ -214,21 +218,21 @@ public class Tools {
     }
 
     public static void hideSoftKeyBoard(FragmentActivity context) {
-        if(context == null) return;
+        if (context == null) return;
 
         InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
         if (imm.isAcceptingText()) {
             View view = context.getCurrentFocus();
-            if(view != null) {
+            if (view != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void CreateAndShowForeground(View view, int alpha){
+    public static void CreateAndShowForeground(View view, int alpha) {
         Drawable drawableDim = view.getForeground();
-        if(drawableDim == null){
+        if (drawableDim == null) {
             drawableDim = ResourcesCompat.getDrawable(view.getResources(), R.drawable.foreground_dim, null);
             view.setForeground(drawableDim);
         }
@@ -238,12 +242,12 @@ public class Tools {
         }
     }
 
-    public static boolean isObjectInObjects(Object object, ArrayList<Object> objects){
-        if(objects == null || object == null)
+    public static boolean isObjectInObjects(Object object, ArrayList<Object> objects) {
+        if (objects == null || object == null)
             return false;
 
-        for(int i = 0; i < objects.size(); i++){
-            if(objects.get(i).getId().equals(object.getId()))
+        for (int i = 0; i < objects.size(); i++) {
+            if (objects.get(i).getId().equals(object.getId()))
                 return true;
         }
 
@@ -264,23 +268,23 @@ public class Tools {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
-    public static String CalculateTimeAgo(Context context, Date past){
+    public static String CalculateTimeAgo(Context context, Date past) {
         Date now = new Date();
         long milliSecondAgo = now.getTime() - past.getTime();
         long minuteAgo = TimeUnit.MILLISECONDS.toMinutes(milliSecondAgo);
 
-        if(minuteAgo < 60){
+        if (minuteAgo < 60) {
             return minuteAgo + context.getApplicationContext().getString(R.string.minute_ago);
         }
 
         long hourAgo = TimeUnit.MINUTES.toHours(minuteAgo);
-        if(hourAgo < 24){
+        if (hourAgo < 24) {
             return hourAgo + context.getApplicationContext().getString(R.string.hour_ago);
         }
 
         long dayAgo = TimeUnit.MINUTES.toDays(minuteAgo);
-        if(dayAgo < 30){
-            return dayAgo +  context.getApplicationContext().getString(R.string.day_ago);
+        if (dayAgo < 30) {
+            return dayAgo + context.getApplicationContext().getString(R.string.day_ago);
         }
 
         long monthAgo = dayAgo / 30;
@@ -288,9 +292,26 @@ public class Tools {
     }
 
 
-    public static boolean isInternetAvailable(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isInternetAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+    }
+
+    public static boolean isSongInSongs(Song song, ArrayList<Song> songs) {
+        if (song == null || songs == null || songs.size() == 0)
+            return false;
+        for (int i = 0; i < songs.size(); i++) {
+            if (songs.get(i).getId().equals(song.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    public static String removeAccent(String s) {
+        String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        temp = pattern.matcher(temp).replaceAll("");
+        return temp.replaceAll("đ", "d");
     }
 }

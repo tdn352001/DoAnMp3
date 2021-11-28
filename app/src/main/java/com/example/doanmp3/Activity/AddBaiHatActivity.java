@@ -101,7 +101,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isChange()) {
                     MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
-                    dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+                    dialog.setBackground(getResources().getDrawable(R.drawable.rounded_background));
                     dialog.setTitle(R.string.exit);
                     dialog.setIcon(R.drawable.ic_warning);
                     dialog.setMessage(R.string.save_result);
@@ -308,7 +308,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isChange()) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AddBaiHatActivity.this);
-            dialog.setBackground(getResources().getDrawable(R.drawable.custom_diaglog_background));
+            dialog.setBackground(getResources().getDrawable(R.drawable.rounded_background));
             dialog.setTitle(R.string.exit);
             dialog.setIcon(R.drawable.ic_warning);
             dialog.setMessage(R.string.save_result);
@@ -346,7 +346,7 @@ public class AddBaiHatActivity extends AppCompatActivity {
                         });
                     }
                     progressDialog.dismiss();
-                    DetailUserPlaylistActivity.UpdateArraylist(Added_AddFragment.arrayList);
+//                    DetailUserPlaylistActivity.UpdateArraylist(Added_AddFragment.arrayList);
                     Added_AddFragment.arrayList = null;
                     Toast.makeText(AddBaiHatActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
                     finish();

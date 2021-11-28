@@ -132,8 +132,8 @@ public class DetailSingerActivity extends AppCompatActivity {
         recyclerViewBaiHat.setAdapter(Songadapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailSingerActivity.this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        LayoutAnimationController animlayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
-        recyclerViewBaiHat.setLayoutAnimation(animlayout);
+        LayoutAnimationController animLayout = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
+        recyclerViewBaiHat.setLayoutAnimation(animLayout);
         recyclerViewBaiHat.setLayoutManager(linearLayoutManager);
     }
 
