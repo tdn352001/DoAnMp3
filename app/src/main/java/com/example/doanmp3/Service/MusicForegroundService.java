@@ -31,6 +31,11 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Application.BroadcastReceiver;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +43,9 @@ import java.util.Random;
 import java.util.Stack;
 
 public class MusicForegroundService extends Service {
+
+    FirebaseUser user;
+    DatabaseReference recentSongRef;
 
     MediaPlayer mediaPlayer;
     MusicBinder musicBinder;
@@ -79,6 +87,8 @@ public class MusicForegroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        recentSongRef = FirebaseDatabase.getInstance().getReference("recent_songs").child(user.getUid());
         mediaPlayer = new MediaPlayer();
         musicBinder = new MusicBinder();
         playedList = new ArrayList<>();
@@ -373,6 +383,7 @@ public class MusicForegroundService extends Service {
                 MusicControlNotification();
                 HandleActionControlMusic(ACTION_START_PLAY);    // Send Action Play To Activity
                 mp.setOnCompletionListener(onCompletionListener);
+                SaveRecentSong();
             });
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
                 Toast.makeText(getApplicationContext(), "Lỗi mạng", Toast.LENGTH_SHORT).show();
@@ -382,6 +393,13 @@ public class MusicForegroundService extends Service {
             Log.e("ERROR", "MEDIA PLAYER ERROR:  " + e.getMessage());
             SendActionToActivity(ACTION_PLAY_FAILED);
         }
+    }
+
+    private void SaveRecentSong(){
+        Song song = songs.get(currentSong);
+        if(user == null || song == null)
+            return;
+        recentSongRef.child(song.getId()).setValue(song);
     }
 
     public int getSongDuration() {
@@ -462,7 +480,6 @@ public class MusicForegroundService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
-
     }
 
     public class MusicBinder extends Binder {

@@ -26,7 +26,9 @@
             android:exported="false"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.DoAnMp3.NoActionBar" />
-        <activity android:name=".TestApiActivity" />
+        <activity android:name=".TestApiActivity">
+
+        </activity>
         <activity android:name=".NewActivity.AddSongUserPlaylistActivity" />
         <activity android:name=".NewActivity.SettingsActivity" />
         <activity android:name=".NewActivity.CommentActivity" />

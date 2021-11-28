@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -284,74 +283,74 @@ public class UserInfoActivity extends AppCompatActivity {
     // ĐỔI PASSWORD
 
     private void OpenChangePassworDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_password_change);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Window window = dialog.getWindow();
-
-        if (window == null)
-            return;
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.gravity = Gravity.CENTER;
-        window.setAttributes(layoutParams);
-        dialog.setCancelable(true);
-
-        TextInputEditText edtNewPassword, edtPassword, edtCPassword;
-        MaterialButton btnConfirm, btnCancel;
-        edtPassword = dialog.findViewById(R.id.edt_password_change);
-        edtNewPassword = dialog.findViewById(R.id.edt_password_change_newpass);
-        edtCPassword = dialog.findViewById(R.id.edt_password_change_cpass);
-        btnConfirm = dialog.findViewById(R.id.btn_cofirm_change_password);
-        btnCancel = dialog.findViewById(R.id.btn_cancel_change_password);
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnConfirm.setOnClickListener(v -> {
-            String password = edtPassword.getText().toString();
-            String npassword = edtNewPassword.getText().toString();
-            String cpassword = edtCPassword.getText().toString();
-
-            if (!md5.endcode(password).equals(user.getPassword())) {
-                edtPassword.setError("Mật Khẩu Không Đúng");
-            } else {
-                if (npassword.length() < 6)
-                    edtNewPassword.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự");
-                else {
-                    if (!npassword.equals(cpassword))
-                        edtCPassword.setError("Mật Khẩu Không Trùng Khớp");
-                    else {
-                        DataService dataService = APIService.getUserService();
-                        Call<String> callback = dataService.ChangePassword(npassword, user.getIdUser());
-                        callback.enqueue(new Callback<String>() {
-                            @Override
-                            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
-                                String result = (String) response.body();
-                                assert result != null;
-                                if (result.equals("Thanh Cong")) {
-                                    dialog.dismiss();
-                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
-                                    MainActivity.user.setPassword(md5.endcode(npassword));
-                                    user = MainActivity.user;
-                                } else {
-                                    dialog.dismiss();
-                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
-                                }
-                                Log.d("BBB", result);
-                            }
-
-                            @Override
-                            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
-                                dialog.dismiss();
-                                Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            }
-        });
-        dialog.show();
+//        Dialog dialog = new Dialog(this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialog_change_password);
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        Window window = dialog.getWindow();
+//
+//        if (window == null)
+//            return;
+//        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//        WindowManager.LayoutParams layoutParams = window.getAttributes();
+//        layoutParams.gravity = Gravity.CENTER;
+//        window.setAttributes(layoutParams);
+//        dialog.setCancelable(true);
+//
+//        TextInputEditText edtNewPassword, edtPassword, edtCPassword;
+//        MaterialButton btnConfirm, btnCancel;
+//        edtPassword = dialog.findViewById(R.id.edt_password_change);
+//        edtNewPassword = dialog.findViewById(R.id.edt_password_change_newpass);
+//        edtCPassword = dialog.findViewById(R.id.edt_password_change_cpass);
+//        btnConfirm = dialog.findViewById(R.id.btn_cofirm_change_password);
+//        btnCancel = dialog.findViewById(R.id.btn_cancel_change_password);
+//
+//        btnCancel.setOnClickListener(v -> dialog.dismiss());
+//
+//        btnConfirm.setOnClickListener(v -> {
+//            String password = edtPassword.getText().toString();
+//            String npassword = edtNewPassword.getText().toString();
+//            String cpassword = edtCPassword.getText().toString();
+//
+//            if (!md5.endcode(password).equals(user.getPassword())) {
+//                edtPassword.setError("Mật Khẩu Không Đúng");
+//            } else {
+//                if (npassword.length() < 6)
+//                    edtNewPassword.setError("Mật Khẩu Có Tối Thiểu 6 Kí Tự");
+//                else {
+//                    if (!npassword.equals(cpassword))
+//                        edtCPassword.setError("Mật Khẩu Không Trùng Khớp");
+//                    else {
+//                        DataService dataService = APIService.getUserService();
+//                        Call<String> callback = dataService.ChangePassword(npassword, user.getIdUser());
+//                        callback.enqueue(new Callback<String>() {
+//                            @Override
+//                            public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
+//                                String result = (String) response.body();
+//                                assert result != null;
+//                                if (result.equals("Thanh Cong")) {
+//                                    dialog.dismiss();
+//                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+//                                    MainActivity.user.setPassword(md5.endcode(npassword));
+//                                    user = MainActivity.user;
+//                                } else {
+//                                    dialog.dismiss();
+//                                    Toast.makeText(UserInfoActivity.this, "Cập Nhật Thất Bại", Toast.LENGTH_SHORT).show();
+//                                }
+//                                Log.d("BBB", result);
+//                            }
+//
+//                            @Override
+//                            public void onFailure(@NotNull Call<String> call, @NotNull Throwable t) {
+//                                dialog.dismiss();
+//                                Toast.makeText(UserInfoActivity.this, "Lỗi Kết Nối", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+//        });
+//        dialog.show();
     }
 
 

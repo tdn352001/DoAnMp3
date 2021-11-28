@@ -87,7 +87,6 @@
             style="@style/LoginTextInputEditTextOutline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mat_khau"
             android:inputType="textPassword"
             android:maxLength="100"
             android:textSize="22sp" />

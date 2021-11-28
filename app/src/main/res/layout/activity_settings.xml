@@ -23,6 +23,14 @@
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_password"
+        style="@style/SettingsButton"
+        android:text="@string/change_password"
+        app:icon="@drawable/ic_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_logout"
         style="@style/SettingsButton"
         android:text="@string/logout"

@@ -20,6 +20,9 @@ public class Singer implements Parcelable, Serializable {
     @Expose
     private String thumbnail;
 
+    public Singer() {
+    }
+
     protected Singer(Parcel in) {
         id = in.readString();
         name = in.readString();

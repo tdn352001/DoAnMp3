@@ -6,7 +6,7 @@
     <string name="channel_description">Notification_control_mediaplayer</string>
     <string name="name_user">Tên:</string>
     <string name="email_user">Email:</string>
-    <string name="password">Mật Khẩu: ******</string>
+    <string name="password">Mật Khẩu</string>
     <string name="anh_bia">Ảnh Bìa</string>
     <string name="edit">Chỉnh Sửa</string>
     <string name="avatar">Ảnh Đại Điện</string>
@@ -16,8 +16,7 @@
     <string name="create_new_playlist">Tạo Playlist Mới</string>
     <string name="new_username">New Username</string>
     <string name="change_username">Đổi tên hiển thị</string>
-    <string name="mat_khau">Password</string>
-    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
     <string name="new_password">New Password</string>
     <string name="change_password">Đổi Mật Khẩu</string>
     <string name="enter_password">Nhập Mật Khẩu</string>
@@ -112,7 +111,6 @@
     <string name="luot_thich">Lượt thích</string>
     <string name="comment">Bình luận</string>
     <string name="options">Tùy chọn</string>
-    <string name="subtitle" translatable="false">Subtitle</string>
     <string name="play_failed">Trình phát nhạc lỗi</string>
     <string name="song_name">"Tên bài hát: "</string>
     <string name="singers_name">"Tên ca sĩ: "</string>
@@ -137,7 +135,6 @@
     <string name="verify_email">Xác nhận email</string>
     <string name="verify_email_to_login">Vui lòng kiểm tra Email để hoàn tất đăng ký.</string>
     <string name="send_email">Gửi lại</string>
-    <string name="ok" translatable="false" tools:ignore="ButtonCase">Ok</string>
     <string name="user_doesnt_have_password">Tài khoản chưa được tạo mật khẩu</string>
     <string name="email_password_invalid">Tài khoản hoặc mật khẩu không hợp lệ</string>
     <string name="display_name">Tên hiển thị</string>
@@ -179,4 +176,10 @@
     <string name="playlist_empty">Danh sách trống</string>
     <string name="added">Đã thêm</string>
     <string name="complete">Xong</string>
+    <string name="recent">Gần đây</string>
+    <string name="enter_current_password">Nhập Mật Khẩu Hiện Tại</string>
+    <string name="enter_new_password">Nhập Mật Khẩu Mới</string>
+    <string name="missing_new_password">Mật khẩu mới trống</string>
+    <string name="password_invalid">Mật khẩu không đúng</string>
+    <string name="change_password_successfully">Đổi mật khẩu thành công</string>
 </resources>

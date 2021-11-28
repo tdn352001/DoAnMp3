@@ -68,7 +68,6 @@
             android:id="@+id/edt_username_change_checkpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/mat_khau"
             android:inputType="textPassword"
             android:maxLength="12"
             android:padding="15dp"

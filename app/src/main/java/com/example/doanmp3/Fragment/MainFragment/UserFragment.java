@@ -55,7 +55,7 @@ public class UserFragment extends Fragment {
     ViewPager2 viewPager;
     ViewPager2StateAdapter adapter;
     UserPlaylistFragment userPlaylistFragment;
-    UserLoveSongFragment userLoveSongFragment;
+    UserRecentSongFragment userRecentSongFragment;
 
 
     FirebaseAuth auth;
@@ -104,14 +104,14 @@ public class UserFragment extends Fragment {
         // Init fragments list
         ArrayList<Fragment> fragments = new ArrayList<>();
         userPlaylistFragment = new UserPlaylistFragment();
-        userLoveSongFragment = new UserLoveSongFragment();
+        userRecentSongFragment = new UserRecentSongFragment();
         fragments.add(userPlaylistFragment);
-        fragments.add(userLoveSongFragment);
+        fragments.add(userRecentSongFragment);
 
         // Init tilte list
         ArrayList<String> titleTab = new ArrayList<>();
         titleTab.add(getString(R.string.playlist));
-        titleTab.add(getString(R.string.favourite));
+        titleTab.add(getString(R.string.recent));
 
         // init adapter
         adapter = new ViewPager2StateAdapter(this, fragments, titleTab);

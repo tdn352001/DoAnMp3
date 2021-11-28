@@ -6,7 +6,7 @@
     <string name="channel_description">Notification_control_mediaplayer</string>
     <string name="name_user">Name:</string>
     <string name="email_user">Email:</string>
-    <string name="password">Password: *****</string>
+    <string name="password">Password</string>
     <string name="anh_bia">Cover Photo</string>
     <string name="edit">Edit</string>
     <string name="avatar">Avatar</string>
@@ -16,7 +16,6 @@
     <string name="create_new_playlist">New Playlist</string>
     <string name="new_username">New Username</string>
     <string name="change_username">Change Username</string>
-    <string name="mat_khau">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="new_password">New Password</string>
     <string name="change_password">Change Password</string>
@@ -118,7 +117,7 @@
     <string name="login_with_google">Login with Google</string>
     <string name="press_again_to_exit">Click Again To Exit</string>
     <string name="missing_email">Email is empty</string>
-    <string name="missing_password">Blank Password</string>
+    <string name="missing_password">Password is empty</string>
     <string name="invalid_email">Invalid email</string>
     <string name="missing_username">Username is empty</string>
     <string name="not_enough_length_username">Username minimum 6 characters</string>
@@ -175,4 +174,10 @@
     <string name="playlist_empty">Playlist is empty</string>
     <string name="added">Added</string>
     <string name="complete">Complete</string>
+    <string name="recent">Recent</string>
+    <string name="enter_current_password">Enter your password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="missing_new_password">New password is empty</string>
+    <string name="password_invalid">Password invalid</string>
+    <string name="change_password_successfully">Change password successfully</string>
 </resources>
