@@ -27,8 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewSongsActivity extends AppCompatActivity {
-
+public class TopSongActivity extends AppCompatActivity {
 
     MaterialToolbar toolbar;
     MaterialButton btnPlay;
@@ -36,14 +35,13 @@ public class NewSongsActivity extends AppCompatActivity {
 
     ArrayList<Song> songs;
     TopSongAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_songs);
+        setContentView(R.layout.activity_top_song);
         InitControls();
         SetToolBar();
-        GetNewSongs();
+        GetTopLoveSongs();
     }
 
     private void InitControls() {
@@ -85,9 +83,9 @@ public class NewSongsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-    private void GetNewSongs() {
+    private void GetTopLoveSongs() {
         DataService dataService = APIService.getService();
-        Call<List<Song>> callback = dataService.getNewSongs();
+        Call<List<Song>> callback = dataService.getTop50LoveSongs();
         callback.enqueue(new Callback<List<Song>>() {
             @Override
             public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {

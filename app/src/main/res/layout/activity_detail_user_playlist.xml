@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
             android:fitsSystemWindows="true"
-            app:elevation="40dp"
+            app:elevation="2dp"
             tools:targetApi="lollipop">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -83,10 +83,8 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar_detail_object"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"
                     android:elevation="35dp"
-                    app:collapseContentDescription="@string/subtitle"
                     app:layout_collapseMode="pin"
                     app:titleMargin="16dp"
                     tools:targetApi="lollipop" />
@@ -102,6 +100,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             app:elevation="12dp"
+            android:paddingTop="32dp"
             app:layout_anchor="@id/layout_app_bar_detail_object"
             app:layout_anchorGravity="center|bottom"
             app:layout_behavior="@string/bottom_sheet_behavior">
@@ -111,7 +110,6 @@
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:backgroundTint="#8946AD"
                 android:paddingHorizontal="25dp"
                 android:text="@string/play_random"

@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.doanmp3.Activity.AllCategoryActivity;
+import com.example.doanmp3.Activity.TopSongActivity;
 import com.example.doanmp3.Animation.ZoomOutPageTransformer;
 import com.example.doanmp3.Activity.NewSongsActivity;
 import com.example.doanmp3.Activity.PlaySongsActivity;
@@ -138,9 +140,9 @@ public class SliderFragment extends Fragment implements View.OnClickListener {
         });
 
         btnNewSongs.setOnClickListener(v -> NavigateToDetail(NewSongsActivity.class));
+        btnCategories.setOnClickListener(v -> NavigateToDetail(AllCategoryActivity.class));
+        btnTop.setOnClickListener(v -> NavigateToDetail(TopSongActivity.class));
         btnMV.setOnClickListener(this);
-        btnCategories.setOnClickListener(this);
-        btnTop.setOnClickListener(this);
         btnVIP.setOnClickListener(this);
     }
 

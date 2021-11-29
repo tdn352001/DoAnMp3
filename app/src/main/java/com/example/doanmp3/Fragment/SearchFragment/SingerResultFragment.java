@@ -1,7 +1,9 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Interface.OptionItemClick;
+import com.example.doanmp3.Activity.SingerActivity;
 import com.example.doanmp3.Adapter.SingerAdapter;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Singer;
 import com.example.doanmp3.R;
 
@@ -51,7 +54,9 @@ public class SingerResultFragment extends Fragment {
         adapter = new SingerAdapter(getActivity(), singers, new OptionItemClick() {
             @Override
             public void onItemClick(int position) {
-
+                Intent intent = new Intent(getContext(), SingerActivity.class);
+                intent.putExtra("singer", (Parcelable) singers.get(position));
+                startActivity(intent);
             }
 
             @Override

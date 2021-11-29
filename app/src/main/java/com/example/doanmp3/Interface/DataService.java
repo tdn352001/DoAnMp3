@@ -25,8 +25,12 @@ public interface DataService {
     @POST("testApi.php")
     Call<ArrayList<String>> testAPI(@Body ArrayList<String> strings);
 
+    @GET("get4GenreAndTheme.php")
+    Call<List<Genre>> get4GenreAndTheme();
+
     @GET("getAllGenreAndTheme.php")
-    Call<List<Genre>> getAllGenreAndTheme();
+    Call<List<List<Genre>>> getAllGenreAndTheme();
+
 
     @FormUrlEncoded
     @POST("search.php")
@@ -95,10 +99,14 @@ public interface DataService {
     @GET("getTopLoveSongs.php")
     Call<List<Song>> getTopLoveSongs();
 
+    @GET("getTop50LoveSongs.php")
+    Call<List<Song>> getTop50LoveSongs();
+
     @FormUrlEncoded
     @POST("searchSong.php")
     Call<List<Song>> searchSong(@Field("keyWord") String keyWord);
 
     @POST("updateSongOfUserPlaylist.php")
     Call<UserPlaylistData> updateSongOfUserPlaylist(@Body UserPlaylistData userPlaylistData);
+
 }

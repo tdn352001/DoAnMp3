@@ -104,7 +104,7 @@ public class SearchRecentFragment extends Fragment {
             return;
         }
         DataService dataService = APIService.getService();
-        Call<List<Genre>> callback = dataService.getAllGenreAndTheme();
+        Call<List<Genre>> callback = dataService.get4GenreAndTheme();
         callback.enqueue(new Callback<List<Genre>>() {
             @Override
             public void onResponse(@NonNull Call<List<Genre>> call, @NonNull Response<List<Genre>> response) {

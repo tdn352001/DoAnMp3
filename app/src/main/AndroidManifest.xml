@@ -22,6 +22,9 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Activity.TopSongActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.NewSongsActivity"
             android:exported="false" />
         <activity
@@ -29,7 +32,7 @@
             android:exported="false"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.DoAnMp3.NoActionBar" />
-        <activity android:name=".TestApiActivity"></activity>
+        <activity android:name=".TestApiActivity" />
         <activity android:name=".Activity.AddSongUserPlaylistActivity" />
         <activity android:name=".Activity.SettingsActivity" />
         <activity android:name=".Activity.CommentActivity" />

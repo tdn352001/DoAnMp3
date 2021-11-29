@@ -64,8 +64,8 @@ public class SingerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singer);
         InitControls();
-        SetUpToolBar();
         GetIntent();
+        SetUpToolBar();
         HandleEvents();
     }
 
@@ -83,6 +83,8 @@ public class SingerActivity extends BaseActivity {
     }
 
     private void SetUpToolBar() {
+        if(singer != null)
+            toolbar.setTitle(singer.getName());
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());

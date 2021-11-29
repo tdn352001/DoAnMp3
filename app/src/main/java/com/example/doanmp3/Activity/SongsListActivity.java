@@ -27,9 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Adapter.ObjectCircleAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Interface.DataService;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Album;
 import com.example.doanmp3.Models.Object;
 import com.example.doanmp3.Models.Playlist;
@@ -37,7 +38,6 @@ import com.example.doanmp3.Models.Singer;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,7 +106,6 @@ public class SongsListActivity extends BaseActivity {
     @SuppressLint("ResourceAsColor")
     private void SetupToolBar(String title) {
         toolbar.setTitle(title);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         if(getSupportActionBar() != null)
