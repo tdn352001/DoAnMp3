@@ -182,4 +182,7 @@
     <string name="missing_new_password">Mật khẩu mới trống</string>
     <string name="password_invalid">Mật khẩu không đúng</string>
     <string name="change_password_successfully">Đổi mật khẩu thành công</string>
+    <string name="new_release">Mới phát hành</string>
+    <string name="notification">Thông báo</string>
+    <string name="feature_improving">Tính năng này đang trong quá trình phát triển. Vui lòng thử lại sau.</string>
 </resources>

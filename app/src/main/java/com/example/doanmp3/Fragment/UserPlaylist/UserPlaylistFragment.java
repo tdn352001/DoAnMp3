@@ -30,12 +30,12 @@ import com.bumptech.glide.Glide;
 import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Dialog.CustomDialog;
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.NewActivity.DetailUserPlaylistActivity;
+import com.example.doanmp3.Activity.DetailUserPlaylistActivity;
 import com.example.doanmp3.NewAdapter.UserPlaylistAdapter;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +64,7 @@ public class UserPlaylistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_playlist2, container, false);
+        view = inflater.inflate(R.layout.fragment_user_playlist, container, false);
         InitComponents();
         HandleEvents();
         GetDataPlaylist();
@@ -86,7 +86,7 @@ public class UserPlaylistFragment extends Fragment {
 
     private void GetDataPlaylist() {
         if (user == null) return;
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Playlist>> callback = dataService.getUserPlaylists(user.getUid());
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override
@@ -274,7 +274,7 @@ public class UserPlaylistFragment extends Fragment {
 
     private void AddNewPlaylist(String name) {
         progressDialog.show();
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<Playlist> callback = dataService.addUserPlaylist(user.getUid(), name);
         callback.enqueue(new Callback<Playlist>() {
             @Override
@@ -298,7 +298,7 @@ public class UserPlaylistFragment extends Fragment {
 
     private void RenamePlaylist(String id, String name, int position) {
         progressDialog.show();
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<Playlist> callback = dataService.updateUserPlaylist(id, name);
         callback.enqueue(new Callback<Playlist>() {
             @Override
@@ -322,7 +322,7 @@ public class UserPlaylistFragment extends Fragment {
     private void DeleteUserPlaylist(String id, int position) {
         if(playlists == null) return;
         progressDialog.show();
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<Playlist> callback = dataService.deleteUserPlaylist(id);
         callback.enqueue(new Callback<Playlist>() {
             @Override

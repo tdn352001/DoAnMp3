@@ -7,7 +7,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.NewSearchFragment.SingerResultFragment">
+    tools:context=".Fragment.SearchFragment.SingerResultFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_search_result_singer"

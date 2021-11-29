@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Interface.ConfigItem;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
@@ -18,32 +20,29 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     Context context;
     ArrayList<Song> songs;
-    ItemClick itemClick;
-    Boolean haveConfig;
+    OptionItemClick itemClick;
     ConfigItem configure;
 
     // Cài đặt có muốn ẩn bớt phần từ không
     boolean isViewMore;
     int quantityItemDisplay;
 
-    public SongAdapter(Context context, ArrayList<Song> songs, ItemClick itemClick) {
+    public SongAdapter(Context context, ArrayList<Song> songs, OptionItemClick itemClick) {
         this.context = context;
         this.songs = songs;
         this.itemClick = itemClick;
-        haveConfig = false;
         isViewMore = false;
         quantityItemDisplay = 0;
     }
 
-    public SongAdapter(Context context, ArrayList<Song> songs, ItemClick itemClick, ConfigItem configure) {
+    public SongAdapter(Context context, ArrayList<Song> songs, OptionItemClick itemClick, ConfigItem configure) {
         this.context = context;
         this.songs = songs;
         this.itemClick = itemClick;
-        this.haveConfig = true;
         this.configure = configure;
         isViewMore = false;
         quantityItemDisplay = 0;
@@ -60,31 +59,32 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Song song = songs.get(position);
-        if(song == null){
+        if (song == null) {
             return;
         }
 
-        if(haveConfig){
-            configure.configure(holder.itemView, position);
+        if (configure != null) {
+            configure.configItem(holder.itemView, position);
         }
+
         holder.tvSongName.setText(song.getName());
         holder.tvSingersName.setText(song.getAllSingerNames());
         Glide.with(context).load(song.getThumbnail()).into(holder.thumbnail);
-        holder.btnOptions.setOnClickListener(v -> itemClick.optionClick(position));
-        holder.itemView.setOnClickListener(v -> itemClick.itemClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
+        holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
     }
 
     @Override
     public int getItemCount() {
 
         // Display Item less
-        if(isViewMore){
+        if (isViewMore) {
             return CountDisplayItem();
         }
 
         // Default
-        if(songs != null)
-            return  songs.size();
+        if (songs != null)
+            return songs.size();
         return 0;
     }
 
@@ -112,20 +112,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         this.quantityItemDisplay = quantityItemDisplay;
     }
 
-    private int CountDisplayItem(){
-        if(songs == null)
+    private int CountDisplayItem() {
+        if (songs == null)
             return 0;
 
-        if(songs.size() < quantityItemDisplay)
-            return  songs.size();
-
-        return quantityItemDisplay;
+        return Math.min(songs.size(), quantityItemDisplay);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         RoundedImageView thumbnail;
         TextView tvSongName, tvSingersName;
         MaterialButton btnOptions;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.thumbnail_item_song);
@@ -135,12 +133,5 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         }
     }
 
-    public interface ItemClick {
-        void itemClick(int position);
-        void optionClick(int position);
-    }
 
-    public interface ConfigItem{
-        void configure(View itemView, int position);
-    }
 }

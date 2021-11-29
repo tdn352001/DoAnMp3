@@ -2,6 +2,7 @@ package com.example.doanmp3.Service;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,6 +33,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.doanmp3.NewModel.Object;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -313,5 +315,18 @@ public class Tools {
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         temp = pattern.matcher(temp).replaceAll("");
         return temp.replaceAll("đ", "d");
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public static void FeatureIsImproving(Context context){
+        if(context == null)
+            return;
+
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        dialog.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_background));
+        dialog.setTitle(R.string.notification);
+        dialog.setMessage(R.string.feature_improving);
+        dialog.setPositiveButton(R.string.ok, (dialog1, which) -> dialog1.dismiss());
+        dialog.show();
     }
 }

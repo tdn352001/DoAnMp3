@@ -16,12 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.NewActivity.AddSongUserPlaylistActivity;
+import com.example.doanmp3.Activity.AddSongUserPlaylistActivity;
 import com.example.doanmp3.NewAdapter.AddSongAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,7 +93,7 @@ public class LoveSongFragment extends Fragment {
     }
 
     private void GetLoveSong(){
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Song>> callback = dataService.getUserLoveSongs(user.getUid());
         callback.enqueue(new Callback<List<Song>>() {
             @Override

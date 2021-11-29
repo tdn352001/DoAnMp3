@@ -1,185 +1,211 @@
 package com.example.doanmp3.Fragment.UserFragment;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+import static android.app.Activity.RESULT_OK;
+import static com.example.doanmp3.Service.Tools.SetTextStyle;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.doanmp3.NewActivity.LoginActivity;
-import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.Activity.UserInfoActivity;
-import com.example.doanmp3.Adapter.ViewPagerAdapter;
+import com.example.doanmp3.Fragment.UserPlaylist.UserPlaylistFragment;
+import com.example.doanmp3.Activity.ChangeInfoUserActivity;
+import com.example.doanmp3.Activity.SettingsActivity;
+import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
+import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.MusicService;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements View.OnClickListener{
+
     View view;
-    MaterialButton btnEdit, btnLogout;
-    public UserPlaylistFragment userPlaylistFragment;
-    @SuppressLint("StaticFieldLeak")
-    public static TextView txtUserName;
-    @SuppressLint("StaticFieldLeak")
-    public static ImageView imgBanner;
-    public static CircleImageView imgAvatar;
+    RoundedImageView userBanner;
+    CircleImageView userAvatar;
+    TextView tvUsername, tvUserDescription;
+    MaterialButton btnEdit, btnSettings;
+    CardView btnSong, btnAlbum, btnSinger, btnDevice;
     TabLayout tabLayout;
-    ViewPager viewPager;
-    public static ViewPagerAdapter adapter;
-    public static final int PERMISSION_READ = 0;
-    public static final int PERMISSION_WRITE = 1;
-    @SuppressLint("StaticFieldLeak")
-    public static UserBaiHatFragment userBaiHatFragment;
+    ViewPager2 viewPager;
+    ViewPager2StateAdapter adapter;
+    UserPlaylistFragment userPlaylistFragment;
+    UserRecentSongFragment userRecentSongFragment;
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    FirebaseAuth auth;
+    FirebaseUser user;
+    User dataUser;
+    FirebaseDatabase database;
+    DatabaseReference userReference;
 
-    }
+    private final ActivityResultLauncher<Intent> changeInfoUser = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            user = auth.getCurrentUser();
+            if(user != null) {
+                Glide.with(requireContext()).load(user.getPhotoUrl()).into(userAvatar);
+                tvUsername.setText(user.getDisplayName());
+            }
+        }
+    });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
-        AnhXa();
-        SetupInfoUser();
-        SetupViewPager();
-        checkPermission();
-        EventClick();
+        InitComponents();
+        InitTabLayout();
+        GetUserInfo();
+        HandleEvents();
         return view;
     }
 
-
-    private void AnhXa() {
+    private void InitComponents() {
+        userBanner = view.findViewById(R.id.img_user_banner);
+        userAvatar = view.findViewById(R.id.img_user_avatar);
+        tvUsername = view.findViewById(R.id.txt_username);
+        tvUserDescription = view.findViewById(R.id.user_description);
         btnEdit = view.findViewById(R.id.btn_edit_user_info);
-        btnLogout = view.findViewById(R.id.btn_logout);
-        imgAvatar = view.findViewById(R.id.img_user_avatar);
-        imgBanner = view.findViewById(R.id.img_user_banner);
-        txtUserName = view.findViewById(R.id.txt_username);
-        tabLayout = view.findViewById(R.id.tablayout_user);
+        btnSettings = view.findViewById(R.id.btn_settings);
+        btnSong = view.findViewById(R.id.btn_song);
+        btnAlbum = view.findViewById(R.id.btn_album);
+        btnSinger = view.findViewById(R.id.btn_singer);
+        btnDevice = view.findViewById(R.id.btn_on_device);
+        tabLayout = view.findViewById(R.id.tab_layout_user);
         viewPager = view.findViewById(R.id.viewpager_user);
     }
 
-    public void SetupInfoUser() {
-        txtUserName.setText(MainActivity.user.getUserName());
-        Glide.with(this).load(MainActivity.user.getBanner().toString())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.banner).into(imgBanner);
-        Glide.with(this).load(MainActivity.user.getAvatar().toString())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .placeholder(R.drawable.person).into(imgAvatar);
-
-    }
-
-    public void SetupViewPager() {
-        ArrayList<Fragment> arrayList = new ArrayList<>();
-        userBaiHatFragment = new UserBaiHatFragment();
+    private void InitTabLayout() {
+        // Init fragments list
+        ArrayList<Fragment> fragments = new ArrayList<>();
         userPlaylistFragment = new UserPlaylistFragment();
-        arrayList.add(userBaiHatFragment);
-        arrayList.add(new LibraryFragment());
-        arrayList.add(userPlaylistFragment);
-        ArrayList<String> title = new ArrayList<>();
-        title.add("Yêu Thích");
-        title.add("Trên Thiết Bị");
-        title.add("Playlist");
-        assert getFragmentManager() != null;
-        adapter = new ViewPagerAdapter(getFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.setList(arrayList);
-        adapter.setTitle(title);
+        userRecentSongFragment = new UserRecentSongFragment();
+        fragments.add(userPlaylistFragment);
+        fragments.add(userRecentSongFragment);
+
+        // Init tilte list
+        ArrayList<String> titleTab = new ArrayList<>();
+        titleTab.add(getString(R.string.playlist));
+        titleTab.add(getString(R.string.recent));
+
+        // init adapter
+        adapter = new ViewPager2StateAdapter(this, fragments, titleTab);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(2);
-        tabLayout.setupWithViewPager(viewPager);
 
-    }
-
-
-    private void EventClick() {
-        btnEdit.setOnClickListener(v -> {
-            if (checkPermission()) {
-                Intent intent = new Intent(getActivity(), UserInfoActivity.class);
-                startActivity(intent);
-                SetupInfoUser();
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            if (adapter.getTitles() != null && position < adapter.getTitles().size()) {
+                tab.setText(adapter.getTitles().get(position));
             }
-        });
+        }).attach();
 
-        btnLogout.setOnClickListener(v -> {
-
-            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-            dialog.setBackground(getResources().getDrawable(R.drawable.rounded_background));
-            dialog.setTitle("Đăng Xuất");
-            dialog.setIcon(R.drawable.ic_logout);
-            dialog.setMessage("Bạn có chắc muốn đăng suất?");
-            dialog.setNegativeButton("Đồng Ý", (dialog1, which) -> {
-
-
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-                Intent servivce = new Intent(getContext(), MusicService.class);
-                getActivity().stopService(servivce);
-                MainActivity.progress= 0;
-                MainActivity.success = false;
-                MainActivity.userPlaylist = null;
-                MainActivity.user = null;
-                UserBaiHatFragment.arrayList= null;
-                UserPlaylistFragment.userPlaylist= null;
-                getActivity().finish();
-            });
-
-            dialog.setPositiveButton("Hủy", (dialog12, which) -> dialog12.dismiss());
-            dialog.show();
-        });
-
-    }
-
-    public boolean checkPermission() {
-        int READ_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int WRITE_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if ((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED) && (WRITE_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ);
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
-            return false;
+        int SelectedTabPosition = tabLayout.getSelectedTabPosition();
+        TabLayout.Tab tabSelected = tabLayout.getTabAt(SelectedTabPosition);
+        if (tabSelected != null) {
+            String tabSelectedTitle = Objects.requireNonNull(tabSelected.getText()).toString();
+            tabSelected.setText(SetTextStyle(tabSelectedTitle, Typeface.BOLD));
         }
-        return true;
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_READ: {
-                if (grantResults.length > 0 && permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                        Toast.makeText(getContext(), "Please allow storage permission", Toast.LENGTH_LONG).show();
-                    } else {
+    private void GetUserInfo() {
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        userReference = database.getReference("users").child(user.getUid());
 
-                    }
+        if(user != null) {
+            Glide.with(requireContext())
+                    .load(user.getPhotoUrl())
+                    .error(R.drawable.person)
+                    .into(userAvatar);
+            tvUsername.setText(user.getDisplayName());
+        }
+
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataUser = snapshot.getValue(User.class);
+                if(dataUser != null){
+                    tvUserDescription.setText(dataUser.getDescription());
+                    Glide.with(requireContext())
+                            .load(dataUser.getBannerUri())
+                            .error(R.drawable.banner)
+                            .into(userBanner);
                 }
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
+    private void HandleEvents() {
+        btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangeInfoUserActivity.class);
+            changeInfoUser.launch(intent);
+        });
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
+        });
 
+        btnSong.setOnClickListener(this);
+        btnAlbum.setOnClickListener(this);
+        btnSinger.setOnClickListener(this);
+        btnDevice.setOnClickListener(this);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String tabTitle = Objects.requireNonNull(tab.getText()).toString();
+                SpannableStringBuilder tabBoldTitle = SetTextStyle(tabTitle, Typeface.BOLD);
+                tab.setText(tabBoldTitle);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                String tabTitle = Objects.requireNonNull(tab.getText()).toString();
+                SpannableStringBuilder tabBoldTitle = SetTextStyle(tabTitle, Typeface.NORMAL);
+                tab.setText(tabBoldTitle);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        Tools.FeatureIsImproving(getContext());
+    }
 }

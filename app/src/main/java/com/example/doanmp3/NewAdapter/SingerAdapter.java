@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Interface.ConfigItem;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.NewModel.Singer;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
@@ -23,22 +25,19 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
 
     Context context;
     ArrayList<Singer> singers;
-    ItemClick itemClick;
-    Boolean haveConfig;
+    OptionItemClick itemClick;
     ConfigItem configure;
 
-    public SingerAdapter(Context context, ArrayList<Singer> singers, ItemClick itemClick) {
+    public SingerAdapter(Context context, ArrayList<Singer> singers, OptionItemClick itemClick) {
         this.context = context;
         this.singers = singers;
-        haveConfig = false;
         this.itemClick = itemClick;
     }
 
-    public SingerAdapter(Context context, ArrayList<Singer> singers, ItemClick itemClick, ConfigItem configure) {
+    public SingerAdapter(Context context, ArrayList<Singer> singers, OptionItemClick itemClick, ConfigItem configure) {
         this.context = context;
         this.singers = singers;
         this.itemClick = itemClick;
-        haveConfig = true;
         this.configure = configure;
     }
 
@@ -57,13 +56,13 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
             return;
         }
 
-        if(haveConfig){
-            configure.configure(holder.itemView, position);
+        if(configure != null){
+            configure.configItem(holder.itemView, position);
         }
         holder.tvSingerName.setText(singer.getName());
         Glide.with(context).load(singer.getThumbnail()).into(holder.thumbnail);
-        holder.btnOptions.setOnClickListener(v -> itemClick.optionClick(position));
-        holder.itemView.setOnClickListener(v -> itemClick.itemClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
+        holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
     }
 
     @Override
@@ -89,14 +88,5 @@ public class SingerAdapter extends RecyclerView.Adapter<SingerAdapter.ViewHolder
             tvSingerName = itemView.findViewById(R.id.name_singer_item_singer);
             btnOptions = itemView.findViewById(R.id.options_item_singer);
         }
-    }
-
-    public interface ItemClick {
-        void itemClick(int position);
-        void optionClick(int position);
-    }
-
-    public interface ConfigItem{
-        void configure(View itemView, int position);
     }
 }

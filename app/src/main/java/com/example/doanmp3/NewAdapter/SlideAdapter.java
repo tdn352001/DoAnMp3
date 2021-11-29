@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.NewModel.Slide;
 import com.example.doanmp3.R;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -72,7 +72,7 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.ViewHolder>{
 
                    }
                });
-        holder.itemView.setOnClickListener(v -> itemClick.itemClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
     }
 
     @Override
@@ -164,10 +164,6 @@ public class SlideAdapter extends RecyclerView.Adapter<SlideAdapter.ViewHolder>{
             super(itemView);
             thumbnail = itemView.findViewById(R.id.slide_thumbnail);
         }
-    }
-
-    public interface ItemClick {
-        void itemClick(int position);
     }
 
     private int  brighter(int color, float factor) {

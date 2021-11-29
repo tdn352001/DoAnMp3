@@ -180,4 +180,7 @@
     <string name="missing_new_password">New password is empty</string>
     <string name="password_invalid">Password invalid</string>
     <string name="change_password_successfully">Change password successfully</string>
+    <string name="new_release">New release</string>
+    <string name="notification">Notification</string>
+    <string name="feature_improving">This feature is in the development process. Please try again later.</string>
 </resources>

@@ -15,13 +15,15 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.doanmp3.Animation.ZoomOutPageTransformer;
-import com.example.doanmp3.NewActivity.PlaySongsActivity;
+import com.example.doanmp3.Activity.NewSongsActivity;
+import com.example.doanmp3.Activity.PlaySongsActivity;
 import com.example.doanmp3.NewAdapter.SlideAdapter;
 import com.example.doanmp3.NewModel.Slide;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Service.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SliderFragment extends Fragment {
+public class SliderFragment extends Fragment implements View.OnClickListener {
 
     View view;
     RelativeLayout layoutSlider;
-    LinearLayout layoutNavigation;
+    LinearLayout layoutNavigation, btnNewSongs, btnCategories, btnTop, btnMV, btnVIP;
     ViewPager2 sliderViewPager;
     CircleIndicator3 circleIndicatorSlider;
     SlideAdapter slideAdapter;
@@ -62,6 +64,11 @@ public class SliderFragment extends Fragment {
         circleIndicatorSlider = view.findViewById(R.id.circle_indicator3);
         layoutSlider = view.findViewById(R.id.layout_slider);
         layoutNavigation = view.findViewById(R.id.layout_nav);
+        btnNewSongs = view.findViewById(R.id.btn_new_songs);
+        btnCategories = view.findViewById(R.id.btn_categories);
+        btnTop = view.findViewById(R.id.btn_top);
+        btnMV = view.findViewById(R.id.btn_mv);
+        btnVIP = view.findViewById(R.id.btn_vip);
         songs = new ArrayList<>();
     }
 
@@ -83,7 +90,7 @@ public class SliderFragment extends Fragment {
 
     private void GetDataSlide() {
 
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Slide>> callback = dataService.getSlides();
         callback.enqueue(new Callback<List<Slide>>() {
             @Override
@@ -98,7 +105,7 @@ public class SliderFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Slide>> call, @NonNull Throwable t) {
-                if(connectAgainst < 3){
+                if (connectAgainst < 3) {
                     GetDataSlide();
                     connectAgainst++;
                 }
@@ -107,7 +114,7 @@ public class SliderFragment extends Fragment {
     }
 
     private void GetSongFromSlider() {
-        for(int i = 0; i < slides.size(); i++){
+        for (int i = 0; i < slides.size(); i++) {
             songs.add(slides.get(i).getSong());
 
         }
@@ -129,6 +136,12 @@ public class SliderFragment extends Fragment {
                 SetLayoutBackground(position);
             }
         });
+
+        btnNewSongs.setOnClickListener(v -> NavigateToDetail(NewSongsActivity.class));
+        btnMV.setOnClickListener(this);
+        btnCategories.setOnClickListener(this);
+        btnTop.setOnClickListener(this);
+        btnVIP.setOnClickListener(this);
     }
 
     private void NavigateToPlayActivity(int position) {
@@ -138,10 +151,15 @@ public class SliderFragment extends Fragment {
         startActivity(intent);
     }
 
+    private void NavigateToDetail(Class<?> destination) {
+        Intent intent = new Intent(getActivity(), destination);
+        startActivity(intent);
+    }
+
 
     private void SetLayoutBackground(int position) {
         GradientDrawable backgroundDrawables = slideAdapter.getBackgroundDrawables(position);
-        if(backgroundDrawables != null){
+        if (backgroundDrawables != null) {
             layoutSlider.setBackground(backgroundDrawables);
         }
 
@@ -149,5 +167,8 @@ public class SliderFragment extends Fragment {
     }
 
 
-
+    @Override
+    public void onClick(View v) {
+        Tools.FeatureIsImproving(getActivity());
+    }
 }

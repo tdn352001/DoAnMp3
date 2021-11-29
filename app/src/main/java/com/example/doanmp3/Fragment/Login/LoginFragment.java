@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.example.doanmp3.NewActivity.MainActivity;
+import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
@@ -29,7 +29,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;

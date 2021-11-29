@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.NewActivity.SingerActivity;
+import com.example.doanmp3.Activity.SingerActivity;
 import com.example.doanmp3.NewAdapter.ObjectCircleAdapter;
 import com.example.doanmp3.NewModel.Object;
 import com.example.doanmp3.NewModel.Singer;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class SingerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_singer2, container, false);
+        view = inflater.inflate(R.layout.fragment_singer, container, false);
         InitControls();
         GetDataSinger();
         return view;
@@ -54,7 +54,7 @@ public class SingerFragment extends Fragment {
     }
 
     private void GetDataSinger() {
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Singer>> callback = dataService.getRandomSingers();
         callback.enqueue(new Callback<List<Singer>>() {
             @Override

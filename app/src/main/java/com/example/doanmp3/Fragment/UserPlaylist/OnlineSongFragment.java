@@ -17,12 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.NewActivity.AddSongUserPlaylistActivity;
+import com.example.doanmp3.Activity.AddSongUserPlaylistActivity;
 import com.example.doanmp3.NewAdapter.AddSongAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.Tools;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class OnlineSongFragment extends Fragment {
 
 
     private void GetTopLoveSong() {
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Song>> callback = dataService.getTopLoveSongs();
         callback.enqueue(new Callback<List<Song>>() {
             @Override
@@ -133,7 +133,7 @@ public class OnlineSongFragment extends Fragment {
 
     private void SearchSong(String query) {
         progressBar.setVisibility(View.VISIBLE);
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Song>> callback = dataService.searchSong(query);
         callback.enqueue(new Callback<List<Song>>() {
             @Override

@@ -12,8 +12,6 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.doanmp3.NewActivity.LoginActivity;
-import com.example.doanmp3.NewActivity.MainActivity;
 import com.example.doanmp3.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

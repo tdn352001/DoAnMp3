@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.NewActivity.AddSongUserPlaylistActivity;
+import com.example.doanmp3.Activity.AddSongUserPlaylistActivity;
 import com.example.doanmp3.NewAdapter.AddSongAdapter;
 import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;

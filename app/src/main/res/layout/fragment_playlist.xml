@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.HomeFragment.PlaylistFragment">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="24dp"
+    android:background="@color/tutu"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/txt_playlist_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:drawableEnd="@drawable/ic_arrow_right"
-        android:drawableRight="@drawable/ic_arrow_right"
-        android:text="@string/you_may_like"
-        android:textColor="@color/black"
+        android:text="@string/playlist"
+        android:textColor="@color/dark_gray"
         android:textSize="22sp"
         android:textStyle="bold" />
 
@@ -21,8 +20,7 @@
         android:id="@+id/rv_playlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_playlist_fragment"
-        android:layout_marginTop="10dp" />
-
-
-</RelativeLayout>
+        android:layout_marginTop="10dp"
+        android:nestedScrollingEnabled="true"
+        tools:targetApi="lollipop" />
+</LinearLayout>

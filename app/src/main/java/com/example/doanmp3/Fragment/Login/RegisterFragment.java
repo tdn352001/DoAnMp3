@@ -18,7 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.example.doanmp3.NewActivity.MainActivity;
+import com.example.doanmp3.Activity.MainActivity;
 import com.example.doanmp3.NewModel.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;

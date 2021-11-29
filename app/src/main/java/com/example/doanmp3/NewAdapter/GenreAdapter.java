@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.NewModel.Genre;
 import com.example.doanmp3.R;
 
@@ -44,7 +45,7 @@ public class GenreAdapter extends  RecyclerView.Adapter<GenreAdapter.ViewHolder>
 
         holder.txtName.setText(category.getName());
         Glide.with(context).load(category.getThumbnail()).into(holder.thumbnail);
-        holder.itemView.setOnClickListener(v -> itemClick.genreClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
     }
 
     @Override
@@ -62,9 +63,5 @@ public class GenreAdapter extends  RecyclerView.Adapter<GenreAdapter.ViewHolder>
             thumbnail = itemView.findViewById(R.id.img_category);
             txtName = itemView.findViewById(R.id.txt_category);
         }
-    }
-
-    public interface ItemClick{
-        void genreClick(int position);
     }
 }

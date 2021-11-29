@@ -12,13 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.NewActivity.SongsListActivity;
+import com.example.doanmp3.Activity.SongsListActivity;
 import com.example.doanmp3.NewAdapter.ObjectAdapter;
 import com.example.doanmp3.NewModel.Object;
 import com.example.doanmp3.NewModel.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.NewDataService;
+import com.example.doanmp3.Service.DataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class PlaylistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_playlist3, container, false);
+        view = inflater.inflate(R.layout.fragment_playlist, container, false);
         InitControls();
         GetDataPlaylist();
         return view;
@@ -53,7 +53,7 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void GetDataPlaylist() {
-        NewDataService dataService = APIService.newService();
+        DataService dataService = APIService.getService();
         Call<List<Playlist>> callback = dataService.getRandomPlaylists();
         callback.enqueue(new Callback<List<Playlist>>() {
             @Override

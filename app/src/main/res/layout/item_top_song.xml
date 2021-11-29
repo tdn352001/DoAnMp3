@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    app:cardCornerRadius="8dp"
+    tools:targetApi="lollipop">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_stt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="@string/stt"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_bold"/>
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/thumbnail_item_song"
+            android:scaleType="fitXY"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:riv_corner_radius="4dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:paddingHorizontal="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_song_item_song"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/name_singers_item_song"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                tools:ignore="MissingPrefix" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/options_item_song"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            app:backgroundTint="@android:color/transparent"
+            app:icon="@drawable/ic_options"
+            app:iconTint="#555555"
+            app:strokeColor="@android:color/transparent"
+            app:strokeWidth="0dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

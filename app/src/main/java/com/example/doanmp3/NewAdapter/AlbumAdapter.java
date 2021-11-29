@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Interface.ConfigItem;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.NewModel.Album;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
@@ -22,23 +24,20 @@ public class AlbumAdapter extends  RecyclerView.Adapter<AlbumAdapter.ViewHolder>
 
     Context context;
     ArrayList<Album> albums;
-    ItemClick itemClick;
-    Boolean haveConfig;
+    OptionItemClick itemClick;
     ConfigItem configure;
 
 
-    public AlbumAdapter(Context context, ArrayList<Album> albums, ItemClick itemClick) {
+    public AlbumAdapter(Context context, ArrayList<Album> albums, OptionItemClick itemClick) {
         this.context = context;
         this.albums = albums;
-        haveConfig = false;
         this.itemClick = itemClick;
     }
 
-    public AlbumAdapter(Context context, ArrayList<Album> albums, ItemClick itemClick, ConfigItem configure) {
+    public AlbumAdapter(Context context, ArrayList<Album> albums, OptionItemClick itemClick, ConfigItem configure) {
         this.context = context;
         this.albums = albums;
         this.itemClick = itemClick;
-        haveConfig = true;
         this.configure = configure;
     }
 
@@ -60,14 +59,14 @@ public class AlbumAdapter extends  RecyclerView.Adapter<AlbumAdapter.ViewHolder>
             return;
         }
 
-        if(haveConfig){
-            configure.configure(holder.itemView, position);
+        if(configure != null){
+            configure.configItem(holder.itemView, position);
         }
         holder.tvAlbumName.setText(album.getName());
         holder.tvSingersName.setText(album.getAllSingerNames());
         Glide.with(context).load(album.getThumbnail()).into(holder.thumbnail);
-        holder.btnOptions.setOnClickListener(v -> itemClick.optionClick(position));
-        holder.itemView.setOnClickListener(v -> itemClick.itemClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
+        holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
     }
 
     @Override
@@ -96,12 +95,5 @@ public class AlbumAdapter extends  RecyclerView.Adapter<AlbumAdapter.ViewHolder>
         }
     }
 
-    public interface ItemClick {
-        void itemClick(int position);
-        void optionClick(int position);
-    }
 
-    public interface ConfigItem{
-        void configure(View itemView, int position);
-    }
 }

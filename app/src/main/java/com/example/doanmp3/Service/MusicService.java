@@ -9,198 +9,314 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadata;
 import android.media.MediaPlayer;
-import android.os.Build;
+import android.os.Binder;
 import android.os.IBinder;
-import android.os.StrictMode;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.example.doanmp3.Activity.MainActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Application.BroadcastReceiver;
-import com.example.doanmp3.Model.BaiHat;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MusicService extends Service {
-    public static ArrayList<BaiHat> arrayList;
-    public static boolean isAudio;
-    public static int Pos;
-    int Progress;
-    public static boolean random;
-    public static boolean repeat = true;
-    public static MediaPlayer mediaPlayer;
 
-    // Action
-    final public static int ACTION_PREVIOUS = 1;
-    final public static int ACTION_PLAY = 2;
-    final public static int ACTION_NEXT = 3;
+    FirebaseUser user;
+    DatabaseReference recentSongRef;
+
+    MediaPlayer mediaPlayer;
+    MusicBinder musicBinder;
+    int currentSong;
+    boolean random;
+    Loop loopState;
+    ArrayList<Song> songs;
+    ArrayList<Bitmap> bitmaps;
+    ArrayList<Integer> playedList;
+    Stack<Integer> playedStack;
+    MediaPlayer.OnCompletionListener onCompletionListener = mp -> {
+
+        switch (loopState) {
+            case ONE:
+                PlaySong();
+                break;
+            case DISABLED:
+                if (playedStack.size() < songs.size()) {
+                    ActionNext();
+                }
+                break;
+            default:
+                ActionNext();
+        }
+
+    };
+
+    final public static int ACTION_PREVIOUS_SONG = 1;
+    final public static int ACTION_PLAY_OR_PAUSE = 2;
+    final public static int ACTION_NEXT_SONG = 3;
     final public static int ACTION_CLEAR = 4;
     final public static int ACTION_CHANGE_POS = 5;
     final public static int ACTION_START_PLAY = 7;
-    final public static int ACTION_PLAY_FALIED = 8;
-
-
-    ArrayList<Integer> playedlist;
-    Stack<Integer> stack;
-    private boolean isRecent;
+    final public static int ACTION_PLAY_FAILED = 8;
+    final public static int ACTION_PLAY_COMPLETED = 9;
+    final public static int ABC = 9;
 
 
     @Override
     public void onCreate() {
-        mediaPlayer = new MediaPlayer();
-        Progress = 0;
-        repeat = true;
-        random = false;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         super.onCreate();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        recentSongRef = FirebaseDatabase.getInstance().getReference("recent_songs").child(user.getUid());
+        mediaPlayer = new MediaPlayer();
+        musicBinder = new MusicBinder();
+        playedList = new ArrayList<>();
+        playedStack = new Stack<>();
+        bitmaps = new ArrayList<>();
+        random = false;
+        loopState = Loop.DISABLED;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return musicBinder;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        GetDataBaiHat(intent);
-        MusicControlNotification();
+        GetSongData(intent);
         return START_STICKY;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void GetDataBaiHat(Intent intent) {
+    /*
+     *   Get data and action from activity and notification
+     * */
+    private void GetSongData(Intent intent) {
+        if (intent == null) return;
 
-        if (intent != null) { // Lấy Dữ Liệu Bài Hát
-            if (intent.hasExtra("mangbaihat")) {
-                arrayList = intent.getParcelableArrayListExtra("mangbaihat");
-                stack = new Stack<>();
-                playedlist = new ArrayList<>();
+        //Get data song from activity
+        if (intent.hasExtra("songs")) {
+            // delete old song
+            if (songs != null) {
+                songs.clear();
+                bitmaps.clear();
             }
-            if (intent.hasExtra("audio"))
-                isAudio = intent.getBooleanExtra("audio", false);
-            if (intent.hasExtra("pos")) {
-                Pos = intent.getIntExtra("pos", 0);
-                if (arrayList != null)
-                    PlayNhac();
-
+            if (playedList != null) {
+                playedList.clear();
+                playedStack.clear();
             }
+            songs = intent.getParcelableArrayListExtra("songs");
+            GetBitmapFromSongs();
+        }
+        // Get Current Song
+        if (intent.hasExtra("currentSong")) {
+            currentSong = intent.getIntExtra("currentSong", 0);
+            PlaySong();
+        }
 
-            if (intent.hasExtra("recent"))
-                isRecent = intent.getBooleanExtra("recent", false);
+        if (intent.hasExtra("random")) {
+            random = true;
+        }
 
-            if (intent.hasExtra("action_activity")) {
-                int action = intent.getIntExtra("action_activity", 0);
-                ActionControlMusic(action);
-            }
+        // Get Action from Activity
+        if (intent.hasExtra("action_from_activity")) {
+            int action = intent.getIntExtra("action_from_activity", 0);
+            HandleActionControlMusic(action);
+        }
 
-            if (intent.hasExtra("action_notification")) {
-                int action = intent.getIntExtra("action_notification", 0);
-                ActionControlMusic(action);
-            }
+        // Get action from notification
+        if (intent.hasExtra("action_from_notification")) {
+            int action = intent.getIntExtra("action_from_notification", 0);
+            HandleActionControlMusic(action);
         }
     }
 
-    // Chơi Nhạc
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void PlayNhac() {
+    /*
+     * Get Bitmap using Glide to set large icon for notification
+     */
+    private void GetBitmapFromSongs() {
+        for (Song song : songs) {
+            Glide.with(getApplication()).asBitmap().load(song.getThumbnail()).into(new CustomTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                    bitmaps.add(resource);
+                }
 
-        try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(arrayList.get(Pos).getLinkBaiHat());
-            mediaPlayer.setOnCompletionListener(null);
-            mediaPlayer.prepareAsync();
-            mediaPlayer.setOnPreparedListener(mp -> {
-                mp.start();
-                UploadToPlayRecent();
-                MusicControlNotification();
-                if (mp.isPlaying()) {
-                    SendActionToActivity(ACTION_START_PLAY);
-                    SendActionToMain(ACTION_START_PLAY);
-                    mp.setOnCompletionListener(mp1 -> ActionPlayComplete());
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {
+
                 }
             });
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            SendActionToActivity(ACTION_PLAY_FALIED);
-            SendActionToMain(ACTION_PLAY_FALIED);
         }
-
     }
 
-    @SuppressLint("StaticFieldLeak")
+    /*
+     * Set Intent for notification
+     */
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private PendingIntent getPendingIntent(Context context, int action) {
+        Intent intent = new Intent(this, BroadcastReceiver.class);
+        intent.putExtra("action_from_service_to_notification", action);
+        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    /*
+     *  Push Notification
+     */
+    @SuppressLint("InlinedApi")
+    private void MusicControlNotification() {
 
 
-    // Action Click Trên Thanh Thông Báo
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void ActionControlMusic(int action) {
+        MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
+
+        mediaSessionCompat.setActive(true);
+        mediaSessionCompat.setMetadata(
+                new MediaMetadataCompat.Builder()
+                        .putLong(MediaMetadata.METADATA_KEY_DURATION, mediaPlayer.getDuration())
+                        .build()
+        );
+        mediaSessionCompat.setPlaybackState(
+                new PlaybackStateCompat.Builder()
+                        .setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1)
+                        .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+                        .build()
+        );
+        mediaSessionCompat.setCallback(new MediaSessionCompat.Callback() {
+            @Override
+            public void onSeekTo(long pos) {
+                super.onSeekTo(pos);
+            }
+        });
+
+        androidx.media.app.NotificationCompat.MediaStyle mediaStyle = new androidx.media.app.NotificationCompat.MediaStyle();
+        mediaStyle.setShowActionsInCompactView(1, 3);
+        mediaStyle.setMediaSession(mediaSessionCompat.getSessionToken());
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_song)
+                .setLargeIcon(GetBitmapOfCurrentSong())
+                .setSubText(songs.get(currentSong).getName())
+                .setContentTitle(songs.get(currentSong).getName())
+                .setContentText(songs.get(currentSong).getAllSingerNames())
+                .setStyle(mediaStyle)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setSilent(true)
+                .addAction(R.drawable.ic_prev, "Previous", getPendingIntent(this, ACTION_PREVIOUS_SONG));
+
+
+        if (mediaPlayer.isPlaying())
+            notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY_OR_PAUSE));
+        else
+            notificationBuilder.addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY_OR_PAUSE));
+
+        notificationBuilder.addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT_SONG))
+                .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
+
+        startForeground(1, notificationBuilder.build());
+    }
+
+
+    /*
+     *   Get Bitmap from thumbnail of current song
+     * */
+    public Bitmap GetBitmapOfCurrentSong() {
+        if (bitmaps == null || bitmaps.size() <= currentSong) {
+            return BitmapFactory.decodeResource(getResources(), R.drawable.music2);
+        }
+        return bitmaps.get(currentSong);
+    }
+
+
+    /*
+     * Handle Action Control Music
+     */
+    private void
+    HandleActionControlMusic(int action) {
         switch (action) {
-            case ACTION_PREVIOUS:
+            case ACTION_PREVIOUS_SONG:
                 ActionPrevious();
                 break;
-            case ACTION_PLAY:
-                ActionPlay();
-                SendActionToActivity(action);
-                SendActionToMain(action);
-                break;
-            case ACTION_NEXT:
+            case ACTION_NEXT_SONG:
                 ActionNext();
                 break;
-            case ACTION_CLEAR:
-                stopSelf();
+            case ACTION_PLAY_OR_PAUSE:
+                ActionPlayOrPause();
                 SendActionToActivity(action);
-                SendActionToMain(action);
+                break;
+            case ACTION_CLEAR:
+                ActionClear();
+                SendActionToActivity(action);
                 break;
             case ACTION_CHANGE_POS:
-                PlayNhac();
+                PlaySong();
                 break;
-        }
+            case ACTION_START_PLAY:
+                SendActionToActivity(action);
+                break;
 
+        }
     }
 
 
-    // Quay Trờ về bài trước
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void ActionPrevious() {
-        if (random) {
-            if (!stack.empty()) {
-                Pos = stack.pop();
-                if (playedlist.size() > 0)
-                    playedlist.remove(playedlist.size() - 1);
-            } else
-                Pos = 0;
+    /*
+     *   Handle Action Previous Song
+     * */
+    public void ActionPrevious() {
+        if (playedList != null && playedList.size() > 0) {
+            currentSong = playedList.get(playedList.size() - 1);
+            playedList.remove(playedList.size() - 1);
         } else {
-            Pos--;
-            if (Pos < 0)
-                Pos = arrayList.size() - 1;
+            currentSong--;
+            if (currentSong < 0)
+                currentSong = songs.size() - 1;
         }
-        MusicControlNotification();
-        PlayNhac();
+        HandleActionControlMusic(ACTION_CHANGE_POS);
     }
 
-    // resume hoặc pause
-    private void ActionPlay() {
+
+    /*
+     *   Handle Action Next Song
+     * */
+    public void ActionNext() {
+        AddSongPlayed();
+        if (random) {
+            Random random = new Random();
+            currentSong = random.nextInt(songs.size());
+            while (playedStack.contains(currentSong))
+                currentSong = random.nextInt(songs.size());
+        } else {
+            currentSong++;
+            if (currentSong > songs.size() - 1)
+                currentSong = 0;
+        }
+        HandleActionControlMusic(ACTION_CHANGE_POS);
+    }
+
+    /*
+     *   Handle action play and pause media played
+     * */
+    public void ActionPlayOrPause() {
         if (mediaPlayer.isPlaying())
             mediaPlayer.pause();
         else
@@ -208,174 +324,172 @@ public class MusicService extends Service {
         MusicControlNotification();
     }
 
-    // Chuyển đến bài tiếp theo
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void ActionNext() {
-        playedlist.add(Pos);
-        stack.push(Pos);
-        if (arrayList.size() == playedlist.size()) {
-            playedlist.clear();
-        }
-
-        if (random) {
-            Random rd = new Random();
-            Pos = rd.nextInt(arrayList.size());
-            while (playedlist.contains(Pos))
-                Pos = rd.nextInt(arrayList.size());
-        } else {
-            Pos++;
-            if (Pos > arrayList.size() - 1)
-                Pos = 0;
-        }
-        MusicControlNotification();
-        PlayNhac();
+    /*
+     *   Handle action clear
+     * */
+    @SuppressLint("NewApi")
+    public void ActionClear() {
+        mediaPlayer.seekTo(0);
+        mediaPlayer.pause();
+        stopForeground(true);
+        stopSelf();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void ActionPlayComplete() {
-        playedlist.add(Pos);
-        stack.push(Pos);
-        if (arrayList == null)
-            return;
-        if (arrayList.size() == playedlist.size()) {
-            playedlist.clear();
-        }
-        if (repeat) {
-            if (random) {
-                Random rd = new Random();
-                Pos = rd.nextInt(arrayList.size());
-                while (playedlist.contains(Pos))
-                    Pos = rd.nextInt(arrayList.size());
-            } else {
-                Pos++;
-                if (Pos > arrayList.size() - 1)
-                    Pos = 0;
-            }
-        }
-        PlayNhac();
-        SendActionToActivity(ACTION_CHANGE_POS);
+    /*
+     *   Handle action after action next or action play complete happens
+     * */
+    private void AddSongPlayed() {
+        playedList.add(currentSong);
+        playedStack.add(currentSong);
+        if (playedStack.size() == songs.size())
+            playedStack.clear();
     }
 
 
-    //Push thông báo
-    private void MusicControlNotification() {
-        if (arrayList != null) {
-            MediaSessionCompat mediaSessionCompat = new MediaSessionCompat(this, "tag");
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_song)
-                    .setLargeIcon(getBitmapFromURL(arrayList.get(Pos).getHinhBaiHat()))
-                    .setSubText(arrayList.get(Pos).getTenBaiHat())
-                    .setContentTitle(arrayList.get(Pos).getTenBaiHat())
-                    .setContentText(arrayList.get(Pos).getTenAllCaSi())
-                    .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .addAction(R.drawable.ic_prev, "Previoust", getPendingIntent(this, ACTION_PREVIOUS))
-                    .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                            .setShowActionsInCompactView(1, 3)
-                            .setMediaSession(mediaSessionCompat.getSessionToken()));
-
-            if (mediaPlayer.isPlaying())
-                notificationBuilder.addAction(R.drawable.ic_pause, "Play", getPendingIntent(this, ACTION_PLAY))
-                        .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
-                        .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
-            else
-                notificationBuilder.addAction(R.drawable.icon_play, "Play", getPendingIntent(this, ACTION_PLAY))
-                        .addAction(R.drawable.ic_next, "Next", getPendingIntent(this, ACTION_NEXT))
-                        .addAction(R.drawable.ic_clear, "Cancel", getPendingIntent(this, ACTION_CLEAR));
-
-            startForeground(1, notificationBuilder.build());
-        }
-    }
-
-    // Lấy Sự Kiện Click từ Thông Báo
-    private PendingIntent getPendingIntent(Context context, int action) {
-        Intent intent = new Intent(this, BroadcastReceiver.class);
-        intent.putExtra("action_notification", action);
-        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    // Set Hình ảnh cho thông báo
-    public Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            return BitmapFactory.decodeResource(getResources(), R.drawable.music2);
-        }
-
-    }
-
-
-    // Gửi Action tới activity
+    /*
+     * Send action to Activity
+     * */
     private void SendActionToActivity(int action) {
-        Intent intent = new Intent("action_activity");
+        Intent intent = new Intent("action_from_service");
         intent.putExtra("action", action);
-        intent.putExtra("pos", Pos);
+        intent.putExtra("currentSong", currentSong);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private void SendActionToMain(int action) {
-        Intent intent = new Intent("action_mainactivity");
-        intent.putExtra("action", action);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
+    /*
+     * Play Music
+     * */
+    private void PlaySong() {
 
-    private void UploadToPlayRecent() {
-        String id = arrayList.get(Pos).getIdBaiHat();
-        if (!id.equals("-1") && !isRecent) {
-            DataService dataService = APIService.getUserService();
-            Call<String> callback = dataService.PlayNhac(MainActivity.user.getIdUser(), id);
-            callback.enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    String result = (String) response.body();
+        /*
+         *   Reset media player
+         *   Set new data source
+         *
+         */
 
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-        }
-    }
-
-    public static void AddtoPlaylist(Context context, BaiHat baiHat) {
-        if (CheckExist(baiHat)) {
-            Toast.makeText(context, "Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-        } else {
-            arrayList.add(baiHat);
-            Toast.makeText(context, "Đã Thêm", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public static boolean CheckExist(BaiHat baiHat) {
-        if (baiHat.getIdBaiHat().equals("-1")) {
-            for (int i = 0; i < arrayList.size(); i++) {
-                if (arrayList.get(i).getIdBaiHat().equals("-1")) {
-                    if (arrayList.get(i).getLinkBaiHat().equals(baiHat.getLinkBaiHat()))
-                        return true;
-                }
+        try {
+            String linkSong = songs.get(currentSong).getLink();
+            if (linkSong == null) {
+                ActionNext();
+                return;
             }
-        } else {
-            for (int i = 0; i < arrayList.size(); i++)
-                if (arrayList.get(i).getIdBaiHat().equals(baiHat.getIdBaiHat()))
-                    return true;
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(linkSong);
+            mediaPlayer.setOnCompletionListener(null);
+            mediaPlayer.prepareAsync();
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                MusicControlNotification();
+                HandleActionControlMusic(ACTION_START_PLAY);    // Send Action Play To Activity
+                mp.setOnCompletionListener(onCompletionListener);
+                SaveRecentSong();
+            });
+            mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+                Toast.makeText(getApplicationContext(), "Lỗi mạng", Toast.LENGTH_SHORT).show();
+                return false;
+            });
+        } catch (IOException e) {
+            Log.e("ERROR", "MEDIA PLAYER ERROR:  " + e.getMessage());
+            SendActionToActivity(ACTION_PLAY_FAILED);
         }
-
-        return false;
     }
 
+    private void SaveRecentSong(){
+        Song song = songs.get(currentSong);
+        if(user == null || song == null)
+            return;
+        recentSongRef.child(song.getId()).setValue(song);
+    }
+
+    public int getSongDuration() {
+        if (mediaPlayer == null)
+            return 0;
+
+        return mediaPlayer.getDuration();
+    }
+
+    public int getSongProgress() {
+        if (mediaPlayer == null)
+            return 0;
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    public void setSongProgress(int progress) {
+        mediaPlayer.seekTo(progress);
+    }
+
+    public int isMediaPlaying() {
+        if (mediaPlayer.isPlaying()) {
+            return R.drawable.ic_pause_circle_outline;
+        }
+        return R.drawable.ic_play_circle_outline;
+    }
+
+    public Song getCurrentSong() {
+        return songs.get(currentSong);
+    }
+
+    public int getCurrentPosition() {
+        return currentSong;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+
+    public int ChangeRandomState() {
+        random = !random;
+        return getRandomState();
+    }
+
+    public int getRandomState() {
+        if (random) {
+            return R.drawable.ic_random_enable;
+        }
+        return R.drawable.ic_random_disabled;
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    public int ChangeLoopState() {
+        switch (loopState) {
+            case DISABLED:
+                loopState = Loop.ONE;
+                break;
+            case ONE:
+                loopState = Loop.ALL;
+                break;
+            default:
+                loopState = Loop.DISABLED;
+        }
+        return getLoopState();
+    }
+
+    public int getLoopState() {
+        switch (loopState) {
+            case DISABLED:
+                return R.drawable.ic_loop_disable;
+            case ONE:
+                return R.drawable.ic_loop_one;
+            default:
+                return R.drawable.ic_loop_all_enable;
+        }
+    }
 
     @Override
     public void onDestroy() {
-        arrayList = null;
-        mediaPlayer.seekTo(0);
-        mediaPlayer.stop();
         super.onDestroy();
+        mediaPlayer.stop();
+    }
+
+    public class MusicBinder extends Binder {
+        public MusicService getService() {
+            return MusicService.this;
+        }
+    }
+
+    public enum Loop {
+        DISABLED,
+        ONE,
+        ALL
     }
 }

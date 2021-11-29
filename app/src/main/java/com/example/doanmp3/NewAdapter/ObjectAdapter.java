@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Interface.ItemClick;
 import com.example.doanmp3.NewModel.Object;
 import com.example.doanmp3.R;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -44,7 +45,7 @@ public class ObjectAdapter extends  RecyclerView.Adapter<ObjectAdapter.ViewHolde
         Object object = objects.get(position);
         holder.txtName.setText(object.getName());
         Glide.with(context).load(object.getThumbnail()).into(holder.thumbnail);
-        holder.itemView.setOnClickListener(v -> itemClick.objectClick(position));
+        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
     }
 
     @Override
@@ -62,9 +63,5 @@ public class ObjectAdapter extends  RecyclerView.Adapter<ObjectAdapter.ViewHolde
             thumbnail = itemView.findViewById(R.id.thumbnail_item_object);
             txtName = itemView.findViewById(R.id.name_item_object);
         }
-    }
-
-    public interface ItemClick{
-        void objectClick(int position);
     }
 }

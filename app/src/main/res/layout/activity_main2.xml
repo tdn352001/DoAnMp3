@@ -4,8 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewActivity.MainActivity">
+    tools:context=".Activity.MainActivity">
 
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/img_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:alpha="0.9"
+        android:scaleType="centerCrop"
+        android:tintMode="multiply"
+        app:brightness="1.4"
+        android:src="@drawable/background_gradient"
+        app:imageZoom="10"
+        app:layout_constraintBottom_toTopOf="@id/appbar_control_music"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:saturation="1.2"
+        tools:ignore="UnusedAttribute" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/overlay_gradient_white"
+        app:layout_constraintBottom_toTopOf="@id/appbar_control_music"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager_main_activity"

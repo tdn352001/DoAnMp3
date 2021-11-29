@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/searchRecentFragment"
-        android:name="com.example.doanmp3.Fragment.NewSearchFragment.SearchRecentFragment"
+        android:name="com.example.doanmp3.Fragment.SearchFragment.SearchRecentFragment"
         android:label="SearchRecentFragment" >
         <action
             android:id="@+id/action_searchRecentFragment_to_searchResultFragment"
@@ -14,6 +14,6 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="com.example.doanmp3.Fragment.NewSearchFragment.SearchResultFragment"
+        android:name="com.example.doanmp3.Fragment.SearchFragment.SearchResultFragment"
         android:label="SearchResultFragment" />
 </navigation>

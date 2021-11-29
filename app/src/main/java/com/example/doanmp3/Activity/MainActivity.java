@@ -2,244 +2,279 @@ package com.example.doanmp3.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.utils.widget.ImageFilterView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.example.doanmp3.Adapter.ViewPagerAdapter;
-import com.example.doanmp3.Fragment.UserFragment.UserBaiHatFragment;
+import com.example.doanmp3.Fragment.MainFragment.HomeFragment;
+import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
-import com.example.doanmp3.Model.BaiHat;
-import com.example.doanmp3.Model.ChuDeTheLoai;
-import com.example.doanmp3.Model.Playlist;
-import com.example.doanmp3.Model.User;
+import com.example.doanmp3.NewAdapter.ViewPagerAdapter;
+import com.example.doanmp3.NewModel.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
 import com.example.doanmp3.Service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
-    ViewPagerAdapter adapter;
+    LinearLayout searchLayout;
+    CircleImageView userThumbnail;
+    CardView searchView;
+    ImageView btnOptions;
+    ImageFilterView imgBackground;
+
+    // Layout Control Music
+    RelativeLayout layoutControlMusic;
+    CircleImageView imgSong;
+    TextView tvSong, tvSinger;
+    MaterialButton btnPlay, btnNext;
+    boolean isLayoutControlVisible;
+
+    //Fragments
     UserFragment userFragment;
-    @SuppressLint("StaticFieldLeak")
-    public static ProgressBar progressBar;
-    public static int progress;
-    private long backtime;
-    public static User user;
-    public static boolean success;
-    public static ArrayList<Playlist> userPlaylist;
-    public static ArrayList<ChuDeTheLoai> chudelist, theloailist;
+    HomeFragment homeFragment;
+    public SearchFragment searchFragment;
+    ViewPagerAdapter adapter;
 
-    // AppBar Play
-
-    // AppBar Play
-    @SuppressLint("StaticFieldLeak")
-    public static RelativeLayout layoutPlay;
-    public static CircleImageView imgBaiHat;
-    @SuppressLint("StaticFieldLeak")
-    public static TextView txtBaiHat, txtCaSi;
-    @SuppressLint("StaticFieldLeak")
-    public static MaterialButton btnStop, btnNext;
+    private long backTime;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_mainactivity"));
-
-        progress = 0;
-        AnhXa();
-        getUser();
-        GetUserPlaylist();
-        GetBaiHatYeuThich();
-        AppbarClick();
-        if (MusicService.mediaPlayer != null) {
-            if (MusicService.mediaPlayer.isPlaying())
-                AppBarSetVisibility();
-        }
+        setContentView(R.layout.activity_main2);
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_from_service"));
+        InitControls();
+        InitFragment();
+        SetUpBottomNavigation();
+        SetUpViewPager();
+        HandleEvents();
+        StartBoundService();
     }
 
-
-    private void AnhXa() {
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        viewPager = findViewById(R.id.viewpager_main);
-        progressBar = findViewById(R.id.progressBar);
-        bottomNavigationView.getMenu().findItem(R.id.homeFragment).setChecked(true);
-        layoutPlay = findViewById(R.id.appbar_play);
-        imgBaiHat = findViewById(R.id.img_appbar_play);
-        txtBaiHat = findViewById(R.id.txt_tenbaihat_appbar);
-        txtCaSi = findViewById(R.id.txt_tencasi_appbar);
+    private void InitControls() {
+        bottomNavigationView = findViewById(R.id.bottom_navigation_main_activity);
+        viewPager = findViewById(R.id.view_pager_main_activity);
+        imgBackground = findViewById(R.id.img_background);
+        searchLayout = findViewById(R.id.layout_search_main_activity);
+        userThumbnail = findViewById(R.id.thumbnail_user);
+        btnOptions = findViewById(R.id.btn_options_main_activity);
+        searchView = findViewById(R.id.search_view);
+        layoutControlMusic = findViewById(R.id.appbar_control_music);
+        imgSong = findViewById(R.id.img_song_playing);
+        tvSong = findViewById(R.id.tv_name_song_playing);
+        tvSinger = findViewById(R.id.tv_name_singer_playing);
+        btnPlay = findViewById(R.id.btn_pause_appbar);
         btnNext = findViewById(R.id.btn_next_appbar);
-        btnStop = findViewById(R.id.btn_pause_appbar);
     }
 
-    private void getUser() {
-        Intent intent = getIntent();
-        if (intent.hasExtra("user")) {
-            user = (User) intent.getSerializableExtra("user");
-//            DetailUserPlaylistActivity.user = user;
-        }
+    private void InitFragment() {
+        userFragment = new UserFragment();
+        homeFragment = new HomeFragment();
+        searchFragment = new SearchFragment();
     }
 
-
-
-
-
-    public static void LoadingComplete() {
-        progress++;
-        if (progress >= 3)
-            progressBar.setVisibility(View.INVISIBLE);
-
-
+    @SuppressLint("NonConstantResourceId")
+    private void SetUpBottomNavigation() {
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.newsFragment:
+                    searchFragment.ClearKeyWord();
+                    viewPager.setCurrentItem(1);
+                    break;
+                case R.id.userFragment:
+                    viewPager.setCurrentItem(2);
+                    break;
+                default:
+                    viewPager.setCurrentItem(0);
+            }
+            return true;
+        });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (backtime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-            return;
-        } else {
-            Toast.makeText(this, "Nhấn Lần Nữa Để Thoát", Toast.LENGTH_SHORT).show();
-        }
-
-        backtime = System.currentTimeMillis();
-    }
-
-    private void GetUserPlaylist() {
-        DataService dataService = APIService.getUserService();
-        Call<List<Playlist>> callback = dataService.GetUserPlaylist(MainActivity.user.getIdUser());
-        callback.enqueue(new Callback<List<Playlist>>() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void SetUpViewPager() {
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(homeFragment);
+        fragments.add(searchFragment);
+        fragments.add(userFragment);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, fragments);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
-                userPlaylist = (ArrayList<Playlist>) response.body();
-                if (userPlaylist == null)
-                    userPlaylist = new ArrayList<>();
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
+            public void onPageSelected(int position) {
+                int id;
+                switch (position) {
+                    case 1:
+                        id = R.id.newsFragment;
+                        searchFragment.ClearKeyWord();
+                        break;
+                    case 2:
+                        id = R.id.userFragment;
+                        break;
+                    default:
+                        id = R.id.homeFragment;
+                }
+                bottomNavigationView.getMenu().findItem(id).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
     }
 
-    private void GetBaiHatYeuThich() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHat>> callback = dataService.GetBaiHatYeuThich(user.getIdUser());
-        callback.enqueue(new Callback<List<BaiHat>>() {
-            @Override
-            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                UserBaiHatFragment.arrayList = (ArrayList<BaiHat>) response.body();
-                if (UserBaiHatFragment.arrayList == null)
-                    UserBaiHatFragment.arrayList = new ArrayList<>();
-            }
-
-            @Override
-            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-            }
-        });
-    }
-
-
-
-
-
-    private void AppbarClick() {
-        layoutPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, PlayNhacActivity.class);
-            intent.putExtra("notstart", 0);
+    private void HandleEvents() {
+        searchView.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.from_bottom, R.anim.to_top);
         });
 
-        btnStop.setOnClickListener(v -> SendActionToService(MusicService.ACTION_PLAY));
+        btnPlay.setOnClickListener(v -> {
+            if (isBoundServiceConnected) {
+                musicService.ActionPlayOrPause();
+                btnPlay.setIconResource(musicService.isMediaPlaying());
+            }
+        });
 
-        btnNext.setOnClickListener(v -> SendActionToService(MusicService.ACTION_NEXT));
+        btnNext.setOnClickListener(v -> {
+            if (isBoundServiceConnected) {
+                musicService.ActionNext();
+            }
+        });
+
+        layoutControlMusic.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PlaySongsActivity.class);
+            intent.putExtra("not_start_foreground", true);
+            startActivity(intent);
+        });
     }
 
-    private void SendActionToService(int action) {
-        Intent intent = new Intent(this, MusicService.class);
-        intent.putExtra("action_activity", action);
-        startService(intent);
-    }
-
-    public void AppBarSetVisibility() {
-        layoutPlay.setVisibility(View.VISIBLE);
-        if (MusicService.isAudio)
-            imgBaiHat.setImageResource(R.drawable.song);
-        else
-            Glide.with(MainActivity.this).load(MusicService.arrayList.get(MusicService.Pos).getHinhBaiHat()).placeholder(R.drawable.song).error(R.drawable.song).into(imgBaiHat);
-        txtBaiHat.setText(MusicService.arrayList.get(MusicService.Pos).getTenBaiHat());
-        txtCaSi.setText(MusicService.arrayList.get(MusicService.Pos).getTenAllCaSi());
-        btnStop.setIconResource(R.drawable.ic_pause);
+    public void setBackgroundColor(Bitmap bitmap) {
+        if (bitmap != null)
+            imgBackground.setImageBitmap(bitmap);
     }
 
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    // Listen From Service
+
+    MusicService musicService;
+    boolean isBoundServiceConnected;
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            isBoundServiceConnected = true;
+            MusicService.MusicBinder musicBinder = (MusicService.MusicBinder) service;
+            musicService = musicBinder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBoundServiceConnected = false;
+        }
+    };
+
+    private void StartBoundService() {
+        Intent intent = new Intent(getApplicationContext(), MusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.hasExtra("pos")) {
-                AppBarSetVisibility();
-            }
             if (intent.hasExtra("action")) {
                 int action = intent.getIntExtra("action", 0);
-                ActionFromService(action);
+                HandleActionFromService(action);
             }
         }
     };
 
-    private void ActionFromService(int action) {
+
+    private void HandleActionFromService(int action) {
+        if (!isBoundServiceConnected) return;
+
         switch (action) {
             case MusicService.ACTION_START_PLAY:
-                AppBarSetVisibility();
+                HandleActionStartPlayMusic();
                 break;
-            case MusicService.ACTION_PLAY:
-                ActionPlay();
+            case MusicService.ACTION_PLAY_OR_PAUSE:
+                HandleActionEventPlayOrPauseMusic();
                 break;
             case MusicService.ACTION_CLEAR:
-                layoutPlay.setVisibility(View.GONE);
+                HandleActionStopService();
                 break;
         }
     }
 
-    private void ActionPlay() {
-        if (MusicService.mediaPlayer.isPlaying()) {
-            btnStop.setIconResource(R.drawable.ic_pause);
-            if (layoutPlay.getVisibility() != View.VISIBLE)
-                AppBarSetVisibility();
-        } else {
-            btnStop.setIconResource(R.drawable.icon_play);
+    private void HandleActionStartPlayMusic() {
+        if (!isLayoutControlVisible) {
+            isLayoutControlVisible = true;
+            layoutControlMusic.setVisibility(View.VISIBLE);
         }
+        HandleActionEventPlayOrPauseMusic();
+        Song currentSong = musicService.getCurrentSong();
+        tvSong.setText(currentSong.getName());
+        tvSinger.setText(currentSong.getAllSingerNames());
+        imgSong.setImageBitmap(musicService.GetBitmapOfCurrentSong());
+    }
+
+    private void HandleActionEventPlayOrPauseMusic() {
+        btnPlay.setIconResource(musicService.isMediaPlaying());
+    }
+
+    private void HandleActionStopService() {
+        isLayoutControlVisible = false;
+        layoutControlMusic.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (backTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finishAffinity();
+            return;
+        } else {
+            Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show();
+        }
+
+        backTime = System.currentTimeMillis();
     }
 
     @Override
@@ -247,4 +282,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
+
 }
