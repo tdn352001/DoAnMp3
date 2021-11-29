@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.SingerActivity;
-import com.example.doanmp3.NewAdapter.ObjectCircleAdapter;
-import com.example.doanmp3.NewModel.Object;
-import com.example.doanmp3.NewModel.Singer;
+import com.example.doanmp3.Adapter.ObjectCircleAdapter;
+import com.example.doanmp3.Models.Object;
+import com.example.doanmp3.Models.Singer;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

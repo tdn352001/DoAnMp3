@@ -13,7 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.doanmp3.Interface.KeyWordClick;
-import com.example.doanmp3.NewModel.KeyWord;
+import com.example.doanmp3.Models.KeyWord;
 import com.example.doanmp3.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;

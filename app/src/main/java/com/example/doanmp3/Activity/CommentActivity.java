@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.doanmp3.NewAdapter.CommentAdapter;
-import com.example.doanmp3.NewModel.Comment;
+import com.example.doanmp3.Adapter.CommentAdapter;
+import com.example.doanmp3.Models.Comment;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;

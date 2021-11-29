@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.SongsListActivity;
-import com.example.doanmp3.NewAdapter.ObjectAdapter;
-import com.example.doanmp3.NewModel.Object;
-import com.example.doanmp3.NewModel.Playlist;
+import com.example.doanmp3.Adapter.ObjectAdapter;
+import com.example.doanmp3.Models.Object;
+import com.example.doanmp3.Models.Playlist;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

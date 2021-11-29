@@ -18,11 +18,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.doanmp3.NewAdapter.ViewPager2StateAdapter;
-import com.example.doanmp3.NewModel.ResultSearch;
+import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
+import com.example.doanmp3.Models.ResultSearch;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;

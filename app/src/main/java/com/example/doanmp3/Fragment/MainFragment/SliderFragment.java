@@ -17,12 +17,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.doanmp3.Animation.ZoomOutPageTransformer;
 import com.example.doanmp3.Activity.NewSongsActivity;
 import com.example.doanmp3.Activity.PlaySongsActivity;
-import com.example.doanmp3.NewAdapter.SlideAdapter;
-import com.example.doanmp3.NewModel.Slide;
-import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.Adapter.SlideAdapter;
+import com.example.doanmp3.Models.Slide;
+import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 
 import java.util.ArrayList;

@@ -29,7 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Application.BroadcastReceiver;
-import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

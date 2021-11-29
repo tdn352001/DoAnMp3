@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.NewAdapter.TopSongAdapter;
-import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.Adapter.TopSongAdapter;
+import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 

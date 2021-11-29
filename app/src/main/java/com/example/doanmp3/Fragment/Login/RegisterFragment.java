@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.NewModel.User;
+import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

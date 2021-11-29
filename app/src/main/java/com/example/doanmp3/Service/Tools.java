@@ -30,8 +30,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.doanmp3.NewModel.Object;
-import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.Models.Object;
+import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 

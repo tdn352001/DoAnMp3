@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Activity.PlaySongsActivity;
-import com.example.doanmp3.NewAdapter.SongAdapter;
-import com.example.doanmp3.NewModel.Song;
+import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

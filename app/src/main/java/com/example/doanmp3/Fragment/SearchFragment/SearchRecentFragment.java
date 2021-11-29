@@ -20,12 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Interface.KeyWordClick;
 import com.example.doanmp3.Activity.MainActivity;
-import com.example.doanmp3.NewAdapter.GenreAdapter;
-import com.example.doanmp3.NewModel.Genre;
-import com.example.doanmp3.NewModel.KeyWord;
+import com.example.doanmp3.Adapter.GenreAdapter;
+import com.example.doanmp3.Models.Genre;
+import com.example.doanmp3.Models.KeyWord;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Service.DataService;
+import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
