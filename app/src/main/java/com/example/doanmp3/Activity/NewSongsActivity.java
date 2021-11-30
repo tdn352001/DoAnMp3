@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewSongsActivity extends AppCompatActivity {
+public class NewSongsActivity extends BaseActivity {
 
 
     MaterialToolbar toolbar;

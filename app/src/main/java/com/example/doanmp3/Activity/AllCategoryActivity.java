@@ -3,7 +3,6 @@ package com.example.doanmp3.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AllCategoryActivity extends AppCompatActivity {
+public class AllCategoryActivity extends BaseActivity {
 
     Toolbar toolbar;
     RecyclerView rvTheme, rvCategory;

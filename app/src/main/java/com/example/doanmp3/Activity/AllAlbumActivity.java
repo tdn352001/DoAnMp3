@@ -2,11 +2,9 @@ package com.example.doanmp3.Activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.doanmp3.R;
 
-public class AllAlbumActivity extends AppCompatActivity {
+public class AllAlbumActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

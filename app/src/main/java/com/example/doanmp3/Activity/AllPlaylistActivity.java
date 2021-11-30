@@ -2,18 +2,15 @@ package com.example.doanmp3.Activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.doanmp3.R;
 
-public class AllPlaylistActivity extends AppCompatActivity {
+public class AllPlaylistActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_playlist);
         overridePendingTransition(R.anim.from_right, R.anim.to_left);
-
     }
 
     @Override
