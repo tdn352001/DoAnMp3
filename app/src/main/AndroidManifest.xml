@@ -22,28 +22,31 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
-            android:name=".Activity.TopSongActivity"
+            android:name=".Activity.SystemActivity.DetailCategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.NewSongsActivity"
+            android:name=".Activity.SystemActivity.TopSongActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.BaseActivity"
+            android:name=".Activity.SystemActivity.NewSongsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.SystemActivity.BaseActivity"
             android:exported="false"
             android:label="@string/title_activity_base"
             android:theme="@style/Theme.DoAnMp3.NoActionBar" />
         <activity android:name=".TestApiActivity" />
-        <activity android:name=".Activity.AddSongUserPlaylistActivity" />
-        <activity android:name=".Activity.SettingsActivity" />
-        <activity android:name=".Activity.CommentActivity" />
-        <activity android:name=".Activity.SingerActivity" />
-        <activity android:name=".Activity.ChangeInfoUserActivity" />
-        <activity android:name=".Activity.MainActivity" />
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.PlaySongsActivity" />
-        <activity android:name=".Activity.SongsListActivity" />
-        <activity android:name=".Activity.SearchActivity" />
-        <activity android:name=".Activity.SplashActivity">
+        <activity android:name=".Activity.UserActivity.AddSongUserPlaylistActivity" />
+        <activity android:name=".Activity.UserActivity.SettingsActivity" />
+        <activity android:name=".Activity.SystemActivity.CommentActivity" />
+        <activity android:name=".Activity.SystemActivity.SingerActivity" />
+        <activity android:name=".Activity.UserActivity.ChangeInfoUserActivity" />
+        <activity android:name=".Activity.SystemActivity.MainActivity" />
+        <activity android:name=".Activity.SystemActivity.LoginActivity" />
+        <activity android:name=".Activity.SystemActivity.PlaySongsActivity" />
+        <activity android:name=".Activity.SystemActivity.SongsListActivity" />
+        <activity android:name=".Activity.SystemActivity.SearchActivity" />
+        <activity android:name=".Activity.SystemActivity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,17 +54,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.AddBaiHatActivity" />
-        <activity android:name=".Activity.DetailUserPlaylistActivity" />
+        <activity android:name=".Activity.UserActivity.DetailUserPlaylistActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.DetailSingerActivity" />
         <activity android:name=".Activity.DanhSachBaiHatActivity" />
-        <activity android:name=".Activity.AllCategoryActivity" />
-        <activity android:name=".Activity.AllSingerActivity" />
+        <activity android:name=".Activity.SystemActivity.AllCategoryActivity" />
+        <activity android:name=".Activity.SystemActivity.AllSingerActivity" />
         <activity android:name=".Activity.AllSongActivity" />
-        <activity android:name=".Activity.AllAlbumActivity" />
-        <activity android:name=".Activity.AllPlaylistActivity" />
+        <activity android:name=".Activity.SystemActivity.AllAlbumActivity" />
+        <activity android:name=".Activity.SystemActivity.AllPlaylistActivity" />
         <activity android:name=".Activity.PlayNhacActivity" />
-        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.SystemActivity.MainActivity" />
 
         <service android:name=".Service.MusicService" />
         <service android:name=".Service.MusicService" />

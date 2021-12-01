@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.UserActivity;
 
 import static com.example.doanmp3.Service.Tools.SetTextStyle;
 
@@ -16,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
 import com.example.doanmp3.Fragment.UserPlaylist.AddedSongFragment;
 import com.example.doanmp3.Fragment.UserPlaylist.LoveSongFragment;
 import com.example.doanmp3.Fragment.UserPlaylist.OnlineSongFragment;

@@ -2,24 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="12dp">
+    android:layout_margin="8dp">
 
     <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/thumbnail_item_object"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:id="@+id/thumbnail_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:elevation="4dp"
         android:scaleType="fitXY"
         android:src="@drawable/music2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.3"
-        android:elevation="@dimen/_12dp"
         app:riv_corner_radius="8dp"
         tools:targetApi="lollipop" />
 
@@ -30,23 +25,24 @@
         android:layout_marginBottom="8dp"
         android:padding="2dp"
         android:src="@drawable/icon_play"
-        android:translationZ="@dimen/_12dp"
+        android:translationZ="@dimen/_20dp"
         app:civ_circle_background_color="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/thumbnail_item_object"
-        app:layout_constraintEnd_toEndOf="@+id/thumbnail_item_object"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail_playlist"
+        app:layout_constraintEnd_toEndOf="@+id/thumbnail_playlist"
         tools:ignore="UnusedAttribute" />
 
     <TextView
-        android:id="@+id/name_item_object"
-        android:layout_width="120dp"
+        android:id="@+id/playlist_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/name_song"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:maxLines="2"
         android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/name_song"
+        android:textColor="@color/black"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thumbnail_item_object" />
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail_playlist" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

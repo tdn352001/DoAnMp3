@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.UserActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
+import com.example.doanmp3.Activity.SystemActivity.LoginActivity;
+import com.example.doanmp3.Activity.SystemActivity.MainActivity;
 import com.example.doanmp3.Dialog.CustomDialog;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;

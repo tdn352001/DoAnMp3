@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.Activity.PlaySongsActivity;
+import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;

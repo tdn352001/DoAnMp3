@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.SystemActivity;
 
 import static androidx.recyclerview.widget.RecyclerView.HORIZONTAL;
 import static androidx.recyclerview.widget.RecyclerView.VERTICAL;
@@ -88,7 +88,6 @@ public class SongsListActivity extends BaseActivity {
         GetDataObject();
         HandleEvents();
         InitFirebase();
-
     }
 
     private void InitControls() {

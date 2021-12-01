@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.UserActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
+import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SongAdapter;
 import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Interface.OptionItemClick;

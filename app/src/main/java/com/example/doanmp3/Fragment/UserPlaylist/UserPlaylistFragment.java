@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Dialog.CustomDialog;
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.Activity.DetailUserPlaylistActivity;
+import com.example.doanmp3.Activity.UserActivity.DetailUserPlaylistActivity;
 import com.example.doanmp3.Adapter.UserPlaylistAdapter;
 import com.example.doanmp3.Models.Playlist;
 import com.example.doanmp3.R;

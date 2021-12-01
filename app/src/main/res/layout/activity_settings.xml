@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".Activity.SettingsActivity">
+    tools:context=".Activity.UserActivity.SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar_settings"

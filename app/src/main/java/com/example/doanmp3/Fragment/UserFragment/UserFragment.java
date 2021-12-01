@@ -21,8 +21,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.Fragment.UserPlaylist.UserPlaylistFragment;
-import com.example.doanmp3.Activity.ChangeInfoUserActivity;
-import com.example.doanmp3.Activity.SettingsActivity;
+import com.example.doanmp3.Activity.UserActivity.ChangeInfoUserActivity;
+import com.example.doanmp3.Activity.UserActivity.SettingsActivity;
 import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
 import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;

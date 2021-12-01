@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.UserActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
 import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;

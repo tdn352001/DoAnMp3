@@ -14,11 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.doanmp3.Activity.AllCategoryActivity;
-import com.example.doanmp3.Activity.TopSongActivity;
+import com.example.doanmp3.Activity.SystemActivity.AllCategoryActivity;
+import com.example.doanmp3.Activity.SystemActivity.TopSongActivity;
 import com.example.doanmp3.Animation.ZoomOutPageTransformer;
-import com.example.doanmp3.Activity.NewSongsActivity;
-import com.example.doanmp3.Activity.PlaySongsActivity;
+import com.example.doanmp3.Activity.SystemActivity.NewSongsActivity;
+import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SlideAdapter;
 import com.example.doanmp3.Models.Slide;
 import com.example.doanmp3.Models.Song;

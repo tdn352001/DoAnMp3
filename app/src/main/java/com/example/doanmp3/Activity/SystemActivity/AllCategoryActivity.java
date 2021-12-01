@@ -1,5 +1,6 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.SystemActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -76,13 +77,17 @@ public class AllCategoryActivity extends BaseActivity {
 
     private void SetUpRecyclerView() {
         themeAdapter = new GenreAdapter(this, themes, position -> {
-
+            Intent intent = new Intent(AllCategoryActivity.this, DetailCategoryActivity.class);
+            intent.putExtra("theme", themes.get(position));
+            startActivity(intent);
         });
         rvTheme.setAdapter(themeAdapter);
         rvTheme.setLayoutManager(new GridLayoutManager(this, 2));
 
         categoryAdapter = new GenreAdapter(this, categories, position -> {
-
+            Intent intent = new Intent(AllCategoryActivity.this, DetailCategoryActivity.class);
+            intent.putExtra("category", categories.get(position));
+            startActivity(intent);
         });
         rvCategory.setAdapter(categoryAdapter);
         rvCategory.setLayoutManager(new GridLayoutManager(this, 2));

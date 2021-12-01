@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.SystemActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

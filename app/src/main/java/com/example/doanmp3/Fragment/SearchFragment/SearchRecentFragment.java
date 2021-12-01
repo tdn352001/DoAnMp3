@@ -1,6 +1,7 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
@@ -18,14 +19,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Interface.KeyWordClick;
-import com.example.doanmp3.Activity.MainActivity;
+import com.example.doanmp3.Activity.SystemActivity.DetailCategoryActivity;
+import com.example.doanmp3.Activity.SystemActivity.MainActivity;
 import com.example.doanmp3.Adapter.GenreAdapter;
+import com.example.doanmp3.Interface.DataService;
+import com.example.doanmp3.Interface.KeyWordClick;
 import com.example.doanmp3.Models.Genre;
 import com.example.doanmp3.Models.KeyWord;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
@@ -93,7 +95,7 @@ public class SearchRecentFragment extends Fragment {
     }
 
     private void CheckHaveHistorySearch() {
-        if(haveHistorySearch){
+        if (haveHistorySearch) {
             layoutSearchRecent.setVisibility(View.VISIBLE);
         }
     }
@@ -121,7 +123,12 @@ public class SearchRecentFragment extends Fragment {
 
     private void InitRecyclerView() {
         genreAdapter = new GenreAdapter(getContext(), genres,
-                position -> Log.e("EEE", position + ""));
+                position -> {
+                    Intent intent = new Intent(getContext(), DetailCategoryActivity.class);
+                    String type = position < 4 ? "theme" : "category";
+                    intent.putExtra(type, genres.get(position));
+                    startActivity(intent);
+                });
         rvCategory.setAdapter(genreAdapter);
         rvCategory.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }

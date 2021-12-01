@@ -74,15 +74,15 @@ public interface DataService {
 
     @FormUrlEncoded
     @POST("addUserPlaylist.php")
-    Call<Playlist> addUserPlaylist(@Field("idUser") String idUser,@Field("name") String name);
+    Call<Playlist> addUserPlaylist(@Field("idUser") String idUser, @Field("name") String name);
 
     @FormUrlEncoded
     @POST("updateUserPlaylist.php")
-    Call<Playlist> updateUserPlaylist(@Field("id") String id,@Field("name") String name);
+    Call<Playlist> updateUserPlaylist(@Field("id") String id, @Field("name") String name);
 
     @FormUrlEncoded
     @POST("updateUserPlaylist.php")
-    Call<Playlist> updateUserPlaylist(@Field("id") String id,@Field("name") String name, @Field("thumbnail") String thumbnail);
+    Call<Playlist> updateUserPlaylist(@Field("id") String id, @Field("name") String name, @Field("thumbnail") String thumbnail);
 
     @FormUrlEncoded
     @POST("deleteUserPlaylist.php")
@@ -109,4 +109,11 @@ public interface DataService {
     @POST("updateSongOfUserPlaylist.php")
     Call<UserPlaylistData> updateSongOfUserPlaylist(@Body UserPlaylistData userPlaylistData);
 
+    @FormUrlEncoded
+    @POST("getCategoryPlaylist.php")
+    Call<List<Playlist>> getCategoryPlaylist(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("getThemePlaylist.php")
+    Call<List<Playlist>> getThemePlaylist(@Field("id") String id);
 }

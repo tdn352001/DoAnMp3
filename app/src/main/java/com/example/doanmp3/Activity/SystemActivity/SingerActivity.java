@@ -1,4 +1,4 @@
-package com.example.doanmp3.Activity;
+package com.example.doanmp3.Activity.SystemActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
