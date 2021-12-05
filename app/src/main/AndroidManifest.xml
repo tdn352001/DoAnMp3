@@ -62,23 +62,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.AddBaiHatActivity" />
         <activity android:name=".Activity.UserActivity.DetailUserPlaylistActivity" />
-        <activity android:name=".Activity.UserInfoActivity" />
-        <activity android:name=".Activity.DetailSingerActivity" />
-        <activity android:name=".Activity.DanhSachBaiHatActivity" />
         <activity android:name=".Activity.SystemActivity.AllCategoryActivity" />
         <activity android:name=".Activity.SystemActivity.AllSingerActivity" />
-        <activity android:name=".Activity.AllSongActivity" />
         <activity android:name=".Activity.SystemActivity.AllAlbumActivity" />
         <activity android:name=".Activity.SystemActivity.AllPlaylistActivity" />
-        <activity android:name=".Activity.PlayNhacActivity" />
-        <activity android:name=".Activity.SystemActivity.MainActivity" />
 
-        <service android:name=".Service.MusicService" />
+
         <service android:name=".Service.MusicService" />
 
         <receiver android:name=".Application.BroadcastReceiver" />
+        <receiver
+            android:name=".Application.CheckDownloadCompleted"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

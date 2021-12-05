@@ -198,4 +198,7 @@
     <string name="unlike">Bỏ thích</string>
     <string name="song_exist">Bài hát đã tồn tại</string>
     <string name="favourite_album">Album yêu thích</string>
+    <string name="downloading">Đang tải xuống</string>
+    <string name="downloading_failed">Tài xuống thất bại</string>
+    <string name="download_successfully">Tải xuống thành công</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.example.doanmp3.Service;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,7 +18,9 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -27,7 +31,9 @@ import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.URLUtil;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
@@ -50,6 +56,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -370,6 +378,7 @@ public class Tools {
         TextView tvSong = dialog.findViewById(R.id.tv_name_song);
         TextView tvSingers = dialog.findViewById(R.id.tv_name_singer);
         MaterialButton btnLove = dialog.findViewById(R.id.btn_love);
+        MaterialButton btnDownload = dialog.findViewById(R.id.btn_download);
         MaterialButton btnPlay = dialog.findViewById(R.id.btn_play_song);
         MaterialButton btnAddQueue = dialog.findViewById(R.id.btn_add_queue);
 
@@ -377,16 +386,34 @@ public class Tools {
         tvSong.setText(song.getName());
         tvSingers.setText(song.getAllSingerNames());
 
-        boolean isLoved = UserData.isLoveSong(song);
-        int icon = isLoved ? R.drawable.ic_love : R.drawable.ic_hate;
-        int loveText = isLoved ? R.string.unlike : R.string.favourite;
-        btnLove.setIconResource(icon);
-        btnLove.setText(loveText);
+        if(song.isAudio()){
+            btnLove.setVisibility(View.GONE);
+            btnDownload.setVisibility(View.GONE);
+           try{
+               int resId = Integer.parseInt(song.getThumbnail());
+               imgThumbnail.setImageResource(resId);
+           } catch (Exception ignored) {
 
-        btnLove.setOnClickListener(v -> {
-            UserData.AddOrRemoveSong(song, true);
-            dialog.dismiss();
-        });
+           }
+        }else{
+            boolean isLoved = UserData.isLoveSong(song);
+            int icon = isLoved ? R.drawable.ic_love : R.drawable.ic_hate;
+            int loveText = isLoved ? R.string.unlike : R.string.favourite;
+            btnLove.setIconResource(icon);
+            btnLove.setText(loveText);
+
+            btnLove.setOnClickListener(v -> {
+                UserData.AddOrRemoveSong(song, true);
+                dialog.dismiss();
+            });
+
+            btnDownload.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Download(context, song.getLink());
+                }
+                dialog.dismiss();
+            });
+        }
 
         btnPlay.setOnClickListener(v -> {
             ArrayList<Song> songs = new ArrayList<>();
@@ -422,5 +449,26 @@ public class Tools {
         return BitmapFactory.decodeResource(context.getResources(), R.drawable.music2);
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void Download(Context context, String linkDownload) {
+        if (context == null || linkDownload.equals(""))
+            return;
+        Toast.makeText(context, R.string.downloading, Toast.LENGTH_SHORT).show();
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        service.execute(() -> {
+            try {
+                String title = URLUtil.guessFileName(linkDownload, null, null);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(linkDownload));
+                request.setDescription(context.getString(R.string.downloading) + " " + title);
+                request.setTitle(title);
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, title);
+                DownloadManager downloadManager = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
+                downloadManager.enqueue(request);
+            } catch (Exception e) {
+                Toast.makeText(context, R.string.downloading_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
