@@ -23,6 +23,12 @@ public class Singer implements Parcelable, Serializable {
     public Singer() {
     }
 
+    public Singer(String id, String name, String thumbnail) {
+        this.id = id;
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
     protected Singer(Parcel in) {
         id = in.readString();
         name = in.readString();

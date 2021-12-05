@@ -70,8 +70,12 @@ public class AddedSongFragment extends Fragment {
             if (!isChecked) {
                 AddSongUserPlaylistActivity activity = (AddSongUserPlaylistActivity) getActivity();
                 activity.UpdateAddedSong(false, song);
-                activity.UpdateAddedSongLoveFragment(isChecked, song.getId());
-                activity.UpdateAddedSongOnlineFragment(isChecked, song.getId());
+                if (song.isAudio()) {
+                    activity.UpdateAddedSongDeviceFragment(isChecked, song.getLink());
+                } else {
+                    activity.UpdateAddedSongLoveFragment(isChecked, song.getId());
+                    activity.UpdateAddedSongOnlineFragment(isChecked, song.getId());
+                }
             }
         });
         rvSong.setAdapter(adapter);
@@ -114,7 +118,7 @@ public class AddedSongFragment extends Fragment {
         if (song == null) {
             return;
         }
-        boolean isExist = CheckExitsInAdded(song.getId()) != -1;
+        boolean isExist = CheckExitsInAdded(song) != -1;
         if (!isExist) {
             songs.add(0, song);
             rvSong.post(() -> adapter.notifyDataSetChanged());
@@ -125,8 +129,8 @@ public class AddedSongFragment extends Fragment {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void RemoveAddedSong(String idSong) {
-        int position = CheckExitsInAdded(idSong);
+    public void RemoveAddedSong(Song song) {
+        int position = CheckExitsInAdded(song);
         if (position != -1) {
             songs.remove(position);
             rvSong.post(() -> adapter.notifyDataSetChanged());
@@ -136,10 +140,16 @@ public class AddedSongFragment extends Fragment {
         }
     }
 
-    public int CheckExitsInAdded(String idSong) {
+    public int CheckExitsInAdded(Song song) {
         for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).getId().equals(idSong))
-                return i;
+            Song temp = songs.get(i);
+            if (temp.isAudio()) {
+                if (temp.getLink().equals(song.getLink()))
+                    return i;
+            } else {
+                if (temp.getId().equals(song.getId()))
+                    return i;
+            }
         }
 
         return -1;

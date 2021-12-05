@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.TopSongAdapter;
+import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 
@@ -55,12 +57,13 @@ public class NewSongsActivity extends BaseActivity {
         adapter = new TopSongAdapter(this, songs, new OptionItemClick() {
             @Override
             public void onItemClick(int position) {
-
+                Tools.NavigateToPlayActivity(NewSongsActivity.this, songs, position, false);
             }
 
             @Override
             public void onOptionClick(int position) {
-
+                BottomDialog dialog = Tools.DialogOptionSongDefault(NewSongsActivity.this, songs.get(position));
+                if(dialog != null) dialog.show();
             }
         }, (itemView, position) -> {
             LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);

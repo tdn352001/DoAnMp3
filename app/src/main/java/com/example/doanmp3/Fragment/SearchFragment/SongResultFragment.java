@@ -1,6 +1,5 @@
 package com.example.doanmp3.Fragment.SearchFragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,11 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Dialog.BottomDialog;
+import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,14 +55,14 @@ public class SongResultFragment extends Fragment {
             public void onItemClick(int position) {
                 ArrayList<Song> songArrayList = new ArrayList<>();
                 songArrayList.add(songs.get(position));
-                Intent intent = new Intent(getContext(), PlaySongsActivity.class);
-                intent.putExtra("songs", songArrayList);
-                startActivity(intent);
+                Tools.NavigateToPlayActivity(getContext(), songArrayList, 0, false);
+
             }
 
             @Override
             public void onOptionClick(int position) {
-
+                BottomDialog dialog = Tools.DialogOptionSongDefault(getContext(), songs.get(position));
+                if(dialog != null) dialog.show();
             }
         }, (itemView, position) -> {
             LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);

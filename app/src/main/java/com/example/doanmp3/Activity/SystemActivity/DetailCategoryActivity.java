@@ -50,6 +50,7 @@ public class DetailCategoryActivity extends AppCompatActivity {
         InitControls();
         InitVariables();
         GetIntent();
+
     }
 
     private void InitControls() {

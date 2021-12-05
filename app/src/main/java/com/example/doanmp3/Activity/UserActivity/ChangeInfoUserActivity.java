@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;
 import com.google.android.material.button.MaterialButton;
@@ -102,7 +103,7 @@ public class ChangeInfoUserActivity extends BaseActivity {
     private void InitFirebase() {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        userReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        userReference = FirebaseDatabase.getInstance().getReference(FirebaseRef.USERS).child(user.getUid());
         storageRef = FirebaseStorage.getInstance().getReference("users");
         avatarStoRef = storageRef.child("avatars");
         bannerStoRef = storageRef.child("banners");

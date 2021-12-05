@@ -30,4 +30,12 @@ public class UserPlaylistData {
     public void setIdSongs(List<String> idSongs) {
         this.idSongs = idSongs;
     }
+
+    @Override
+    public String toString() {
+        return "UserPlaylistData{" +
+                "idPlaylist='" + idPlaylist + '\'' +
+                ", idSongs=" + idSongs +
+                '}';
+    }
 }

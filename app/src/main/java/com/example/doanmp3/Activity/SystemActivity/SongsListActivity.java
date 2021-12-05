@@ -29,8 +29,8 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Adapter.ObjectCircleAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Context.Constant.Constant;
 import com.example.doanmp3.Interface.DataService;
-import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Album;
 import com.example.doanmp3.Models.Object;
 import com.example.doanmp3.Models.Playlist;
@@ -116,7 +116,7 @@ public class SongsListActivity extends BaseActivity {
             Random random = new Random();
             int position = random.nextInt(songs.size());
             isRandom = true;
-            NavigateToPlaySongActivity(position);
+            Tools.NavigateToPlayActivity(SongsListActivity.this, songs, position, isRandom);
         });
     }
 
@@ -135,7 +135,7 @@ public class SongsListActivity extends BaseActivity {
             GetSongsFromAlbum(album.getId());
             SetUpUi(album.getThumbnail());
             SetupToolBar(album.getName());
-            typeObject= "albums";
+            typeObject= Constant.ALBUM_LIST;
             idObject = album.getId();
             nameObject = album.getName();
             return;
@@ -146,7 +146,7 @@ public class SongsListActivity extends BaseActivity {
             GetSongsFromPlaylist(playlist.getId());
             SetUpUi(playlist.getThumbnail());
             SetupToolBar(playlist.getName());
-            typeObject= "playlists";
+            typeObject= Constant.PLAYLIST_LIST;
             idObject = playlist.getId();
             nameObject = playlist.getName();
         }
@@ -200,19 +200,7 @@ public class SongsListActivity extends BaseActivity {
     }
 
     private void SetUpRecycleViewSong() {
-        songAdapter = new SongAdapter(this, songs, new OptionItemClick() {
-            @Override
-            public void onItemClick(int position) {
-                NavigateToPlaySongActivity(position);
-                isRandom = false;
-            }
-
-            @Override
-            public void onOptionClick(int position) {
-
-            }
-        });
-
+        songAdapter = new SongAdapter(this, songs);
         rvSong.setAdapter(songAdapter);
         rvSong.setLayoutManager( new LinearLayoutManager(this, VERTICAL, false));
         LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(SongsListActivity.this, R.anim.layout_anim_left_to_right);
@@ -264,14 +252,6 @@ public class SongsListActivity extends BaseActivity {
         });
     }
 
-    private void NavigateToPlaySongActivity(int position){
-        Intent intent = new Intent(this, PlaySongsActivity.class);
-        intent.putExtra("position", position);
-        intent.putExtra("songs", songs);
-        if(isRandom)
-            intent.putExtra("random", isRandom);
-        startActivity(intent);
-    }
 
     private void InitFirebase() {
         user = FirebaseAuth.getInstance().getCurrentUser();

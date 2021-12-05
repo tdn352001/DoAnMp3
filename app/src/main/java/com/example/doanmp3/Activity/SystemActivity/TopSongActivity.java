@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Adapter.TopSongAdapter;
 import com.example.doanmp3.Interface.DataService;
-import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
@@ -50,17 +49,7 @@ public class TopSongActivity extends BaseActivity {
     }
 
     private void SetRecyclerView() {
-        adapter = new TopSongAdapter(this, songs, new OptionItemClick() {
-            @Override
-            public void onItemClick(int position) {
-
-            }
-
-            @Override
-            public void onOptionClick(int position) {
-
-            }
-        }, (itemView, position) -> {
+        adapter = new TopSongAdapter(this, songs, null, (itemView, position) -> {
             LinearLayout itemSong = itemView.findViewById(R.id.layout_item_song);
             int paddingSize = getResources().getDimensionPixelSize(R.dimen._12dp);
             itemSong.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);

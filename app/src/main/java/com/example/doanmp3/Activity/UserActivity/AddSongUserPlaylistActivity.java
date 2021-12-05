@@ -10,40 +10,36 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
+import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Fragment.UserPlaylist.AddedSongFragment;
+import com.example.doanmp3.Fragment.UserPlaylist.DeviceSongFragment;
 import com.example.doanmp3.Fragment.UserPlaylist.LoveSongFragment;
 import com.example.doanmp3.Fragment.UserPlaylist.OnlineSongFragment;
-import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
-import com.example.doanmp3.Models.Playlist;
 import com.example.doanmp3.Models.Song;
-import com.example.doanmp3.Models.UserPlaylistData;
+import com.example.doanmp3.Models.UserPlaylist;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AddSongUserPlaylistActivity extends BaseActivity {
 
@@ -57,7 +53,7 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
     TextView btnFinish;
 
     // Playlist
-    Playlist playlist;
+    UserPlaylist playlist;
     ArrayList<Song> songs;
     ArrayList<Song> oldSongs;
 
@@ -65,6 +61,7 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
     AddedSongFragment addedSongFragment;
     OnlineSongFragment onlineSongFragment;
     LoveSongFragment loveSongFragment;
+    DeviceSongFragment deviceSongFragment;
 
     // ViewPagerData
     ViewPager2StateAdapter adapter;
@@ -97,21 +94,24 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         addedSongFragment = new AddedSongFragment();
         onlineSongFragment = new OnlineSongFragment();
         loveSongFragment = new LoveSongFragment();
+        deviceSongFragment = new DeviceSongFragment();
         fragments.add(addedSongFragment);
         fragments.add(onlineSongFragment);
         fragments.add(loveSongFragment);
+        fragments.add(deviceSongFragment);
 
         titleTab = new ArrayList<>();
         titleTab.add(getString(R.string.added));
         titleTab.add(getString(R.string.online));
         titleTab.add(getString(R.string.favourite));
+        titleTab.add(getString(R.string.on_device));
     }
 
     private void SetUpViewPagerAndTab() {
         // Setup ViewPager
         adapter = new ViewPager2StateAdapter(this, fragments, titleTab);
         viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
         // Set up ViewPager With TabLayout
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             if (adapter.getTitles() != null && position < adapter.getTitles().size()) {
@@ -132,7 +132,7 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("playlist")) {
             playlist = intent.getParcelableExtra("playlist");
-            songs = intent.getParcelableArrayListExtra("songs");
+            songs = playlist.getSongs();
             if (songs == null) songs = new ArrayList<>();
 
             oldSongs = new ArrayList<>(songs);
@@ -193,6 +193,7 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
                 addedSongFragment.QueryData(query);
                 onlineSongFragment.QueryData(query);
                 loveSongFragment.QueryData(query);
+                deviceSongFragment.QueryData(query);
             }
         });
 
@@ -210,34 +211,18 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         progressDialog.setMessage(getString(R.string.please_wait));
         progressDialog.show();
 
-        ArrayList<String> idSongs = new ArrayList<>();
-        for (Song song : songs) {
-            idSongs.add(song.getId());
-        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userPlaylist = FirebaseDatabase.getInstance()
+                .getReference(FirebaseRef.USER_PLAYLISTS).child(user.getUid()).child(playlist.getId())
+                .child(FirebaseRef.SONGS);
 
-        UserPlaylistData userPlaylistData = new UserPlaylistData(playlist.getId(), idSongs);
-
-        DataService dataService = APIService.getService();
-        Call<UserPlaylistData> callback = dataService.updateSongOfUserPlaylist(userPlaylistData);
-        callback.enqueue(new Callback<UserPlaylistData>() {
-            @Override
-            public void onResponse(@NonNull Call<UserPlaylistData> call, @NonNull Response<UserPlaylistData> response) {
-                progressDialog.dismiss();
-                Intent intent = new Intent();
-                intent.putExtra("songs", songs);
-                setResult(RESULT_OK, intent);
-                finish();
-                Log.e("EEE", response.body().toString());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserPlaylistData> call, @NonNull Throwable t) {
-                Log.e("EEE", "ERROR: " + t.getMessage());
-                progressDialog.dismiss();
-                Toast.makeText(AddSongUserPlaylistActivity.this, R.string.update_failed, Toast.LENGTH_SHORT).show();
-            }
+        userPlaylist.setValue(songs).addOnCompleteListener(task -> {
+            progressDialog.dismiss();
+            Intent intent = new Intent();
+            intent.putExtra("songs", songs);
+            setResult(RESULT_OK, intent);
+            finish();
         });
-
     }
 
     private boolean isNotChange() {
@@ -267,14 +252,14 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         if (isAdd)
             InsertAddedSong(song);
         else
-            RemoveAddedSong(song.getId());
+            RemoveAddedSong(song);
 
         String query = edtSearch.getText().toString();
         if (!query.equals("")) {
-            Log.e("EEE", "UpdateAddedSong");
             addedSongFragment.QueryData(query);
             onlineSongFragment.NotifyDataChange();
             loveSongFragment.NotifyDataChange();
+            deviceSongFragment.NotifyDataChange();
         }
     }
 
@@ -282,8 +267,8 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         addedSongFragment.InsertAddedSong(song);
     }
 
-    public void RemoveAddedSong(String idSong) {
-        addedSongFragment.RemoveAddedSong(idSong);
+    public void RemoveAddedSong(Song song) {
+        addedSongFragment.RemoveAddedSong(song);
     }
 
     public void UpdateAddedSongLoveFragment(boolean isChecked, String idSong) {
@@ -294,6 +279,9 @@ public class AddSongUserPlaylistActivity extends BaseActivity {
         onlineSongFragment.AddOrRemoveAddedSong(isChecked, idSong);
     }
 
+    public void UpdateAddedSongDeviceFragment(boolean isChecked, String uri){
+        deviceSongFragment.AddOrRemoveAddedSong(isChecked, uri);
+    }
     @Override
     public void onBackPressed() {
         ExistActivity();

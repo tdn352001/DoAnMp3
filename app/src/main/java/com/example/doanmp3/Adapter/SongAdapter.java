@@ -11,10 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Context.Data.AudioThumbnail;
+import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Interface.ConfigItem;
 import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -30,6 +33,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     // Cài đặt có muốn ẩn bớt phần từ không
     boolean isViewMore;
     int quantityItemDisplay;
+
+    public SongAdapter(Context context, ArrayList<Song> songs) {
+        this.context = context;
+        this.songs = songs;
+    }
 
     public SongAdapter(Context context, ArrayList<Song> songs, OptionItemClick itemClick) {
         this.context = context;
@@ -69,9 +77,27 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         holder.tvSongName.setText(song.getName());
         holder.tvSingersName.setText(song.getAllSingerNames());
-        Glide.with(context).load(song.getThumbnail()).into(holder.thumbnail);
-        holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
-        holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
+        if(song.isAudio()){
+            try {
+                int resId = Integer.parseInt(song.getThumbnail());
+                holder.thumbnail.setImageResource(resId);
+            } catch (Exception e) {
+                holder.thumbnail.setImageResource(AudioThumbnail.getRandomThumbnail());
+            }
+        }else{
+            Glide.with(context).load(song.getThumbnail()).into(holder.thumbnail);
+        }
+
+        if (itemClick != null) {
+            holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
+            holder.btnOptions.setOnClickListener(v -> itemClick.onOptionClick(position));
+        }else{
+            holder.itemView.setOnClickListener(v -> Tools.NavigateToPlayActivity(context, songs, position, false));
+            holder.btnOptions.setOnClickListener(v -> {
+                BottomDialog dialog = Tools.DialogOptionSongDefault(context, songs.get(position));
+                if (dialog != null) dialog.show();
+            });
+        }
     }
 
     @Override

@@ -20,10 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
-import com.example.doanmp3.Fragment.UserPlaylist.UserPlaylistFragment;
 import com.example.doanmp3.Activity.UserActivity.ChangeInfoUserActivity;
+import com.example.doanmp3.Activity.UserActivity.DeviceSongsActivity;
 import com.example.doanmp3.Activity.UserActivity.SettingsActivity;
+import com.example.doanmp3.Activity.UserActivity.UserLoveSongActivity;
 import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
+import com.example.doanmp3.Fragment.UserPlaylist.UserPlaylistFragment;
 import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
@@ -136,7 +139,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
-        userReference = database.getReference("users").child(user.getUid());
+        userReference = database.getReference(FirebaseRef.USERS).child(user.getUid());
 
         if(user != null) {
             Glide.with(requireContext())
@@ -176,10 +179,10 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             startActivity(intent);
         });
 
-        btnSong.setOnClickListener(this);
+        btnSong.setOnClickListener(v -> NavigateToAnotherActivity(UserLoveSongActivity.class));
         btnAlbum.setOnClickListener(this);
         btnSinger.setOnClickListener(this);
-        btnDevice.setOnClickListener(this);
+        btnDevice.setOnClickListener(v -> NavigateToAnotherActivity(DeviceSongsActivity.class));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -202,6 +205,11 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             }
 
         });
+    }
+
+    private void NavigateToAnotherActivity(Class<?> destination){
+        Intent intent = new Intent(getActivity(), destination);
+        startActivity(intent);
     }
 
     @Override

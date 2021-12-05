@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment implements KeyWordClick {
 
     }
 
-    private void SaveKeyWord(String keyWord){
+    private void SaveKeyWord(String keyWord) {
         String key = searchRef.push().getKey();
         KeyWord newKeyWord = new KeyWord(key, keyWord);
         if (key != null) {
@@ -107,7 +107,8 @@ public class SearchFragment extends Fragment implements KeyWordClick {
     }
 
     public void ClearKeyWord() {
-        edtSearch.setText("");
+        if (edtSearch != null)
+            edtSearch.setText("");
     }
 
     private void NavigateToResult(String keyWord) {

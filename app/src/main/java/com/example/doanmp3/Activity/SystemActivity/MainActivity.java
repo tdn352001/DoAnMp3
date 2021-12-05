@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,10 +27,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.doanmp3.Adapter.ViewPagerAdapter;
+import com.example.doanmp3.Context.Data.UserData;
 import com.example.doanmp3.Fragment.MainFragment.HomeFragment;
 import com.example.doanmp3.Fragment.SearchFragment.SearchFragment;
 import com.example.doanmp3.Fragment.UserFragment.UserFragment;
-import com.example.doanmp3.Adapter.ViewPagerAdapter;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.MusicService;
@@ -71,12 +73,18 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("action_from_service"));
+        GetUserData();
         InitControls();
         InitFragment();
         SetUpBottomNavigation();
         SetUpViewPager();
         HandleEvents();
         StartBoundService();
+    }
+
+    private void GetUserData() {
+        UserData.InitUserInfo();
+        UserData.GetLoveSongData();
     }
 
     private void InitControls() {
@@ -167,7 +175,7 @@ public class MainActivity extends BaseActivity {
         btnPlay.setOnClickListener(v -> {
             if (isBoundServiceConnected) {
                 musicService.ActionPlayOrPause();
-                btnPlay.setIconResource(musicService.isMediaPlaying());
+                btnPlay.setIconResource(musicService.getMediaPlayerStateIcon());
             }
         });
 
@@ -201,6 +209,10 @@ public class MainActivity extends BaseActivity {
             isBoundServiceConnected = true;
             MusicService.MusicBinder musicBinder = (MusicService.MusicBinder) service;
             musicService = musicBinder.getService();
+
+            if(musicService.isPlaying()){
+                HandleActionStartPlayMusic();
+            }
         }
 
         @Override
@@ -255,12 +267,19 @@ public class MainActivity extends BaseActivity {
     }
 
     private void HandleActionEventPlayOrPauseMusic() {
-        btnPlay.setIconResource(musicService.isMediaPlaying());
+        btnPlay.setIconResource(musicService.getMediaPlayerStateIcon());
     }
 
     private void HandleActionStopService() {
         isLayoutControlVisible = false;
         layoutControlMusic.setVisibility(View.GONE);
+    }
+
+
+
+
+    private void ClearUserData(){
+        UserData.ClearData();
     }
 
 
@@ -277,10 +296,15 @@ public class MainActivity extends BaseActivity {
         backTime = System.currentTimeMillis();
     }
 
+    public void Log(){
+        Log.e("EEE", "Call Function");
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        ClearUserData();
     }
 
 }

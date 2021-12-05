@@ -185,4 +185,7 @@
     <string name="feature_improving">This feature is in the development process. Please try again later.</string>
     <string name="top_love_song">Top Love Songs</string>
     <string name="highlight">Popular</string>
+    <string name="love_song">Love Songs</string>
+    <string name="play">Play</string>
+    <string name="unlike">Unlike</string>
 </resources>

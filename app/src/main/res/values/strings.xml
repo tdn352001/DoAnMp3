@@ -193,4 +193,9 @@
     <string name="feature_improving">Tính năng này đang trong quá trình phát triển. Vui lòng thử lại sau.</string>
     <string name="top_love_song">Yêu thích nhiều nhất</string>
     <string name="highlight">Nổi bật</string>
+    <string name="love_song">Bài hát yêu thích</string>
+    <string name="play">Phát</string>
+    <string name="unlike">Bỏ thích</string>
+    <string name="song_exist">Bài hát đã tồn tại</string>
+    <string name="favourite_album">Album yêu thích</string>
 </resources>

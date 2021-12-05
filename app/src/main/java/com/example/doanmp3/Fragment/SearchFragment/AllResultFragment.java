@@ -16,13 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Activity.SystemActivity.SingerActivity;
 import com.example.doanmp3.Activity.SystemActivity.SongsListActivity;
 import com.example.doanmp3.Adapter.AlbumAdapter;
 import com.example.doanmp3.Adapter.PlaylistAdapter;
 import com.example.doanmp3.Adapter.SingerAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Models.Album;
 import com.example.doanmp3.Models.Playlist;
@@ -30,6 +30,7 @@ import com.example.doanmp3.Models.ResultSearch;
 import com.example.doanmp3.Models.Singer;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
+import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 
@@ -99,14 +100,13 @@ public class AllResultFragment extends Fragment {
             public void onItemClick(int position) {
                 ArrayList<Song> songArrayList = new ArrayList<>();
                 songArrayList.add(songs.get(position));
-                Intent intent = new Intent(getContext(), PlaySongsActivity.class);
-                intent.putExtra("songs", songArrayList);
-                startActivity(intent);
+                Tools.NavigateToPlayActivity(getContext(), songArrayList, 0, false);
             }
 
             @Override
             public void onOptionClick(int position) {
-
+                BottomDialog dialog = Tools.DialogOptionSongDefault(getContext(), songs.get(position));
+                if(dialog != null) dialog.show();
             }
         });
     }

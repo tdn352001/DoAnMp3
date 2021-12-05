@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,32 +21,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Activity.UserActivity.DetailUserPlaylistActivity;
+import com.example.doanmp3.Adapter.UserPlaylistAdapter;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Dialog.CustomDialog;
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.Activity.UserActivity.DetailUserPlaylistActivity;
-import com.example.doanmp3.Adapter.UserPlaylistAdapter;
 import com.example.doanmp3.Models.Playlist;
+import com.example.doanmp3.Models.UserPlaylist;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class UserPlaylistFragment extends Fragment {
@@ -56,16 +57,21 @@ public class UserPlaylistFragment extends Fragment {
     RelativeLayout btnAdd;
     RecyclerView rvPlaylist;
     ArrayList<Playlist> playlists;
+    ArrayList<UserPlaylist> userPlaylists;
     UserPlaylistAdapter adapter;
-    private int connectAgainst;
-    FirebaseUser user;
     ProgressDialog progressDialog;
+
+    FirebaseUser user;
+    DatabaseReference userPlaylistRef;
+    ChildEventListener childEventListener;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_playlist, container, false);
         InitComponents();
+        InitVariables();
         HandleEvents();
         GetDataPlaylist();
         return view;
@@ -74,10 +80,15 @@ public class UserPlaylistFragment extends Fragment {
     private void InitComponents() {
         btnAdd = view.findViewById(R.id.btn_add_playlist);
         rvPlaylist = view.findViewById(R.id.rv_user_playlist);
-        connectAgainst = 0;
-        user = FirebaseAuth.getInstance().getCurrentUser();
+    }
+    private void InitVariables(){
+        playlists = new ArrayList<>();
+        userPlaylists = new ArrayList<>();
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(getString(R.string.please_wait));
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userPlaylistRef = FirebaseDatabase.getInstance().getReference(FirebaseRef.USER_PLAYLISTS).child(user.getUid());
+        SetUpRecycleView();
     }
 
     private void HandleEvents() {
@@ -85,35 +96,56 @@ public class UserPlaylistFragment extends Fragment {
     }
 
     private void GetDataPlaylist() {
-        if (user == null) return;
-        DataService dataService = APIService.getService();
-        Call<List<Playlist>> callback = dataService.getUserPlaylists(user.getUid());
-        callback.enqueue(new Callback<List<Playlist>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Playlist>> call, @NonNull Response<List<Playlist>> response) {
-                playlists = (ArrayList<Playlist>) response.body();
-                if (playlists == null)
-                    playlists = new ArrayList<>();
-                SetUpRecycleView();
-            }
+       childEventListener = new ChildEventListener() {
+           @Override
+           public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                UserPlaylist userPlaylist = snapshot.getValue(UserPlaylist.class);
+                userPlaylists.add(0, userPlaylist);
+                Playlist playlist = userPlaylist.convertToPlaylist();
+                playlists.add(0, playlist);
+                adapter.notifyItemInserted(0);
+                adapter.notifyItemRangeChanged(0, playlists.size());
+           }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Playlist>> call, @NonNull Throwable t) {
-                if (connectAgainst < 3) {
-                    GetDataPlaylist();
-                    connectAgainst++;
-                    Log.e("ERROR", "GetDataPlaylist " + t.getMessage());
-                }
-            }
+           @Override
+           public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+               UserPlaylist userPlaylist = snapshot.getValue(UserPlaylist.class);
+               for(int i = 0; i < playlists.size(); i++){
+                   if(playlists.get(i).getId().equals(userPlaylist.getId())){
+                       Playlist playlist = userPlaylist.convertToPlaylist();
+                       playlists.remove(i);
+                       playlists.add(i, playlist);
+                       userPlaylists.remove(i);
+                       userPlaylists.add(i, userPlaylist);
+                       return;
+                   }
+               }
+           }
 
-        });
+           @Override
+           public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+
+           }
+       };
+
+        userPlaylistRef.addChildEventListener(childEventListener);
     }
 
     private void SetUpRecycleView() {
         adapter = new UserPlaylistAdapter(getContext(), playlists, new OptionItemClick() {
             @Override
             public void onItemClick(int position) {
-                Playlist playlist = playlists.get(position);
+                UserPlaylist playlist = userPlaylists.get(position);
                 Intent intent = new Intent(getActivity(), DetailUserPlaylistActivity.class);
                 intent.putExtra("playlist", playlist);
                 startActivity(intent);
@@ -164,10 +196,8 @@ public class UserPlaylistFragment extends Fragment {
                 Toast.makeText(getActivity(), R.string.the_name_already_exist, Toast.LENGTH_SHORT).show();
                 return;
             }
-
             AddNewPlaylist(name);
             dialog.dismiss();
-
         });
 
         dialog.show();
@@ -191,7 +221,7 @@ public class UserPlaylistFragment extends Fragment {
         if (playlist == null) return;
 
         BottomDialog bottomSheetDialog = new BottomDialog(requireActivity());
-        bottomSheetDialog.setContentView(R.layout.dialog_option_playlist);
+        bottomSheetDialog.setContentView(R.layout.dialog_option_user_playlist);
         // Init Component
         CircleImageView imgThumbnail = bottomSheetDialog.findViewById(R.id.thumbnail_playlist);
         TextView tvName = bottomSheetDialog.findViewById(R.id.tv_name);
@@ -218,7 +248,7 @@ public class UserPlaylistFragment extends Fragment {
         CustomDialog dialog = new CustomDialog(getActivity());
         dialog.setContentView(R.layout.dialog_add_playlist);
         Window window = dialog.getWindow();
-        if(window != null){
+        if (window != null) {
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
             WindowManager.LayoutParams layoutParams = window.getAttributes();
             layoutParams.gravity = Gravity.CENTER;
@@ -251,17 +281,15 @@ public class UserPlaylistFragment extends Fragment {
                 Toast.makeText(getActivity(), R.string.the_name_already_exist, Toast.LENGTH_SHORT).show();
                 return;
             }
-
             RenamePlaylist(id, name, position);
             dialog.dismiss();
-
         });
 
         dialog.show();
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void OpenDeleteDialog(String id, int position){
+    private void OpenDeleteDialog(String id, int position) {
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
         dialogBuilder.setBackground(getResources().getDrawable(R.drawable.rounded_background));
         dialogBuilder.setTitle(R.string.delete_playlist);
@@ -274,70 +302,36 @@ public class UserPlaylistFragment extends Fragment {
 
     private void AddNewPlaylist(String name) {
         progressDialog.show();
-        DataService dataService = APIService.getService();
-        Call<Playlist> callback = dataService.addUserPlaylist(user.getUid(), name);
-        callback.enqueue(new Callback<Playlist>() {
-            @Override
-            public void onResponse(@NonNull Call<Playlist> call, @NonNull Response<Playlist> response) {
-                Playlist newPlaylist = response.body();
-                if (newPlaylist != null) {
-                    playlists.add(newPlaylist);
-                    adapter.notifyItemInserted(playlists.size());
-
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Playlist> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-                Log.e("EEE", t.getMessage());
-            }
-        });
+        String key = userPlaylistRef.push().getKey();
+        UserPlaylist userPlaylist = new UserPlaylist(key, name, "null", new ArrayList<>());
+        userPlaylistRef.child(key).setValue(userPlaylist).addOnCompleteListener(task -> progressDialog.dismiss());
     }
 
     private void RenamePlaylist(String id, String name, int position) {
         progressDialog.show();
-        DataService dataService = APIService.getService();
-        Call<Playlist> callback = dataService.updateUserPlaylist(id, name);
-        callback.enqueue(new Callback<Playlist>() {
-            @Override
-            public void onResponse(@NonNull Call<Playlist> call, @NonNull Response<Playlist> response) {
-                Playlist newPlaylist = response.body();
-                if (newPlaylist != null) {
-                    playlists.remove(position);
-                    playlists.add(position, newPlaylist);
-                    adapter.notifyItemChanged(position);
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Playlist> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-            }
+        userPlaylistRef.child(id).child("name").setValue(name).addOnCompleteListener(task -> {
+            playlists.get(position).setName(name);
+            userPlaylists.get(position).setName(name);
+            adapter.notifyItemChanged(position);
+            progressDialog.dismiss();
         });
+
     }
 
     private void DeleteUserPlaylist(String id, int position) {
-        if(playlists == null) return;
         progressDialog.show();
-        DataService dataService = APIService.getService();
-        Call<Playlist> callback = dataService.deleteUserPlaylist(id);
-        callback.enqueue(new Callback<Playlist>() {
-            @Override
-            public void onResponse(@NonNull Call<Playlist> call, @NonNull Response<Playlist> response) {
-                playlists.remove(position);
-                adapter.notifyItemRemoved(position);
-                adapter.notifyItemRangeChanged(position, playlists.size());
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Playlist> call, @NonNull Throwable t) {
-                progressDialog.dismiss();
-            }
+        userPlaylistRef.child(id).removeValue().addOnCompleteListener(task -> {
+            playlists.remove(position);
+            userPlaylists.remove(position);
+            adapter.notifyItemRemoved(position);
+            adapter.notifyItemRangeChanged(position, playlists.size());
+            progressDialog.dismiss();
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        userPlaylistRef.removeEventListener(childEventListener);
+    }
 }

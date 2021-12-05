@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.doanmp3.Context.Data.AudioThumbnail;
 import com.example.doanmp3.Interface.ItemChecked;
 import com.example.doanmp3.Interface.Search;
 import com.example.doanmp3.Models.Song;
@@ -69,7 +70,16 @@ public class AddSongAdapter extends RecyclerView.Adapter<AddSongAdapter.ViewHold
         Song song = songs.get(position);
         holder.tvSongName.setText(song.getName());
         holder.tvSingersName.setText(song.getAllSingerNames());
-        Glide.with(context).load(song.getThumbnail()).into(holder.thumbnail);
+        if (song.isAudio() || song.getId().equals("-1")) {
+            try {
+                int resId = Integer.parseInt(song.getThumbnail());
+                holder.thumbnail.setImageResource(resId);
+            } catch (Exception e) {
+                holder.thumbnail.setImageResource(AudioThumbnail.getRandomThumbnail());
+            }
+        } else {
+            Glide.with(context).load(song.getThumbnail()).into(holder.thumbnail);
+        }
 
         if (isAddedFragment) {
             holder.cbAdded.setChecked(true);

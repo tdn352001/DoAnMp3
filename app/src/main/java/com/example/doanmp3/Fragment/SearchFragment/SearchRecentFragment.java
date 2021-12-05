@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.doanmp3.Activity.SystemActivity.DetailCategoryActivity;
 import com.example.doanmp3.Activity.SystemActivity.MainActivity;
 import com.example.doanmp3.Adapter.GenreAdapter;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Interface.KeyWordClick;
 import com.example.doanmp3.Models.Genre;
@@ -90,7 +91,7 @@ public class SearchRecentFragment extends Fragment {
 
     private void InitFirebaseData() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        searchRef = FirebaseDatabase.getInstance().getReference("search").child(user.getUid());
+        searchRef = FirebaseDatabase.getInstance().getReference(FirebaseRef.SEARCH).child(user.getUid());
         keyWords = new ArrayList<>();
     }
 

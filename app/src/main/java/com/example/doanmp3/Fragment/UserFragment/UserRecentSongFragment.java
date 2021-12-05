@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,10 +45,11 @@ public class UserRecentSongFragment extends Fragment {
     TextView tvNoData;
 
     public static int RECENT_SONGS_MAX_SIZE = 20;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view =  inflater.inflate(R.layout.fragment_user_recent_song, container, false);
+        view = inflater.inflate(R.layout.fragment_user_recent_song, container, false);
         InitControls();
         InitVariables();
         return view;
@@ -61,32 +62,21 @@ public class UserRecentSongFragment extends Fragment {
 
     private void InitVariables() {
         songs = new ArrayList<>();
-        adapter = new SongAdapter(getContext(), songs, new OptionItemClick() {
-            @Override
-            public void onItemClick(int position) {
-
-            }
-
-            @Override
-            public void onOptionClick(int position) {
-
-            }
-        });
-
+        adapter = new SongAdapter(getContext(), songs);
         rvSong.setAdapter(adapter);
         rvSong.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         LayoutAnimationController animLayout = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_left_to_right);
         rvSong.setLayoutAnimation(animLayout);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        recentSongRef = FirebaseDatabase.getInstance().getReference("recent_songs").child(user.getUid());
+        recentSongRef = FirebaseDatabase.getInstance().getReference(FirebaseRef.RECENT_SONGS).child(user.getUid());
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Song song = snapshot.getValue(Song.class);
-                if(song != null){
+                if (song != null) {
                     AddRecentSong(song);
-                    if(tvNoData.getVisibility() == View.VISIBLE)
+                    if (tvNoData.getVisibility() == View.VISIBLE)
                         tvNoData.setVisibility(View.GONE);
                 }
             }
@@ -115,15 +105,15 @@ public class UserRecentSongFragment extends Fragment {
         recentSongRef.addChildEventListener(childEventListener);
     }
 
-    private void NavigateToPlayActivity(int position){
+    private void NavigateToPlayActivity(int position) {
         Intent intent = new Intent(getContext(), PlaySongsActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("songs", songs);
         startActivity(intent);
     }
 
-    private void AddRecentSong(Song song){
-        songs.add(0,song);
+    private void AddRecentSong(Song song) {
+        songs.add(0, song);
         adapter.notifyItemInserted(0);
         adapter.notifyItemRangeChanged(0, songs.size());
         CheckRecentSongsSize();
@@ -131,8 +121,8 @@ public class UserRecentSongFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void CheckRecentSongsSize() {
-        if(songs.size() > RECENT_SONGS_MAX_SIZE){
-            int lastPosition = songs.size()  -1;
+        if (songs.size() > RECENT_SONGS_MAX_SIZE) {
+            int lastPosition = songs.size() - 1;
             recentSongRef.child(songs.get(lastPosition).getId()).removeValue();
             songs.remove(lastPosition);
             adapter.notifyDataSetChanged();

@@ -4,7 +4,9 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
@@ -25,14 +27,21 @@ import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
+import com.example.doanmp3.Context.Data.AudioThumbnail;
+import com.example.doanmp3.Context.Data.UserData;
+import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Models.Object;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.math.BigInteger;
@@ -43,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Tools {
 
@@ -304,8 +315,14 @@ public class Tools {
         if (song == null || songs == null || songs.size() == 0)
             return false;
         for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).getId().equals(song.getId()))
-                return true;
+            Song temp = songs.get(i);
+            if (song.isAudio() || song.getId().equals("-1")) {
+                if (temp.getLink().equals(song.getLink()))
+                    return true;
+            } else {
+                if (temp.getId().equals(song.getId()))
+                    return true;
+            }
         }
         return false;
     }
@@ -318,8 +335,8 @@ public class Tools {
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public static void FeatureIsImproving(Context context){
-        if(context == null)
+    public static void FeatureIsImproving(Context context) {
+        if (context == null)
             return;
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
@@ -329,4 +346,81 @@ public class Tools {
         dialog.setPositiveButton(R.string.ok, (dialog1, which) -> dialog1.dismiss());
         dialog.show();
     }
+
+
+    public static void NavigateToPlayActivity(Context context, ArrayList<Song> songs, int position, boolean random) {
+        if (context == null || songs == null || songs.size() <= position)
+            return;
+
+        Intent intent = new Intent(context, PlaySongsActivity.class);
+        intent.putExtra("songs", songs);
+        intent.putExtra("position", position);
+        intent.putExtra("random", random);
+        context.startActivity(intent);
+    }
+
+    public static BottomDialog DialogOptionSongDefault(Context context, Song song) {
+        if (context == null || song == null)
+            return null;
+
+        BottomDialog dialog = new BottomDialog(context);
+        dialog.setContentView(R.layout.dialog_options_song);
+
+        CircleImageView imgThumbnail = dialog.findViewById(R.id.thumbnail_song);
+        TextView tvSong = dialog.findViewById(R.id.tv_name_song);
+        TextView tvSingers = dialog.findViewById(R.id.tv_name_singer);
+        MaterialButton btnLove = dialog.findViewById(R.id.btn_love);
+        MaterialButton btnPlay = dialog.findViewById(R.id.btn_play_song);
+        MaterialButton btnAddQueue = dialog.findViewById(R.id.btn_add_queue);
+
+        Glide.with(context).load(song.getThumbnail()).into(imgThumbnail);
+        tvSong.setText(song.getName());
+        tvSingers.setText(song.getAllSingerNames());
+
+        boolean isLoved = UserData.isLoveSong(song);
+        int icon = isLoved ? R.drawable.ic_love : R.drawable.ic_hate;
+        int loveText = isLoved ? R.string.unlike : R.string.favourite;
+        btnLove.setIconResource(icon);
+        btnLove.setText(loveText);
+
+        btnLove.setOnClickListener(v -> {
+            UserData.AddOrRemoveSong(song, true);
+            dialog.dismiss();
+        });
+
+        btnPlay.setOnClickListener(v -> {
+            ArrayList<Song> songs = new ArrayList<>();
+            songs.add(song);
+            NavigateToPlayActivity(context, songs, 0, false);
+            dialog.dismiss();
+        });
+
+        btnAddQueue.setOnClickListener(v -> {
+            Intent intent = new Intent(context, MusicService.class);
+            intent.putExtra("song", song);
+            context.startService(intent);
+            dialog.dismiss();
+        });
+
+        return dialog;
+    }
+
+    public static Bitmap GetBitmapOfAudio(Context context, Song song) {
+        if (context == null || song == null) {
+            return null;
+        }
+        if (song.getId().equals("-1") || song.isAudio()) {
+            int resId;
+            try {
+                resId = Integer.parseInt(song.getThumbnail());
+            } catch (Exception e) {
+                resId = AudioThumbnail.getRandomThumbnail();
+            }
+            return BitmapFactory.decodeResource(context.getResources(), resId);
+        }
+
+        return BitmapFactory.decodeResource(context.getResources(), R.drawable.music2);
+    }
+
+
 }

@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.doanmp3.Interface.OptionItemClick;
 import com.example.doanmp3.Adapter.ObjectAdapter;
 import com.example.doanmp3.Adapter.SongAdapter;
+import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Models.Album;
 import com.example.doanmp3.Models.DetailSinger;
 import com.example.doanmp3.Models.Object;
@@ -27,7 +27,6 @@ import com.example.doanmp3.Models.Singer;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -43,7 +42,7 @@ public class SingerActivity extends BaseActivity {
 
     // Controls
     Toolbar toolbar;
-    LinearLayout layoutContainer,layoutAlbum;
+    LinearLayout layoutContainer, layoutAlbum;
     ImageView imgSinger;
     RecyclerView rvSong, rvAlbum;
     ProgressBar progressBar;
@@ -83,7 +82,7 @@ public class SingerActivity extends BaseActivity {
     }
 
     private void SetUpToolBar() {
-        if(singer != null)
+        if (singer != null)
             toolbar.setTitle(singer.getName());
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -92,9 +91,9 @@ public class SingerActivity extends BaseActivity {
 
     private void GetIntent() {
         Intent intent = getIntent();
-        if(intent != null && intent.hasExtra("singer")){
+        if (intent != null && intent.hasExtra("singer")) {
             singer = intent.getParcelableExtra("singer");
-            if(singer == null)
+            if (singer == null)
                 return;
 
             toolbar.setTitle(singer.getName());
@@ -111,7 +110,7 @@ public class SingerActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<DetailSinger> call, @NonNull Response<DetailSinger> response) {
                 DetailSinger detailSinger = response.body();
-                if(detailSinger != null){
+                if (detailSinger != null) {
                     songs = (ArrayList<Song>) detailSinger.getSongs();
                     albums = (ArrayList<Album>) detailSinger.getAlbums();
                     objects = (ArrayList<Object>) detailSinger.getObjectAlbums();
@@ -132,26 +131,17 @@ public class SingerActivity extends BaseActivity {
     }
 
 
-    private void SetUpRvSong(){
-        if(songs == null) return;
-        if(songs.size() < 7){
+    private void SetUpRvSong() {
+        if (songs == null) return;
+        if (songs.size() < 7) {
             btnViewMore.setVisibility(View.GONE);
         }
 
-        songAdapter = new SongAdapter(SingerActivity.this, songs, new OptionItemClick() {
-            @Override
-            public void onItemClick(int position) {
-                NavigateToPlayActivity(position);
-            }
-
-            @Override
-            public void onOptionClick(int position) {
-
-            }
-        }, (itemView, position) -> {
-            RoundedImageView imgThumbnail = itemView.findViewById(R.id.thumbnail_item_song);
-            imgThumbnail.setCornerRadius(Tools.ConvertDpToPx(8, getApplicationContext()));
-        });
+        songAdapter = new SongAdapter(SingerActivity.this, songs, null,
+                (itemView, position) -> {
+                    RoundedImageView imgThumbnail = itemView.findViewById(R.id.thumbnail_item_song);
+                    imgThumbnail.setCornerRadius(Tools.ConvertDpToPx(8, getApplicationContext()));
+                });
         songAdapter.setViewMore(true);
         songAdapter.setQuantityItemDisplay(5);
         LayoutAnimationController layoutAnimation = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_anim_left_to_right);
@@ -160,8 +150,8 @@ public class SingerActivity extends BaseActivity {
         rvSong.setLayoutAnimation(layoutAnimation);
     }
 
-    private void SetUpRvAlbum(){
-        if(objects == null || objects.size() == 0) {
+    private void SetUpRvAlbum() {
+        if (objects == null || objects.size() == 0) {
             layoutAlbum.setVisibility(View.GONE);
             return;
         }
@@ -170,14 +160,7 @@ public class SingerActivity extends BaseActivity {
         rvAlbum.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
-    private void NavigateToPlayActivity(int position){
-        Intent intent = new Intent(SingerActivity.this, PlaySongsActivity.class);
-        intent.putExtra("songs", songs);
-        intent.putExtra("position", position);
-        startActivity(intent);
-    }
-
-    private void NavigateToDetailsAlbum(int position){
+    private void NavigateToDetailsAlbum(int position) {
         Album album = albums.get(position);
         Intent intent = new Intent(this, SongsListActivity.class);
         intent.putExtra("album", album);

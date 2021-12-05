@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -25,15 +26,16 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
+import com.example.doanmp3.Context.Data.UserData;
 import com.example.doanmp3.Fragment.PlayerFragment.ListSongPlayingFragment;
 import com.example.doanmp3.Fragment.PlayerFragment.SongPlayingFragment;
+import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Interface.ItemClick;
-import com.example.doanmp3.Adapter.ViewPager2StateAdapter;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.MusicService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,11 +111,10 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
             if (isNotStartForeground) {
                 songs = musicService.getSongs();
                 currentSong = musicService.getCurrentPosition();
-                btnPlay.setImageResource(musicService.isMediaPlaying());
+                btnPlay.setImageResource(musicService.getMediaPlayerStateIcon());
                 btnLoop.setImageResource(musicService.getLoopState());
                 btnRandom.setImageResource(musicService.getRandomState());
                 GetCurrentDataFromService();
-
             }
         }
 
@@ -324,10 +325,13 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
     }
 
     private void NavigateToCommentActivity() {
+        Song song = songs.get(currentSong);
+        if (song == null || song.getId().equals("-1") || song.isAudio())
+            return;
         Intent intent = new Intent(this, CommentActivity.class);
         intent.putExtra("type", "songs");
-        intent.putExtra("idObject", songs.get(currentSong).getId());
-        intent.putExtra("nameObject", songs.get(currentSong).getName());
+        intent.putExtra("idObject", song.getId());
+        intent.putExtra("nameObject", song.getName());
         startActivity(intent);
     }
 
@@ -372,12 +376,19 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
         if (likes == null) {
             likes = new ArrayList<>();
         }
+        Song song = songs.get(currentSong);
+        if (song == null || song.isAudio() || song.getId().equals("-1"))
+            return;
 
         if (likes.contains(user.getUid())) {
             likes.remove(user.getUid());
-        } else
+            UserData.removeLoveSong(song.getId(), false);
+        } else {
+            UserData.addLoveSong(song, false);
             likes.add(user.getUid());
-        likeRef.child(songs.get(currentSong).getId()).setValue(likes);
+        }
+
+        likeRef.child(song.getId()).setValue(likes);
         SaveLoveSongInDatabase();
     }
 
@@ -418,7 +429,7 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
             return;
         }
 
-        Intent MusicService = new Intent(getApplicationContext(), com.example.doanmp3.Service.MusicService.class);
+        Intent MusicService = new Intent(getApplicationContext(), MusicService.class);
         MusicService.putExtra("songs", songs);
         MusicService.putExtra("currentSong", currentSong);
         if (isRandom)
@@ -471,7 +482,7 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
     }
 
     private void HandleActionEventPlayOrPauseMusic() {
-        int resId = musicService.isMediaPlaying();
+        int resId = musicService.getMediaPlayerStateIcon();
         btnPlay.setImageResource(resId);
         songFragment.StartOrPauseAnimation(resId);
     }
@@ -514,7 +525,8 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
         tvSingersName.setText(songs.get(currentSong).getAllSingerNames());
     }
 
-    private void GetCurrentDataFromService(){
+    private void GetCurrentDataFromService() {
+
         // SET SELECTED SONG, SELECTED ITEM, AND INFO SONG, SET UP RECYCLE VIEW
         listFragment.ChangeInfoSongSelected(songs, currentSong);
         // SET DISK
@@ -523,7 +535,7 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
         SetTitleForToolbar();
 
         setSongDuration();
-        btnPlay.setImageResource(musicService.isMediaPlaying());
+        btnPlay.setImageResource(musicService.getMediaPlayerStateIcon());
         handler.postDelayed(runnable, 0);
         ListenLikeEvent();
         Bitmap bitmapBlurred = Tools.blurBitmap(PlaySongsActivity.this, musicService.GetBitmapOfCurrentSong(), 25f);
@@ -541,7 +553,15 @@ public class PlaySongsActivity extends BaseActivity implements ItemClick {
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
-        likeRef.child(songs.get(currentSong).getId()).removeEventListener(valueEventListener);
+
+        // Không biết lỗi cái mẹ gì luôn
+        try {
+            if (likeRef != null || valueEventListener != null || !songs.get(currentSong).isAudio())
+                likeRef.child(songs.get(currentSong).getId()).removeEventListener(valueEventListener);
+        } catch (Exception e) {
+            Log.e("EEE", e.getMessage());
+        }
+
     }
 
 

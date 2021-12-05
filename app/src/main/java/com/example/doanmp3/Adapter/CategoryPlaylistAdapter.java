@@ -45,7 +45,6 @@ public class CategoryPlaylistAdapter extends RecyclerView.Adapter<CategoryPlayli
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Playlist playlist = playlists.get(position);
         holder.txtName.setText(playlist.getName());
-        Log.e("EEE", playlist.getThumbnail());
         Glide.with(context).load(playlist.getThumbnail()).into(holder.thumbnail);
         holder.itemView.setOnClickListener(v -> itemClick.onItemClick(position));
     }

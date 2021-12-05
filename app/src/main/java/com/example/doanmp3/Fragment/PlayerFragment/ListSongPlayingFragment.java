@@ -125,6 +125,6 @@ public class ListSongPlayingFragment extends Fragment {
                 }else
                     handler.postDelayed(this, 100);
             }
-        }, 10);
+        }, 0);
     }
 }

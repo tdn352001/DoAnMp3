@@ -116,4 +116,8 @@ public interface DataService {
     @FormUrlEncoded
     @POST("getThemePlaylist.php")
     Call<List<Playlist>> getThemePlaylist(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("getUserFavoriteAlbum.php")
+    Call<List<Album>> getUserFavoriteAlbums(@Field("id") String id);
 }

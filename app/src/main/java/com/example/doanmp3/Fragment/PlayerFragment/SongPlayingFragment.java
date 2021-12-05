@@ -68,7 +68,7 @@ public class SongPlayingFragment extends Fragment {
         if (bitmap != null) {
             songThumbnail.setImageBitmap(bitmap);
         } else {
-            Glide.with(requireContext()).load(link).into(songThumbnail);
+            Glide.with(requireContext()).load(link).error(R.drawable.img_disk).into(songThumbnail);
         }
     }
 

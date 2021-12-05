@@ -2,6 +2,7 @@ package com.example.doanmp3.Fragment.UserPlaylist;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,27 +12,20 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doanmp3.Activity.UserActivity.AddSongUserPlaylistActivity;
 import com.example.doanmp3.Adapter.AddSongAdapter;
+import com.example.doanmp3.Context.Data.UserData;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
-import com.example.doanmp3.Interface.DataService;
 import com.example.doanmp3.Service.Tools;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class LoveSongFragment extends Fragment {
@@ -93,19 +87,21 @@ public class LoveSongFragment extends Fragment {
     }
 
     private void GetLoveSong(){
-        DataService dataService = APIService.getService();
-        Call<List<Song>> callback = dataService.getUserLoveSongs(user.getUid());
-        callback.enqueue(new Callback<List<Song>>() {
+        UserData.GetLoveSongData();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-                SetUpRecyclerView((ArrayList<Song>) response.body());
+            public void run() {
+                if (!UserData.isLoadingData()) {
+                    // create a new list so as not to affect the old list
+                    ArrayList<Song> loveSongs =  new ArrayList<>(UserData.getLoveSongs());
+                    SetUpRecyclerView(loveSongs);
+                    handler.removeCallbacks(this);
+                } else {
+                    handler.postDelayed(this, 50);
+                }
             }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
-
-            }
-        });
+        }, 50);
     }
 
     public void QueryData(String query){

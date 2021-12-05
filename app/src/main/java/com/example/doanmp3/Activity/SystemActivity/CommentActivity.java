@@ -97,7 +97,7 @@ public class CommentActivity extends BaseActivity {
         if (intent != null && intent.hasExtra("nameObject")) {
             nameObject = intent.getStringExtra("nameObject");
         } else {
-            nameObject = "Chào cậu";
+            nameObject = "Undefined";
         }
     }
 

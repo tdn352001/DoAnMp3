@@ -24,24 +24,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Activity.SystemActivity.BaseActivity;
-import com.example.doanmp3.Activity.SystemActivity.PlaySongsActivity;
 import com.example.doanmp3.Adapter.SongAdapter;
-import com.example.doanmp3.Interface.DataService;
+import com.example.doanmp3.Dialog.BottomDialog;
 import com.example.doanmp3.Interface.OptionItemClick;
-import com.example.doanmp3.Models.Playlist;
 import com.example.doanmp3.Models.Song;
+import com.example.doanmp3.Models.UserPlaylist;
 import com.example.doanmp3.R;
-import com.example.doanmp3.Service.APIService;
 import com.example.doanmp3.Service.Tools;
 import com.google.android.material.button.MaterialButton;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DetailUserPlaylistActivity extends BaseActivity {
 
@@ -52,9 +45,10 @@ public class DetailUserPlaylistActivity extends BaseActivity {
     LinearLayout btnAddSong, layoutNoInfo;
     RecyclerView rvSong;
 
-    Playlist playlist;
+    UserPlaylist playlist;
     ArrayList<Song> songs;
     SongAdapter songAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,26 +83,14 @@ public class DetailUserPlaylistActivity extends BaseActivity {
     }
 
     private void GetSongsOfPlaylist() {
-        DataService dataService = APIService.getService();
-        Call<List<Song>> callback = dataService.getSongsOfUserPlaylist(playlist.getId());
-        callback.enqueue(new Callback<List<Song>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Song>> call, @NonNull Response<List<Song>> response) {
-                songs = (ArrayList<Song>) response.body();
-                if (songs == null) {
-                    songs = new ArrayList<>();
-                    layoutNoInfo.setVisibility(View.VISIBLE);
-                }
-                SetUpRecyclerView();
-
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Song>> call, @NonNull Throwable t) {
-
-            }
-        });
+        songs = playlist.getSongs();
+        if (songs == null || songs.size() == 0) {
+            songs = new ArrayList<>();
+            layoutNoInfo.setVisibility(View.VISIBLE);
+        }
+        SetUpRecyclerView();
     }
+
     private void SetView() {
         Glide.with(this).asBitmap().load(playlist.getThumbnail()).into(new CustomTarget<Bitmap>() {
             @Override
@@ -142,12 +124,13 @@ public class DetailUserPlaylistActivity extends BaseActivity {
         songAdapter = new SongAdapter(this, songs, new OptionItemClick() {
             @Override
             public void onItemClick(int position) {
-                NavigateToPlayActivity(position);
+                Tools.NavigateToPlayActivity(DetailUserPlaylistActivity.this, songs, position, false);
             }
 
             @Override
             public void onOptionClick(int position) {
-
+                BottomDialog dialog = Tools.DialogOptionSongDefault(DetailUserPlaylistActivity.this, songs.get(position));
+                if(dialog != null) dialog.show();
             }
         });
         rvSong.setAdapter(songAdapter);
@@ -161,31 +144,26 @@ public class DetailUserPlaylistActivity extends BaseActivity {
             if(songs == null && songs.size() == 0){
                 Toast.makeText(DetailUserPlaylistActivity.this, R.string.playlist_empty, Toast.LENGTH_SHORT).show();
             }else{
-                NavigateToPlayActivity(0);
+                Tools.NavigateToPlayActivity(DetailUserPlaylistActivity.this, songs, 0, false);
             }
         });
 
         btnAddSong.setOnClickListener(v -> {
             Intent intent = new Intent(DetailUserPlaylistActivity.this, AddSongUserPlaylistActivity.class);
             intent.putExtra("playlist", playlist);
-            intent.putExtra("songs", songs);
             addSongResult.launch(intent);
         });
     }
 
 
-    private void NavigateToPlayActivity(int position){
-        Intent intent = new Intent(this, PlaySongsActivity.class);
-        intent.putExtra("position", position);
-        intent.putExtra("songs", songs);
-        startActivity(intent);
-    }
+
 
     private final ActivityResultLauncher<Intent> addSongResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
             if(intent.hasExtra("songs")){
                 songs = intent.getParcelableArrayListExtra("songs");
+                playlist.setSongs(songs);
                 SetUpRecyclerView();
             }else{
                 Log.e("EEE", "Không có data");

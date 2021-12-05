@@ -22,6 +22,15 @@
         tools:ignore="AllowBackup"
         tools:targetApi="m">
         <activity
+            android:name=".Activity.UserActivity.DeviceSongsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserActivity.UserFavoriteAlbumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.UserActivity.UserLoveSongActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.SystemActivity.DetailCategoryActivity"
             android:exported="false" />
         <activity

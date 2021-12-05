@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.doanmp3.Activity.SystemActivity.MainActivity;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Models.User;
 import com.example.doanmp3.R;
 import com.example.doanmp3.Service.Tools;
@@ -77,7 +78,7 @@ public class RegisterFragment extends Fragment {
     private void InitFirebase() {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        userReference = database.getReference("users");
+        userReference = database.getReference(FirebaseRef.USERS);
     }
 
     private void InitDialog() {
@@ -254,7 +255,7 @@ public class RegisterFragment extends Fragment {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) return;
 
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference(FirebaseRef.USERS).child(user.getUid());
         userReference.get().addOnCompleteListener(task -> {
             User dataUser = task.getResult().getValue(User.class);
             if(dataUser == null){

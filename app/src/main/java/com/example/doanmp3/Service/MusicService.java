@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -29,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.doanmp3.Application.BroadcastReceiver;
+import com.example.doanmp3.Context.Constant.FirebaseRef;
 import com.example.doanmp3.Models.Song;
 import com.example.doanmp3.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,7 +89,7 @@ public class MusicService extends Service {
     public void onCreate() {
         super.onCreate();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        recentSongRef = FirebaseDatabase.getInstance().getReference("recent_songs").child(user.getUid());
+        recentSongRef = FirebaseDatabase.getInstance().getReference(FirebaseRef.RECENT_SONGS).child(user.getUid());
         mediaPlayer = new MediaPlayer();
         musicBinder = new MusicBinder();
         playedList = new ArrayList<>();
@@ -95,11 +97,14 @@ public class MusicService extends Service {
         bitmaps = new ArrayList<>();
         random = false;
         loopState = Loop.DISABLED;
+
+        Log.e("EEE", "onCreate Service");
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        Log.e("EEE", "onBind Service");
         return musicBinder;
     }
 
@@ -111,9 +116,19 @@ public class MusicService extends Service {
 
     /*
      *   Get data and action from activity and notification
-     * */
+     */
     private void GetSongData(Intent intent) {
         if (intent == null) return;
+
+        if (intent.hasExtra("song")) {
+            Song song = intent.getParcelableExtra("song");
+            if (!CheckSongExist(song))
+                AddNewSong(song);
+            else {
+                Toast.makeText(getApplicationContext(), R.string.song_exist, Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
 
         //Get data song from activity
         if (intent.hasExtra("songs")) {
@@ -136,7 +151,7 @@ public class MusicService extends Service {
         }
 
         if (intent.hasExtra("random")) {
-            random = true;
+            random = intent.getBooleanExtra("random", false);
         }
 
         // Get Action from Activity
@@ -152,22 +167,64 @@ public class MusicService extends Service {
         }
     }
 
+    private boolean CheckSongExist(Song song) {
+        if (song == null || songs == null || songs.size() == 0)
+            return false;
+
+        for (Song mSong : songs) {
+            if (mSong.getId().equals(song.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    private void AddNewSong(Song song) {
+        if (songs == null)
+            songs = new ArrayList<>();
+        songs.add(song);
+        Glide.with(getApplication()).asBitmap().load(song.getThumbnail()).into(new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                bitmaps.add(resource);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+            }
+        });
+        if (songs.size() == 1) {
+            currentSong = 0;
+            PlaySong();
+            Log.e("EEE", "Play Song");
+        }
+    }
+
     /*
      * Get Bitmap using Glide to set large icon for notification
      */
     private void GetBitmapFromSongs() {
         for (Song song : songs) {
-            Glide.with(getApplication()).asBitmap().load(song.getThumbnail()).into(new CustomTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    bitmaps.add(resource);
-                }
+            if (song.isAudio()) {
+                Handler handler = new Handler();
+                handler.post(() -> {
+                    Bitmap bitmap = Tools.GetBitmapOfAudio(getApplicationContext(), song);
+                    if (bitmap != null)
+                        bitmaps.add(bitmap);
+                });
+            } else {
+                Glide.with(getApplication()).asBitmap().load(song.getThumbnail()).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        bitmaps.add(resource);
+                    }
 
-                @Override
-                public void onLoadCleared(@Nullable Drawable placeholder) {
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
@@ -368,7 +425,8 @@ public class MusicService extends Service {
          */
 
         try {
-            String linkSong = songs.get(currentSong).getLink();
+            Song song = songs.get(currentSong);
+            String linkSong = song.getLink();
             if (linkSong == null) {
                 ActionNext();
                 return;
@@ -382,21 +440,22 @@ public class MusicService extends Service {
                 MusicControlNotification();
                 HandleActionControlMusic(ACTION_START_PLAY);    // Send Action Play To Activity
                 mp.setOnCompletionListener(onCompletionListener);
-                SaveRecentSong();
+                if (!song.getId().equals("-1") || !song.isAudio())
+                    SaveRecentSong();
             });
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
                 Toast.makeText(getApplicationContext(), "Lỗi mạng", Toast.LENGTH_SHORT).show();
                 return false;
             });
         } catch (IOException e) {
-            Log.e("ERROR", "MEDIA PLAYER ERROR:  " + e.getMessage());
+            Log.e("EEE", "MEDIA PLAYER ERROR:  " + e.getMessage());
             SendActionToActivity(ACTION_PLAY_FAILED);
         }
     }
 
-    private void SaveRecentSong(){
+    private void SaveRecentSong() {
         Song song = songs.get(currentSong);
-        if(user == null || song == null)
+        if (user == null || song == null)
             return;
         recentSongRef.child(song.getId()).setValue(song);
     }
@@ -418,11 +477,15 @@ public class MusicService extends Service {
         mediaPlayer.seekTo(progress);
     }
 
-    public int isMediaPlaying() {
+    public int getMediaPlayerStateIcon() {
         if (mediaPlayer.isPlaying()) {
             return R.drawable.ic_pause_circle_outline;
         }
         return R.drawable.ic_play_circle_outline;
+    }
+
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
     }
 
     public Song getCurrentSong() {

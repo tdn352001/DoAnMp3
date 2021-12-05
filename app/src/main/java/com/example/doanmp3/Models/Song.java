@@ -142,6 +142,17 @@ public class Song implements Parcelable {
         return new Object(this.id, this.name, this.thumbnail);
     }
 
+    public String getLiked() {
+        return liked;
+    }
+
+    public void setLiked(String liked) {
+        this.liked = liked;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     @Override
     public String toString() {
