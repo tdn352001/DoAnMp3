@@ -88,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
+            android:hint="@string/password"
             android:maxLength="100"
             android:textSize="22sp" />
 

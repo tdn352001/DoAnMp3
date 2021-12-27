@@ -155,15 +155,17 @@ public class DetailUserPlaylistActivity extends BaseActivity {
         });
     }
 
-
-
-
     private final ActivityResultLauncher<Intent> addSongResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if(result.getResultCode() == RESULT_OK){
             Intent intent = result.getData();
             if(intent.hasExtra("songs")){
                 songs = intent.getParcelableArrayListExtra("songs");
                 playlist.setSongs(songs);
+                if (songs == null || songs.size() == 0) {
+                    layoutNoInfo.setVisibility(View.VISIBLE);
+                    return;
+                }
+                layoutNoInfo.setVisibility(View.GONE);
                 SetUpRecyclerView();
             }else{
                 Log.e("EEE", "Không có data");

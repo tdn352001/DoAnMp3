@@ -68,6 +68,7 @@ public class SearchRecentFragment extends Fragment {
     static boolean haveHistorySearch;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -167,6 +168,8 @@ public class SearchRecentFragment extends Fragment {
                 KeyWord keyWord = snapshot.getValue(KeyWord.class);
                 if (keyWord != null)
                     AddKeyWord(keyWord);
+
+                Log.e("EEE", "CHANGE");
             }
 
             @Override
@@ -190,7 +193,6 @@ public class SearchRecentFragment extends Fragment {
             }
         };
         searchRef.addChildEventListener(childEventListener);
-
     }
 
     private boolean CheckKeyWordExits(KeyWord keyWord) {
@@ -229,7 +231,7 @@ public class SearchRecentFragment extends Fragment {
     }
 
     private void AddKeyWordToLayout(int index, KeyWord keyWord) {
-        int _4dp = Tools.ConvertDpToPx(4, requireContext());
+        int _4dp = Tools.ConvertDpToPx(4, getContext());
         TextView textView = new TextView(getContext());
         FlowLayout.LayoutParams params = new FlowLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, _4dp * 3, _4dp * 2, 0);
@@ -256,9 +258,12 @@ public class SearchRecentFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        searchRef.removeEventListener(childEventListener);
     }
+
+
 }
 
 

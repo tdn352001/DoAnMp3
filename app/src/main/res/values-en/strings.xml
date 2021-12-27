@@ -188,4 +188,9 @@
     <string name="love_song">Love Songs</string>
     <string name="play">Play</string>
     <string name="unlike">Unlike</string>
+    <string name="download_successfully">Download Succesfully</string>
+    <string name="downloading_failed">Download Failed</string>
+    <string name="downloading">Dowloading</string>
+    <string name="favourite_album">Favorite Album</string>
+    <string name="song_exist">The song already exists</string>
 </resources>

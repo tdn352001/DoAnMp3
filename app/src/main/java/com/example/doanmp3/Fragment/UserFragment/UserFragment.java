@@ -72,7 +72,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         if (result.getResultCode() == RESULT_OK) {
             user = auth.getCurrentUser();
             if(user != null) {
-                Glide.with(requireContext()).load(user.getPhotoUrl()).into(userAvatar);
+                Glide.with(getContext()).load(user.getPhotoUrl()).into(userAvatar);
                 tvUsername.setText(user.getDisplayName());
             }
         }
